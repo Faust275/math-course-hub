@@ -7,12 +7,14 @@ window.WB_STORAGE = (function() {
   var STORE_NAME = 'user_annotations';
   var db = null;
   var mem = {};
+  var raw = null;
+  try { raw = window.localStorage; } catch(e) { raw = null; }
 
   try {
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
       if (k && k.indexOf('wb_') === 0) {
-        mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+        mem[k] = raw.getItem(k);
       }
     }
   } catch(e) {}
@@ -49,13 +51,13 @@ window.WB_STORAGE = (function() {
   return {
     getItem: function(key) {
       if (key in mem) return mem[key];
-      try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+      try { return raw ? raw.getItem(key) : null; } catch(e) { return null; }
     },
     setItem: function(key, val) {
       var s = String(val);
       mem[key] = s;
       try {
-        (window.WB_STORAGE||localStorage).setItem(key, s);
+        if (raw) raw.setItem(key, s);
       } catch(quotaErr) {
         console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
       }
@@ -69,7 +71,7 @@ window.WB_STORAGE = (function() {
     },
     removeItem: function(key) {
       delete mem[key];
-      try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+      try { if (raw) raw.removeItem(key); } catch(e) {}
       if (db) {
         try {
           var tx = db.transaction(STORE_NAME, 'readwrite');
@@ -192,12 +194,17 @@ function showSearch(q){
   draw(false,true);
   ensureFull(function(){ draw(true,false) });
 }
-$('#q').addEventListener('input',function(e){showSearch(e.target.value.trim())});
-$('#q').addEventListener('focus',function(e){if(e.target.value.trim())showSearch(e.target.value.trim())});
-document.addEventListener('keydown',function(e){
-  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#q').focus()}
-  if(e.key==='Escape'){$('#q').value='';$('#panel').style.display='none'}
-});
+/* 搜索框只在首页/课程页存在；作业页等也引了 site.js，取不到节点就跳过，
+   否则 addEventListener 会抛异常，把后面的脚本一起弄死 */
+var qEl = $('#q');
+if(qEl){
+  qEl.addEventListener('input',function(e){showSearch(e.target.value.trim())});
+  qEl.addEventListener('focus',function(e){if(e.target.value.trim())showSearch(e.target.value.trim())});
+  document.addEventListener('keydown',function(e){
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();qEl.focus()}
+    if(e.key==='Escape'){qEl.value='';var pp=$('#panel');if(pp)pp.style.display='none'}
+  });
+}
 document.addEventListener('click',function(e){
   if(e.target.closest('#panel')||e.target.closest('#q')||e.target.closest('.searchbox'))return;
   var p=$('#panel'); if(p)p.style.display='none';
@@ -218,7 +225,7 @@ function crumb(){
 /* ---------- 首页：四门课并列 ---------- */
 function home(){
   var ls=SITE.lectures, n=ls.length;
-  var h='<h1>课程讲义汇总</h1><p class="sub">四门课并列。每门课点进去看节次，每节点进去直接阅读该节讲义全文（含全部公式与例题的完整推导）；顶部检索框可跨课搜索任意概念。</p>';
+  var h='<h1>课程讲义汇总</h1><p class="sub">五门课并列：四门课堂讲义课 + 英语（教材精读与词表）。每门课点进去看节次，每节点进去直接阅读该节讲义全文（含全部公式与例题的完整推导）；顶部检索框可跨课搜索任意概念。</p>';
   h+='<div class="stats">'+
     '<div class="stat"><b>'+SITE.courses.length+'</b><span>门课程</span></div>'+
     '<div class="stat"><b>'+n+'</b><span>节已导入</span></div>'+
@@ -237,6 +244,12 @@ function home(){
       (c.images?'<span class="tag">含图片讲义</span>':'')+
       '<div class="cd" style="margin-top:10px;font-size:11.5px">'+esc(c.materials)+'</div></div>';
   });
+  h+='<div class="card" data-go="english.html">'
+    +'<h3>英语</h3><div class="cd">Exploring the Frontier：课文精读 + 词表，逐句、逐词可回听</div>'
+    +'<div class="cnum">8 <small>/ 4 个单元 × 2 篇</small></div>'
+    +'<span class="tag ok">已导入 8 篇</span>'
+    +'<span class="tag blue">音频 / 音标 / 释义</span>'
+    +'<div class="cd" style="margin-top:10px;font-size:11.5px">课本配套音频 + 人工音标释义；拼写待照片核对</div></div>';
   h+='</div><div class="notice" style="margin-top:20px"><b>关于离线</b>：整个文件夹可直接双击 <code>index.html</code> 使用，不用装软件、不用联网、不用敲命令；检索索引是构建期生成好的本地文件，用普通脚本加载，因此不受浏览器本地文件限制。后续加课只要把材料放进 <code>content/</code> 再跑一次构建。</div>';
   return h;
 }
@@ -271,7 +284,7 @@ function courseView(){
      (c.images?'<br><b>图片</b>：讲义插图与板书照片会复制进站内 <code>assets/</code>，按时间戳挂到对应小节，并进入检索索引。':'')+
      '<br><b>字幕可信度</b>：'+esc(c.trust)+'</div>';
 
-  var curTab = window._courseTab || (new URLSearchParams(location.search).get('tab')) || 'textbook';
+  var curTab = window._courseTab || (new URLSearchParams(location.search).get('tab')) || 'lectures';
   h += '<div class="wb-course-tabs" style="display:flex;gap:10px;margin:20px 0 16px;border-bottom:2px solid var(--border);padding-bottom:12px;flex-wrap:wrap;">' +
        '<button class="btn ' + (curTab==='textbook'?'on':'ghost') + '" data-tab="textbook" onclick="switchCourseTab(this.dataset.tab)">📖 核心教材 (' + tb_mine.length + ' 本)</button>' +
        '<button class="btn ' + (curTab==='lectures'?'on':'ghost') + '" data-tab="lectures" onclick="switchCourseTab(this.dataset.tab)">📑 课堂讲义 (' + mine.length + ' 节)</button>' +
@@ -436,7 +449,10 @@ function render(){
   $('#app').innerHTML = PAGE.kind==='home'?home():PAGE.kind==='course'?courseView():lectureView();
   markSubj();
 }
-$('#app').addEventListener('click',function(e){
+/* 首页/课程页专用：作业页、英语页也引了 site.js，没有 #app 就整段跳过 */
+var appEl = $('#app');
+if(appEl){
+appEl.addEventListener('click',function(e){
   var g=e.target.closest('[data-go]');
   if(g){location.href=g.dataset.go;return}
   var t=e.target.closest('[data-act]');
@@ -447,11 +463,14 @@ $('#app').addEventListener('click',function(e){
     if(el){el.open=true;el.scrollIntoView({block:'start'})}return}
   render();
 });
-$('#brand').addEventListener('click',function(){location.href='index.html'});
+var brandEl = $('#brand');
+if(brandEl) brandEl.addEventListener('click',function(){location.href='index.html'});
 render();
+}
 
 var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 function applySiteTheme(t) {
+  if (window.wbSetTheme) window.wbSetTheme(t);   // 统一入口：同步 data-theme / 类名 / color-scheme
   document.documentElement.setAttribute('data-theme', t);
   if (t === 'dark') {
     document.documentElement.classList.add('wb-dark');

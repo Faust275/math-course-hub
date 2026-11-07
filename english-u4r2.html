@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Climate megaprojects that might just save the world · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 4 R2</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 4 · Reading 2</div><h1>Climate megaprojects that might just save the world</h1><div class="eng-meta"><span>15 段 · 49 句</span><span>40 词 + 7 短语 + 6 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=4&amp;r=2">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>49 句</small></button><button data-v="words">词表<small>53</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="10.06" data-e="18.06">When it comes to fighting climate change, many strategies require relatively small actions from large numbers of people.</span> <span class="sg" data-s="18.94" data-e="27.765">It is about millions of us installing heat pumps, switching to electric vehicles, eschewing meat in our diets and so on.</span> <span class="sg" data-s="28.48" data-e="35.93">But given the sheer scale of the challenge, there are those who insist that we need to think bigger and bolder too.</span> </p><p class="eng-p"><span class="sg" data-s="37.4" data-e="57.675">They are talking about audacious infrastructure projects that would cost billions and carry high risks but could, if they work out, have a truly transformative impact on our stuttering efforts to get carbon emissions down to zero, and even mitigate the worst effects of current warming.</span> <span class="sg" data-s="58.36" data-e="62.61">Here we examine two of the most promising green megaprojects.</span> <span class="sg" data-s="63.3" data-e="65.2">What kind of impact could they have?</span> <span class="sg" data-s="66.0" data-e="67.85">And can we really pull them off.</span> </p><p class="eng-p"><span class="sg" data-s="69.5" data-e="71.875">Stabilizing the doomsday glacier.</span> </p><p class="eng-p"><span class="sg" data-s="73.28" data-e="80.38">The Thwaites Glacier in Antarctica, often dubbed the doomsday glacier, is in deep trouble.</span> <span class="sg" data-s="81.24" data-e="85.69">Since 2000 it has lost more than a trillion tons of ice.</span> <span class="sg" data-s="86.34" data-e="98.54">The speed of its flow has also doubled in 30 years, meaning twice as much ice as being spewed into the ocean. Some think it is on a runaway path to collapse.</span> </p><p class="eng-p"><span class="sg" data-s="99.91" data-e="106.385">Even more alarmingly, this glacier buttresses much of the ice sheet covering west Antarctica.</span> <span class="sg" data-s="107.06" data-e="113.385">If Thwaites fails, the worry is that it will precipitate a widespread melting of the ice.</span> <span class="sg" data-s="114.04" data-e="124.315">A huge concern because this vast ice sheet contains enough water to raise global sea levels by about 3.3 to six meters.</span> <span class="sg" data-s="125.02" data-e="130.77">That will seriously threaten cities like New York, Shanghai, Kolkata and Hamburg.</span> </p><p class="eng-p"><span class="sg" data-s="132.41" data-e="137.085">Researchers have been exploring ways to shore up the Thwaites glacier for years now.</span> <span class="sg" data-s="137.82" data-e="149.195">One major problem that needs to be addressed is that increasingly warm sea water is seeping under the glacier&#x27;s protruding ice shelf, melting it from beneath.</span> <span class="sg" data-s="149.78" data-e="159.305">There might be a way to mitigate this by deploying a buoyant 80 kilometer long undersea curtain tethered to the seabed close to the glacier.</span> <span class="sg" data-s="160.0" data-e="164.225">The aim is to reduce the flow of warmer water reaching the ice.</span> <span class="sg" data-s="164.97" data-e="180.87">Early tests of a small prototype curtain by researchers at the university of Cambridge have begun. We&#x27;ve got to figure out a way to at least keep the ice where it is, while we get greenhouse gas levels down says one of the leaders of the trial.</span> </p><p class="eng-p"><span class="sg" data-s="182.6" data-e="191.9">Needless to say, carrying out a massive engineering project in possibly the most inhospitable place on the earth won&#x27;t be cheap.</span> <span class="sg" data-s="192.72" data-e="199.82">It is estimated that the sea curtain could cost a whopping 40 billion to 80 billion dollars.</span> <span class="sg" data-s="200.76" data-e="209.935">However, when you compare that with the tens of billions of dollars that individual cities like New York are spending on flood defenses.</span> <span class="sg" data-s="210.74" data-e="215.215">It is good value for money since it offers global protection.</span> <span class="sg" data-s="215.98" data-e="220.455">The stakes are high enough that these ambitious ideas are worth entertaining.</span> <span class="sg" data-s="221.14" data-e="228.49">I don&#x27;t think civilization could manage without the west Antarctic ice sheet says a leader of the research team.</span> </p><p class="eng-p"><span class="sg" data-s="230.28" data-e="232.28">Actively capturing CO2.</span> </p><p class="eng-p"><span class="sg" data-s="234.03" data-e="240.48">Over the next few decades, it won&#x27;t be enough to merely avoid putting more greenhouse gases into the air.</span> <span class="sg" data-s="241.26" data-e="247.36">We also need to actively remove CO2 to avoid the worst effects of global warming.</span> <span class="sg" data-s="248.06" data-e="254.66">There are plenty of ways to do that, including planting trees or restoring seagrass beds.</span> <span class="sg" data-s="255.34" data-e="267.74">But if you want to mop up CO2 in an easy to quantify way with few uncertainties, then carbon capture technologies are solid, if expensive, options.</span> </p><p class="eng-p"><span class="sg" data-s="269.17" data-e="282.07">The idea is to absorb CO2 from point sources or the air, and then release a concentrated stream of CO2 that can either be buried in the ground or sold as a useful product.</span> <span class="sg" data-s="282.96" data-e="286.96">In that sense, you can think of it as recycling CO2.</span> </p><p class="eng-p"><span class="sg" data-s="288.48" data-e="296.73">In 2024 China delivered a full process onboard carbon capture and storage occs system.</span> <span class="sg" data-s="297.6" data-e="307.55">It is the world&#x27;s first CO2 capture system, covering the whole process of absorption, compression, liquefaction and storage on board.</span> <span class="sg" data-s="308.36" data-e="318.135">Which is of great significance in supporting the international maritime organization&#x27;s strategic decision on reducing greenhouse gas emissions.</span> </p><p class="eng-p"><span class="sg" data-s="319.6" data-e="327.575">This system utilizes an amine based absorbent to selectively capture and separate CO2 from the ship&#x27;s exhaust.</span> <span class="sg" data-s="328.26" data-e="335.66">Simultaneously, the CO2 is compressed and liquefied for transportation, sequestration or utilization.</span> <span class="sg" data-s="336.38" data-e="350.63">Test results show that the occs system is capable of achieving an average CO2 capture rate of over 80%, with a maximum of 6.4 tons of CO2 captured per hour.</span> </p><p class="eng-p"><span class="sg" data-s="352.42" data-e="359.97">Apart from that, a handful of megaton scale direct air capture DAC plants are on the drawing board.</span> <span class="sg" data-s="360.74" data-e="367.365">However, the pace needs to be dramatically accelerated to reach an ideal carbon absorption level.</span> <span class="sg" data-s="368.1" data-e="373.5">We will need the right mix of policy incentives to get DAC going at scale.</span> <span class="sg" data-s="374.35" data-e="378.675">Scaling up carbon capture plants is epic but viable.</span> <span class="sg" data-s="379.38" data-e="385.78">The good news, though, is that the plants can be built pretty much anywhere and relatively quickly.</span> <span class="sg" data-s="386.43" data-e="392.98">Within decades, with an investment boost, we could have dozens of such plants whirring away around the world.</span> </p><p class="eng-p"><span class="sg" data-s="394.61" data-e="400.535">While these climate megaprojects come with significant financial and logistical challenges.</span> <span class="sg" data-s="401.3" data-e="404.95">Their potential impact on mitigating climate change is enormous.</span> </p><p class="eng-p"><span class="sg" data-s="406.18" data-e="416.905">If implemented successfully, they could stabilize key ecosystems, capture significant amounts of carbon, and buy time for deeper emissions reductions.</span> <span class="sg" data-s="417.54" data-e="423.34">In an era of escalating climate risks, bold actions might be imperative.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 40</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Absorbent</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/əbˈzɔːbənt/</span></td><td><span class="eng-pos">n./adj.</span></td><td class="eng-cn">吸收剂；有吸收性的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Alarmingly</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/əˈlɑːmɪŋli/</span></td><td><span class="eng-pos">adv.</span></td><td class="eng-cn">惊人地，令人担忧地</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Amine</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/əˈmiːn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">胺（用于捕集二氧化碳）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Buoyant</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈbɔɪənt/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">有浮力的；漂浮的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Buttress</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈbʌtrəs/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">支撑，加固</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Civilization</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌsɪvəlaɪˈzeɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">文明</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Compression</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/kəmˈpreʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">压缩</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Defense</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/dɪˈfens/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">防御物；保护；防御</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Direct air capture</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">直接空气捕集（DAC）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">DAC</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">直接空气捕集（Direct Air Capture）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Doomsday</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈduːmzdeɪ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">世界末日</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dub</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/dʌb/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">把…称为，给…起绰号</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Ecosystem</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈiːkəʊsɪstəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">生态系统</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Entertain</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌentəˈteɪn/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">考虑，抱有（想法）</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Epic</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈepɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">宏大的，史诗般的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Escalating</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈeskəleɪtɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">不断升级的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Eschew</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪsˈtʃuː/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">避免，戒除</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Imperative</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ɪmˈperətɪv/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">势在必行的；必要之事</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Inhospitable</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌɪnhɒˈspɪtəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">不适宜居住的；荒凉的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Liquefaction</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌlɪkwɪˈfækʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">液化</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Liquefy</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈlɪkwɪfaɪ/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">（使）液化</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Logistical</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ləˈdʒɪstɪkl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">后勤的，物流的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mitigate</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmɪtɪɡeɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">减轻，缓解</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Onboard carbon capture and storage (OCCS)</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">船载碳捕集与封存（OCCS）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Point source</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">点源（集中排放源）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Precipitate</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/prɪˈsɪpɪteɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">促成，使突然发生</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Protruding</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/prəˈtruːdɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">突出的，伸出的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Seabed</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsiːbed/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">海床</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Seagrass</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsiːɡrɑːs/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">海草</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Selectively</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/sɪˈlektɪvli/</span></td><td><span class="eng-pos">adv.</span></td><td class="eng-cn">有选择地</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sequestration</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌsiːkwesˈtreɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">封存；隔离</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r2-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Simultaneously</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˌsɪmlˈteɪniəsli/</span></td><td><span class="eng-pos">adv.</span></td><td class="eng-cn">同时地</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r2-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Spew</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/spjuː/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">喷出，涌出</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stabilize</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈsteɪbəlaɪz/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">（使）稳定</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r2-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Strategic</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/strəˈtiːdʒɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">战略性的</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stuttering</span></td><td><span class="eng-ipa">/ˈstʌtərɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">断断续续的，磕磕绊绊的</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Trillion</span></td><td><span class="eng-ipa">/ˈtrɪljən/</span></td><td><span class="eng-pos">num.</span></td><td class="eng-cn">万亿</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Utilization</span></td><td><span class="eng-ipa">/ˌjuːtəlaɪˈzeɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">利用，使用</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Whirr</span></td><td><span class="eng-ipa">/wɜː(r)/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">呼呼地转动</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Whopping</span></td><td><span class="eng-ipa">/ˈwɒpɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">巨大的，惊人的</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 7</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mop up something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">清除，收拾</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mop something up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">清除，收拾</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">On the drawing board</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">在设计中，在筹划阶段</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-043.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pull off something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">成功完成（难事）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-044.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pull something off</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">成功完成（难事）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-045.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Shore up something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">支撑，加固</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-046.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Shore something up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">支撑，加固</td></tr></tbody></table></div><div class="eng-group">Proper names · 6</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-047.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Antarctica</span></td><td><span class="eng-ipa">/ænˈtɑːktɪkə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">南极洲</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-048.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hamburg</span></td><td><span class="eng-ipa">/ˈhæmbɜːɡ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">汉堡（德国城市）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-049.m4a" title="播放发音">▶</button></td><td><span class="eng-w">International Maritime Organization</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">国际海事组织（IMO）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-050.m4a" title="播放发音">▶</button></td><td><span class="eng-w">IMO</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">国际海事组织</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-051.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Kolkata</span></td><td><span class="eng-ipa">/kɒlˈkɑːtə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">加尔各答（印度城市）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r2-052.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Thwaites Glacier</span></td><td><span class="eng-ipa">/θweɪts ˈɡlæsiə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">思韦茨冰川（“末日冰川”）</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u4r2-text.m4a","words":"assets/english/u4r2-words.m4a","dur":423.34,"segs":[[10.06,18.06],[18.94,27.765],[28.48,35.93],[37.4,57.675],[58.36,62.61],[63.3,65.2],[66.0,67.85],[69.5,71.875],[73.28,80.38],[81.24,85.69],[86.34,98.54],[99.91,106.385],[107.06,113.385],[114.04,124.315],[125.02,130.77],[132.41,137.085],[137.82,149.195],[149.78,159.305],[160.0,164.225],[164.97,180.87],[182.6,191.9],[192.72,199.82],[200.76,209.935],[210.74,215.215],[215.98,220.455],[221.14,228.49],[230.28,232.28],[234.03,240.48],[241.26,247.36],[248.06,254.66],[255.34,267.74],[269.17,282.07],[282.96,286.96],[288.48,296.73],[297.6,307.55],[308.36,318.135],[319.6,327.575],[328.26,335.66],[336.38,350.63],[352.42,359.97],[360.74,367.365],[368.1,373.5],[374.35,378.675],[379.38,385.78],[386.43,392.98],[394.61,400.535],[401.3,404.95],[406.18,416.905],[417.54,423.34]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

@@ -35,8 +35,8 @@ index.html            首页（四门课 + 全站检索）
 course-*.html         课程页（讲义 / 作业 / 教材 三个视图）
 lecture-*.html        单节讲义全文
 homework-*.html       每周作业自测页
-textbook-<书>-<章>.html  教材单章纯净阅读页
-预览_单文件.html       资源全内联的单文件预览
+textbook-<书>-<章>.html  教材章首页（小节入口 + 章级联动 + 导读）
+textbook-<书>-<章>-sN.html  教材单节阅读页（按节分页 + 本节目录）
 data/                 结构索引、单节数据、倒排分片
 assets/               讲义插图与教材插图（已本地化）
 full/                 讲义原文（公式齐全、无导航）

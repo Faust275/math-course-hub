@@ -306,6 +306,41 @@
       letter-spacing: .02em;
     }
   </style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
 </head>
 <body>
 <style>
@@ -1124,6 +1159,11 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+math{max-width:100%}
+/* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
+html,body{overflow-x:clip}
 .wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
  border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
  font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
@@ -1245,7 +1285,7 @@ body{padding-top:54px}
 @media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
 
 </style>
-<div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-analysis.html">← 分析学Ⅰ</a><a href="course-analysis.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html" class="wb-cur">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">分析学Ⅰ <span>›</span> <b>2026-09-15 第 3-5 节</b><span class="wb-tag">讲义全文</span></div><span class="wb-meta">6 章 · 57 小节 · 59 例题</span><span class="wb-off">‹ 上一节</span><a href="lecture-analysis-0917.html">下一节 ›</a><a href="full/analysis-0915.html" target="_blank">纯净版 ↗</a><button class="wb-tool-btn" id="wb-selftest-btn" title="遮挡推导自测模式">🙈 自测模式</button><button class="wb-tool-btn" id="wb-toc-btn" title="查看大纲目录 (Alt+T)">📑 大纲</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜概念 / 时间戳 / 例题 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 目录大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn wb-btn-del" id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><span>📝 添加/编辑便签</span><button class="wb-close-btn" id="wb-note-close" title="关闭">×</button></div><div class="wb-note-quote" id="wb-note-quote"></div><div class="wb-note-body"><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的疑问、思考或拓展推导..."></textarea></div><div class="wb-note-footer"><button class="wb-btn-text-del" id="wb-note-del-btn" style="display:none">删除便签</button><div style="flex:1"></div><button class="wb-tool-btn" id="wb-note-save-btn">保存便签</button></div></div></div><div id="wb-resume-toast" class="wb-resume-toast"><span>上次读到 <b id="wb-resume-pct">0</b>%</span><button id="wb-resume-jump" class="wb-resume-btn">继续阅读</button><button id="wb-resume-close" class="wb-close-btn" style="color:var(--wb-muted);font-size:16px">×</button></div><div class="wb-math-modal" id="wb-math-modal"><div class="wb-math-modal-dialog"><div class="wb-math-modal-header"><span>🔍 公式高清放大</span><button class="wb-close-btn" id="wb-math-modal-close" title="关闭 (Esc)">×</button></div><div class="wb-math-modal-body" id="wb-math-modal-body"></div><div class="wb-math-modal-footer"><button class="wb-tool-btn" id="wb-math-modal-copy">📋 复制 LaTeX 源码</button></div></div></div>
+<div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-analysis.html">← 分析学Ⅰ</a><a href="course-analysis.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html" class="wb-cur">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">分析学Ⅰ <span>›</span> <b>2026-09-15 第 3-5 节</b><span class="wb-tag">讲义全文</span></div><span class="wb-meta">6 章 · 57 小节 · 59 例题</span><span class="wb-off">‹ 上一节</span><a href="lecture-analysis-0917.html">下一节 ›</a><a href="full/analysis-0915.html" target="_blank">纯净版 ↗</a><button class="wb-tool-btn" id="wb-selftest-btn" title="遮挡推导自测模式">🙈 自测模式</button><button class="wb-tool-btn" id="wb-toc-btn" title="查看大纲目录 (Alt+T)">📑 大纲</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜概念 / 时间戳 / 例题 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 目录大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" data-color="underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn wb-btn-del" id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><span>📝 添加/编辑便签</span><button class="wb-close-btn" id="wb-note-close" title="关闭">×</button></div><div class="wb-note-quote" id="wb-note-quote"></div><div class="wb-note-body"><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的疑问、思考或拓展推导..."></textarea></div><div class="wb-note-footer"><button class="wb-btn-text-del" id="wb-note-del-btn" style="display:none">删除便签</button><div style="flex:1"></div><button class="wb-tool-btn" id="wb-note-save-btn">保存便签</button></div></div></div><div id="wb-resume-toast" class="wb-resume-toast"><span>上次读到 <b id="wb-resume-pct">0</b>%</span><button id="wb-resume-jump" class="wb-resume-btn">继续阅读</button><button id="wb-resume-close" class="wb-close-btn" style="color:var(--wb-muted);font-size:16px">×</button></div><div class="wb-math-modal" id="wb-math-modal"><div class="wb-math-modal-dialog"><div class="wb-math-modal-header"><span>🔍 公式高清放大</span><button class="wb-close-btn" id="wb-math-modal-close" title="关闭 (Esc)">×</button></div><div class="wb-math-modal-body" id="wb-math-modal-body"></div><div class="wb-math-modal-footer"><button class="wb-tool-btn" id="wb-math-modal-copy">📋 复制 LaTeX 源码</button></div></div></div>
 <header id="title-block-header">
 <h1 class="title">《分析学Ⅰ》2026-09-15 课堂详解</h1>
 </header>
@@ -9056,6 +9096,7 @@ window.MathJax = {
 </script>
 <script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
 <script src="data/core.js"></script>
+<script src="wb-hl.js"></script>
 <script>
 (function(){
 
@@ -9066,12 +9107,14 @@ window.MathJax = {
     var STORE_NAME = 'user_annotations';
     var db = null;
     var mem = {};
+    var raw = null;
+    try { raw = window.localStorage; } catch(e) { raw = null; }
 
     try {
       for (var i = 0; i < localStorage.length; i++) {
         var k = localStorage.key(i);
         if (k && k.indexOf('wb_') === 0) {
-          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+          mem[k] = raw.getItem(k);
         }
       }
     } catch(e) {}
@@ -9108,13 +9151,13 @@ window.MathJax = {
     return {
       getItem: function(key) {
         if (key in mem) return mem[key];
-        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+        try { return raw ? raw.getItem(key) : null; } catch(e) { return null; }
       },
       setItem: function(key, val) {
         var s = String(val);
         mem[key] = s;
         try {
-          (window.WB_STORAGE||localStorage).setItem(key, s);
+          if (raw) raw.setItem(key, s);
         } catch(quotaErr) {
           console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
         }
@@ -9128,7 +9171,7 @@ window.MathJax = {
       },
       removeItem: function(key) {
         delete mem[key];
-        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        try { if (raw) raw.removeItem(key); } catch(e) {}
         if (db) {
           try {
             var tx = db.transaction(STORE_NAME, 'readwrite');
@@ -9179,6 +9222,7 @@ window.MathJax = {
   var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
     (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   function applyTheme(t) {
+    if (window.wbSetTheme) window.wbSetTheme(t);   // 同步 color-scheme，压住 pandoc 的 light-dark()
     if (t === 'dark') {
       document.documentElement.classList.add('wb-dark');
       document.body.classList.add('wb-dark');
@@ -9533,387 +9577,11 @@ window.MathJax = {
     }
   }
 
-  /* ---------- 2. 多色荧光笔与划线批注系统 (Highlighter & Notes) ---------- */
-  var hlPopover = document.getElementById('wb-hl-popover');
-  var noteModal = document.getElementById('wb-note-modal');
-  var noteQuote = document.getElementById('wb-note-quote');
-  var noteInput = document.getElementById('wb-note-input');
-  var noteClose = document.getElementById('wb-note-close');
-  var noteSaveBtn = document.getElementById('wb-note-save-btn');
-  var noteDelBtn = document.getElementById('wb-note-del-btn');
-  var btnDelInPop = document.getElementById('wb-hl-btn-del');
-  var btnAddNote = document.getElementById('wb-hl-add-note');
 
-  var currentSelectionRange = null;
-  var currentActiveHlId = null;
-
-  // 获取本节所有存储的批注
+  // 批注数据统一由 wb-hl.js 维护（划词、落笔、恢复都在那边），这里只转发读取
   function getStoredHighlights() {
-    try {
-      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]');
-    } catch(e) { return []; }
+    return (window.WB_HL && window.WB_HL.getList()) || [];
   }
-  function saveStoredHighlights(list) {
-    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + LID, JSON.stringify(list));
-    updateNotesDrawer();
-  }
-
-  // 划词选区监听
-  function handleTextSelect(e) {
-    if (noteModal && noteModal.classList.contains('wb-open')) return;
-    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-bar') || e.target.closest('.wb-toc-drawer'))) return;
-
-    var sel = window.getSelection();
-    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
-      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
-      return;
-    }
-
-    var text = sel.toString().trim();
-    if (text.length === 0 || text.length > 500) {
-      if (hlPopover) hlPopover.style.display = 'none';
-      return;
-    }
-
-    var range = sel.getRangeAt(0);
-    // 忽略导航栏和目录内的选区
-    var common = range.commonAncestorContainer;
-    var el = common.nodeType === 1 ? common : common.parentElement;
-    if (el && (el.closest('.wb-bar') || el.closest('#TOC') || el.closest('.wb-toc-drawer') || el.closest('.wb-math-bar'))) {
-      if (hlPopover) hlPopover.style.display = 'none';
-      return;
-    }
-
-    currentSelectionRange = range;
-    currentActiveHlId = null;
-    if (btnDelInPop) btnDelInPop.style.display = 'none';
-
-    if (window.innerWidth <= 768) {
-      if (hlPopover) {
-        hlPopover.classList.add('wb-hl-mobile');
-        hlPopover.style.top = 'auto';
-        hlPopover.style.bottom = '64px';
-        hlPopover.style.left = '50%';
-        hlPopover.style.transform = 'translateX(-50%)';
-        hlPopover.style.display = 'flex';
-      }
-    } else {
-      var rect = range.getBoundingClientRect();
-      var top = window.pageYOffset + rect.top - 46;
-      var left = Math.max(10, Math.min(window.innerWidth - 220, window.pageXOffset + rect.left + (rect.width / 2) - 100));
-      if (hlPopover) {
-        hlPopover.classList.remove('wb-hl-mobile');
-        hlPopover.style.top = top + 'px';
-        hlPopover.style.bottom = 'auto';
-        hlPopover.style.left = left + 'px';
-        hlPopover.style.transform = 'none';
-        hlPopover.style.display = 'flex';
-      }
-    }
-  }
-
-  var selDebounceTimer = null;
-  document.addEventListener('selectionchange', function() {
-    clearTimeout(selDebounceTimer);
-    selDebounceTimer = setTimeout(function() {
-      var sel = window.getSelection();
-      if (sel && !sel.isCollapsed && sel.toString().trim()) {
-        handleTextSelect();
-      } else if (hlPopover && !currentActiveHlId) {
-        hlPopover.style.display = 'none';
-      }
-    }, 180);
-  });
-  document.addEventListener('mouseup', handleTextSelect);
-  document.addEventListener('touchend', function(e) {
-    setTimeout(function() { handleTextSelect(e); }, 80);
-  });
-
-  // 划定高亮并包裹 DOM
-  function wrapRangeWithHl(range, hlId, color, note) {
-    var startNode = range.startContainer;
-    var endNode = range.endContainer;
-
-    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
-      var val = startNode.nodeValue;
-      var s = range.startOffset, e = range.endOffset;
-      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
-
-      var mark = document.createElement('mark');
-      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
-      mark.setAttribute('data-hl-id', hlId);
-      mark.setAttribute('data-color', color);
-      if (note) mark.setAttribute('data-note', note);
-      mark.textContent = mid;
-      mark.addEventListener('click', onHighlightClick);
-
-      var parent = startNode.parentNode;
-      if (before) parent.insertBefore(document.createTextNode(before), startNode);
-      parent.insertBefore(mark, startNode);
-      if (after) parent.insertBefore(document.createTextNode(after), startNode);
-      parent.removeChild(startNode);
-      return;
-    }
-
-    var walker = document.createTreeWalker(
-      range.commonAncestorContainer,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: function(n) {
-          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
-          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
-          return NodeFilter.FILTER_ACCEPT;
-        }
-      }
-    );
-
-    var textNodes = [];
-    var cur;
-    while (cur = walker.nextNode()) textNodes.push(cur);
-
-    textNodes.forEach(function(node) {
-      var s = (node === range.startContainer) ? range.startOffset : 0;
-      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
-      if (s >= e) return;
-
-      var val = node.nodeValue;
-      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
-
-      var mark = document.createElement('mark');
-      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
-      mark.setAttribute('data-hl-id', hlId);
-      mark.setAttribute('data-color', color);
-      if (note) mark.setAttribute('data-note', note);
-      mark.textContent = mid;
-      mark.addEventListener('click', onHighlightClick);
-
-      var parent = node.parentNode;
-      if (before) parent.insertBefore(document.createTextNode(before), node);
-      parent.insertBefore(mark, node);
-      if (after) parent.insertBefore(document.createTextNode(after), node);
-      parent.removeChild(node);
-    });
-  }
-
-  // 点击已有高亮：弹出操作选项
-  function onHighlightClick(e) {
-    e.stopPropagation();
-    var mark = e.currentTarget;
-    var hlId = mark.getAttribute('data-hl-id');
-    if (!hlId) return;
-
-    var list = getStoredHighlights();
-    var item = list.find(function(x){ return x.id === hlId; });
-    if (!item) return;
-
-    currentActiveHlId = hlId;
-    currentSelectionRange = null;
-
-    var rect = mark.getBoundingClientRect();
-    var top = window.pageYOffset + rect.top - 46;
-    var left = Math.max(10, Math.min(window.innerWidth - 220, window.pageXOffset + rect.left + (rect.width / 2) - 100));
-
-    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
-    if (hlPopover) {
-      hlPopover.style.top = top + 'px';
-      hlPopover.style.left = left + 'px';
-      hlPopover.style.display = 'flex';
-    }
-  }
-
-  // 创建或更新高亮
-  function applyColorHighlight(color) {
-    if (currentActiveHlId) {
-      // 切换已有高亮颜色
-      var list = getStoredHighlights();
-      var item = list.find(function(x){ return x.id === currentActiveHlId; });
-      if (item) {
-        item.color = color;
-        saveStoredHighlights(list);
-        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
-          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
-          m.setAttribute('data-color', color);
-        });
-        showToast('✓ 已更新标注颜色');
-      }
-      if (hlPopover) hlPopover.style.display = 'none';
-      currentActiveHlId = null;
-      return;
-    }
-
-    if (!currentSelectionRange) return;
-    var text = currentSelectionRange.toString().trim();
-    if (!text) return;
-
-    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
-    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
-
-    var list = getStoredHighlights();
-    list.push({
-      id: hlId,
-      color: color,
-      text: text,
-      note: '',
-      time: Date.now()
-    });
-    saveStoredHighlights(list);
-
-    if (window.getSelection) window.getSelection().removeAllRanges();
-    if (hlPopover) hlPopover.style.display = 'none';
-    currentSelectionRange = null;
-    showToast(color === 'underline' ? '✓ 已添加下划线' : '✓ 已添加荧光高亮');
-  }
-
-  // 绑定颜色小圆点及下划线点击
-  document.querySelectorAll('.wb-hl-color-dot, .wb-hl-btn[data-color]').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var color = this.getAttribute('data-color');
-      applyColorHighlight(color);
-    });
-  });
-
-  // 删除当前选中的高亮
-  function removeHighlightById(hlId) {
-    if (!hlId) return;
-    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
-    saveStoredHighlights(list);
-
-    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
-      var parent = m.parentNode;
-      while (m.firstChild) parent.insertBefore(m.firstChild, m);
-      parent.removeChild(m);
-    });
-    if (hlPopover) hlPopover.style.display = 'none';
-    if (noteModal) noteModal.classList.remove('wb-open');
-    currentActiveHlId = null;
-    showToast('✓ 已移除该处标注');
-  }
-
-  if (btnDelInPop) {
-    btnDelInPop.addEventListener('click', function(e) {
-      e.stopPropagation();
-      removeHighlightById(currentActiveHlId);
-    });
-  }
-  if (noteDelBtn) {
-    noteDelBtn.addEventListener('click', function() {
-      removeHighlightById(currentActiveHlId);
-    });
-  }
-
-  // 添加/编辑便签模态浮层
-  if (btnAddNote) {
-    btnAddNote.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var quoteText = '';
-      var noteVal = '';
-
-      if (currentActiveHlId) {
-        var list = getStoredHighlights();
-        var it = list.find(function(x){ return x.id === currentActiveHlId; });
-        if (it) {
-          quoteText = it.text;
-          noteVal = it.note || '';
-        }
-      } else if (currentSelectionRange) {
-        quoteText = currentSelectionRange.toString().trim();
-        // 先建立默认黄色高亮
-        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
-        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', '');
-        var list = getStoredHighlights();
-        list.push({
-          id: hlId,
-          color: 'yellow',
-          text: quoteText,
-          note: '',
-          time: Date.now()
-        });
-        saveStoredHighlights(list);
-        currentActiveHlId = hlId;
-      }
-
-      if (noteQuote) noteQuote.textContent = '“' + quoteText + '”';
-      if (noteInput) { noteInput.value = noteVal; setTimeout(function(){ noteInput.focus(); }, 150); }
-      if (hlPopover) hlPopover.style.display = 'none';
-      if (noteModal) noteModal.classList.add('wb-open');
-    });
-  }
-
-  if (noteClose) {
-    noteClose.addEventListener('click', function() {
-      noteModal.classList.remove('wb-open');
-    });
-  }
-  if (noteSaveBtn) {
-    noteSaveBtn.addEventListener('click', function() {
-      if (!currentActiveHlId) return;
-      var newNote = (noteInput ? noteInput.value : '').trim();
-      var list = getStoredHighlights();
-      var it = list.find(function(x){ return x.id === currentActiveHlId; });
-      if (it) {
-        it.note = newNote;
-        saveStoredHighlights(list);
-
-        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
-          if (newNote) {
-            m.classList.add('wb-user-hl-has-note');
-            m.setAttribute('data-note', newNote);
-          } else {
-            m.classList.remove('wb-user-hl-has-note');
-            m.removeAttribute('data-note');
-          }
-        });
-        showToast(newNote ? '✓ 已保存批注便签' : '✓ 已清空便签');
-      }
-      noteModal.classList.remove('wb-open');
-      currentActiveHlId = null;
-    });
-  }
-
-  // 点击空白关闭浮层
-  document.addEventListener('click', function(e) {
-    if (hlPopover && !e.target.closest('#wb-hl-popover') && !e.target.closest('.wb-user-hl')) {
-      hlPopover.style.display = 'none';
-      currentActiveHlId = null;
-    }
-    if (noteModal && e.target === noteModal) {
-      noteModal.classList.remove('wb-open');
-    }
-  });
-
-  // 页面初次加载时恢复所有历史高亮
-  function restoreSavedHighlights() {
-    var list = getStoredHighlights();
-    if (!list.length) return;
-
-    list.forEach(function(item) {
-      var low = item.text.toLowerCase();
-      var walker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_TEXT,
-        {
-          acceptNode: function(node) {
-            var el = node.parentElement;
-            if (!el || el.closest('.wb-bar') || el.closest('#TOC') || el.closest('.wb-toc-drawer')) return NodeFilter.FILTER_REJECT;
-            if (node.nodeValue.toLowerCase().indexOf(low) >= 0) return NodeFilter.FILTER_ACCEPT;
-            return NodeFilter.FILTER_SKIP;
-          }
-        }
-      );
-
-      var matchedNode = walker.nextNode();
-      if (matchedNode) {
-        var idx = matchedNode.nodeValue.toLowerCase().indexOf(low);
-        var range = document.createRange();
-        range.setStart(matchedNode, idx);
-        range.setEnd(matchedNode, idx + item.text.length);
-        wrapRangeWithHl(range, item.id, item.color, item.note);
-      }
-    });
-    updateNotesDrawer();
-  }
-  setTimeout(restoreSavedHighlights, 100);
 
   // 大纲抽屉 Tab 切换 (目录大纲 vs 本节批注)
   var tabToc = document.getElementById('wb-tab-toc');
@@ -10350,6 +10018,12 @@ window.MathJax = {
 
   checkHashTarget();
   window.addEventListener('hashchange', checkHashTarget);
+
+  /* 本脚本整体在 IIFE 里，划词批注引擎 (wb-hl.js) 在圈外，
+     这里把存储键、提示条与抽屉刷新三个钩子挂到 window 上供它回调 */
+  window.LID = LID;
+  window.showToast = showToast;
+  window.updateNotesDrawer = updateNotesDrawer;
 })();
 </script>
 </body>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>英语总览 · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <b>英语</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">English · 新视野读写教程 1</div><h1>Exploring the Frontier</h1><div class="eng-meta"><span>4 个单元 · 8 篇课文</span><span>347 个单词 + 68 条短语/专名</span><span>454 句</span><a class="eng-chip" href="english-words.html">全站单词总表 →</a><a class="eng-chip" href="english-quiz.html">练词 / 听写 →</a></div><div class="eng-note"><b>关于这份数据</b>：课文与词表来自教材配套音频的语音识别，每句、每词都有独立音频（词是按 ASR 时间戳切好的单独文件），点一下只听那一个词。拼写已逐条对照课本 Vocabulary 页改定，音标与释义为人工撰写。课本印在词条前的 <b>*</b> 与 <b>▲</b> 也一并录进来了——<b>*</b> 是四级词汇、<b>▲</b> 是六级词汇、无标识是超纲词汇，词表里按 四 / 六 / 纲 打徽标，可筛。</div><div class="eng-grid" style="margin-top:22px"><a class="eng-card" href="english-u1r1.html"><div class="u">Unit 1 · Reading 1</div><h3>The two inventions behind modern barcodes</h3><div class="m"><span>43 词</span><span>54 句</span><span>14 段</span></div></a><a class="eng-card" href="english-u1r2.html"><div class="u">Unit 1 · Reading 2</div><h3>How human like do we really want robots to be?</h3><div class="m"><span>36 词</span><span>47 句</span><span>11 段</span></div></a><a class="eng-card" href="english-u2r1.html"><div class="u">Unit 2 · Reading 1</div><h3>Crafting the cities of tomorrow</h3><div class="m"><span>55 词</span><span>36 句</span><span>9 段</span></div></a><a class="eng-card" href="english-u2r2.html"><div class="u">Unit 2 · Reading 2</div><h3>A dead battery dilemma</h3><div class="m"><span>46 词</span><span>63 句</span><span>15 段</span></div></a><a class="eng-card" href="english-u3r1.html"><div class="u">Unit 3 · Reading 1</div><h3>Fusion energy fuels optimism for the future</h3><div class="m"><span>45 词</span><span>57 句</span><span>14 段</span></div></a><a class="eng-card" href="english-u3r2.html"><div class="u">Unit 3 · Reading 2</div><h3>Is geothermal power heating up as an energy source?</h3><div class="m"><span>43 词</span><span>46 句</span><span>15 段</span></div></a><a class="eng-card" href="english-u4r1.html"><div class="u">Unit 4 · Reading 1</div><h3>Life in the sun&#x27;s grip</h3><div class="m"><span>39 词</span><span>102 句</span><span>16 段</span></div></a><a class="eng-card" href="english-u4r2.html"><div class="u">Unit 4 · Reading 2</div><h3>Climate megaprojects that might just save the world</h3><div class="m"><span>40 词</span><span>49 句</span><span>15 段</span></div></a></div>
+</main>
+</body>
+</html>

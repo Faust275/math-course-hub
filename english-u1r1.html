@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The two inventions behind modern barcodes · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 1 R1</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 1 · Reading 1</div><h1>The two inventions behind modern barcodes</h1><div class="eng-meta"><span>14 段 · 54 句</span><span>43 词 + 6 短语 + 4 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=1&amp;r=1">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>54 句</small></button><button data-v="words">词表<small>53</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="16.47" data-e="23.77">Since the late 19th century, railroad companies in the United States had been trying to solve a vexing problem.</span> <span class="sg" data-s="24.68" data-e="33.63">The rail system included a huge number of rail cars, but company officials had no way to know the precise location of each car.</span> <span class="sg" data-s="34.38" data-e="39.555">What was needed was an automated means of identifying and locating the cars.</span> </p><p class="eng-p"><span class="sg" data-s="40.9" data-e="52.55">David Collins, an engineer who had once interned at the Pennsylvania Railroad, was intrigued by the challenge and started exploring this in the lab.</span> <span class="sg" data-s="53.14" data-e="62.06">He found that each rail car was labeled with a horizontal serial number, which was a combination of a company code and a car code.</span> <span class="sg" data-s="62.96" data-e="68.635">These codes came in different widths and fonts and had no standard location on the cars.</span> <span class="sg" data-s="69.3" data-e="75.15">The rail cars themselves came in different sizes and the trains moved at different speeds.</span> <span class="sg" data-s="75.86" data-e="82.26">The need for new code labels and a dynamic scanning technology that could overcome these problems was obvious.</span> </p><p class="eng-p"><span class="sg" data-s="83.83" data-e="95.68">Collins&#x27;s idea was to develop an optical sensor system that could send a white light beam out to a distant barcode of colored stripes, and decode the signal that reflected back.</span> <span class="sg" data-s="96.42" data-e="100.545">He focused on factors such as the code, spot size and scan rate.</span> <span class="sg" data-s="101.26" data-e="103.86">But the initial experiments proved frustrating.</span> <span class="sg" data-s="104.54" data-e="111.74">One day, one of Collins&#x27;s colleagues inspired him to turn the code labels sideways and scan them vertically.</span> </p><p class="eng-p"><span class="sg" data-s="113.15" data-e="116.25">This worked out to be a technically superior alternative.</span> <span class="sg" data-s="117.26" data-e="125.535">His scanner was now able to consistently pick up the patterns from the colored codes and decipher the rail car&#x27;s information.</span> </p><p class="eng-p"><span class="sg" data-s="126.99" data-e="128.94">Then other issues surfaced.</span> <span class="sg" data-s="129.46" data-e="133.335">Could the scanner work reliably against variable train speeds?</span> <span class="sg" data-s="134.04" data-e="137.64">Could the sensing be done during snow, rain and fog?</span> <span class="sg" data-s="138.36" data-e="142.31">Would the scanning be accurate if there was surface dirt on the codes?</span> <span class="sg" data-s="143.02" data-e="145.82">You couldn&#x27;t do it in a lab, Collins said.</span> <span class="sg" data-s="146.6" data-e="151.325">You were playing with real rail cars outdoors, and we didn&#x27;t own a railroad.</span> </p><p class="eng-p"><span class="sg" data-s="152.68" data-e="163.355">Collins set up a test site near a train line and tested the scanner on hundreds of rail cars that crossed the site with diligence and clockwork precision.</span> <span class="sg" data-s="164.0" data-e="166.15">He named the system KarTrak.</span> <span class="sg" data-s="166.94" data-e="173.265">By 1967 its practical application had begun to spread across the railway industry.</span> </p><p class="eng-p"><span class="sg" data-s="174.77" data-e="178.995">Around the same time, the grocery industry was facing its own challenges.</span> <span class="sg" data-s="179.76" data-e="189.01">Inefficiencies in inventory management were crippling the industry. One idea was to use a code-based system to track grocery products.</span> <span class="sg" data-s="189.68" data-e="195.83">In the early 1970s, engineer George Laurer was assigned to bring this idea to life.</span> </p><p class="eng-p"><span class="sg" data-s="197.35" data-e="207.46">The code to be created had to be no larger than 1.5 square inches, and it had to be read easily by both humans and electronics.</span> <span class="sg" data-s="208.16" data-e="215.51">Next, the symbol had to be printable on products of irregular sizes, like bar soaps and coffee containers.</span> <span class="sg" data-s="216.2" data-e="228.065">The code had to be omnidirectional with an accuracy of at least 99.995%, which meant only one error for every 20,000 items sold.</span> <span class="sg" data-s="228.78" data-e="239.855">Furthermore, meeting each of these specifications could not add to grocery production costs. Within these rigid constraints, Laurer began to work on a solution.</span> </p><p class="eng-p"><span class="sg" data-s="241.35" data-e="248.45">The code Laurer designed contained vertical black and white stripes with differing widths in a zebra-like pattern.</span> <span class="sg" data-s="249.36" data-e="253.81">The black stripes absorbed light and the white ones reflected it back.</span> <span class="sg" data-s="254.66" data-e="263.16">This reflected light could be picked up by an optical sensor and converted to electrical impulses that were processed by a computer.</span> </p><p class="eng-p"><span class="sg" data-s="264.83" data-e="274.73">For Laurer&#x27;s prototype demonstration, an ace softball pitcher threw code labeled beanbag ashtrays as fast as he could over a reader.</span> <span class="sg" data-s="275.38" data-e="283.23">Each item was read flawlessly, which far exceeded the expectations of the grocery industry. His product was ready.</span> <span class="sg" data-s="284.0" data-e="289.45">The code selection committee called it the Universal Product Code (UPC).</span> <span class="sg" data-s="290.2" data-e="293.75">It became an industry standard in 1973.</span> </p><p class="eng-p"><span class="sg" data-s="295.23" data-e="297.855">Weeks later, a problem surfaced.</span> <span class="sg" data-s="298.48" data-e="308.98">Meat departments in grocery stores had no mechanism to verify that the billed price of the product matched the actual price in the store manager&#x27;s file.</span> <span class="sg" data-s="309.78" data-e="314.58">Laurer fixed this problem by adding a price check digit to the UPC.</span> <span class="sg" data-s="315.32" data-e="331.48">Over time, additional testing coupled with improved label printing and detailed receipts has essentially eliminated these sorts of challenges, thus dramatically changing inventory management and the checkout process.</span> </p><p class="eng-p"><span class="sg" data-s="332.9" data-e="347.75">Born in different circumstances and designed under different pressures, innovations like David Collins&#x27;s KarTrak and George Laurer&#x27;s UPC eventually converged to create the barcodes we use today.</span> <span class="sg" data-s="348.4" data-e="355.45">Such efforts helped revolutionize merchandising and lay the foundation for the modern supply chain system.</span> <span class="sg" data-s="356.3" data-e="367.2">With the implementation of bar codes, a torrent of new and exciting applications previously imponderable became practical which we now take for granted.</span> </p><p class="eng-p"><span class="sg" data-s="368.52" data-e="373.42">All perishable goods now have their own imperishable, bar-coded identity.</span> <span class="sg" data-s="374.36" data-e="381.46">This is possible because engineers like Collins and Laurer systematically transform problems into opportunities.</span> <span class="sg" data-s="382.4" data-e="388.05">Their creations are deliberate, disciplined, open-minded, yet grounded in reality.</span> <span class="sg" data-s="388.96" data-e="397.61">Their process for learning from errors and malfunctions and then fixing them is as important as the original idea itself.</span> <span class="sg" data-s="398.42" data-e="401.07">Their profession has profound consequences.</span> <span class="sg" data-s="401.8" data-e="417.8">They are the prospectors of new opportunities, propellers of the economy, designers of our material destinies, silent voices in every conversation, and subliminal brokers who facilitate our experiences with the world.</span> </p><p class="eng-p"><span class="sg" data-s="419.35" data-e="423.0">The engineering mindset resists simple definition.</span> <span class="sg" data-s="423.72" data-e="436.07">It&#x27;s a rigorous and systematic approach to problem solving that distinguishes engineers from other people who are perhaps more philosophical or argumentative in their approach to life.</span> <span class="sg" data-s="436.76" data-e="440.66">This mindset is an all-terrain multipurpose toolkit.</span> <span class="sg" data-s="441.38" data-e="450.205">As engineers integrate ideas from multiple streams of knowledge and offer practical solutions to diverse real-world challenges.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 43</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Argumentative</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌɑːɡjuˈmentətɪv/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">好争论的；爱辩论的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Beanbag ashtray</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈbiːnbæɡ ˈæʃtreɪ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">豆袋式烟灰缸（条码演示用的样品）</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u1r1-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Checkout</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈtʃekaʊt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（超市等的）付款台；结账</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Clockwork</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈklɒkwɜːk/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">钟表机构；精密机械</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Constraint</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/kənˈstreɪnt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">限制，约束</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cripple</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈkrɪpl/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">严重削弱；使丧失能力</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Decipher</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/dɪˈsaɪfə(r)/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">破译；辨认</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Decode</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/diːˈkəʊd/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">解码</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Destiny</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈdestəni/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">命运</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Electrical impulse</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪˈlektrɪkl ˈɪmpʌls/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">电脉冲</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Facilitate</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/fəˈsɪlɪteɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">促进；使便利</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Flawlessly</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈflɔːləsli/</span></td><td><span class="eng-pos">adv.</span></td><td class="eng-cn">完美无缺地</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Font</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/fɒnt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">字体</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Horizontal</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌhɒrɪˈzɒntl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">水平的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Implementation</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌɪmplɪmenˈteɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">实施，执行</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Imponderable</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪmˈpɒndərəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">无法估量的；难以捉摸的</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">In turn</span></td><td><span class="eng-ipa">/ɪn tɜːn/</span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">反过来；依次</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Intrigued</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪnˈtriːɡd/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">被激起兴趣的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Inventory management</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈɪnvəntri ˈmænɪdʒmənt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">库存管理</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Malfunction</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌmælˈfʌŋkʃn/</span></td><td><span class="eng-pos">n./v.</span></td><td class="eng-cn">故障，失灵</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mechanism</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmekənɪzəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">机制；机械装置</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Merchandising</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmɜːtʃəndaɪzɪŋ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">商品推销；商品陈列</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mindset</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmaɪndset/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">思维方式</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Omnidirectional</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌɒmnɪdəˈrekʃənl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">全向的，全方位可读的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Optical sensor</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈɒptɪkl ˈsensə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">光学传感器</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Original</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/əˈrɪdʒənl/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">最初的；原创的；原作</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Perishable</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈperɪʃəbl/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">易腐的；易腐食品</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Picture</span></td><td><span class="eng-ipa">/ˈpɪktʃə(r)/</span></td><td><span class="eng-pos">vt./n.</span></td><td class="eng-cn">设想，想象；图片</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Precision</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/prɪˈsɪʒn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">精确，精密</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Propeller</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/prəˈpelə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">螺旋桨；推动者</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Prospector</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/prəˈspektə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">勘探者；探寻者</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Prototype</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈprəʊtətaɪp/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">原型，样机</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Receipt</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/rɪˈsiːt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">收据，票据</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Rigid</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈrɪdʒɪd/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">僵硬的；严格死板的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Rigorous</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈrɪɡərəs/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">严谨的；严格的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Serial number</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsɪəriəl ˈnʌmbə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">序列号</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Specification</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌspesɪfɪˈkeɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">规格；具体要求</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Subliminal</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌsʌbˈlɪmɪnl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">潜意识的，阈下的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Supply chain</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/səˈplaɪ tʃeɪn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">供应链</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Torrent</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈtɒrənt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">洪流；滔滔不绝的一连串</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Universal Product Code (UPC)</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌjuːnɪˈvɜːsl ˈprɒdʌkt kəʊd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">通用产品代码（UPC 码）</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r1-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Variable</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈveəriəbl/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">可变的；变量</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r1-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Vexing</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈveksɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">令人烦恼的，棘手的</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 6</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-043.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Be grounded in or on something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">立足于；以…为基础</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-044.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Couple something with something</span></td><td><span class="eng-ipa">/ˈkʌpl/</span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">把…与…结合，加上</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-045.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pick up something</span></td><td><span class="eng-ipa">/pɪk ʌp/</span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">拾起；接收（信号）；（偶然）获得</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-046.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pick something up</span></td><td><span class="eng-ipa">/pɪk ʌp/</span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">拾起；接收（信号）；（偶然）获得</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-047.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Play with something</span></td><td><span class="eng-ipa">/pleɪ wɪð/</span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">随意摆弄；玩</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-048.m4a" title="播放发音">▶</button></td><td><span class="eng-w">With clockwork precision or accuracy</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">以极其精确、分毫不差的方式</td></tr></tbody></table></div><div class="eng-group">Proper names · 4</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-049.m4a" title="播放发音">▶</button></td><td><span class="eng-w">David Collins</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">戴维·柯林斯（铁路条码 KarTrak 的发明者）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-050.m4a" title="播放发音">▶</button></td><td><span class="eng-w">George Laurer</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">乔治·劳雷尔（UPC 码的主要设计者）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-051.m4a" title="播放发音">▶</button></td><td><span class="eng-w">KarTrak</span></td><td><span class="eng-ipa">/ˈkɑːtræk/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">KarTrak（铁路车厢自动识别系统，1960 年代）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r1-052.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pennsylvania</span></td><td><span class="eng-ipa">/ˌpenslˈveɪniə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">宾夕法尼亚（美国州名）</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u1r1-text.m4a","words":"assets/english/u1r1-words.m4a","dur":450.205,"segs":[[16.47,23.77],[24.68,33.63],[34.38,39.555],[40.9,52.55],[53.14,62.06],[62.96,68.635],[69.3,75.15],[75.86,82.26],[83.83,95.68],[96.42,100.545],[101.26,103.86],[104.54,111.74],[113.15,116.25],[117.26,125.535],[126.99,128.94],[129.46,133.335],[134.04,137.64],[138.36,142.31],[143.02,145.82],[146.6,151.325],[152.68,163.355],[164.0,166.15],[166.94,173.265],[174.77,178.995],[179.76,189.01],[189.68,195.83],[197.35,207.46],[208.16,215.51],[216.2,228.065],[228.78,239.855],[241.35,248.45],[249.36,253.81],[254.66,263.16],[264.83,274.73],[275.38,283.23],[284.0,289.45],[290.2,293.75],[295.23,297.855],[298.48,308.98],[309.78,314.58],[315.32,331.48],[332.9,347.75],[348.4,355.45],[356.3,367.2],[368.52,373.42],[374.36,381.46],[382.4,388.05],[388.96,397.61],[398.42,401.07],[401.8,417.8],[419.35,423.0],[423.72,436.07],[436.76,440.66],[441.38,450.205]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

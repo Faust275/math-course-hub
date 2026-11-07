@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crafting the cities of tomorrow · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 2 R1</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 2 · Reading 1</div><h1>Crafting the cities of tomorrow</h1><div class="eng-meta"><span>9 段 · 36 句</span><span>55 词 + 13 短语 + 0 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=2&amp;r=1">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>36 句</small></button><button data-v="words">词表<small>68</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="17.67" data-e="25.12">Stroll through any neighbourhood today and your body sets in motion machines of every kind.</span> <span class="sg" data-s="26.1" data-e="33.75">Approach a building and the front door slides open. Enter an empty room and a light flicks on.</span> <span class="sg" data-s="33.8" data-e="42.975">Jump up and down and a thermostat fires up the air conditioner to compensate for the warming air around you.</span> <span class="sg" data-s="43.6" data-e="60.4">Roam at will and motion sensing surveillance cameras slowly turn to track you. Day after day, these automatic electromechanical labourers toil at dumb and dirty jobs once done by people.</span> <span class="sg" data-s="61.24" data-e="73.165">On the fringe of our awareness, they control the world around us, yet they are now so familiar, so mundane, that we hardly notice them.</span> </p><p class="eng-p"><span class="sg" data-s="74.56" data-e="92.26">But lately, these dumb contraptions are getting a lot smarter. Hints of a newly sentient world lurk everywhere. A traffic signal sprouts a stubby antenna and takes its cues from a remote command center.</span> <span class="sg" data-s="92.41" data-e="99.585">The familiar dials of your electric meter have morphed into electronically rendered digits.</span> <span class="sg" data-s="100.06" data-e="117.56">Its ancient gear works supplanted by a powerful microprocessor. Behind the lens of that surveillance camera lurks a ghost in the machine, an algorithm in the cloud analyzing its field of view for suspicious faces.</span> <span class="sg" data-s="118.26" data-e="129.31">But what you can see is just the tip of the iceberg, almost every corner of our world is being kitted out with gadgets like this.</span> </p><p class="eng-p"><span class="sg" data-s="130.84" data-e="153.89">The old city of concrete, glass and steel now conceals a vast underworld of computers and software linked up via the internet. These devices are being stitched together into a nervous system that supports the daily lives of billions in a world of huge and growing cities.</span> <span class="sg" data-s="154.8" data-e="167.1">Invisibly they react to us rearranging the material world in a flurry of communiques, they dispatch packages, elevators and ambulances.</span> <span class="sg" data-s="167.78" data-e="175.83">Yet as hectic as this world of automation is becoming, there is a sense of calm and harmony too.</span> <span class="sg" data-s="176.7" data-e="188.0">There&#x27;s a strange new order everything from traffic to text messages seems to flow more smoothly, more effortlessly and more in control.</span> </p><p class="eng-p"><span class="sg" data-s="189.55" data-e="196.05">That machines now run the world on our behalf is not just a technological revolution.</span> <span class="sg" data-s="196.3" data-e="200.9">It is a historic shift in how we build and manage cities.</span> <span class="sg" data-s="201.15" data-e="214.55">A new kind of city, a smart city, is emerging. Smart cities are places where information technology is wielded to address problems old and new.</span> <span class="sg" data-s="215.24" data-e="224.04">In the past, buildings and infrastructure shunted the flow of people and goods in rigid, predetermined ways.</span> <span class="sg" data-s="224.24" data-e="231.915">But smart cities can adapt on the fly by pulling readings from vast arrays of sensors.</span> <span class="sg" data-s="232.54" data-e="250.49">Feeding that data into software that can see the big picture and taking action, they optimize heating and cooling in buildings, balance the flow of electricity through the power grid and keep transportation networks moving.</span> </p><p class="eng-p"><span class="sg" data-s="251.96" data-e="275.81">Sometimes these interventions on our behalf will go unnoticed by humans behind the scenes within the wires and walls of the city, but at other times, they&#x27;ll get right in our face to help us solve our shared problems by urging each of us to make choices for the greater good of all.</span> <span class="sg" data-s="276.46" data-e="284.91">An alert might ask us to pull off the expressway to avert a jam or turn down the air conditioner to avoid a blackout.</span> <span class="sg" data-s="284.96" data-e="294.76">All the while, they will maintain a vigilant watch over our health and safety, scanning for miscreants and microbes alike.</span> </p><p class="eng-p"><span class="sg" data-s="296.12" data-e="322.52">But the real killer APP for smart cities new technologies is the survival of our species, the coming century of urbanization. We&#x27;ll witness humanity&#x27;s new attempt to have our cake and eat it too, to double down on industrialization by redesigning the operating system of the last century to cope with the challenges of the coming one.</span> <span class="sg" data-s="323.04" data-e="345.89">That&#x27;s why some mayors across the globe are teaming up with the giants of the technology industry. These Tech giants have crafted a seductive pitch the same technology that fueled the expansion of global business over the last quarter century can compute away local problems, they say.</span> <span class="sg" data-s="346.44" data-e="352.29">If we only let them reprogram our cities, they can make traffic a thing of the past.</span> <span class="sg" data-s="352.49" data-e="366.29">Let them re-plumb our infrastructure, and they will efficiently convey water and power to our fingertips. Resource shortages and climate change don&#x27;t have to mean cutting back.</span> <span class="sg" data-s="366.98" data-e="375.88">Smart cities can simply use technology to do more with less and tame and green the chaos of booming cities.</span> </p><p class="eng-p"><span class="sg" data-s="377.6" data-e="390.7">Time will be the judge of these audacious promises, but you don&#x27;t have to take them sitting down. This isn&#x27;t the industrial revolution, it&#x27;s the information revolution.</span> <span class="sg" data-s="390.9" data-e="395.3">You are no longer just a cog in a vast machine.</span> <span class="sg" data-s="396.0" data-e="403.625">You are part of the mind of the smart city itself, and that gives you power to shape the future.</span> </p><p class="eng-p"><span class="sg" data-s="405.16" data-e="433.81">Look in your pocket, you already own a smart city construction kit. The democratization of computing power which started with the PC in the 1970s and leaped onto the internet in the 1990s, is now spilling out into the streets. Stop for a second to behold the miracle of engineering that these handheld, networked computers represent.</span> <span class="sg" data-s="434.44" data-e="442.04">Recent statistics indicate that over 50% of the global population now owns a smartphone.</span> </p><p class="eng-p"><span class="sg" data-s="443.56" data-e="464.56">We are witnessing the birth of a new civic movement as the smartphone becomes a platform for reinventing cities from the bottom up. Every day, all across the globe, people are solving local problems using this increasingly affordable consumer technology.</span> <span class="sg" data-s="465.1" data-e="468.2">And smartphones are just the start.</span> <span class="sg" data-s="468.3" data-e="494.35">Open government data, open source hardware and free networks are powering designs for cities of the future, that are far smarter than any industry mainframe. And so, just as corporate engineers fan out to redesign the innards of the world&#x27;s great cities, they are finding a grassroots transformation already at work.</span> <span class="sg" data-s="495.12" data-e="504.27">People are building smart cities much as we built the web, one site, one APP, and one click at a time.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 55</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Air conditioner</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈeə kəndɪʃənə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">空调</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Algorithm</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈælɡərɪðəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">算法</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Antenna</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ænˈtenə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">天线</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Array</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/əˈreɪ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">阵列；一系列</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Audacious</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɔːˈdeɪʃəs/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">大胆的，无畏的；冒进的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Avert</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/əˈvɜːt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">避免，防止；转移（目光）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Behold</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/bɪˈhəʊld/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">注视，看（尤指令人惊叹之物）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Blackout</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈblækaʊt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">停电；灯火管制</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Civic</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈsɪvɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">市民的，城市的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cog</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kɒɡ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">齿轮的齿；（大机构中）无足轻重的成员</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Communiqué</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kəˈmjuːnɪkeɪ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">公报；公告</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Contraption</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kənˈtræpʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">奇巧的装置，玩意儿</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Corporate</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈkɔːpərət/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">公司的；法人的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Democratization</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/dɪˌmɒkrətaɪˈzeɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">大众化，民主化</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dispatch</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/dɪˈspætʃ/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">派遣；发送</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Electromechanical</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪˌlektrəʊməˈkænɪkl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">机电的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Expansion</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪkˈspænʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">扩张，扩展</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Flick</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/flɪk/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">轻弹；啪地打开（开关）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Flurry</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈflʌri/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">一阵（忙乱、活动）</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fringe</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/frɪndʒ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">边缘，外围</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Grassroots</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌɡrɑːsˈruːts/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">基层的，自下而上的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Grid</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ɡrɪd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">电网；网格</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hectic</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈhektɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">忙乱的，紧张忙碌的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Iceberg</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈaɪsbɜːɡ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">冰山</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Innards</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈɪnədz/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">内部结构，内部零件</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Intervention</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˌɪntəˈvenʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">干预，介入</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Killer APP</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈkɪlə æp/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">杀手级应用，极具吸引力的应用</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Lurk</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/lɜːk/</span></td><td><span class="eng-pos">vi.</span></td><td class="eng-cn">暗藏；潜伏着；埋伏</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mainframe</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmeɪnfreɪm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">大型计算机，主机</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Microbe</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmaɪkrəʊb/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">微生物</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Microprocessor</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌmaɪkrəʊˈprəʊsesə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">微处理器</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Miscreant</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmɪskriənt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">不法之徒，恶棍</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Morph</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/mɔːf/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">（使）改变形态，变形</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mundane</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/mʌnˈdeɪn/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">平淡的，乏味的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Open-source</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌəʊpənˈsɔːs/</span></td><td><span class="eng-pos">a.</span></td><td class="eng-cn">开放源代码的，提供源程序的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Optimize</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈɒptɪmaɪz/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">优化，使最优化</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Predetermined</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌpriːdɪˈtɜːmɪnd/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">预先设定的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Reading</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈriːdɪŋ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（电子设备显示的）读数</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Replumb</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˌriːˈplʌm/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">重新铺设（房屋、建筑等的）管道系统</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Roam</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/rəʊm/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">漫游，闲逛</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Seductive</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/sɪˈdʌktɪv/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">有诱惑力的，诱人的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sentient</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsentiənt/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">有感知能力的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Shunt</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ʃʌnt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">把…转移（到别处）；使分流</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-043.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sprout</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/spraʊt/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">长出，冒出</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-044.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stitch</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/stɪtʃ/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">缝合；拼接</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-045.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stroll</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/strəʊl/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">散步，闲逛</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-046.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stubby</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈstʌbi/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">短粗的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-047.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Supplant</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/səˈplɑːnt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">取代，替代</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r1-048.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Surveillance</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/səˈveɪləns/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">监视，监控</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-049.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Suspicious</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/səˈspɪʃəs/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">可疑的；多疑的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-050.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Thermostat</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈθɜːməstæt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">恒温器，温度自动调节器</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-051.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Toil</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/tɔɪl/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">辛苦劳作</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r1-052.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Vigilant</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈvɪdʒɪlənt/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">警惕的，警觉的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-053.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Wield</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/wiːld/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">运用，行使（权力、技术）</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r1-054.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Work</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/wɜːk/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（钟表或机器的）机件，运转机构</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 13</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-055.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cut back</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">削减，减少</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-056.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cut back on something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">削减，减少（开支、用量）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-057.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Double down</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">加倍下注；加倍投入</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-058.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Double down on something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">在…上加倍投入</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-059.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fan out</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">成扇形散开；分头展开</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-060.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fire up something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">启动，发动</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-061.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fire something up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">启动，发动</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-062.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Set or put something in motion</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">使…开始运转</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-063.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stitch together something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">把…拼接起来</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-064.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stitch something together</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">把…拼接起来</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-065.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Team up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">合作，组队</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-066.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Team up with somebody</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">与某人合作</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r1-067.m4a" title="播放发音">▶</button></td><td><span class="eng-w">The tip of the iceberg</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">冰山一角</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u2r1-text.m4a","words":"assets/english/u2r1-words.m4a","dur":504.27,"segs":[[17.67,25.12],[26.1,33.75],[33.8,42.975],[43.6,60.4],[61.24,73.165],[74.56,92.26],[92.41,99.585],[100.06,117.56],[118.26,129.31],[130.84,153.89],[154.8,167.1],[167.78,175.83],[176.7,188.0],[189.55,196.05],[196.3,200.9],[201.15,214.55],[215.24,224.04],[224.24,231.915],[232.54,250.49],[251.96,275.81],[276.46,284.91],[284.96,294.76],[296.12,322.52],[323.04,345.89],[346.44,352.29],[352.49,366.29],[366.98,375.88],[377.6,390.7],[390.9,395.3],[396.0,403.625],[405.16,433.81],[434.44,442.04],[443.56,464.56],[465.1,468.2],[468.3,494.35],[495.12,504.27]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

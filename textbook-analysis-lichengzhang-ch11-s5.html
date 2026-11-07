@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§11.4 泰勒级数 ｜ 函数项级数 ｜ 数学分析（上册）第二版 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* C 级反向联动：课本小节下的相关作业 */
+.wb-sec-related {
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px dashed var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-sec-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-sec-related-list { list-style: none; margin: 0; padding: 0; }
+.wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+.wb-sec-related-list .wb-lk-more { color: var(--muted); font-size: 12px; border-left: none; padding-left: 0; }
+
+/* C 级反向联动 · 章级：章首页整章相关作业（章级关联教材在此呈现） */
+.wb-ch-related {
+  margin: 16px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px solid var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-ch-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-ch-related .wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-ch-related .wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-ch-related .wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+math { max-width: 100%; }
+/* 侧边抽屉在视口外，会把页宽撑大，这里裁掉 */
+html, body { overflow-x: clip; }
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+/* 章首页 hub：本章小节卡片网格 */
+.wb-sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+.wb-sec-card { display: block; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .12s, box-shadow .15s; }
+.wb-sec-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.wb-sec-card .wb-sec-num { display: inline-block; color: var(--accent); font-weight: 700; margin-right: 8px; }
+.wb-sec-card .wb-sec-name { font-weight: 600; }
+.wb-sec-card:hover .wb-sec-name { color: var(--accent); }
+
+/* 节内子标题：独立成块（满足「分成两个卡片 / 把小标题加入目录」），并带锚点便于跳转 */
+.wb-subhead { font-size: 17px; font-weight: 700; color: var(--text); margin: 26px 0 12px; padding: 9px 12px;
+  background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 6px; scroll-margin-top: 86px; }
+.wb-subhead + .wb-def, .wb-subhead + .wb-thm, .wb-subhead + .wb-prop, .wb-subhead + .wb-lemma,
+.wb-subhead + .wb-cor, .wb-subhead + .wb-example, .wb-subhead + .wb-remark, .wb-subhead + .wb-exercise,
+.wb-subhead + .wb-proof { margin-top: 12px; }
+
+/* ---------- 章内目录：宽屏右侧常驻 / 窄屏抽屉 ---------- */
+.wb-chtoc{position:fixed;top:72px;right:14px;width:238px;max-height:calc(100vh - 108px);
+  display:flex;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1c1c1a);
+  border:1px solid var(--border,#e3e2dd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:70;font-size:13px;line-height:1.45;
+  transform:translateX(calc(100% + 26px));transition:transform .22s ease}
+.wb-chtoc.on{transform:none}
+@media (min-width:1420px){.wb-chtoc{transform:none;right:max(14px,calc((100vw - 940px)/2 - 252px))}}
+.wb-chtoc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-bottom:1px solid var(--border,#e3e2dd);
+  color:var(--muted,#6b6b66);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.wb-chtoc-x{border:0;background:none;color:var(--muted,#6b6b66);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.wb-chtoc-x:hover{color:var(--text,#1c1c1a)}
+@media (min-width:1420px){.wb-chtoc-x{display:none}}
+.wb-chtoc-b{overflow-y:auto;overscroll-behavior:contain;padding:5px 0 10px}
+.wb-chtoc .g>.s{display:block;padding:6px 12px 6px 10px;color:var(--text,#1c1c1a);text-decoration:none;
+  font-weight:600;border-left:3px solid transparent}
+.wb-chtoc .g>.s b{color:var(--accent,#0f6e56);margin-right:4px}
+.wb-chtoc .g>.s:hover{background:var(--surface2,#f7f7f5)}
+.wb-chtoc .g.cur>.s{border-left-color:var(--accent,#0f6e56)}
+.wb-chtoc .g>ul{list-style:none;margin:0;padding:0 0 2px;display:none}
+.wb-chtoc .g.open>ul{display:block}
+.wb-chtoc a.b{display:flex;align-items:baseline;gap:7px;padding:3.5px 12px 3.5px 20px;
+  color:var(--muted,#6b6b66);text-decoration:none;border-left:3px solid transparent}
+.wb-chtoc a.b:hover{color:var(--text,#1c1c1a);background:var(--surface2,#f7f7f5)}
+.wb-chtoc a.b i{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.wb-chtoc a.b.k-def i{background:#10b981;opacity:1}
+.wb-chtoc a.b.k-thm i{background:#2563eb;opacity:1}
+.wb-chtoc a.b.k-axiom i{background:#7c3aed;opacity:1}
+.wb-chtoc a.b.k-prop i{background:#0891b2;opacity:1}
+.wb-chtoc a.b.k-ex i{background:#d97706;opacity:1}
+.wb-chtoc a.b.k-rem i{background:#94a3b8;opacity:1}
+.wb-chtoc a.b.k-pf i{background:#cbd5e1;opacity:1}
+.wb-chtoc a.b.cur{color:var(--accent,#0f6e56);background:var(--surface2,#f7f7f5);
+  border-left-color:var(--accent,#0f6e56);font-weight:600}
+.wb-chtoc a.b.cur i{opacity:1}
+.wb-chtoc-mask{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:69;opacity:0;
+  pointer-events:none;transition:opacity .2s}
+.wb-chtoc-mask.on{opacity:1;pointer-events:auto}
+@media (min-width:1420px){.wb-chtoc-mask{display:none}}
+#wb-btn-chtoc{display:none}
+@media (max-width:1419.98px){#wb-btn-chtoc{display:inline-flex}}
+/* 锚点跳转时别被吸顶栏盖住 */
+section.wb-seg[id],div[id^="tbk_"]{scroll-margin-top:86px}
+@media print{.wb-chtoc,.wb-chtoc-mask{display:none}}
+/* 窄屏：改成整屏高的侧滑抽屉，别只盖住半截顶栏 */
+@media (max-width:1419.98px){
+  .wb-chtoc{top:0;right:0;height:100vh;max-height:100vh;width:min(300px,86vw);
+    border-radius:0;border-top:0;border-bottom:0;border-right:0}
+  .wb-chtoc-h{padding:13px 14px}
+}
+/* 顶栏工具多了会挤到换行，按钮文字不许折行 */
+.wb-tool-group{flex-wrap:wrap;justify-content:flex-end}
+.wb-tool-btn{white-space:nowrap}
+@media (max-width:600px){
+  .wb-tool-group{gap:4px}
+  .wb-tool-btn{padding:4px 6px;font-size:12px}
+}
+
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html" class="on">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html">英语</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-analysis.html">分析学Ⅰ</a> <span>›</span>
+    <a href="course-analysis.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 11 章 ｜ §11.4 泰勒级数</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-chtoc" title="本章小节与定义定理">📋 本章</button>
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header"><div class="wb-book-tagline">📖 数学分析（上册）第二版 ｜ 李成章、黄玉民 编</div><h1 style="font-size:24px;margin:8px 0 4px;">§11.4 ｜ 泰勒级数</h1><div class="wb-book-meta-sub">科学出版社（南开大学数学教学丛书） ｜ 原书对应页码：第  页</div></div>
+
+  
+
+  
+
+  
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§11.4</span> 泰勒级数</h3><p>上节中我们看到,幂级数有很多优良的性质.这使我们想到,若能把函数表示成幂级数,定会给各方面的讨论和研究带来方便.由第五章讲过的泰勒公式,特别是由上节例11.3.2可知,这种愿望在某些情况下是可以变成现实的.</p>
+<p>设函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 在某点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math> 的某个邻域 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>−</mo><mi>δ</mi><mo>,</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>+</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta) = (x_0 - \delta, x_0 + \delta)</annotation></semantics></math> 中可以表示成幂级数，亦即当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">x \in N(x_0, \delta)</annotation></semantics></math> 时有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">f (x) = \sum_ {n = 0} ^ {\infty} a _ {n} (x - x _ {0}) ^ {n}.</annotation></semantics></math></div>
+<p>于是由定理11.3.6的推论知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 中无穷次可导且对所有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>∈</mo><mi>ℕ</mi></mrow><annotation encoding="application/x-tex">k \in \mathbb{N}</annotation></semantics></math> , 均有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>k</mi></mrow><mrow><mo>∞</mo></mrow></munderover><mi>n</mi><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>…</mo><mo>(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo>)</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">f ^ {(k)} (x) = \sum_ {n = k} ^ {\infty} n (n - 1) \dots (n - k + 1) a _ {n} (x - x _ {0}) ^ {n - k}.</annotation></semantics></math></div>
+<p>在上式中令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x = x_0</annotation></semantics></math> ，得到</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mfrac><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">a _ {n} = \frac {f ^ {(n)} (x _ {0})}{n !}, \quad n = 0, 1, 2, \dots</annotation></semantics></math></div>
+<p>从而得到</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.1)</mtext></mrow><annotation encoding="application/x-tex">f (x) = \sum_ {n = 0} ^ {\infty} \frac {f ^ {(n)} (x _ {0})}{n !} (x - x _ {0}) ^ {n}.\tag{11.4.1}</annotation></semantics></math></div>
+<div class="wb-remark">
+  <div class="wb-blk-title"><span>注意</span><span class="tag">深入诠释</span></div>
+<p>(11.4.1)式是在假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 可以表示为幂级数的前提下得到的。现在我们要问，如果去掉这个前提而仅仅假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math> 的某邻域 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 中无穷次可导，(11.4.1)式是否仍然成立？答案是否定的。</p>
+<p>考察函数</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow></msup><mo>,</mo></mtd><mtd><mi>x</mi><mo>≠</mo><mn>0.</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>=</mo><mn>0.</mn></mtd></mtr></mtable><mspace width="1.2em"/><mtext>(11.4.2)</mtext></mrow><annotation encoding="application/x-tex">f (x) = \left\{ \begin{array}{l l} \mathrm{e} ^ {- \frac {1}{x ^ {2}}}, &amp; x \neq 0. \\ 0, &amp; x = 0. \end{array} \right.\tag{11.4.2}</annotation></semantics></math></div><p>容易验证, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 在任何形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mi>R</mi><mo>,</mo><mi>R</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(-R,R)</annotation></semantics></math> 的区间中无穷次可导且有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">f ^ {(n)} (0) = 0, \quad n = 1, 2, \dots</annotation></semantics></math></div><p>若(11.4.1)式成立,则有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≡</mo><mn>0</mn><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mi>R</mi><mo>,</mo><mi>R</mi><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">f (x) \equiv 0, \quad x \in (- R, R).</annotation></semantics></math></div><p>但由定义式(11.4.2)知当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x \neq 0</annotation></semantics></math> 时, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f(x) \neq 0</annotation></semantics></math> , 矛盾. 这表明为使(11.4.1)式成立, 还需要对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 提出进一步的要求.</p><p>按级数收敛的定义,为使(11.4.1)式成立,右端幂级数的部分和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">S_{n}(x)</annotation></semantics></math> 应收敛于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> ,亦即应有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>(</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><msub><mi>S</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\lim _ {n \rightarrow \infty} R _ {n} (x) = \lim _ {n \rightarrow \infty} (f (x) - S _ {n} (x)) = 0.</annotation></semantics></math></div><p>这里的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">R_{n}(x)</annotation></semantics></math> 不是别的，正是泰勒公式中的余项. 换句话说，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 相应的泰勒公式的余项 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">R_{n}(x)</annotation></semantics></math> 于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">n \to \infty</annotation></semantics></math> 时趋于0时，(11.4.1)式成立. 这时称(11.4.1)式右端的幂级数为函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的幂级数展开式，或称为函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的泰勒级数.</p></div>
+<p>在怎样的条件下才能保证 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">R_{n}(x)</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 上趋于0呢？对此，我们给出一个充分条件。</p>
+<div class="wb-thm" id="tbk_1">
+  <div class="wb-blk-title"><span>定理 11.4.1</span><span class="tag">核心定理</span></div>
+<p>设函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的导函数列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">\{f^{(n)}(x)\}</annotation></semantics></math> 在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math> 的邻域 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 中一致有界，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 中可展开为泰勒级数.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">\{f^{(n)}(x)\}</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 中一致有界，故存在常数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M &gt; 0</annotation></semantics></math> ，使对所有非负整数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 和所有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ，均有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>∣</mo><mo>≤</mo><mi>M</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\mid f ^ {(n)} (x) \mid \leqslant M.</annotation></semantics></math></div><p>于是由拉格朗日余项有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>∣</mo><mo>=</mo><mo stretchy="true" fence="true">|</mo><mfrac><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></msup><mo>(</mo><mi>ξ</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi></mrow></mfrac><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo stretchy="true" fence="true">|</mo><mo>≤</mo><mi>M</mi><mfrac><mrow><msup><mi>δ</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi></mrow></mfrac><mo>→</mo><mn>0</mn><mo> </mo><mo>(</mo><mi>n</mi><mo>→</mo><mo>∞</mo><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\mid R _ {n} (x) \mid = \left| \frac {f ^ {(n + 1)} (\xi)}{(n + 1) !} (x - x _ {0}) ^ {n + 1} \right| \leqslant M \frac {\delta^ {n + 1}}{(n + 1) !} \rightarrow 0 \quad (n \rightarrow \infty).</annotation></semantics></math></div><p>所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><mi>δ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">N(x_0, \delta)</annotation></semantics></math> 中可以展开为泰勒级数.</p></div>
+<p>下面讨论一些基本初等函数的泰勒展开式.</p>
+<ol class="wb-num-list"><li>指数函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">f(x) = \mathrm{e}^x</annotation></semantics></math> . 因为</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mi>x</mi></mrow></msup><mo>,</mo><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>1</mn><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">f ^ {(n)} (x) = \mathrm{e} ^ {x}, f ^ {(n)} (0) = 1, \quad n = 0, 1, 2, \dots</annotation></semantics></math></div>
+<p>故对任何 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r &gt; 0</annotation></semantics></math> ，在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mi>r</mi><mo>,</mo><mi>r</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(-r,r)</annotation></semantics></math> 中都有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>∣</mo><mo>=</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mi>x</mi></mrow></msup><mo>≤</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mi>r</mi></mrow></msup><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">\mid f ^ {(n)} (x) \mid = \mathrm{e} ^ {x} \leqslant \mathrm{e} ^ {r}, \quad n = 0, 1, 2, \dots</annotation></semantics></math></div>
+<p>由定理11.4.1及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r &gt; 0</annotation></semantics></math> 的任意性知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\mathrm{e}^x</annotation></semantics></math> 可在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mo>∞</mo><mo>,</mo><mo>+</mo><mo>∞</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">(-\infty, +\infty)</annotation></semantics></math> 上展开为泰勒级数：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mi>x</mi></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathrm{e} ^ {x} = \sum_ {n = 0} ^ {\infty} \frac {x ^ {n}}{n !}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>三角函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>sin</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x) = \sin x</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>cos</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">g(x) = \cos x</annotation></semantics></math> . 因为</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>∣</mo><mo>=</mo><mo>∣</mo><mo>sin</mo><mo stretchy="true" fence="true">(</mo><mi>x</mi><mo>+</mo><mfrac><mrow><mi>n</mi><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mo>∣</mo><mo>≤</mo><mn>1</mn><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mo>∞</mo><mo>,</mo><mo>+</mo><mo>∞</mo><mo>)</mo><mo>,</mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">\mid f ^ {(n)} (x) \mid = \mid \sin \left(x + \frac {n \pi}{2}\right) \mid \leqslant 1, \quad x \in (- \infty , + \infty), n = 0, 1, 2, \dots</annotation></semantics></math></div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mo>sin</mo><mfrac><mrow><mi>n</mi><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mn>0</mn><mo>,</mo></mtd><mtd><mtext>当</mtext><mi>n</mi><mtext>为偶数</mtext><mo>,</mo></mtd></mtr><mtr><mtd><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mfrac><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><mo>,</mo></mtd><mtd><mtext>当</mtext><mi>n</mi><mtext>为奇数</mtext><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">f ^ {(n)} (0) = \sin {\frac {n \pi}{2}} = \left\{ \begin{array}{l l} 0, &amp; \text {当} n \text {为偶数}, \\ (- 1) ^ {\frac {n - 1}{2}}, &amp; \text {当} n \text {为奇数}. \end{array} \right.</annotation></semantics></math></div>
+<p>由定理11.4.1知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\sin x</annotation></semantics></math> 可在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mo>∞</mo><mo>,</mo><mo>+</mo><mo>∞</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">(-\infty, +\infty)</annotation></semantics></math> 上展开为泰勒级数，同理可证 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\cos x</annotation></semantics></math> 亦然.这时有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>x</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>,</mo><mo> </mo><mo>cos</mo><mi>x</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\sin x = \sum_ {n = 0} ^ {\infty} \frac {(- 1) ^ {n}}{(2 n + 1) !} x ^ {2 n + 1}, \quad \cos x = \sum_ {n = 0} ^ {\infty} \frac {(- 1) ^ {n}}{(2 n) !} x ^ {2 n}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>二项式函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo>)</mo><mrow><mi>α</mi></mrow></msup></mrow><annotation encoding="application/x-tex">f(x) = (1 + x)^{\alpha}</annotation></semantics></math> ，其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>∈</mo><mi>ℝ</mi><mo>−</mo><msub><mi>ℕ</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha \in \mathbb{R} - \mathbb{N}_0</annotation></semantics></math> ，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 为不是非负整数的任意实数。这时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的泰勒公式的柯西余项为</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mtd><mtd><mo>=</mo><mfrac><mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></msup><mo>(</mo><mi>θ</mi><mi>x</mi><mo>)</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>)</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi><msup><mo>)</mo><mrow><mi>α</mi><mo>−</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><mo>(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>)</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><mo>(</mo><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi><msup><mo>)</mo><mrow><mi>α</mi><mo>−</mo><mn>1</mn></mrow></msup><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>θ</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi></mrow></msup><mo>,</mo></mtd></mtr></mtable><mspace width="1.2em"/><mtext>(11.4.3)</mtext></mrow><annotation encoding="application/x-tex">\begin{array}{r l} R _ {n} (x) &amp; = \frac {f ^ {(n + 1)} (\theta x) (1 - \theta) ^ {n}}{n !} x ^ {n + 1} \\ &amp; = \frac {\alpha (\alpha - 1) \cdots (\alpha - n) (1 + \theta x) ^ {\alpha - n - 1}}{n !} (1 - \theta) ^ {n} x ^ {n + 1} \\ &amp; = \frac {\alpha (\alpha - 1) \cdots (\alpha - n) x ^ {n + 1}}{n !} (1 + \theta x) ^ {\alpha - 1} \left(\frac {1 - \theta}{1 + \theta x}\right) ^ {n}, \end{array}\tag{11.4.3}</annotation></semantics></math></div>
+<p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 &lt; \theta &lt; 1</annotation></semantics></math> . 为证 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">R_{n}(x)</annotation></semantics></math> 趋于 0, 考察幂级数</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>)</mo></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.4)</mtext></mrow><annotation encoding="application/x-tex">\sum_ {n = 0} ^ {\infty} \frac {\alpha (\alpha - 1) \cdots (\alpha - n)}{n !} x ^ {n + 1}.\tag{11.4.4}</annotation></semantics></math></div>
+<p>因为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo stretchy="true" fence="true">|</mo><mfrac><mrow><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>)</mo></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac></mrow><mrow><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>)</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi></mrow></mfrac></mrow></mfrac><mo stretchy="true" fence="true">|</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo stretchy="true" fence="true">|</mo><mfrac><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>α</mi><mo>−</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo stretchy="true" fence="true">|</mo><mo>=</mo><mn>1</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\lim _ {n \rightarrow \infty} \left| \frac {\frac {\alpha (\alpha - 1) \cdots (\alpha - n)}{n !}}{\frac {\alpha (\alpha - 1) \cdots (\alpha - n) (\alpha - n - 1)}{(n + 1) !}} \right| = \lim _ {n \rightarrow \infty} \left| \frac {n + 1}{\alpha - n - 1} \right| = 1,</annotation></semantics></math></div>
+<p>故知幂级数(11.4.4)的收敛半径为1,即幂级数(11.4.4)在(-1,1)中收敛.由收敛的必要条件知,当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|x|&lt;1</annotation></semantics></math> 时,</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>)</mo></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>0.</mn><mspace width="1.2em"/><mtext>(11.4.5)</mtext></mrow><annotation encoding="application/x-tex">\lim _ {n \rightarrow \infty} \frac {\alpha (\alpha - 1) \cdots (\alpha - n)}{n !} x ^ {n + 1} = 0.\tag{11.4.5}</annotation></semantics></math></div>
+<p>对于(11.4.3)式右端第2个因式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi><msup><mo>)</mo><mrow><mi>α</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(1 + \theta x)^{\alpha - 1}</annotation></semantics></math> , 虽然其中的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 有关, 但由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 &lt; \theta &lt; 1</annotation></semantics></math> , 故有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mn>1</mn><mo>−</mo><mo>|</mo><mi>x</mi><mo>|</mo><mo>≤</mo><mo>|</mo><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi><mo>|</mo><mo>≤</mo><mn>1</mn><mo>+</mo><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mn>2.</mn></mrow><annotation encoding="application/x-tex">0 &lt;   1 - | x | \leqslant | 1 + \theta x | \leqslant 1 + | x | &lt;   2.</annotation></semantics></math></div>
+<p>令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>max</mo><mo>{</mo><mo>(</mo><mn>1</mn><mo>−</mo><mo>|</mo><mi>x</mi><mo>|</mo><msup><mo>)</mo><mrow><mi>α</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>,</mo><msup><mn>2</mn><mrow><mi>α</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>}</mo></mrow><annotation encoding="application/x-tex">M(x) = \max \{(1 - |x|)^{\alpha - 1}, 2^{\alpha - 1}\}</annotation></semantics></math> , 于是有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi><msup><mo>∣</mo><mrow><mi>α</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≤</mo><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.6)</mtext></mrow><annotation encoding="application/x-tex">\mid 1 + \theta x \mid^ {\alpha - 1} \leqslant M (x).\tag{11.4.6}</annotation></semantics></math></div>
+<p>这表明当固定 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">x \in (-1, 1)</annotation></semantics></math> 时，第2个因式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi><msup><mo>)</mo><mrow><mi>a</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(1 + \theta x)^{a-1}</annotation></semantics></math> 对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 来说是有界数列.</p>
+<p>对于(11.4.3)式右端第3个因式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>θ</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\left(\frac{1-\theta}{1+\theta x}\right)^{n}</annotation></semantics></math> ，由于0&lt;θ&lt;1，故当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|x|&lt;1</annotation></semantics></math> 时，
+0&lt;1-θ&lt;1+θx，从而有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>θ</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>θ</mi><mi>x</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi></mrow></msup><mo>&lt;</mo><mn>1.</mn><mspace width="1.2em"/><mtext>(11.4.7)</mtext></mrow><annotation encoding="application/x-tex">0 &lt;   \left(\frac {1 - \theta}{1 + \theta x}\right) ^ {n} &lt;   1.\tag{11.4.7}</annotation></semantics></math></div>
+<p>这表明第3个因式关于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 也是有界的.</p>
+<p>将(11.4.3)，(11.4.5)，(11.4.6)和(11.4.7)式结合起来即得</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>R</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mn>1.</mn></mrow><annotation encoding="application/x-tex">\lim _ {n \rightarrow \infty} R _ {n} (x) = 0, | x | &lt;   1.</annotation></semantics></math></div>
+<p>从而知函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo>)</mo><mrow><mi>a</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(1 + x)^{a}</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(-1, 1)</annotation></semantics></math> 中可展开为泰勒级数.</p>
+<p>因为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>…</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo>)</mo><mrow><mi>α</mi><mo>−</mo><mi>n</mi></mrow></msup><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mtd></mtr><mtr><mtd><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>…</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{l} {f ^ {(n)} (x) = \alpha (\alpha - 1) \dots (\alpha - n + 1) (1 + x) ^ {\alpha - n}, \quad n = 0, 1, 2, \dots} \\ {f ^ {(n)} (0) = \alpha (\alpha - 1) \dots (\alpha - n + 1), \quad n = 0, 1, 2, \dots} \end{array}</annotation></semantics></math></div>
+<p>所以有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo>)</mo><mrow><mi>a</mi></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mi>α</mi><mo>(</mo><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>α</mi><mo>−</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mi>n</mi><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>,</mo><mo> </mo><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mn>1.</mn></mrow><annotation encoding="application/x-tex">(1 + x) ^ {a} = \sum_ {n = 0} ^ {\infty} \frac {\alpha (\alpha - 1) \cdots (\alpha - n + 1)}{n !} x ^ {n}, \quad | x | &lt;   1.</annotation></semantics></math></div>
+<p>附带指出,二项式函数在收敛区间端点±1的敛散性较为复杂,这里不再加以讨论.</p>
+<p>除了上述四个泰勒级数之外, 还有两个重要的泰勒级数就是上节例 11.3.2 所给出的两个展开式:</p>
+<p>(iv) </p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>;</mo></mrow><annotation encoding="application/x-tex">\ln (1 + x) = \sum_ {n = 1} ^ {\infty} \frac {(- 1) ^ {n - 1}}{n} x ^ {n}, \quad x \in (- 1, 1 ];</annotation></semantics></math></div>
+<p>(v) </p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>arctan</mo><mi>x</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\arctan x = \sum_ {n = 0} ^ {\infty} \frac {(- 1) ^ {n}}{2 n + 1} x ^ {2 n + 1}, \quad x \in [ - 1, 1 ].</annotation></semantics></math></div>
+<p>以上六个展开式是常用的,应该记住.</p>
+<p>有些书上将函数在点0的展开式称为麦克劳林级数或麦克劳林展开，而把在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math> 的展开称为泰勒展开. 本书为简单起见，一律称之为泰勒展开或泰勒级数.</p>
+<div class="wb-example" id="tbk_2">
+  <div class="wb-blk-title"><span>例 11.4.1</span><span class="tag">经典例题</span></div>
+<p>求下列两个函数在点0的泰勒展开式：</p>
+<ol class="wb-num-list"><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mo>cos</mo><mrow><mn>2</mn></mrow></msup><mi>x</mi></mrow><annotation encoding="application/x-tex">\cos^2 x</annotation></semantics></math> ; (ii) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">\ln (1 - x - 2x^2)</annotation></semantics></math> . </li></ol></div>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>解答</span></div>
+<p>(i) 按三角公式和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\cos x</annotation></semantics></math> 的泰勒展开式有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><msup><mo>cos</mo><mrow><mn>2</mn></mrow></msup><mi>x</mi></mtd><mtd><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mo>cos</mo><mn>2</mn><mi>x</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><mo>(</mo><mn>2</mn><mi>x</mi><msup><mo>)</mo><mrow><mn>2</mn><mi>n</mi></mrow></msup></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mn>1</mn><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup><msup><mn>2</mn><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mo>∞</mo><mo>,</mo><mo>+</mo><mo>∞</mo><mo>)</mo><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} \cos^ {2} x &amp; = \frac {1 + \cos 2 x}{2} = \frac {1}{2} + \frac {1}{2} \sum_ {n = 0} ^ {\infty} \frac {(- 1) ^ {n}}{(2 n) !} (2 x) ^ {2 n} \\ &amp; = 1 + \sum_ {n = 1} ^ {\infty} \frac {(- 1) ^ {n} 2 ^ {2 n - 1}}{(2 n) !} x ^ {2 n}, \quad x \in (- \infty , + \infty). \end{array}</annotation></semantics></math></div><ol class="wb-num-list"><li>改写</li></ol><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>=</mo><mo>ln</mo><mo>[</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo><mo>]</mo><mo>=</mo><mo>ln</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>+</mo><mo>ln</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\ln (1 - x - 2 x ^ {2}) = \ln [ (1 - 2 x) (1 + x) ] = \ln (1 - 2 x) + \ln (1 + x).</annotation></semantics></math></div><p>按对数函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\ln (1 + x)</annotation></semantics></math> 的展开式有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>;</mo></mrow><annotation encoding="application/x-tex">\ln (1 + x) = \sum_ {n = 1} ^ {\infty} \frac {(- 1) ^ {n - 1}}{n} x ^ {n}, \quad x \in (- 1, 1 ];</annotation></semantics></math></div><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mn>2</mn><mi>x</mi><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mi>n</mi></mrow></mfrac><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo stretchy="true" fence="true">[</mo><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\ln (1 - 2 x) = - \sum_ {n = 1} ^ {\infty} \frac {(2 x) ^ {n}}{n}, \quad x \in \left[ - \frac {1}{2}, \frac {1}{2}\right).</annotation></semantics></math></div><p>从而得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mo>ln</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo></mtd><mtd><mo>=</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>+</mo><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo stretchy="true" fence="true">[</mo><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} \ln (1 - x - 2 x ^ {2}) &amp; = - \sum_ {n = 1} ^ {\infty} \frac {2 ^ {n}}{n} x ^ {n} - \sum_ {n = 1} ^ {\infty} \frac {(- 1) ^ {n}}{n} x ^ {n} \\ &amp; = - \sum_ {n = 1} ^ {\infty} \frac {2 ^ {n} + (- 1) ^ {n}}{n} x ^ {n}, \quad x \in \left[ - \frac {1}{2}, \frac {1}{2}\right). \end{array}</annotation></semantics></math></div><p>下面我们利用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\ln (1 + x)</annotation></semantics></math> 的展开式导出一个分析中的重要公式——司特林(Stirling)公式.</p><p>由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\ln (1 + x)</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\ln (1 - x)</annotation></semantics></math> 的展开式可得</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mn>2</mn><mi>x</mi><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn><mi>m</mi></mrow></msup></mrow><mrow><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>,</mo><mo> </mo><mi>x</mi><mo>∈</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.8)</mtext></mrow><annotation encoding="application/x-tex">\ln \frac {1 + x}{1 - x} = 2 x \sum_ {m = 0} ^ {\infty} \frac {x ^ {2 m}}{2 m + 1}, \quad x \in (- 1, 1).\tag{11.4.8}</annotation></semantics></math></div><p>令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">x = \frac{1}{2n + 1}</annotation></semantics></math> ，于是</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac {1 + x}{1 - x} = \frac {1 + \frac {1}{2 n + 1}}{1 - \frac {1}{2 n + 1}} = \frac {n + 1}{n}.</annotation></semantics></math></div><p>从而由(11.4.8)式得到展开式</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mfrac><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn><mi>m</mi></mrow></msup></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\ln \frac {n + 1}{n} = \frac {2}{2 n + 1} \sum_ {m = 0} ^ {\infty} \frac {1}{2 m + 1} \frac {1}{(2 n + 1) ^ {2 m}}.</annotation></semantics></math></div><p>由此可得</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">(</mo><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mo>ln</mo><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn><mi>m</mi></mrow></msup></mrow></mfrac><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.9)</mtext></mrow><annotation encoding="application/x-tex">\left(n + \frac {1}{2}\right) \ln \left(1 + \frac {1}{n}\right) = \sum_ {m = 0} ^ {\infty} \frac {1}{2 m + 1} \frac {1}{(2 n + 1) ^ {2 m}}.\tag{11.4.9}</annotation></semantics></math></div><p>因为(11.4.9)式右端的正项级数的首项为1,故有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mo>&lt;</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn><mi>m</mi></mrow></msup></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>&lt;</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn><mi>m</mi></mrow></msup></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mfrac><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} 1 &amp; &lt;   \sum_ {m = 0} ^ {\infty} \frac {1}{2 m + 1} \frac {1}{(2 n + 1) ^ {2 m}} \\ &amp; &lt;   1 + \frac {1}{3} \sum_ {m = 1} ^ {\infty} \frac {1}{(2 n + 1) ^ {2 m}} \\ &amp; = 1 + \frac {1}{1 2 n (n + 1)}. \end{array}</annotation></semantics></math></div><p>再由(11.4.9)式得到估计式</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>&lt;</mo><mo stretchy="true" fence="true">(</mo><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mo>ln</mo><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mo>&lt;</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">1 &lt;   \left(n + \frac {1}{2}\right) \ln \left(1 + \frac {1}{n}\right) &lt;   1 + \frac {1}{1 2 n (n + 1)}.</annotation></semantics></math></div><p>同时取指数,得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mo>&lt;</mo><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><mo>&lt;</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mfrac></mrow></msup><mo>,</mo></mtd></mtr><mtr><mtd><mn>1</mn><mo>&lt;</mo><mfrac><mrow><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup></mrow><mrow><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle></mrow></mfrac><mo>&lt;</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mfrac></mrow></msup><mo>=</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo></mrow></msup><mi>.</mi></mtd></mtr></mtable><mspace width="1.2em"/><mtext>(11.4.10)</mtext></mrow><annotation encoding="application/x-tex">\begin{array}{c} \mathrm{e} &lt;   \left(1 + \frac {1}{n}\right) ^ {n + \frac {1}{2}} &lt;   \mathrm{e} ^ {1 + \frac {1}{1 2 n (n + 1)}}, \\ 1 &lt;   \frac {\left(1 + \frac {1}{n}\right) ^ {n + \frac {1}{2}}}{\mathrm{e}} &lt;   \mathrm{e} ^ {\frac {1}{1 2 n (n + 1)}} = \mathrm{e} ^ {\frac {1}{1 2} \left(\frac {1}{n} - \frac {1}{n + 1}\right)}. \end{array}\tag{11.4.10}</annotation></semantics></math></div></div>
+<div class="wb-remark">
+  <div class="wb-blk-title"><span>注意</span><span class="tag">深入诠释</span></div>
+<p>注意</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mfrac><mrow><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup></mrow><mrow><mi>e</mi></mrow></mfrac></mtd><mtd><mo>=</mo><mfrac><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><msup><mi>e</mi><mrow><mi>n</mi></mrow></msup></mrow><mrow><msup><mi>n</mi><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><msup><mi>e</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>+</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><msup><mi>e</mi><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><msup><mi>n</mi><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><msup><mi>e</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mfrac><mrow><mfrac><mrow><mi>n</mi><mi>!</mi><msup><mi>e</mi><mrow><mi>n</mi></mrow></msup></mrow><mrow><msup><mi>n</mi><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup></mrow></mfrac></mrow><mrow><mfrac><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi><msup><mi>e</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>+</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup></mrow></mfrac></mrow></mfrac><mi>.</mi></mtd></mtr></mtable><mspace width="1.2em"/><mtext>(11.4.11)</mtext></mrow><annotation encoding="application/x-tex">\begin{array}{r l} \frac {\left(1 + \frac {1}{n}\right) ^ {n + \frac {1}{2}}}{e} &amp; = \frac {(n + 1) ^ {n + \frac {1}{2}} e ^ {n}}{n ^ {n + \frac {1}{2}} e ^ {n + 1}} = \frac {(n + 1) ^ {n + 1 + \frac {1}{2}} e ^ {n}}{(n + 1) n ^ {n + \frac {1}{2}} e ^ {n + 1}} \\ &amp; = \frac {\frac {n ! e ^ {n}}{n ^ {n + \frac {1}{2}}}}{\frac {(n + 1) ! e ^ {n + 1}}{(n + 1) ^ {n + 1 + \frac {1}{2}}}}. \end{array}\tag{11.4.11}</annotation></semantics></math></div><p>令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>n</mi><mi>!</mi><msup><mi>e</mi><mrow><mi>n</mi></mrow></msup></mrow><mrow><msup><mi>n</mi><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">a_{n} = \frac{n!e^{n}}{n^{n + \frac{1}{2}}}</annotation></semantics></math> ，于是由(11.4.10)式和(11.4.11)式得到估计式</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>&lt;</mo><mfrac><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></mfrac><mo>&lt;</mo><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="true" fence="true">)</mo></mrow></msup><mo>=</mo><mfrac><mrow><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup></mrow><mrow><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mfrac></mrow></msup></mrow></mfrac><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.12)</mtext></mrow><annotation encoding="application/x-tex">1 &lt;   \frac {a _ {n}}{a _ {n + 1}} &lt;   \mathrm{e} ^ {\frac {1}{1 2} \left(\frac {1}{n} - \frac {1}{n + 1}\right)} = \frac {\mathrm{e} ^ {\frac {1}{1 2 n}}}{\mathrm{e} ^ {\frac {1}{1 2 (n + 1)}}}.\tag{11.4.12}</annotation></semantics></math></div><p>由(11.4.12)式可知, 数列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">\{a_{n}\}</annotation></semantics></math> 严格递减而数列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>12</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>}</mo></mrow><annotation encoding="application/x-tex">\{a_{n}e^{-\frac{1}{12n}}\}</annotation></semantics></math> 严格递增. 又因 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>12</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>→</mo><mn>1</mn><mo>(</mo><mi>n</mi><mo>→</mo><mo>∞</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">e^{-\frac{1}{12n}}\rightarrow1(n\rightarrow\infty)</annotation></semantics></math> , 所以这两个数列具有相同的极限, 记其值为 a, 于是有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>,</mo><mo> </mo><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">a _ {n} \mathrm{e} ^ {- \frac {1}{1 2 n}} &lt;   a &lt;   a _ {n}, \quad n = 1, 2, \dots</annotation></semantics></math></div><p>对每个固定的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> ，由连续函数的介值定理知存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>,</mo><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\theta ,0 &lt;   \theta &lt;  1</annotation></semantics></math> ，使得</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mo>−</mo><mfrac><mrow><mi>θ</mi></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>,</mo><mo> </mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mi>a</mi><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mi>θ</mi></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">a = a _ {n} \mathrm{e} ^ {- \frac {\theta}{1 2 n}}, \quad a _ {n} = a \mathrm{e} ^ {\frac {\theta}{1 2 n}}.</annotation></semantics></math></div><p>因此由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}</annotation></semantics></math> 的定义有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>!</mi><mo>=</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mo>−</mo><mi>n</mi></mrow></msup><msup><mi>n</mi><mrow><mi>n</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msup><mo>=</mo><mi>a</mi><msqrt><mrow><mi>n</mi></mrow></msqrt><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mi>n</mi></mrow><mrow><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi></mrow></msup><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mi>θ</mi></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>,</mo><mo> </mo><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>1.</mn><mspace width="1.2em"/><mtext>(11.4.13)</mtext></mrow><annotation encoding="application/x-tex">n! = a _ {n} \mathrm{e} ^ {- n} n ^ {n + \frac {1}{2}} = a \sqrt {n} \left(\frac {n}{\mathrm{e}}\right) ^ {n} \mathrm{e} ^ {\frac {\theta}{1 2 n}}, \quad 0 &lt;   \theta &lt;   1.\tag{11.4.13}</annotation></semantics></math></div><p>显然, 只须再定出常数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的值. 为此, 利用例7.4.8的结果可得华利斯公式</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="true" fence="true">[</mo><mfrac><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi><mi>!</mi></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>!</mi><mi>!</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">]</mo><mrow><mn>2</mn></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac {\pi}{2} = \lim _ {n \rightarrow \infty} \frac {1}{2 n + 1} \left[ \frac {(2 n) ! !}{(2 n - 1) ! !} \right] ^ {2}.</annotation></semantics></math></div><p>将上式方括号中的表达式加以变形,可得</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi><mi>!</mi></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>!</mi><mi>!</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>[</mo><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi><mi>!</mi><msup><mo>]</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mn>2</mn><mrow><mn>2</mn><mi>n</mi></mrow></msup><mo>(</mo><mi>n</mi><mi>!</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><mi>.</mi><mspace width="1.2em"/><mtext>(11.4.14)</mtext></mrow><annotation encoding="application/x-tex">\frac {(2 n) ! !}{(2 n - 1) ! !} = \frac {[ (2 n) ! ! ] ^ {2}}{(2 n) !} = \frac {2 ^ {2 n} (n !) ^ {2}}{(2 n) !}.\tag{11.4.14}</annotation></semantics></math></div><p>由(11.4.13)式有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi><mo>=</mo><mi>a</mi><msqrt><mrow><mn>2</mn><mi>n</mi></mrow></msqrt><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>2</mn><mi>n</mi></mrow><mrow><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mn>2</mn><mi>n</mi></mrow></msup><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><msup><mi>θ</mi><mrow><mo>′</mo></mrow></msup></mrow><mrow><mn>2</mn><mn>4</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>,</mo><mo> </mo><mn>0</mn><mo>&lt;</mo><msup><mi>θ</mi><mrow><mo>′</mo></mrow></msup><mo>&lt;</mo><mn>1.</mn><mspace width="1.2em"/><mtext>(11.4.13&#x27;)</mtext></mrow><annotation encoding="application/x-tex">(2 n)! = a \sqrt {2 n} \left(\frac {2 n}{\mathrm{e}}\right) ^ {2 n} \mathrm{e} ^ {\frac {\theta^ {\prime}}{2 4 n}}, \quad 0 &lt;   \theta^ {\prime} &lt;   1.\tag{11.4.13&#x27;}</annotation></semantics></math></div><p>将(11.4.13)式和(11.4.13')式代入(11.4.14)式,得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi><mi>!</mi></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>!</mi><mi>!</mi></mrow></mfrac><mo>=</mo><mi>a</mi><msqrt><mrow><mfrac><mrow><mi>n</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msqrt><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>4</mn><mi>θ</mi><mo>−</mo><msup><mi>θ</mi><mrow><mo>′</mo></mrow></msup></mrow><mrow><mn>2</mn><mn>4</mn><mi>n</mi></mrow></mfrac></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac {(2 n) ! !}{(2 n - 1) ! !} = a \sqrt {\frac {n}{2}} \mathrm{e} ^ {\frac {4 \theta - \theta^ {\prime}}{2 4 n}}.</annotation></semantics></math></div><p>再将此式代入华利斯公式,得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mfrac><mrow><mi>n</mi></mrow><mrow><mn>2</mn></mrow></mfrac><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mn>4</mn><mi>θ</mi><mo>−</mo><msup><mi>θ</mi><mrow><mo>′</mo></mrow></msup></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>=</mo><mfrac><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>4</mn></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac {\pi}{2} = \lim _ {n \rightarrow \infty} \frac {1}{2 n + 1} a ^ {2} \frac {n}{2} \mathrm{e} ^ {\frac {4 \theta - \theta^ {\prime}}{1 2 n}} = \frac {a ^ {2}}{4}.</annotation></semantics></math></div><p>由此解得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><msqrt><mrow><mn>2</mn><mi>π</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">a = \sqrt{2\pi}</annotation></semantics></math> . 将此代入(11.4.13)式, 即得司特林公式</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>!</mi><mo>=</mo><msqrt><mrow><mn>2</mn><mi>π</mi><mi>n</mi></mrow></msqrt><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mi>n</mi></mrow><mrow><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi></mrow></msup><msup><mstyle mathvariant="normal"><mrow><mi>e</mi></mrow></mstyle><mrow><mfrac><mrow><mi>θ</mi></mrow><mrow><mn>1</mn><mn>2</mn><mi>n</mi></mrow></mfrac></mrow></msup><mo>,</mo><mo> </mo><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>1.</mn><mspace width="1.2em"/><mtext>(11.4.15)</mtext></mrow><annotation encoding="application/x-tex">n! = \sqrt {2 \pi n} \left(\frac {n}{\mathrm{e}}\right) ^ {n} \mathrm{e} ^ {\frac {\theta}{1 2 n}}, \quad 0 &lt;   \theta &lt;   1.\tag{11.4.15}</annotation></semantics></math></div></div>
+<div class="wb-example" id="tbk_3">
+  <div class="wb-blk-title"><span>例 11.4.2</span><span class="tag">经典例题</span></div>
+<p>求幂级数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mo>(</mo><mi>n</mi><mi>!</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\sum_{n=1}^{\infty} \frac{(n!)^2}{(2n)!} x^n</annotation></semantics></math> 的收敛区间.</p>
+</div>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>解答</span></div>
+<p>按公式知收敛半径为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mi>R</mi></mtd><mtd><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></mfrac><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mo>(</mo><mi>n</mi><mi>!</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>[</mo><mn>2</mn><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>]</mo><mi>!</mi></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi><mo>[</mo><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi><msup><mo>]</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mn>2</mn><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>4.</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l}R&amp;= \lim _ {n \rightarrow \infty} \frac {a _ {n}}{a _ {n + 1}} = \lim _ {n \rightarrow \infty} \frac {(n !) ^ {2} [ 2 (n + 1) ] !}{(2 n) ! [ (n + 1) ! ] ^ {2}}\\&amp;= \lim _ {n \rightarrow \infty} \frac {2 (n + 1) (2 n + 1)}{(n + 1) ^ {2}} = 4.\end{array}</annotation></semantics></math></div><p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>±</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">x = \pm 4</annotation></semantics></math> 时，由司特林公式有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">|</mo><mfrac><mrow><mo>(</mo><mi>n</mi><mi>!</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>(</mo><mo>±</mo><mn>4</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mi>!</mi></mrow></mfrac><mo stretchy="true" fence="true">|</mo><mo>∼</mo><mfrac><mrow><mo stretchy="true" fence="true">[</mo><msqrt><mrow><mn>2</mn><mi>π</mi><mi>n</mi></mrow></msqrt><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mi>n</mi></mrow><mrow><mi>e</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mi>n</mi></mrow></msup><msup><mo stretchy="true" fence="true">]</mo><mrow><mn>2</mn></mrow></msup><msup><mn>4</mn><mrow><mi>n</mi></mrow></msup></mrow><mrow><msqrt><mrow><mn>4</mn><mi>π</mi><mi>n</mi></mrow></msqrt><mo stretchy="true" fence="true">(</mo><mfrac><mrow><mn>2</mn><mi>n</mi></mrow><mrow><mi>e</mi></mrow></mfrac><msup><mo stretchy="true" fence="true">)</mo><mrow><mn>2</mn><mi>n</mi></mrow></msup></mrow></mfrac><mo>=</mo><msqrt><mrow><mi>π</mi><mi>n</mi></mrow></msqrt><mo>→</mo><mo>+</mo><mo>∞</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\left| \frac {(n !) ^ {2} (\pm 4) ^ {n}}{(2 n) !} \right| \sim \frac {\left[ \sqrt {2 \pi n} \left(\frac {n}{e}\right) ^ {n} \right] ^ {2} 4 ^ {n}}{\sqrt {4 \pi n} \left(\frac {2 n}{e}\right) ^ {2 n}} = \sqrt {\pi n} \rightarrow + \infty .</annotation></semantics></math></div><p>故知当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>±</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">x = \pm 4</annotation></semantics></math> 时所论幂级数发散. 所以收敛区间为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(-4, 4)</annotation></semantics></math> .</p></div></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-analysis-lichengzhang-ch11-s4.html">‹ 上一节：幂级数</a><a class="wb-nav-btn hub" href="textbook-analysis-lichengzhang-ch11.html">📚 本章目录</a><a class="wb-nav-btn next" href="textbook-analysis-lichengzhang-ch11-s6.html">下一节：逼近定理 ›</a></div>
+</main>
+
+<nav class="wb-chtoc" id="wb-chtoc" aria-label="本节目录"><div class="wb-chtoc-h"><span>本节目录</span><button class="wb-chtoc-x" id="wb-chtoc-close" title="收起目录">×</button></div><div class="wb-chtoc-b" id="wb-chtoc-body"><div class="g"><a class="s" href="#tbk_1" data-t="tbk_1">本节内容</a><ul><li><a class="b k-thm" href="#tbk_1" data-t="tbk_1" title="定理11.4.1 设函数 的导函数列 在点 的邻域 中一致有界，则"><i></i>定理11.4.1</a></li><li><a class="b k-ex" href="#tbk_2" data-t="tbk_2" title="例11.4.1 求下列两个函数在点0的泰勒展开式："><i></i>例11.4.1</a></li><li><a class="b k-ex" href="#tbk_3" data-t="tbk_3" title="例11.4.2 求幂级数 的收敛区间."><i></i>例11.4.2</a></li></ul></div></div></nav><div class="wb-chtoc-mask" id="wb-chtoc-mask"></div>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-analysis-lichengzhang-ch01.html">第 1 章 ｜ 实数与函数</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch02.html">第 2 章 ｜ 极限</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch03.html">第 3 章 ｜ 连续函数</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch04.html">第 4 章 ｜ 导数</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch05.html">第 5 章 ｜ 导数的应用</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch06.html">第 6 章 ｜ 不定积分</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch07.html">第 7 章 ｜ 定积分</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch08.html">第 8 章 ｜ 定积分的应用</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch09.html">第 9 章 ｜ 数项级数</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch10.html">第 10 章 ｜ 广义积分</a></li>
+<li><a href="textbook-analysis-lichengzhang-ch11.html" class="cur">第 11 章 ｜ 函数项级数</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_analysis-lichengzhang_ch11_s5",
+  book_id: "analysis-lichengzhang",
+  ch_id: "ch11",
+  title: "§11.4 泰勒级数"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (window.wbSetTheme) window.wbSetTheme(isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      if (window.wbSetTheme) window.wbSetTheme(darkNow ? 'dark' : 'light');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById('wb-chtoc');
+  if (!panel) return;
+  var mask = document.getElementById('wb-chtoc-mask');
+  var btn = document.getElementById('wb-btn-chtoc');
+  var closeBtn = document.getElementById('wb-chtoc-close');
+  var body = document.getElementById('wb-chtoc-body');
+  var wide = window.matchMedia('(min-width:1420px)');
+  function setOpen(v){
+    panel.classList.toggle('on', !!v);
+    if (mask) mask.classList.toggle('on', !!v && !wide.matches);
+  }
+  if (btn) btn.addEventListener('click', function(){ setOpen(!panel.classList.contains('on')); });
+  if (closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
+  if (mask) mask.addEventListener('click', function(){ setOpen(false); });
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+
+  var links = [].slice.call(panel.querySelectorAll('a[data-t]'));
+  /* 自己接管跳转：长章节动辄三万像素，默认平滑滚动要滚好几秒，
+     而且 MathJax 懒渲染会在途中改变行高，落点会偏。远距离直接瞬移，落稳后再校正一次。 */
+  function goTo(el){
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 86;
+    var far = Math.abs(y - window.pageYOffset) > 1600;
+    window.scrollTo({ top: y, behavior: far ? 'instant' : 'smooth' });   // 'auto' 会退回 CSS 的 smooth
+    [far ? 420 : 900, 1400].forEach(function(ms){
+      setTimeout(function(){
+        if (!el) return;
+        var d = el.getBoundingClientRect().top - 86;
+        if (Math.abs(d) > 4) window.scrollBy(0, d);   // 补一次：上面懒渲染的公式可能把行高改了
+      }, ms);
+    });
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-t'));
+      if (el){
+        e.preventDefault();
+        goTo(el);
+        try { history.replaceState(null, '', '#' + el.id); } catch (err) { location.hash = el.id; }
+      }
+      if (!wide.matches) setOpen(false);
+    });
+  });
+  var map = links.map(function(a){
+    var el = document.getElementById(a.getAttribute('data-t'));
+    return el ? { a: a, el: el } : null;
+  }).filter(Boolean);
+  var groups = [].slice.call(panel.querySelectorAll('.g'));
+  var raf = null, lastG = null;
+  function spy(){
+    raf = null;
+    var act = null;
+    for (var i = 0; i < map.length; i++){
+      if (map[i].el.getBoundingClientRect().top <= 116) act = map[i]; else break;
+    }
+    if (!act && map.length) act = map[0];
+    links.forEach(function(a){ a.classList.remove('cur'); });
+    if (!act) return;
+    act.a.classList.add('cur');
+    var g = act.a.closest('.g');
+    if (g !== lastG){
+      lastG = g;
+      groups.forEach(function(x){
+        x.classList.toggle('open', x === g);
+        x.classList.toggle('cur', x === g);
+      });
+    }
+    if (body){
+      var br = body.getBoundingClientRect(), ar = act.a.getBoundingClientRect();
+      if (ar.top < br.top + 6 || ar.bottom > br.bottom - 6){
+        body.scrollTop += (ar.top - br.top) - (br.height / 2 - ar.height / 2);
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){ if (raf === null) raf = requestAnimationFrame(spy); }, { passive: true });
+  window.addEventListener('resize', function(){ if (raf === null) raf = requestAnimationFrame(spy); });
+  spy();
+})();
+</script>
+</body>
+</html>

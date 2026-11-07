@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§1.1 古典几何简史 ｜ 几何与公理化 ｜ “101计划”核心教材 几何学基础 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* C 级反向联动：课本小节下的相关作业 */
+.wb-sec-related {
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px dashed var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-sec-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-sec-related-list { list-style: none; margin: 0; padding: 0; }
+.wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+.wb-sec-related-list .wb-lk-more { color: var(--muted); font-size: 12px; border-left: none; padding-left: 0; }
+
+/* C 级反向联动 · 章级：章首页整章相关作业（章级关联教材在此呈现） */
+.wb-ch-related {
+  margin: 16px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px solid var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-ch-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-ch-related .wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-ch-related .wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-ch-related .wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+math { max-width: 100%; }
+/* 侧边抽屉在视口外，会把页宽撑大，这里裁掉 */
+html, body { overflow-x: clip; }
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+/* 章首页 hub：本章小节卡片网格 */
+.wb-sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+.wb-sec-card { display: block; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .12s, box-shadow .15s; }
+.wb-sec-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.wb-sec-card .wb-sec-num { display: inline-block; color: var(--accent); font-weight: 700; margin-right: 8px; }
+.wb-sec-card .wb-sec-name { font-weight: 600; }
+.wb-sec-card:hover .wb-sec-name { color: var(--accent); }
+
+/* 节内子标题：独立成块（满足「分成两个卡片 / 把小标题加入目录」），并带锚点便于跳转 */
+.wb-subhead { font-size: 17px; font-weight: 700; color: var(--text); margin: 26px 0 12px; padding: 9px 12px;
+  background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 6px; scroll-margin-top: 86px; }
+.wb-subhead + .wb-def, .wb-subhead + .wb-thm, .wb-subhead + .wb-prop, .wb-subhead + .wb-lemma,
+.wb-subhead + .wb-cor, .wb-subhead + .wb-example, .wb-subhead + .wb-remark, .wb-subhead + .wb-exercise,
+.wb-subhead + .wb-proof { margin-top: 12px; }
+
+/* ---------- 章内目录：宽屏右侧常驻 / 窄屏抽屉 ---------- */
+.wb-chtoc{position:fixed;top:72px;right:14px;width:238px;max-height:calc(100vh - 108px);
+  display:flex;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1c1c1a);
+  border:1px solid var(--border,#e3e2dd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:70;font-size:13px;line-height:1.45;
+  transform:translateX(calc(100% + 26px));transition:transform .22s ease}
+.wb-chtoc.on{transform:none}
+@media (min-width:1420px){.wb-chtoc{transform:none;right:max(14px,calc((100vw - 940px)/2 - 252px))}}
+.wb-chtoc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-bottom:1px solid var(--border,#e3e2dd);
+  color:var(--muted,#6b6b66);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.wb-chtoc-x{border:0;background:none;color:var(--muted,#6b6b66);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.wb-chtoc-x:hover{color:var(--text,#1c1c1a)}
+@media (min-width:1420px){.wb-chtoc-x{display:none}}
+.wb-chtoc-b{overflow-y:auto;overscroll-behavior:contain;padding:5px 0 10px}
+.wb-chtoc .g>.s{display:block;padding:6px 12px 6px 10px;color:var(--text,#1c1c1a);text-decoration:none;
+  font-weight:600;border-left:3px solid transparent}
+.wb-chtoc .g>.s b{color:var(--accent,#0f6e56);margin-right:4px}
+.wb-chtoc .g>.s:hover{background:var(--surface2,#f7f7f5)}
+.wb-chtoc .g.cur>.s{border-left-color:var(--accent,#0f6e56)}
+.wb-chtoc .g>ul{list-style:none;margin:0;padding:0 0 2px;display:none}
+.wb-chtoc .g.open>ul{display:block}
+.wb-chtoc a.b{display:flex;align-items:baseline;gap:7px;padding:3.5px 12px 3.5px 20px;
+  color:var(--muted,#6b6b66);text-decoration:none;border-left:3px solid transparent}
+.wb-chtoc a.b:hover{color:var(--text,#1c1c1a);background:var(--surface2,#f7f7f5)}
+.wb-chtoc a.b i{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.wb-chtoc a.b.k-def i{background:#10b981;opacity:1}
+.wb-chtoc a.b.k-thm i{background:#2563eb;opacity:1}
+.wb-chtoc a.b.k-axiom i{background:#7c3aed;opacity:1}
+.wb-chtoc a.b.k-prop i{background:#0891b2;opacity:1}
+.wb-chtoc a.b.k-ex i{background:#d97706;opacity:1}
+.wb-chtoc a.b.k-rem i{background:#94a3b8;opacity:1}
+.wb-chtoc a.b.k-pf i{background:#cbd5e1;opacity:1}
+.wb-chtoc a.b.cur{color:var(--accent,#0f6e56);background:var(--surface2,#f7f7f5);
+  border-left-color:var(--accent,#0f6e56);font-weight:600}
+.wb-chtoc a.b.cur i{opacity:1}
+.wb-chtoc-mask{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:69;opacity:0;
+  pointer-events:none;transition:opacity .2s}
+.wb-chtoc-mask.on{opacity:1;pointer-events:auto}
+@media (min-width:1420px){.wb-chtoc-mask{display:none}}
+#wb-btn-chtoc{display:none}
+@media (max-width:1419.98px){#wb-btn-chtoc{display:inline-flex}}
+/* 锚点跳转时别被吸顶栏盖住 */
+section.wb-seg[id],div[id^="tbk_"]{scroll-margin-top:86px}
+@media print{.wb-chtoc,.wb-chtoc-mask{display:none}}
+/* 窄屏：改成整屏高的侧滑抽屉，别只盖住半截顶栏 */
+@media (max-width:1419.98px){
+  .wb-chtoc{top:0;right:0;height:100vh;max-height:100vh;width:min(300px,86vw);
+    border-radius:0;border-top:0;border-bottom:0;border-right:0}
+  .wb-chtoc-h{padding:13px 14px}
+}
+/* 顶栏工具多了会挤到换行，按钮文字不许折行 */
+.wb-tool-group{flex-wrap:wrap;justify-content:flex-end}
+.wb-tool-btn{white-space:nowrap}
+@media (max-width:600px){
+  .wb-tool-group{gap:4px}
+  .wb-tool-btn{padding:4px 6px;font-size:12px}
+}
+
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html" class="on">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html">英语</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-geometry.html">几何学</a> <span>›</span>
+    <a href="course-geometry.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 1 章 ｜ §1.1 古典几何简史</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-chtoc" title="本章小节与定义定理">📋 本章</button>
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header"><div class="wb-book-tagline">📖 “101计划”核心教材 几何学基础 ｜ 盛茂、王作勤 编著</div><h1 style="font-size:24px;margin:8px 0 4px;">§1.1 ｜ 古典几何简史</h1><div class="wb-book-meta-sub">高等教育出版社（教育部计算机与数学101计划核心教材） ｜ 原书对应页码：第  页</div></div>
+
+  
+
+  
+
+  
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§1.1</span> 古典几何简史</h3><h4 class="wb-subhead" id="sub_1"><b>几何学的源起</b></h4>
+<p>几何学是一门非常古老的学问。无论是古代中国、古埃及、古巴比伦还是古印度，在所有文明的源头，人类出于实际生活需要和对美的追求，都各自发展出了几何的雏形。</p>
+<p>我们知道, 长度是容易测量的, 带着绳子即可, 但是已知长度求面积则是一个复杂很多的几何问题. 先人们在没有任何系统知识的条件下, 就已经通过代代相传的经验, 学会了如何求各种基本图形的面积 (图 1.1):</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_8.jpg" alt="image"><figcaption>image</figcaption></figure>
+<figure class="wb-figure"><img src="assets/geometry-101/img_9.jpg" alt="image"><figcaption>image</figcaption></figure>
+<figure class="wb-figure"><img src="assets/geometry-101/img_10.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.1 几种基本图形</p>
+<p>当时的几何知识主要是由建筑师、大地测量员、税收官等人所掌握。例如，据莫斯科纸草书记载，公元前1850年的古埃及人就已经会计算四棱台的体积，这想必跟搭建金字塔有着密不可分的联系。而计算面积更是古埃及人的拿手好戏：由于尼罗河定期泛滥，河水经常冲走已经划分好的土地，法老不得不重新分配土地，而只有会准确计算土地面积才能公平地收税。</p>
+<p>当然, 几何学的起源也与一些脱离生产者 (比如巫祝、祭司等神职人员) 致力于设计庙宇、金字塔等有密切关系. 不过, 此时的古人们并没有抽象图形的概念. 例如, 当他们提起长方形时, 他们表示的往往是具体长方形田地或物件的边界. 而且虽然古人们有令人叹为观止的公式, 但这些公式是由经验积累而来的. 一方面他们所用的计算公式并不都正确;</p>
+<p>另一方面, 即使是正确的公式, 也并没有推导. 当然他们也并不关心如何推导和理解公式, 而只关心这些公式的实际应用. 对于这个时代的数学发展与成就, 我们要从历史的角度, 客观而理性地加以认识, 既不用在正确性上苛求古人, 也不必过于热情夸赞.</p>
+<h4 class="wb-subhead" id="sub_2"><b>古希腊时代的几何</b></h4>
+<p>不可否认, 古希腊时代是几何学发展成形的关键时期. 这一时代的先哲们出于对自然法则认知的渴望和对永恒奥秘的探求, 将几何学发展成一门基于逻辑推理、具有严格体系的学问. 这些人中, 首先值得一提的是米利都的泰勒斯 (Thales, 约前 624—约前 548). 传说他是第一个通过逻辑推理证明数学定理的人, 并被誉为哲学之父、科学之父. 在提及泰勒斯时, 亚里士多德曾有名言:</p>
+<p>对于泰勒斯而言,首要问题不是我们知道什么,而是如何知道.</p>
+<p>他所证明的定理是</p>
+<div class="wb-thm" id="tbk_1">
+  <div class="wb-blk-title"><span>定理 1.1.1</span><span class="tag">核心定理</span></div>
+<p>（泰勒斯定理） 半圆的内接角（即直径所对的圆周角）是直角（图1.2).</p>
+</div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_11.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.2 泰勒斯定理</p>
+<p>据说, 泰勒斯还利用相似三角形原理测量了金字塔的高度: 取一根竖直的棍子, 在其影子和其长度相等的那一刻, 测量金字塔影子的长度. 实际上, 泰勒斯还是为几何学命名的人: 他把表示地球的希腊词语 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mi>ε</mi><mi>ω</mi><mo>(</mo><mstyle mathvariant="normal"><mrow><mi>g</mi><mi>e</mi><mi>o</mi></mrow></mstyle><mo>)</mo></mrow><annotation encoding="application/x-tex">\gamma \varepsilon \omega (\mathrm{geo})</annotation></semantics></math> 和表示测量的希腊词语 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mi>ε</mi><mi>τ</mi><mi>ρ</mi><mi>ι</mi><mi>α</mi><mo>(</mo><mstyle mathvariant="normal"><mrow><mi>m</mi><mi>e</mi><mi>t</mi><mi>r</mi><mi>o</mi><mi>n</mi></mrow></mstyle><mo>)</mo></mrow><annotation encoding="application/x-tex">\mu \varepsilon \tau \rho \iota \alpha (\mathrm{metron})</annotation></semantics></math> 合在一起, 造出了拉丁语的几何这个词, 并逐渐演化为英文单词 geometry. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> </p>
+<p>接下来一位重要人物是毕达哥拉斯 (Pythagoras, 约前 585—约前 500). 他创立了毕达哥拉斯学派, 以 “万物皆数” 为学派格言. 可能是受音律中所出现整数之比的启发, 他们认为 “一切可知的事物都有数字; 若无数字, 任何事物都无法被构想, 也不可能被理解.” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>②</mn></mrow><annotation encoding="application/x-tex">^{②}</annotation></semantics></math> </p>
+<div class="wb-thm" id="tbk_2">
+  <div class="wb-blk-title"><span>定理 1.1.2</span><span class="tag">核心定理</span></div>
+<p>（勾股定理, 也称毕达哥拉斯定理） 直角三角形斜边的平方是两直角边的平方和 (图 1.3):</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">c ^ {2} = a ^ {2} + b ^ {2}.</annotation></semantics></math></div><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{2}</annotation></semantics></math></p></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_12.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.3 勾股定理</p>
+<p>除此之外, 毕达哥拉斯学派还从正五边形出发, 发现了黄金分割比 (见习题 1 第 1.2 题). 应该说是从毕达哥拉斯学派开始, 数学的研究对象即数与形开始脱离实际事物或实际形象, 成为思维的抽象产物.</p>
+<p>注意此时数的表示形式和几何之间有严格的关系：数的平方（或两个数的乘积）总是表示面积，数的立方（或三个数的乘积）总是表示体积。这也是为什么我们一般会把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^2</annotation></semantics></math> 读作“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 的平方” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mtext>square</mtext><mo>)</mo></mrow><annotation encoding="application/x-tex">(x \text{ square})</annotation></semantics></math> ，而不是“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 的2次方”。图1.4展示了数、平方数、立方数的几何含义。</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_13.jpg" alt="image"><figcaption>image</figcaption></figure>
+<figure class="wb-figure"><img src="assets/geometry-101/img_14.jpg" alt="image"><figcaption>image</figcaption></figure>
+<figure class="wb-figure"><img src="assets/geometry-101/img_15.jpg" alt="image"><figcaption>image</figcaption></figure>
+<figure class="wb-figure"><img src="assets/geometry-101/img_16.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>1</mn><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1^{3}</annotation></semantics></math></p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_17.jpg" alt="image"><figcaption>image</figcaption></figure>
+<figure class="wb-figure"><img src="assets/geometry-101/img_18.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.4 数、平方数与立方数</p>
+<p>下一位对几何产生重要影响的是柏拉图 (Plato, 前 427—前 347). 他并不是一位数学家, 而是一位哲学家. 他在雅典建立了一个学校, 即柏拉图学园. 传说该学园大门上写着:</p>
+<p>不懂几何者不得入内.</p>
+<p>柏拉图的朋友泰特拖斯 (Theaetetus, 约前 417—前 369) 证明了有且仅有五个正多面体, 即正四面体、立方体、正八面体、正十二面体和正二十面体 (见本书推论 6.2.2). 柏拉图主张数学是用以理解“永恒存在之理念世界”的工具,并将这些正多面体对应于“风、火、水、土”等元素,因而这些正多面体也被称为柏拉图多面体.</p>
+<p>柏拉图学园培养出了那个时代最优秀的老师和研究者, 其中包括欧多克索斯 (Eudoxus, 约前 395—约前 342) 和亚里士多德 (Aristotle, 前 384—前 322). 关于他们的贡献, 我们不一一赘述, 只简要各提一句: 欧多克索斯首次以明确的公理为依据演绎数学, 他提出量的概念 (不可公度比被归结为 “量” 而不是 “数”) 以研究不可公度比, 而且他提出了用于计算曲边形面积和曲面体体积的穷竭法; 而亚里士多德讨论了 “定义” 的含义, 指出公理与公设的区别, 并给出很多定义、公理, 后被欧几里得采纳. 此外, 欧多克索斯的学生梅内克缪斯 (Menaechmus, 约前 380—前 320) 则在研究三大尺规作图难题之一的 “倍立方问题” 时引入了圆锥曲线, 大大拓展了几何学的研究对象.</p>
+<p>亚里士多德曾指出, 从 “不存在的定义”(例如正十面体) 出发可以推出自身矛盾的逻辑结构. 而尺规作图则是确认几何对象存在性的重要手段, 因为古希腊人认为直线和圆是基本图形, 而尺、规是实现直线和圆的方式. 由此引发了大量 “仅用直尺、圆规作出给定图形” 的尺规作图问题, 例如作出给定线段的中垂线, 作出给定角的一半, 给定正方形时作出具有两倍面积的正方形等. 在此过程中, 人们发现有三个提法非常简单的问题, 一直找不到尺规作图方法, 即三大尺规作图难题:</p>
+<ul><li>化圆为方：给定任意圆，用尺规作出等面积的正方形.</li></ul>
+<ul><li>倍立方：给定任意立方体，用尺规作出具有两倍体积的立方体.</li></ul>
+<ul><li>三等分角：给定任意角，用尺规作出其三分之一大小的角.</li></ul>
+<p>直到 19 世纪, 人们借助群论等代数工具, 才证明了这三个尺规作图难题均不可解. 注意, 古希腊时人们发现和研究的不可公度数依然是可以尺规作图的数. 最早发现 “不可尺规作图数” 的人是意大利数学家利奥纳多 (即我们熟知的斐波那契, Fibonacci, 约 1170—约 1250): 他证明了方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>3</mn></mrow></msup><mo>+</mo><mn>2</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn><mn>0</mn><mi>x</mi><mo>=</mo><mn>2</mn><mn>0</mn></mrow><annotation encoding="application/x-tex">x ^ {3} + 2 x ^ {2} + 1 0 x = 2 0</annotation></semantics></math></div>
+<p>的根不能用尺规作图作出, 第一次表明数系所含的数超出了尺规作图所界定的范围.</p>
+<p>总的来说, 从古希腊时代开始, 公理演绎法成为研究数学的主要手段, 大量数学成果开始涌现, 数学本身也逐渐成为纯理智的抽象研究, 成为绝对真理的一部分. 这个时期的数是依赖于几何的, 在此后将近两千年的时间里, 几何学几乎是全部严密数学的基础. 同时, 因为不可公度比的发现, 几何与数慢慢开始分道扬镳, 有少量数学家开启了理解 “难以琢磨之数” 的漫长征途.</p>
+<h4 class="wb-subhead" id="sub_3"><b>《几何原本》以及古希腊晚期</b></h4>
+<p>《几何原本》(Elements) 集希腊古典时期数学之大成, 是一本承上启下的书, 由欧几里得 (Euclid, 前 325—前 265) 在大约公元前 3 世纪完成. 据说欧几里得曾对国王托勒密一世说过: 不存在通向几何学的王室大道. 可见, 几何学在欧几里得的心中是普适的. 它不因人而异, 这也是科学的特征. 事实上, 《几何原本》的公理化体系对科学思维的影响是巨大的, 例如牛顿 (Newton, 1643—1727) 的巨著《自然哲学的数学原理》就是按照《几何原本》的公理化体系模式写的.</p>
+<p>《几何原本》共十三卷, 第一卷到第六卷是平面几何 (其中第五卷为比例理论), 第七卷到第九卷是数论, 第十卷篇幅最长, 研究不可公度数 (包括形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>±</mo><msqrt><mrow><mi>b</mi></mrow></msqrt><mo>,</mo><msqrt><mrow><mi>a</mi><mo>±</mo><msqrt><mrow><mi>b</mi></mrow></msqrt></mrow></msqrt></mrow><annotation encoding="application/x-tex">a \pm \sqrt{b}, \sqrt{a \pm \sqrt{b}}</annotation></semantics></math> 等的数) 的几何分类, 第十一卷到第十三卷则是立体几何. 在这本书中, 欧几里得从定义、公设与公理出发, 用逻辑演绎的方法, 证明了 465 个命题. 虽然这些命题绝大部分并非欧几里得所原创, 但全书的安排方式、公理公设的选择、定理由简单到复杂的排列顺序都是欧几里得所创的.</p>
+<p>虽然用现代数学的观点看, 欧几里得的证明并非 “完全严格”, 但是, 在欧几里得那个时代, 这是严格的. 完全周到、细致、严密的表述, 要到希尔伯特《几何基础》的相关工作中才出现. 欧几里得在《几何原本》中所展现的 “定义 → 公理 → 命题” 的几何学逻辑体系是人类理性思维的光辉. 本书下一节中将对这些定义、公理公设及其优劣稍做更为具体的审视. 在此处, 我们想要强调的是《几何原本》中几何与代数的统一性: 事实上, 在那个时代, 几何、数学甚至科学都没有严格的区分, 例如, 在第九卷中欧几里得用反证法证明了存在无穷多个素数, 令人拍案叫绝:</p>
+<div class="wb-thm" id="tbk_3">
+  <div class="wb-blk-title"><span>定理 1.1.3</span><span class="tag">核心定理</span></div>
+<p>(《几何原本》第九卷命题 20) 素数有无穷多个.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>用反证法. 假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>⋯</mo><mo>,</mo><msub><mi>p</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_1, \cdots, p_n</annotation></semantics></math> 为所有素数. 考察正整数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N = p_1 \cdots p_n + 1</annotation></semantics></math> . 因为对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math> , 均有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>&gt;</mo><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">N &gt; p_i</annotation></semantics></math> , 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 是一个合数. 于是由定义, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 有不同于 1 和自身的素因子, 我们记之为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> . 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 必为某个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_i</annotation></semantics></math> , 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 必将整除</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><mi>N</mi><mo>−</mo><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>·</mo><mo>·</mo><mo>·</mo><msub><mi>p</mi><mrow><mi>n</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">1 = N - p _ {1} \cdot \cdot \cdot p _ {n},</annotation></semantics></math></div><p>但这是不可能的. 故上述假设不成立, 即存在无穷多个素数, 证毕. □</p><p>上文已经提到, 古希腊时期的代数往往是 “几何代数”, 两个数的乘积总是被理解为矩形的面积. 例如, 乘法对加法的分配律 (图 1.5)</p></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_19.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.5 加法分配律</p>
+<p>则变成《几何原本》中如下命题：</p>
+<div class="wb-thm" id="tbk_4">
+  <div class="wb-blk-title"><span>命题 1.1.4</span><span class="tag">命题</span></div>
+<p>(《几何原本》第二卷命题 1) 如果矩形的一边被截成几段, 那么原先矩形的面积是各个小段和未截线段构成的矩形面积之和.</p>
+<p>托勒密王朝把亚历山大城建设成为一个文化中心, 此时出现的《几何原本》对于古希腊数学进入辉煌的亚历山大时期起到了不可磨灭的作用. 数学的理论和应用都经历了长足发展, 数学 (尤其是几何) 开始转变为应用理论研究更加实用的问题, 例如各种复杂量的近似计算、天文学所需的球面三角学等. 此时, 数也逐渐脱离几何, 可以自由进行代数计算. 例如, 阿基米德 (Archimedes, 前 287—前 212) 运用高超技巧计算出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 的近似值,</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mfrac><mrow><mn>1</mn><mn>0</mn></mrow><mrow><mn>7</mn><mn>1</mn></mrow></mfrac><mo>&lt;</mo><mi>π</mi><mo>&lt;</mo><mn>3</mn><mfrac><mrow><mn>1</mn></mrow><mrow><mn>7</mn></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">3 \frac {1 0}{7 1} &lt;   \pi &lt;   3 \frac {1}{7}.</annotation></semantics></math></div><p>作为对比, 在《几何原本》中, 欧几里得虽然证明了很多不同形状的面积之比, 但并没有任何命题阐述圆的面积 “值”! 此外, 阿基米德对于欧多克索斯穷竭法的应用也令人赞叹, 可以视为微积分的雏形. 他明确地提出并多次使用</p></div>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理 1.1.5</span><span class="tag">公理</span></div>
+<p>（(欧多克索斯—) 阿基米德公理） 对于任意正数 a, b，必存在正整数 n 使得 na &gt; b.</p>
+<p>后来人们才意识到, 这个性质是实数完备性的重要组成部分.</p>
+<p><b>中国古代的几何</b></p>
+<p>跟西方相比, 几何在中国也同样有着悠久的历史: 在公元前 15 世纪的甲骨文中, 就已经出现了 “规” 和 “矩” 两个字. 相传伏羲造规、矩, 作方、圆, 而《史记》中也记载了大禹治水时 “左准绳, 右规矩”. 我国古代在建筑工程、水利工程上的成就, 其实是离不开丰富的几何知识作为支撑的.</p>
+<p>早在春秋末期, 墨子 (前 476 或前 480—前 390 或前 420) 在《墨经》中就记载了丰富的几何学知识. 事实上, 该书中不少内容可以视为理论几何学的萌芽, 例如给出了点 (端, 体之无序而最前者也)、圆 (圜, 一中同长也)、平行 (平, 同高也)、线段相等 (同长, 以正相尽也) 等概念的定义. 遗憾的是, 因为种种原因这些处于萌芽状态的思想失去了进一步发展的机会.</p>
+<p>中国最古老的天文学和数学著作《周髀算经》 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> 就从讨论直角三角形的性质出发, 推演有关地上和天上距离测量的方法. 该书中不仅记载了一般形式的勾股定理:</p>
+<p>以日下为勾，日高为股，勾股各自乘，并而开方除之，得邪至日，</p>
+<p>而且以较为隐晦的方式给出了证明.</p>
+<p>部分成书于公元前3世纪、最后成书于1世纪的《九章算术》，体现了中国古代数学的实用主义特色。全书分九卷，目的不在于像《几何原本》那样建立理论体系，而是分 246 题, 对于实际应用中碰到的各类具体问题 (比如对于特定图形计算长度、面积、体积) 给出了解法, 其中关于斜截三棱柱体积的计算方法, 西方直到 18 世纪才得到. 之后刘徽 (约 225—约 295) 为《九章算术》作注, 更是整理了其中的数学体系, 奠定了相关的理论基础. 此外, 刘徽利用割圆术 (即用正 n 边形逼近圆) 得出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 的值接近 3.1416, 比阿基米德的结果更优. 而南北朝时祖冲之 (429—500) 更是给出了</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.</mn><mn>1</mn><mn>4</mn><mn>1</mn><mn>5</mn><mn>9</mn><mn>2</mn><mn>6</mn><mo>&lt;</mo><mi>π</mi><mo>&lt;</mo><mn>3.</mn><mn>1</mn><mn>4</mn><mn>1</mn><mn>5</mn><mn>9</mn><mn>2</mn><mn>7</mn></mrow><annotation encoding="application/x-tex">3. 1 4 1 5 9 2 6 &lt;   \pi &lt;   3. 1 4 1 5 9 2 7</annotation></semantics></math></div><p>这样一个领先西方一千多年的结果! 不过, 中国古代数学家并未得出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 是无理数的结论, 即并不知道 (抑或并不关心)“无论如何精确地用有理数去表达 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> , 所得的结果都只能是近似值”. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 值的精确度, 主要是一个计算耐力的问题, 而不是理论洞见的问题. 这是技术与科学的一个典型区别.</p><p>此外，很遗憾的是，由于程朱理学以及八股取士制度的施行，中国古代辉煌的数学成就一度濒临灭绝。明末数学家徐光启(1562—1633)曾说道：</p><p>算数之学特废于近世数百年间尔. 废之缘有二: 其一为名理之儒土苴天下之实事; 其一为妖妄之术谬言数有神理, 能知来藏往, 靡所不效. 卒于神者无一效, 而实者亡一存.</p></div>
+<p>明末清初数学家梅文鼎 (1633—1721) 发掘中国古代数学并冶中西数学于一炉, 对中国数学的传承和发展起到了重要作用.</p>
+<p>总的来说, 中国古代几何学以解决实际问题 (也包括天文、历法) 为目标, 是一种实用几何. 在这个基础上, 中国古代数学家们把几何问题算术化、代数化, 发展出了非常高超的计算技术. 此外, 值得一提的是, 中国古代数学并非完全没有理论证明, “问、答、术、注”的“注”中包含着很多理论证明. 但可惜的是, 这些证明并没有充分展开成完整的理论体系. 相比之下, 古希腊数学以系统性、逻辑性见长, 而中国古代数学则更强调计算方法以及对物理世界的应用.</p>
+<h4 class="wb-subhead" id="sub_4"><b>解析几何的创立</b></h4>
+<p>罗马人的征服让希腊文明戛然而止, 大量典籍被焚毁、遗失, 之后延续千年的中世纪是科学的黑暗时期. 在教廷统治下, 人们只能学到少量粗浅的数学, 无论是数学理论还是应用, 都陷于停滞. 对此, 《古今数学思想》的作者克莱因 (M.Kline, 1908—1992) 说道:</p>
+<p>我们可以看到, 数学在一个自由的学术气氛中最能获得成功, 那里既能对物理世界所提出的问题发生兴趣, 又有人愿意从抽象方面去思考由这些问题所引起的概念, 而不计其是否能谋取眼前的或实际的利益.</p>
+<p>中世纪结束后, 西方世界进入文艺复兴时期, 伴之而来的是数学复兴. 事实上, 此时复兴的近代数学并不能简单认为是古希腊数学之延续. 此后发展出来的代数符号化、微积分等, 与古希腊 “纯几何思想” 并不一致, 而表现出很强烈的 “东方特征”: 更强调计算方法以及对现实世界的应用. 究其原因, 在于数学复兴之源头是十字军东征所带回的存于阿拉伯世界之数学典籍: 古希腊典籍流传到阿拉伯地区, 同时东方数学 (中国数学以及印度数学) 经由印度也进入阿拉伯地区, 跟那里保存下来的古希腊数学逐渐融合并缓慢发展. 所以, 复兴后的数学事实上是西方数学家们在融合东西方数学基础上发展起来的.</p>
+<p>解析几何的出现, 对于几何学以及对于整个数学而言, 都是至关重要的. 人们普遍认同, 解析几何是 17 世纪初由法国数学家笛卡儿 (R. Descartes, 1596—1650) 创立的. 笛卡儿比较了代数与几何的优劣. 他认为几何太过依赖图示, 以致毫无必要地使人的想象力疲劳不堪, 但同时也指出代数是混乱和含糊的艺术, 使人的头脑陷入困惑. 因此, 他希望</p>
+<ol class="wb-num-list"><li>通过代数过程把几何从图示的使用中解放出来;</li><li>通过几何解释赋予代数运算意义.</li></ol>
+<p>事实上, 笛卡儿创立解析几何的著作发表于其旨在寻求 “在一切领域建立真理的方法” 之哲学著作《方法论》里, 作为三篇附录之一 (每篇附录都比正文长) 出现的. 在该附录中, 笛卡儿从一个几何问题开始, 把它转变为代数方程的语言, 然后尽可能地简化这个方程, 最后给出该简化方程的几何解.</p>
+<p>同时代的费马 (Fermat, 1601—1665) 在其著作《轨迹导论》中也广泛使用坐标系. 费马提道:</p>
+<p>每当最终方程中的两个未知量被求出的时候, 我们就有了一条轨迹, 该轨迹描述了一条线, 直线或曲线.</p>
+<p>笛卡儿和费马都通过建立坐标系, 使用代数工具研究几何问题. 二者的区别在于, 费马是对古希腊人工作的继承, 着眼于用代数方法对古希腊时期阿波罗尼奥斯 (Apollonius, 约前 262—前 190) 的工作做重新表述. 而笛卡儿则很清楚代数的威力, 并明确表明他在改换研究几何的方法. 方法论是他一切工作的首要对象. 因此, 称笛卡儿为解析几何之父是完全妥当的.</p>
+<p>解析几何的出现对于近代数学与科学的发展起到了关键性作用: 在把对于图形的分析转化为对于数的分析后, 人们可以便利地处理无穷的过程, 从而微积分、天体力学等学科领域开始出现并迅速发展起来.</p>
+<h4 class="wb-subhead" id="sub_5"><b>第五公设与非欧几何</b></h4>
+<p>在《几何原本》中, 欧几里得共提出了 5 条公设, 其中第五公设在数学史上有着极其重要的影响:</p>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公设 1.1.6</span><span class="tag">公设</span></div>
+<p>(第五公设) 若一直线与两直线相交, 且若同侧所交两内角之和小于两直角, 则两直线延长后必相交于该侧的一点.
+第五公设等价于如下的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> </p>
+</div>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公设 1.1.7</span><span class="tag">公设</span></div>
+<p>(平行公设)</p>
+<p>给定直线外一点, 至多有一条直线过该点且平行于给定</p>
+<p>直线.</p>
+<p>跟其他公设相比, 第五公设最为拗口也最不显然. 事实上, 从《几何原本》中命题的排布可以看出来, 欧几里得本人也尽量避免使用这个公设: 直到命题 29 他才不得不开始使用这个公设. 此外, 还要注意的是, 第五公设的陈述看起来比平行公设要复杂, 但却明确表明了古希腊数学的一个特征: 尽量避免使用无穷 (“相交” 是有限点处发生的现象, 而 “平行” 则需要延长到无穷远才能确定).</p>
+<p>自从古希腊后期的托勒密 (Ptolemy, 约 100—约 168) 开始, 有很多数学家前仆后继, 试图用其他公设/公理证明第五公设. 虽然他们都失败了, 但作为副产品, 他们却发现了很多 (在假定其他公设/公理成立的前提下) 跟第五公设等价的命题, 例如</p>
+</div>
+<ul><li>每个三角形的内角和都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>180</mn><mrow><mo>∘</mo></mrow></msup></mrow><annotation encoding="application/x-tex">180^{\circ}</annotation></semantics></math> .</li></ul>
+<ul><li>存在一个三角形, 其内角和是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>180</mn><mrow><mo>∘</mo></mrow></msup></mrow><annotation encoding="application/x-tex">180^{\circ}</annotation></semantics></math> .</li></ul>
+<ul><li>存在一对相似而不全等的三角形.</li></ul>
+<ul><li>存在一个长方形 (即内角均为直角的四边形).</li></ul>
+<ul><li>平行于同一直线的两条直线是平行的.</li></ul>
+<ul><li>直角三角形的勾股定理成立.</li></ul>
+<ul><li>一般三角形的余弦定理成立.</li></ul>
+<ul><li>存在面积任意大的三角形.</li></ul>
+<p>我们把另外一个大家耳熟能详但与第五公设等价的命题藏在习题1第6题里.</p>
+<p>在所有这些试图证明第五公设的努力中, 这里仅提一下德国数学家兰伯特 (Lambert, 1728—1777). 他也许是最接近于发现真相, 却实际上未能发现非欧几何的人. 他曾写道:</p>
+<p>欧几里得第五公设的证明可以发展到这样一种程度, 即表面上是只剩下了一点微不足道的东西, 但仔细分析表明, 在这点微不足道的东西里面, 潜藏着问题症结. 通常, 它要么包含了那个正在证明的命题, 要么包含了一个相当于这个命题的假设.</p>
+<p>顺便提一下, 兰伯特还是最早证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 是无理数的数学家.</p>
+<p>非欧几何的发现一般归功于以下三人：罗巴切夫斯基 (Lobachevsky, 1792—1856)、波尔约 (J.Bolyai, 1802—1860) 和高斯 (Gauss, 1777—1855). 罗巴切夫斯基被视为“几何学的哥白尼”. 他在 1829 年发表了论文《论几何学原理》，公布了一种新的几何学，其赖以建立的基础是一个与平行公设背道而驰的假设：</p>
+<p>过直线外一点可以作多于一条与给定直线不相交的直线.</p>
+<p>从这个新公设出发, 他推导出了一个和谐的几何结构, 没有任何内在逻辑矛盾. 罗巴切夫斯基完全认识到了他发现的新几何具有重要意义. 他为此先后写了三部专著, 详尽地介绍新几何.</p>
+<p>波尔约与其父亲都毕生致力于平行公设的研究. 1832 年, 在其父亲出版的《试论》一书附录里, 波尔约发表了论文《绝对空间的科学》. 波尔约的绝对空间几何学是在欧氏几何公理体系里去掉平行公设而形成的. 他深入且精辟地剖析了绝对空间几何学公理体系的逻辑推论, 建立起一系列深刻的定理, 这些定理对于欧氏几何和非欧几何均成立. 波尔约指出, 仅靠数学推理无法确定物理存在的几何空间是欧氏的还是非欧的.</p>
+<p>高斯应该是第一个明白“证明平行公设是徒劳之举”的人, 不过, 他一生都未曾公开发表或支持过这一观点. 1825 年高斯发表了经典著作《曲面的一般研究》. 在此著作中, 他引入并研究了高斯曲率, 证明了高斯曲率只与曲面上的度量性质相关, 和曲面的形状无关 (比如平面与圆柱面度量性质相同, 但形状不同), 并指出了研究仅与度量相关之新几何的可能性. 后来, 1854 年 6 月 10 日, 黎曼 (Riemann, 1826—1866) 在哥廷根大学进行讲师就职演说, 题为 “论几何学基础的假设”, 进一步拓展了这一思想, 提出了流形的概念, 将笛卡儿的全局坐标推广到局部坐标, 并指出可以通过局部结构 (黎曼度量, 即 “无限靠近的任意两点之间的距离”) 来了解空间的整体距离. 黎曼几何学是更具普遍意义的非欧几何学, 使罗巴切夫斯基、波尔约的非欧几何学成为特例. 黎曼还提及了在物理中的潜在应用, 后来爱因斯坦 (Einstein, 1879—1955) 接过这一接力棒, 使之成为广义相对论的数学基石, 彻底改变了人类对于空间和宇宙的认知.</p>
+<h4 class="wb-subhead" id="sub_6"><b>射影几何</b></h4>
+<p>射影几何的形成也许最早可以追溯到古希腊时期对圆锥曲线的研究. 其中最出名的著作当属阿波罗尼奥斯的《圆锥曲线论》，而亚历山大时期的帕普斯 (Pappus, 约 290—350) 引入交比的概念，并在欧氏几何框架里证明了射影几何的第一个定理，即帕普斯定理 (见第五章定理 5.4.1). 文艺复兴之后，射影几何的先驱是与笛卡儿、费马同时代的德萨格 (Desargues, 1591—1661). 他本人是一位建筑师和军事工程师，但他有着非凡的想象力. 受文艺复兴时期所发展起来的透视画法启发，他写下著作《试图处理一个圆锥曲线与一个平面相交之结果的草稿》. 其基本结果就是通过射影的方法统一地处理圆锥曲线 (图 1.6)，使貌似不同种类的圆锥曲线合而为一. 他引入无穷远点、调和点列等概念, 并证明了描述实景与截景的德萨格定理 (见第五章定理 5.4.3). 之后年仅 16 岁的帕斯卡 (Pascal, 1623—1662) 在学习德萨格的著作后, 证明了著名的帕斯卡定理 (见第五章定理 5.4.2). 可惜他过早地放弃了数学, 而改投到神学. 这几个定理最初都是在欧氏几何框架里面所陈述和证明的, 本书第五章将从射影几何的角度解释并证明它们.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_20.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.6 圆锥曲线</p>
+<p>最终使得射影几何独立成为一个几何分支的是19世纪数学家庞斯莱(Poncelet, 1788-1867). 庞斯莱曾参加拿破仑对俄战争, 被俘后在狱中写出《论图形的射影性质》, 建立了射影几何基础. 他还建立了具有重要意义的对偶性原理, 例如在平面射影几何中, 将“点”与“线”互换, “位于”与“通过”互换, “共线”与“共点”互换, 所得结论依然成立. 庞斯莱使用德萨格的中心投影和无穷远点来建立复射影平面的概念, 而沙勒(Chasles, 1793—1880)接续了庞斯莱的工作, 强调交比及其在射影变换下不变性的重要性. 他还开创了枚举几何学的研究, 后来该方向成为代数几何学的一个分支.</p>
+<p>射影几何的发展与壮大也需要归功于冯·施陶特 (von Staudt, 1798—1867)、普吕克 (Plücker, 1801—1868)、克莱因 (F.Klein, 1849—1925) 等人. 例如, 冯·施陶特使得射影几何彻底摆脱了对长度和叠合的依靠, 使人们认识到在逻辑上射影几何比欧氏几何更加基本; 普吕克引入了齐次坐标系, 从而将解析几何方法引入射影几何; 克莱因则把当时的各种几何都统一归纳到射影几何的框架里.</p>
+<h4 class="wb-subhead" id="sub_7"><b>埃尔朗根纲领</b></h4>
+<p>19 世纪的几何展现出了百花齐放的特色, 不同的几何涌现出来并迅速发展, 而这促使人们思考如下问题: 究竟什么是几何? 最终克莱因使用代数学中群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> 的概念, 将当时所有几何统一在同一个框架里, 这就是著名的埃尔朗根纲领. 该纲领是克莱因23岁时被任命为埃尔朗根大学教授时所做的就职演讲, 其核心思想是“变中找不变”, 即</p>
+<p>每种几何都由相应的变换群所刻画, 几何要研究的正是在该变换群下保持不变的性质.</p>
+<p>例如, 欧氏平面几何主要研究在刚体变换群 (或者欧氏变换群) 之下保持不变的性质, 比如长度、角度、面积等. 更一般地, 要研究相似形理论, 就需要考虑更大一点的群, 即相似变换群. 相比之下, 射影几何所研究的是在射影变换下不变的性质. 因为射影变换群更大 (它包含了刚体变换群等作为其子群), 所以射影几何是比欧氏几何更为一般的几何. 当然, 在射影几何中, 长度、角度、面积等几何量不再保持不变. 于是这些量不再是射影几何的研究对象. 但是诸如代数曲线的次数、直线上四个点形成的交比等量在射影变换下仍然保持不变, 从而是射影几何的研究对象.</p>
+<p>值得一提的是, 在埃尔朗根纲领接近结尾处, 克莱因给出了一段关于“位置分析学”(即拓扑学) 的论述, 将拓扑学描述为在某种 “无穷小扭曲群” 下保持不变的学科, 预见到了几何学新分支 “拓扑学” 的兴起. 虽然拓扑学的源起可以追溯到欧拉 (Euler, 1707—1783) 的七桥问题以及凸多面体公式 (见第六章定理 6.2.1), 但拓扑学真正成为一门学科还是 19 世纪末、20 世纪初的事情, 克莱因本人对此做出了重要贡献. 特别地, 他构造出了不可定向的封闭曲面 (克莱因瓶, 见图 6.15), 拓展了人们关于拓扑曲面的理解.</p>
+<h4 class="wb-subhead" id="sub_8"><b>几何公理化</b></h4>
+<p>我们知道, 从现代视角来看, 欧几里得公理体系并不完善. 在两千多年的时间里, 人们在其中发现了各种各样的问题. 19 世纪后半叶, 数学的另一个重要里程碑是实数理论的建立和分析学的严格化. 自此, 代数和分析有了坚实的基础, 不再依赖于几何. 另一方面, 非欧几何的发现让人们意识到, 欧氏几何也只是人造理论, 并不一定是天然而自洽的. 于是, 为几何学建立一个不依赖空间/物理直觉的严格公理化基础便自然而然地被提上日程.</p>
+<p>不少数学家在几何学公理化进程中都做出了很好的工作。比如帕施 (Pasch, 1843—1930)，他最早对直线上的序公理开展研究，并提出用以刻画平面中序关系的帕施公理（即下文的希尔伯特公理 (II.4))，而且在 1882 年最早建立射影几何公理体系。包括佩亚诺 (Peano, 1858—1932) 在内的多位数学家也先后给出了欧氏几何的公理体系。最终，希尔伯特 (Hilbert, 1862—1943) 于 1899 年出版《几何基础》，其给出的欧氏几何公理体系备受认可，达成了为欧氏几何建立严格公理体系这一目标。</p></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-geometry-101-ch01-s1.html">‹ 上一节：本章导引</a><a class="wb-nav-btn hub" href="textbook-geometry-101-ch01.html">📚 本章目录</a><a class="wb-nav-btn next" href="textbook-geometry-101-ch01-s3.html">下一节：公理体系：从欧几里得到希尔伯特 ›</a></div>
+</main>
+
+<nav class="wb-chtoc" id="wb-chtoc" aria-label="本节目录"><div class="wb-chtoc-h"><span>本节目录</span><button class="wb-chtoc-x" id="wb-chtoc-close" title="收起目录">×</button></div><div class="wb-chtoc-b" id="wb-chtoc-body"><div class="g" data-s="sub_1"><a class="s" href="#sub_1" data-t="sub_1">几何学的源起</a></div><div class="g" data-s="sub_2"><a class="s" href="#sub_2" data-t="sub_2">古希腊时代的几何</a></div><div class="g" data-s="sub_3"><a class="s" href="#sub_3" data-t="sub_3">《几何原本》以及古希腊晚期</a><ul><li><a class="b k-thm" href="#tbk_1" data-t="tbk_1" title="定理1.1.1（泰勒斯定理） 半圆的内接角（即直径所对的圆周角）是直角（图1.2)."><i></i>定理1.1.1</a></li><li><a class="b k-thm" href="#tbk_2" data-t="tbk_2" title="定理 1.1.2（勾股定理, 也称毕达哥拉斯定理） 直角三角形斜边的平方是两直角边的平方和 (图 1.3):"><i></i>定理 1.1.2</a></li></ul></div><div class="g" data-s="sub_4"><a class="s" href="#sub_4" data-t="sub_4">解析几何的创立</a><ul><li><a class="b k-thm" href="#tbk_3" data-t="tbk_3" title="定理 1.1.3 (《几何原本》第九卷命题 20) 素数有无穷多个."><i></i>定理 1.1.3</a></li><li><a class="b k-thm" href="#tbk_4" data-t="tbk_4" title="命题 1.1.4 (《几何原本》第二卷命题 1) 如果矩形的一边被截成几段, 那么原先矩形的面积是各个小段和未截线段构成的矩形面积之和."><i></i>命题 1.1.4</a></li></ul></div><div class="g" data-s="sub_5"><a class="s" href="#sub_5" data-t="sub_5">第五公设与非欧几何</a></div><div class="g" data-s="sub_6"><a class="s" href="#sub_6" data-t="sub_6">射影几何</a></div><div class="g" data-s="sub_7"><a class="s" href="#sub_7" data-t="sub_7">埃尔朗根纲领</a></div><div class="g" data-s="sub_8"><a class="s" href="#sub_8" data-t="sub_8">几何公理化</a></div></div></nav><div class="wb-chtoc-mask" id="wb-chtoc-mask"></div>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-geometry-101-ch01.html" class="cur">第 1 章 ｜ 几何与公理化</a></li>
+<li><a href="textbook-geometry-101-ch02.html">第 2 章 ｜ 向量与欧氏空间</a></li>
+<li><a href="textbook-geometry-101-ch03.html">第 3 章 ｜ 刚体变换</a></li>
+<li><a href="textbook-geometry-101-ch04.html">第 4 章 ｜ 几何与变换</a></li>
+<li><a href="textbook-geometry-101-ch05.html">第 5 章 ｜ 射影平面与射影变换</a></li>
+<li><a href="textbook-geometry-101-ch06.html">第 6 章 ｜ 拓扑空间与拓扑变换</a></li>
+<li><a href="textbook-geometry-101-chA.html">第 A 章 ｜ 附录  集合论与代数基础</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_geometry-101_ch01_s2",
+  book_id: "geometry-101",
+  ch_id: "ch01",
+  title: "§1.1 古典几何简史"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (window.wbSetTheme) window.wbSetTheme(isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      if (window.wbSetTheme) window.wbSetTheme(darkNow ? 'dark' : 'light');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById('wb-chtoc');
+  if (!panel) return;
+  var mask = document.getElementById('wb-chtoc-mask');
+  var btn = document.getElementById('wb-btn-chtoc');
+  var closeBtn = document.getElementById('wb-chtoc-close');
+  var body = document.getElementById('wb-chtoc-body');
+  var wide = window.matchMedia('(min-width:1420px)');
+  function setOpen(v){
+    panel.classList.toggle('on', !!v);
+    if (mask) mask.classList.toggle('on', !!v && !wide.matches);
+  }
+  if (btn) btn.addEventListener('click', function(){ setOpen(!panel.classList.contains('on')); });
+  if (closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
+  if (mask) mask.addEventListener('click', function(){ setOpen(false); });
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+
+  var links = [].slice.call(panel.querySelectorAll('a[data-t]'));
+  /* 自己接管跳转：长章节动辄三万像素，默认平滑滚动要滚好几秒，
+     而且 MathJax 懒渲染会在途中改变行高，落点会偏。远距离直接瞬移，落稳后再校正一次。 */
+  function goTo(el){
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 86;
+    var far = Math.abs(y - window.pageYOffset) > 1600;
+    window.scrollTo({ top: y, behavior: far ? 'instant' : 'smooth' });   // 'auto' 会退回 CSS 的 smooth
+    [far ? 420 : 900, 1400].forEach(function(ms){
+      setTimeout(function(){
+        if (!el) return;
+        var d = el.getBoundingClientRect().top - 86;
+        if (Math.abs(d) > 4) window.scrollBy(0, d);   // 补一次：上面懒渲染的公式可能把行高改了
+      }, ms);
+    });
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-t'));
+      if (el){
+        e.preventDefault();
+        goTo(el);
+        try { history.replaceState(null, '', '#' + el.id); } catch (err) { location.hash = el.id; }
+      }
+      if (!wide.matches) setOpen(false);
+    });
+  });
+  var map = links.map(function(a){
+    var el = document.getElementById(a.getAttribute('data-t'));
+    return el ? { a: a, el: el } : null;
+  }).filter(Boolean);
+  var groups = [].slice.call(panel.querySelectorAll('.g'));
+  var raf = null, lastG = null;
+  function spy(){
+    raf = null;
+    var act = null;
+    for (var i = 0; i < map.length; i++){
+      if (map[i].el.getBoundingClientRect().top <= 116) act = map[i]; else break;
+    }
+    if (!act && map.length) act = map[0];
+    links.forEach(function(a){ a.classList.remove('cur'); });
+    if (!act) return;
+    act.a.classList.add('cur');
+    var g = act.a.closest('.g');
+    if (g !== lastG){
+      lastG = g;
+      groups.forEach(function(x){
+        x.classList.toggle('open', x === g);
+        x.classList.toggle('cur', x === g);
+      });
+    }
+    if (body){
+      var br = body.getBoundingClientRect(), ar = act.a.getBoundingClientRect();
+      if (ar.top < br.top + 6 || ar.bottom > br.bottom - 6){
+        body.scrollTop += (ar.top - br.top) - (br.height / 2 - ar.height / 2);
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){ if (raf === null) raf = requestAnimationFrame(spy); }, { passive: true });
+  window.addEventListener('resize', function(){ if (raf === null) raf = requestAnimationFrame(spy); });
+  spy();
+})();
+</script>
+</body>
+</html>

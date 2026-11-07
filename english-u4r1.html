@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life in the sun&#x27;s grip · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 4 R1</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 4 · Reading 1</div><h1>Life in the sun&#x27;s grip</h1><div class="eng-meta"><span>16 段 · 102 句</span><span>39 词 + 4 短语 + 0 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=4&amp;r=1">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>102 句</small></button><button data-v="words">词表<small>43</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="15.91" data-e="22.41">The failure to tackle climate change had finally brought devastation. It was getting hotter.</span> <span class="sg" data-s="23.08" data-e="27.13">Rising temperatures and deadly heat waves became the new normal.</span> <span class="sg" data-s="28.02" data-e="31.245">Once livable places turned nearly uninhabitable.</span> <span class="sg" data-s="31.94" data-e="33.89">This was Frank May&#x27;s reality.</span> <span class="sg" data-s="34.84" data-e="39.89">Every day was a fight for survival against an unforgiving, furnace-like climate.</span> </p><p class="eng-p"><span class="sg" data-s="41.43" data-e="45.205">Frank got off his mat and padded over to look out the window.</span> <span class="sg" data-s="45.98" data-e="50.255">Umber stucco walls and tiles the color of the local clay.</span> <span class="sg" data-s="50.97" data-e="62.42">Square apartment blocks like the one he was in, rooftop patios occupied by residents who had moved up there in the night, it being too hot to sleep inside.</span> <span class="sg" data-s="63.24" data-e="67.99">Sky, the color of the buildings, mixed with white where the sun would soon rise.</span> <span class="sg" data-s="68.86" data-e="70.41">Frank took a deep breath.</span> <span class="sg" data-s="71.32" data-e="73.72">It reminded him of the air in a sauna.</span> <span class="sg" data-s="74.4" data-e="76.35">This was the coolest part of the day.</span> <span class="sg" data-s="77.14" data-e="81.64">In his entire life, he had spent less than five minutes in saunas.</span> <span class="sg" data-s="82.36" data-e="84.085">He didn&#x27;t like the sensation.</span> <span class="sg" data-s="84.78" data-e="85.98">Hot water? Maybe.</span> <span class="sg" data-s="86.48" data-e="88.43">Hot, humid air, no.</span> <span class="sg" data-s="89.26" data-e="93.66">He didn&#x27;t see why anyone would seek out such a stifling, sweaty feeling.</span> <span class="sg" data-s="94.58" data-e="96.705">Here there was no escaping it.</span> </p><p class="eng-p"><span class="sg" data-s="98.29" data-e="110.34">Sweat was dripping into his eyes and stinging. He was wet, wearing only a pair of shorts. Those, too, were wet. There were wet patches on his mat where he had tried to sleep.</span> <span class="sg" data-s="110.98" data-e="115.305">He was thirsty, and the jug by his bedside was empty.</span> <span class="sg" data-s="116.0" data-e="122.425">All over town, the stressed hum of window-box air conditioner fans buzzed like giant mosquitoes.</span> </p><p class="eng-p"><span class="sg" data-s="123.78" data-e="126.755">And then the sun cracked the eastern horizon.</span> <span class="sg" data-s="127.46" data-e="129.41">It blazed like an atomic bomb.</span> <span class="sg" data-s="129.46" data-e="133.51">The heat coming from it was palpable, a slap to the face.</span> <span class="sg" data-s="134.42" data-e="138.97">Solar radiation heating the skin of his face, making him blink.</span> <span class="sg" data-s="139.66" data-e="142.61">Stinging eyes flowing, he couldn&#x27;t see much.</span> <span class="sg" data-s="143.65" data-e="147.7">Everything was tan and beige and a brilliant unbearable white.</span> <span class="sg" data-s="148.58" data-e="149.68">He checked his phone.</span> <span class="sg" data-s="150.6" data-e="152.45">38 degrees Celsius.</span> <span class="sg" data-s="153.18" data-e="155.355">Humidity about 55%</span> <span class="sg" data-s="156.14" data-e="157.79">The combination was the thing.</span> <span class="sg" data-s="158.58" data-e="164.555">A few years ago, it would have been among the hottest wet-bulb temperatures ever recorded.</span> <span class="sg" data-s="165.24" data-e="166.94">Now just a Wednesday morning.</span> </p><p class="eng-p"><span class="sg" data-s="168.51" data-e="173.06">Wails of dismay cut through the air from the rooftop across the street.</span> <span class="sg" data-s="173.86" data-e="177.16">Someone was not waking up from the long hot night.</span> <span class="sg" data-s="178.0" data-e="180.6">Then the sound of the air conditioners cut off.</span> <span class="sg" data-s="181.38" data-e="182.98">More cries of distress.</span> <span class="sg" data-s="183.66" data-e="190.285">Frank&#x27;s phone no longer showed any bars, electricity gone brown out or blackout.</span> </p><p class="eng-p"><span class="sg" data-s="191.73" data-e="198.955">Generators were already firing up loud two-stroke engines powered by gas, diesel and kerosene.</span> <span class="sg" data-s="199.66" data-e="203.91">The air, already bad, would soon be a blanket of exhaust.</span> <span class="sg" data-s="204.62" data-e="207.37">Like breathing from the exhaust pipe of an old bus.</span> </p><p class="eng-p"><span class="sg" data-s="209.03" data-e="211.58">Frank&#x27;s colleagues came piling in the door.</span> <span class="sg" data-s="212.44" data-e="214.265">All red-eyed and flustered.</span> <span class="sg" data-s="214.96" data-e="219.76">Come on, they said we have to go, we need to go get help.</span> <span class="sg" data-s="220.6" data-e="222.55">The whole district has lost power.</span> </p><p class="eng-p"><span class="sg" data-s="224.12" data-e="226.32">I&#x27;m not leaving Frank replied.</span> <span class="sg" data-s="227.2" data-e="227.9">Go get help.</span> <span class="sg" data-s="228.74" data-e="230.94">I&#x27;ll stay and tell people you&#x27;re coming.</span> </p><p class="eng-p"><span class="sg" data-s="232.41" data-e="238.16">Frank put on a white shirt that quickly soaked up his sweat and walked out into the street.</span> <span class="sg" data-s="238.96" data-e="240.335">He suppressed a cough.</span> <span class="sg" data-s="240.98" data-e="242.53">It was too hot to cough.</span> <span class="sg" data-s="243.2" data-e="246.2">Sucking back in air was like breathing in a furnace.</span> <span class="sg" data-s="246.86" data-e="249.01">People came up to him asking for help.</span> <span class="sg" data-s="249.82" data-e="251.57">He said it would be coming soon.</span> <span class="sg" data-s="252.44" data-e="257.34">For now, take the old ones and the little ones into rooms with air conditioning.</span> <span class="sg" data-s="258.0" data-e="261.1">The schools would have air conditioning, the government house.</span> <span class="sg" data-s="261.88" data-e="263.18">Go to those places.</span> <span class="sg" data-s="263.92" data-e="265.87">Follow the sound of generators.</span> </p><p class="eng-p"><span class="sg" data-s="267.2" data-e="268.75">But there was nowhere.</span> </p><p class="eng-p"><span class="sg" data-s="270.18" data-e="271.38">Then it came to him.</span> <span class="sg" data-s="272.1" data-e="272.9">Go to the lake.</span> <span class="sg" data-s="273.78" data-e="274.58">Get in the water.</span> <span class="sg" data-s="275.52" data-e="276.695">A man shook his head.</span> <span class="sg" data-s="277.48" data-e="279.18">That water is in the sun.</span> <span class="sg" data-s="280.06" data-e="281.66">It&#x27;s as hot as a bath.</span> <span class="sg" data-s="282.34" data-e="283.49">It&#x27;s worse than the air.</span> </p><p class="eng-p"><span class="sg" data-s="285.05" data-e="291.7">Curious, alarmed, feeling himself breathing hard, Frank walked down streets toward the lake.</span> <span class="sg" data-s="292.52" data-e="300.72">People were outside buildings, round-eyed with distress and fear, red-eyed from the heat and exhaust smoke, the dust.</span> <span class="sg" data-s="301.4" data-e="304.25">Metal surfaces in the sun burned to the touch.</span> <span class="sg" data-s="304.35" data-e="309.725">He could see waves of heat bouncing over them, like air over a barbecue.</span> <span class="sg" data-s="310.34" data-e="312.79">He walked in the shade as much as possible.</span> </p><p class="eng-p"><span class="sg" data-s="314.16" data-e="319.91">He came to the lake and was unsurprised to see people in it already neck deep.</span> <span class="sg" data-s="320.66" data-e="323.01">Brown faces flushed red with heat.</span> <span class="sg" data-s="323.68" data-e="326.78">He crouched and stuck his arm in up to the elbow.</span> <span class="sg" data-s="327.52" data-e="332.27">The water was as warm as a bath, but considerably cooler than the air.</span> <span class="sg" data-s="333.12" data-e="334.97">He looked at the people in the lake.</span> <span class="sg" data-s="335.84" data-e="341.14">Only a narrow stretch of water was still in the morning shade of buildings and trees.</span> <span class="sg" data-s="341.8" data-e="343.85">And that stretch would be gone soon.</span> <span class="sg" data-s="344.76" data-e="345.685">Umbrellas though.</span> <span class="sg" data-s="346.42" data-e="350.67">It was an open question how many of the townspeople could fit in the lake.</span> <span class="sg" data-s="351.46" data-e="352.185">Not enough.</span> </p><p class="eng-p"><span class="sg" data-s="353.62" data-e="357.62">And yet, some time after sunset, they all got in the water.</span> <span class="sg" data-s="358.48" data-e="359.78">It just felt better.</span> <span class="sg" data-s="360.62" data-e="362.545">Their bodies told them to do it.</span> <span class="sg" data-s="363.26" data-e="369.61">They could sit on the shallowest part of the lake, bottom heads out of water, and try to endure.</span> </p><p class="eng-p"><span class="sg" data-s="371.04" data-e="372.265">People were dying.</span> <span class="sg" data-s="372.96" data-e="375.81">Some murmured what should have been screams of grief.</span> <span class="sg" data-s="376.48" data-e="381.03">Frank shut his eyes and tried not to listen to the voices around him.</span> <span class="sg" data-s="381.76" data-e="384.035">He was fully immersed in the shallows.</span> <span class="sg" data-s="384.7" data-e="390.975">And could rest his head back against the concrete edge of the walkway and the mud just under it.</span> </p><p class="eng-p"><span class="sg" data-s="392.46" data-e="394.985">Many years passed for Frank that night.</span> <span class="sg" data-s="395.74" data-e="405.415">When the sky lightened at first to a gray that looked like clouds, but then was revealed to be only a clear and empty sky, he stirred.</span> <span class="sg" data-s="406.1" data-e="408.1">His fingertips were all pruny.</span> <span class="sg" data-s="408.78" data-e="411.48">It was hard to raise his head even an inch.</span> <span class="sg" data-s="412.18" data-e="413.98">Possibly he would drown here.</span> <span class="sg" data-s="414.72" data-e="416.87">The thought caused him to exert himself.</span> <span class="sg" data-s="417.62" data-e="420.545">He dug his elbows in, raising himself up.</span> <span class="sg" data-s="421.34" data-e="424.64">He sat up. The air was still hotter than the water.</span> <span class="sg" data-s="425.5" data-e="430.2">He watched sunlight strike the tops of the trees on the other side of the lake.</span> <span class="sg" data-s="431.0" data-e="433.625">It looked like they were bursting into flame.</span> <span class="sg" data-s="434.32" data-e="438.32">Balancing his head carefully on his spine, he surveyed the scene.</span> <span class="sg" data-s="439.43" data-e="440.38">Everyone was dead.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 39</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Beige</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/beɪʒ/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">米黄色的；米黄色</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Blaze</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/bleɪz/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">燃烧，闪耀</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Blink</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/blɪŋk/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">眨眼</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Brownout</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈbraʊnaʊt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">电压不足，局部断电</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Buzz</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/bʌz/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">发出嗡嗡声</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Crouch</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/kraʊtʃ/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">蹲下，蜷缩</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Devastation</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌdevəˈsteɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">毁灭，破坏</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Diesel</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈdiːzl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">柴油</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dismay</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/dɪsˈmeɪ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">沮丧，惊恐</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Flush</span></td><td><span class="eng-ipa">/flʌʃ/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">发红，脸红</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Flustered</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈflʌstəd/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">慌乱的，紧张的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Heatwave</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈhiːtweɪv/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">热浪</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hum</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/hʌm/</span></td><td><span class="eng-pos">n./v.</span></td><td class="eng-cn">嗡嗡声；发出嗡嗡声</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Humid</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈhjuːmɪd/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">潮湿的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Immerse</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪˈmɜːs/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">使浸没；使沉浸</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Jog</span></td><td><span class="eng-ipa">/dʒɒɡ/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">慢跑</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Kerosene</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈkerəsiːn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">煤油</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mosquito</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/məˈskiːtəʊ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">蚊子</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Murmur</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmɜːmə(r)/</span></td><td><span class="eng-pos">v./n.</span></td><td class="eng-cn">低语，喃喃地说</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Palpable</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpælpəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">明显的，可感知的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Patio</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpætiəʊ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">露台，庭院</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Prune</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpruːni/</span></td><td><span class="eng-pos">a.</span></td><td class="eng-cn">起皱的（尤指手指等在水中浸泡后的皱褶状态）</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Radiation</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌreɪdiˈeɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">辐射</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sauna</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsɔːnə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">桑拿房</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sensation</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/senˈseɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">感觉，感受</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Spine</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/spaɪn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">脊柱；刺</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stifling</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈstaɪflɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">闷热的；令人窒息的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Stucco</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈstʌkəʊ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（外墙）灰泥</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Suppress</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/səˈpres/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">抑制，忍住</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sweaty</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈsweti/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">出汗的，汗湿的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tan</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/tæn/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">棕褐色的；棕褐色</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u4r1-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tile</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/taɪl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">瓷砖，瓦</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Townspeople</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈtaʊnzpiːpl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">镇民，市民</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Two-stroke engine</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">二冲程发动机</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Umber</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈʌmbə(r)/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">棕褐色的；赭土色</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Unbearable</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ʌnˈbeərəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">难以忍受的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u4r1-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Uninhabitable</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌʌnɪnˈhæbɪtəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">无法居住的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u4r1-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Wail</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/weɪl/</span></td><td><span class="eng-pos">n./v.</span></td><td class="eng-cn">哀号，恸哭</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Wet-bulb temperature (WBT)</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">湿球温度（WBT）</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 4</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Exert oneself</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">努力，尽力</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pile in</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">一拥而入</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Soak up something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">吸收；沉浸于</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u4r1-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Soak something up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">吸收；沉浸于</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u4r1-text.m4a","words":"assets/english/u4r1-words.m4a","dur":440.38,"segs":[[15.91,22.41],[23.08,27.13],[28.02,31.245],[31.94,33.89],[34.84,39.89],[41.43,45.205],[45.98,50.255],[50.97,62.42],[63.24,67.99],[68.86,70.41],[71.32,73.72],[74.4,76.35],[77.14,81.64],[82.36,84.085],[84.78,85.98],[86.48,88.43],[89.26,93.66],[94.58,96.705],[98.29,110.34],[110.98,115.305],[116.0,122.425],[123.78,126.755],[127.46,129.41],[129.46,133.51],[134.42,138.97],[139.66,142.61],[143.65,147.7],[148.58,149.68],[150.6,152.45],[153.18,155.355],[156.14,157.79],[158.58,164.555],[165.24,166.94],[168.51,173.06],[173.86,177.16],[178.0,180.6],[181.38,182.98],[183.66,190.285],[191.73,198.955],[199.66,203.91],[204.62,207.37],[209.03,211.58],[212.44,214.265],[214.96,219.76],[220.6,222.55],[224.12,226.32],[227.2,227.9],[228.74,230.94],[232.41,238.16],[238.96,240.335],[240.98,242.53],[243.2,246.2],[246.86,249.01],[249.82,251.57],[252.44,257.34],[258.0,261.1],[261.88,263.18],[263.92,265.87],[267.2,268.75],[270.18,271.38],[272.1,272.9],[273.78,274.58],[275.52,276.695],[277.48,279.18],[280.06,281.66],[282.34,283.49],[285.05,291.7],[292.52,300.72],[301.4,304.25],[304.35,309.725],[310.34,312.79],[314.16,319.91],[320.66,323.01],[323.68,326.78],[327.52,332.27],[333.12,334.97],[335.84,341.14],[341.8,343.85],[344.76,345.685],[346.42,350.67],[351.46,352.185],[353.62,357.62],[358.48,359.78],[360.62,362.545],[363.26,369.61],[371.04,372.265],[372.96,375.81],[376.48,381.03],[381.76,384.035],[384.7,390.975],[392.46,394.985],[395.74,405.415],[406.1,408.1],[408.78,411.48],[412.18,413.98],[414.72,416.87],[417.62,420.545],[421.34,424.64],[425.5,430.2],[431.0,433.625],[434.32,438.32],[439.43,440.38]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

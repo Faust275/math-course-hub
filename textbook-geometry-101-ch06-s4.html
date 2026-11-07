@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§6.3 紧致曲面及其分类简介 ｜ 拓扑空间与拓扑变换 ｜ “101计划”核心教材 几何学基础 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* C 级反向联动：课本小节下的相关作业 */
+.wb-sec-related {
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px dashed var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-sec-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-sec-related-list { list-style: none; margin: 0; padding: 0; }
+.wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+.wb-sec-related-list .wb-lk-more { color: var(--muted); font-size: 12px; border-left: none; padding-left: 0; }
+
+/* C 级反向联动 · 章级：章首页整章相关作业（章级关联教材在此呈现） */
+.wb-ch-related {
+  margin: 16px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px solid var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-ch-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-ch-related .wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-ch-related .wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-ch-related .wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+math { max-width: 100%; }
+/* 侧边抽屉在视口外，会把页宽撑大，这里裁掉 */
+html, body { overflow-x: clip; }
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+/* 章首页 hub：本章小节卡片网格 */
+.wb-sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+.wb-sec-card { display: block; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .12s, box-shadow .15s; }
+.wb-sec-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.wb-sec-card .wb-sec-num { display: inline-block; color: var(--accent); font-weight: 700; margin-right: 8px; }
+.wb-sec-card .wb-sec-name { font-weight: 600; }
+.wb-sec-card:hover .wb-sec-name { color: var(--accent); }
+
+/* 节内子标题：独立成块（满足「分成两个卡片 / 把小标题加入目录」），并带锚点便于跳转 */
+.wb-subhead { font-size: 17px; font-weight: 700; color: var(--text); margin: 26px 0 12px; padding: 9px 12px;
+  background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 6px; scroll-margin-top: 86px; }
+.wb-subhead + .wb-def, .wb-subhead + .wb-thm, .wb-subhead + .wb-prop, .wb-subhead + .wb-lemma,
+.wb-subhead + .wb-cor, .wb-subhead + .wb-example, .wb-subhead + .wb-remark, .wb-subhead + .wb-exercise,
+.wb-subhead + .wb-proof { margin-top: 12px; }
+
+/* ---------- 章内目录：宽屏右侧常驻 / 窄屏抽屉 ---------- */
+.wb-chtoc{position:fixed;top:72px;right:14px;width:238px;max-height:calc(100vh - 108px);
+  display:flex;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1c1c1a);
+  border:1px solid var(--border,#e3e2dd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:70;font-size:13px;line-height:1.45;
+  transform:translateX(calc(100% + 26px));transition:transform .22s ease}
+.wb-chtoc.on{transform:none}
+@media (min-width:1420px){.wb-chtoc{transform:none;right:max(14px,calc((100vw - 940px)/2 - 252px))}}
+.wb-chtoc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-bottom:1px solid var(--border,#e3e2dd);
+  color:var(--muted,#6b6b66);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.wb-chtoc-x{border:0;background:none;color:var(--muted,#6b6b66);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.wb-chtoc-x:hover{color:var(--text,#1c1c1a)}
+@media (min-width:1420px){.wb-chtoc-x{display:none}}
+.wb-chtoc-b{overflow-y:auto;overscroll-behavior:contain;padding:5px 0 10px}
+.wb-chtoc .g>.s{display:block;padding:6px 12px 6px 10px;color:var(--text,#1c1c1a);text-decoration:none;
+  font-weight:600;border-left:3px solid transparent}
+.wb-chtoc .g>.s b{color:var(--accent,#0f6e56);margin-right:4px}
+.wb-chtoc .g>.s:hover{background:var(--surface2,#f7f7f5)}
+.wb-chtoc .g.cur>.s{border-left-color:var(--accent,#0f6e56)}
+.wb-chtoc .g>ul{list-style:none;margin:0;padding:0 0 2px;display:none}
+.wb-chtoc .g.open>ul{display:block}
+.wb-chtoc a.b{display:flex;align-items:baseline;gap:7px;padding:3.5px 12px 3.5px 20px;
+  color:var(--muted,#6b6b66);text-decoration:none;border-left:3px solid transparent}
+.wb-chtoc a.b:hover{color:var(--text,#1c1c1a);background:var(--surface2,#f7f7f5)}
+.wb-chtoc a.b i{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.wb-chtoc a.b.k-def i{background:#10b981;opacity:1}
+.wb-chtoc a.b.k-thm i{background:#2563eb;opacity:1}
+.wb-chtoc a.b.k-axiom i{background:#7c3aed;opacity:1}
+.wb-chtoc a.b.k-prop i{background:#0891b2;opacity:1}
+.wb-chtoc a.b.k-ex i{background:#d97706;opacity:1}
+.wb-chtoc a.b.k-rem i{background:#94a3b8;opacity:1}
+.wb-chtoc a.b.k-pf i{background:#cbd5e1;opacity:1}
+.wb-chtoc a.b.cur{color:var(--accent,#0f6e56);background:var(--surface2,#f7f7f5);
+  border-left-color:var(--accent,#0f6e56);font-weight:600}
+.wb-chtoc a.b.cur i{opacity:1}
+.wb-chtoc-mask{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:69;opacity:0;
+  pointer-events:none;transition:opacity .2s}
+.wb-chtoc-mask.on{opacity:1;pointer-events:auto}
+@media (min-width:1420px){.wb-chtoc-mask{display:none}}
+#wb-btn-chtoc{display:none}
+@media (max-width:1419.98px){#wb-btn-chtoc{display:inline-flex}}
+/* 锚点跳转时别被吸顶栏盖住 */
+section.wb-seg[id],div[id^="tbk_"]{scroll-margin-top:86px}
+@media print{.wb-chtoc,.wb-chtoc-mask{display:none}}
+/* 窄屏：改成整屏高的侧滑抽屉，别只盖住半截顶栏 */
+@media (max-width:1419.98px){
+  .wb-chtoc{top:0;right:0;height:100vh;max-height:100vh;width:min(300px,86vw);
+    border-radius:0;border-top:0;border-bottom:0;border-right:0}
+  .wb-chtoc-h{padding:13px 14px}
+}
+/* 顶栏工具多了会挤到换行，按钮文字不许折行 */
+.wb-tool-group{flex-wrap:wrap;justify-content:flex-end}
+.wb-tool-btn{white-space:nowrap}
+@media (max-width:600px){
+  .wb-tool-group{gap:4px}
+  .wb-tool-btn{padding:4px 6px;font-size:12px}
+}
+
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html" class="on">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html">英语</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-geometry.html">几何学</a> <span>›</span>
+    <a href="course-geometry.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 6 章 ｜ §6.3 紧致曲面及其分类简介</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-chtoc" title="本章小节与定义定理">📋 本章</button>
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header"><div class="wb-book-tagline">📖 “101计划”核心教材 几何学基础 ｜ 盛茂、王作勤 编著</div><h1 style="font-size:24px;margin:8px 0 4px;">§6.3 ｜ 紧致曲面及其分类简介</h1><div class="wb-book-meta-sub">高等教育出版社（教育部计算机与数学101计划核心教材） ｜ 原书对应页码：第  页</div></div>
+
+  
+
+  
+
+  
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§6.3</span> 紧致曲面及其分类简介</h3><p>20 世纪之前, 拓扑学的主要成就是关于曲面的研究. 为简单起见, 本节只考虑连通的曲面, 因为对于不连通的曲面, 可以分别考虑它的每个连通分支; 此外本节也只考虑紧致的曲面, 因为不紧致的曲面可以有非常复杂的结构.</p>
+<p>什么是曲面呢？简单来说，曲面就是这样一个图形，它的每个点都有一个同胚于开圆盘的邻域（此处我们不考虑“抽象曲面”，否则还需加上其他拓扑限制）。于是，紧致曲面就是满足“每个点都有一个同胚于开圆盘的邻域”的封闭图形。注意，根据这个定义，紧致曲面是没有边缘的，因为边缘的点不存在同胚于开圆盘的邻域。不过，边缘点的拓扑性质也不算太差：它们都有同胚于半圆盘的邻域。我们把带有这类边缘点的“曲面”叫做带边曲面。它们虽然不是严格意义下的曲面，但对于简化曲面的研究有重要作用。例如，图6.11中五个图形，前两个是紧致曲面，第三个是带边曲面，而后面两个则不是曲面。</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_103.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图6.11 曲面与非曲面</p>
+<h4 class="wb-subhead" id="sub_1"><b>带柄球面及其欧拉公式</b></h4>
+<p>上节提到, 欧拉公式所刻画的事实上是球面的拓扑性质: 所有跟球面同胚的多面体, 它的欧拉示性数都是 2, 于是我们也说球面的欧拉示性数为 2. 对于同胚于环面 (即轮胎面) 的多面体, 上文算出了图 6.7 中最后一个多面体的欧拉示性数是 0. 事实上, 对于任意同胚于环面的多面体, 其欧拉示性数都是 0. 当然还有更复杂的多面体, 它们同胚于更复杂的曲面, 算出来的欧拉示性数也不一样.</p>
+<p>为了算出更一般多面体的欧拉示性数, 考虑下面这类一般的曲面: 在拓扑上, 它们是通过“在球面上安装一定数量的环柄”所形成的. 图6.12展示的是“球面上安装三个环柄”所得的曲面. 类似地, 可以在球面上安装任意(有限)多个环柄. 拓扑上可以把环面当做带有一个环柄的球面.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_104.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图6.12 亏格为3的曲面</p>
+<div class="wb-remark">
+  <div class="wb-blk-title"><span>注意</span><span class="tag">深入诠释</span></div>
+<p>在 “安装环柄” 时, 我们是在球面上打洞的 (否则安装完成后就不是曲面了). 安装的环柄数被称作该曲面的亏格. 于是, 球面是亏格为 0 的曲面, 轮胎面是亏格为 1 的曲面, 而图 6.12 给出的则是亏格为 3 的曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> .</p>
+<p>记上述亏格为 g 的曲面为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> . 1812 年吕利耶 (L'Huilier, 1750—1840) 把欧拉公式推广到了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> 上：</p>
+</div>
+<div class="wb-thm" id="tbk_1">
+  <div class="wb-blk-title"><span>定理 6.3.1</span><span class="tag">核心定理</span></div>
+<p>（广义欧拉公式） 若多面体 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 同胚于亏格为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 的曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> ，则它的欧拉示性数为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>−</mo><mi>E</mi><mo>+</mo><mi>F</mi><mo>=</mo><mn>2</mn><mo>−</mo><mn>2</mn><mi>g</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">V - E + F = 2 - 2 g.</annotation></semantics></math></div></div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 同胚于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> , 所以在同胚映射下, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 对应于一个恰好覆盖 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> 的曲边多边形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> , 于是只要对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> 的顶点、曲线段、曲面片计数即可.</p>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> 上覆盖有一个曲边多边形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> . 在该曲边多边形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> 的基础之上, 再给 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> 的每个环柄增加 2 个“曲边圆”(总共增加 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个曲边圆), 使得</p>
+</div>
+<ul><li>该“曲边圆”不经过原有曲边多边形的顶点,且跟原有曲边多边形的边只相交而没有重合的段.</li></ul>
+<ul><li>这两个“曲边圆”能在环柄上切割下一个同胚于圆柱面的部分.</li></ul>
+<p>我们把“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> 添加了这样 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个曲边圆”后所得的新曲边多边形称为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;&#x27;</annotation></semantics></math> . 注意在每次添加一个曲边圆的时候, 若该曲边圆跟原曲边多边形交于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 个点, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;&#x27;</annotation></semantics></math> 跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> 相比, 多了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 个顶点, 多了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>k</mi></mrow><annotation encoding="application/x-tex">2k</annotation></semantics></math> 条“曲线段”(其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 条是该曲边圆被这 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 个点所分割而成的, 另外 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 条则是这 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 个点把原本 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> 的边分割而多出来的), 多了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 个曲面片 (曲边圆的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 段, 每一段都把所在的曲面片分成两个曲面片). 于是, 添加这样的曲边圆并不改变曲边多面体的欧拉示性数, 即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;&#x27;</annotation></semantics></math> 的欧拉示性数跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;</annotation></semantics></math> 的欧拉示性数相同.</p>
+<p>用这 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个曲边圆可以把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;&#x27;</annotation></semantics></math> 分成两部分, 一部分是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 个同胚于圆柱的部分, 另一部分则同胚于球面挖掉 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个圆盘. 我们分别处理:</p>
+<ol class="wb-num-list"><li>对于每个“曲边多边形圆柱”，如果添加两个“圆盖”(即添加2个面，但不添加点或线)，则得到一个拓扑球面。于是每个“曲边多边形圆柱”的欧拉示性数比球面的欧拉示性数少2。从而由欧拉定理，无论其内部曲边多边形是什么构型，“曲边多边形圆柱”的欧拉示性数总是0。</li><li>对于同胚于球面挖掉 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个圆盘的部分, 如果添加 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个“圆盖”(即添加 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个面, 但不添加点或线), 则得到一个拓扑球面. 于是这部分的欧拉示性数是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2 - 2g</annotation></semantics></math> .</li><li>最后, 在算这两部分的欧拉示性数时, 重复计算了落在这 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2g</annotation></semantics></math> 个曲边圆上的顶点与曲边. 但每个曲边圆上的点数与曲边数相同, 正好抵消了. 综上, 可知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">P&#x27;&#x27;</annotation></semantics></math> 的欧拉示性数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">2 - 2g</annotation></semantics></math> . 于是定理成立. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>□</mo></mrow><annotation encoding="application/x-tex">\square</annotation></semantics></math> </li></ol>
+<p>多面体的欧拉示性数是一个拓扑量, 它仅依赖于该多面体的 “拓扑性态”. 跟球面情形一样, 称</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub><mo>)</mo><mo>=</mo><mn>2</mn><mo>−</mo><mn>2</mn><mi>g</mi></mrow><annotation encoding="application/x-tex">\chi (\Sigma_ {g}) = 2 - 2 g</annotation></semantics></math></div>
+<p>为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> 的欧拉示性数.</p>
+<h4 class="wb-subhead" id="sub_2"><b>作为曲面的射影平面</b></h4>
+<p>一个自然的问题是：除了上面所给出的这些带 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 个“洞”的曲面之外，从拓扑上看（这意味着我们把拓扑上等价的曲面都看做同一个曲面，例如把所有的简单多面体都看做球面），还有别的紧致（无边界）曲面吗？</p>
+<p>答案是“是的, 还有”. 事实上, 有一个我们已经非常熟悉的“曲面”, 它并不在上面的列表中, 那就是射影平面. 为说明它是曲面, 可采用射影平面的“球面粘合对径点”模型, 即视之为由球面模去等价关系 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∼</mo><mo>±</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x \sim \pm x</annotation></semantics></math> 后所得到的等价类集合</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><msup><mi>S</mi><mrow><mn>2</mn></mrow></msup><mo>/</mo><mo>{</mo><mo>±</mo><mn>1</mn><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbb {R P} ^ {2} = S ^ {2} / \{\pm 1 \}.</annotation></semantics></math></div>
+<p>在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{RP}^2</annotation></semantics></math> 的这个“球面商”模型里, 射影平面里的直线恰好一一对应于球面上的大圆 (见习题5第2题).</p>
+<p>跟“空间商”模型（即视空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 中的直线为射影平面的点）相比，“球面商”模型的好处在于“点还是点（准确地说是“点对”）”，于是从这个模型出发，可以可视化地“构建”射影平面的形状。具体如下：因为球面上每组对径点都是射影平面中同一个点的代表元，所以可以“切掉”上半球面，而只保留下半球面和赤道，并记所得的图形为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msubsup><mi>S</mi><mrow><mo>+</mo></mrow><mrow><mn>2</mn></mrow></msubsup></mrow><mo>¯</mo></mover></mrow><annotation encoding="application/x-tex">\overline{S_+^2}</annotation></semantics></math> 。则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{RP}^2</annotation></semantics></math> 相当于从 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msubsup><mi>S</mi><mrow><mo>+</mo></mrow><mrow><mn>2</mn></mrow></msubsup></mrow><mo>¯</mo></mover></mrow><annotation encoding="application/x-tex">\overline{S_+^2}</annotation></semantics></math> 出发，粘合赤道上的对径点所得的图形。</p>
+<p>当然, 如果你直接从半球出发, 粘合赤道上所有可能的对径点, 会发现怎么也粘不好. 这件事一点也不奇怪, 因为这个 “粘合过程” 实际上是无法真正在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 中实现的. 图6.13大致展示了如何从半球面模型出发, 通过粘合所有对径点得到射影平面 “图像”</p>
+<p>的过程, 从中我们可以看到难点在哪儿, 以及如何通过 “想象” 来解决这个问题: 先任选一组对径点并粘合, 得到图 (b). 此时可以发现, 原来的一个赤道圆变成了两个小圆, 而且原本跟第一个小圆中的点对径的点恰好落在了第二个小圆中. 于是, 我们把两个小圆分成四个半圆, 分别如图做标记 (即标上图示的字母和箭头), 通过字母和箭头方向来表明粘合方式: 标记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的半圆要跟另一个标记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的半圆沿着图示的方向粘合, 标记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math> 的两个半圆也类似. 为了能够进行粘合, 我们把这两个小圆拉高一些 (在拓扑里, 这样操作是没有问题的), 如图 (c) 所示. 最后, 我们在头脑中想象把标有同样字母的半圆粘合, 得到最后图 (d) 所示的样子.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_105.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>(a)</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_106.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>(b)</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_107.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>(c)</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_108.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>(d)</p>
+<p>图6.13 射影平面的“图像”</p>
+<p>但是, 切记, 标有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的半圆上的点跟标有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math> 的半圆上的点是没有粘合的. 所以, 在最后的图 (d) 中, 中间的那条竖线其实是不存在的, 即曲面自己跟自己是没有交叉的. 这就是为什么上面说这样的粘合过程 (以及曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℝ</mi><msup><mi>ℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}\mathbb{P}^2</annotation></semantics></math> 本身) 是无法真正在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 中实现的 (等价地说, 作为曲面, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℝ</mi><msup><mi>ℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}\mathbb{P}^2</annotation></semantics></math> 并不能被嵌入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> . 不过, 它能被嵌入更高维的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^4</annotation></semantics></math> ).</p>
+<div class="wb-remark">
+  <div class="wb-blk-title"><span>注意</span><span class="tag">深入诠释</span></div>
+<p>这个图展示了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℝ</mi><msup><mi>ℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}\mathbb{P}^2</annotation></semantics></math> 为什么是一个紧致曲面: 首先, 对于图上的任意一点, 可以找到它的一个“邻域”, 该区域跟二维圆盘同胚 (对于原先处于赤道外的点, 这是显然的; 对于原先处于赤道上的点, 可以更改一下模型, 即改用不经过该点的“经度圆”切割球面, 然后重复上述过程即可. 注意, 无论采用哪个模型, 用哪种切割方式, 所得的都是同一个射影平面); 其次, 这个图形是有界 (严格说起来, 因为放不到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 中, 所以要放在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^4</annotation></semantics></math> 中才能看到有界性) 且封闭 (没有边界) 的.</p>
+<p>射影平面有没有欧拉示性数呢？答案是“有的”。下面是一种形象的计算方法：考虑张在球面上且具有“对径点对称性”的多面体，例如正八面体。如果把这个正八面体“对径点”粘起来，就得到一个“张在射影平面上的多面体（当然，此时其实它已经不是我们熟悉的多面体了，而只是一种‘抽象多面体’：由多边形面沿着边粘接而成的封闭图形）”。这个抽象多面体有4个面（原本八面体有8个面，粘接后变成4个面），6条棱（原本八面体有12条棱，粘接后变成6条棱）和3个顶点（原本八面体有6个顶点，粘接后变成3个顶点）。于是，射影平面的欧拉示性数是（严格说来我们并没有证明对任意曲面，欧拉示性数都是拓扑量，即不依赖于这类抽象多面体的选择。其证明需要更多的拓扑知识，此处姑且承认它）</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>=</mo><mn>4</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1.</mn></mrow><annotation encoding="application/x-tex">\chi (\mathbb {R P} ^ {2}) = 4 - 6 + 3 = 1.</annotation></semantics></math></div><p>当然, 在计算过程中, 我们完全可以改用张在球面上的其他具有 “对径点对称性” 的多面体开始计算. 因为球面上的多面体的欧拉示性数是 2, 而所得的 “抽象多面体” 点、线、面数都恰好减半, 所以这样算出来的射影平面的欧拉示性数总是 1.</p></div>
+<h4 class="wb-subhead" id="sub_3"><b>单侧曲面：射影平面与克莱因瓶</b></h4>
+<p>那么, 跟前面提到的 “有 g 个洞的曲面” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_{g}</annotation></semantics></math> 相比, 射影平面有哪些不同之处呢? 当然, 一个很大的不同在于不能作为子集出现在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">R^{3}</annotation></semantics></math> 中. 另外一个更加本质性的差别在于: 它是单侧曲面.</p>
+<p>为了理解单侧曲面的概念, 先研究更常见也更熟悉的双侧曲面. 例如, 对于球面, 我们可以给它的内表面和外表面各涂上一种颜色, 则这两种颜色不会相遇. 等价地, 如果有两只蚂蚁, 一只蚂蚁在球面的外表面爬行而另外一只在球面的内表面爬行 (球面上没有洞), 那它们就不可能相遇. 这样的曲面称作双侧曲面. 我们熟悉的曲面, 例如球面、环面, 或者亏格为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 的曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> , 都是双侧曲面.</p>
+<p>而单侧曲面则不然：这样的曲面不存在相互不通的正反两侧，而是只有一侧：蚂蚁从曲面一点处爬行，可以爬到该点处的“背面”去。射影平面就是这样一种曲面：如果从曲面最底端的外表面出发(图6.13(d))，先沿着最右侧曲线向上，到达某个图中所示的“8”字形时，改为向左爬，越过中间那条事实上并不存在的交叉线，就进入了曲面的内表面，到达最左端后在内表面沿着左侧曲线向下，就会到达起点处的背面（即该曲面最底端的内表面）！所以，射影平面是单侧曲面。</p>
+<p>那么, 除了射影平面之外, 还有别的单侧曲面吗? 还有大量的单侧曲面, 其构造方法也很简单: 左手拿一个亏格为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 的曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> , 右手拿一个射影平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℝ</mi><msup><mi>ℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}\mathbb{P}^2</annotation></semantics></math> , 用小刀在两者的底部各挖一个圆洞, 然后将这两个曲面沿着洞口边缘的圆粘接起来, 就会得到另一个单侧曲面. 这种把两个图形“各挖一个小圆洞并沿着洞口边缘粘接起来”的操作方法, 在拓扑上被称作连通和 (图6.14). 连通和是构造曲面的重要方法. 例如, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> 可以被视为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 个环面依次做连通和所得的曲面.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_109.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图6.14 连通和</p>
+<p>事实上, 不仅可以拿着射影平面跟曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> 做连通和, 而且可以拿两个射影平面做连通和. 会得到什么呢? 很神奇的是, 会得到图6.15所示的克莱因瓶. 克莱因瓶最早是由埃尔朗根纲领的提出者克莱因发现的. 跟射影平面的“图像”类似, 这也不是一个真实的图像, 因为它不能被实现为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 中的曲面; 另一方面, 也不难“看出”它是单侧曲面.</p>
+<p>不过, 如何理解 “两个射影平面的连通和是克莱因瓶” 呢?</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_110.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图6.15 克莱因瓶的“图像”</p>
+<h4 class="wb-subhead" id="sub_4"><b>单侧性的根源：默比乌斯带</b></h4>
+<p>无论是射影平面还是克莱因瓶, 或者用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> 跟它们做连通和所得的单侧曲面, 都是不可被嵌入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 的. 因而, 理解它们时也往往有种“雾里看花”的感觉. 不过, 也并非不能清晰地展示曲面的单侧性, 只是要付出一点点代价, 那就是从封闭曲面转向带边曲面.</p>
+<p>最简单的 (同时也是最重要的) 单侧带边曲面, 叫做默比乌斯带, 是 1858 年由 68 岁高龄的默比乌斯 (Möbius, 1790—1868) 和高斯的学生利斯廷 (Listing, 1808—1882) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> 分别独立地发现的. 其构造方法非常简单, 也很容易在三维空间实现: 取一张长方形纸条, 如图 6.16 所示, 将它扭转 180° 后粘合对边, 所得的曲面就是默比乌斯带. 图 6.17 是著名 “数学画家” 埃舍尔 (Escher, 1898—1972) 所创作的用以展示默比乌斯带单侧性的画作.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_111.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图6.16 制作默比乌斯带</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_112.jpg" alt="image"><figcaption>image</figcaption></figure>
+<div class="wb-diagram">
+  <div class="wb-blk-title"><span>图 6.17 默比乌斯带单侧性 (埃舍尔)</span><span class="tag">图解</span></div>
+<p>图 6.17 默比乌斯带单侧性 (埃舍尔)</p>
+<p>跟前面所提到的那些封闭单侧曲面相比, 默比乌斯带最大的优点在于它的单侧性是在三维空间里真正可以看见的. 不妨把默比乌斯带跟常见的圆柱面作个比较. 圆柱面的构作方式跟默比乌斯带类似, 而且更简单: 取一张长方形纸条, 不扭转, 直接粘合对边即可. 圆柱面的中轴是一个圆, 它的边界是不连通的, 是两个圆. 显然, 圆柱面是双侧曲面: 除非翻越边界线, 否则蚂蚁无法从它的一侧爬到另一侧. 另一方面, 默比乌斯带的中轴跟圆柱面一样, 也是一个圆; 但是, 默比乌斯带的边界是连通的, 该边界在拓扑上是一个圆! 如果蚂蚁沿着默比乌斯带的中轴圆爬一圈 (所以没有翻越边界线), 你会发现蚂蚁爬到起点处的背面去了.</p>
+<p>根据定义, 如果蚂蚁在曲面上 (不翻越边界线) 能够从一点爬到该点的背面, 则这个曲面是单侧曲面. 于是下面这个命题是显然的:</p>
+</div>
+<div class="wb-thm" id="tbk_2">
+  <div class="wb-blk-title"><span>命题 6.3.2</span><span class="tag">命题</span></div>
+<p>（默比乌斯带与单侧性）如果一个曲面里面包含一个默比乌斯带（即该曲面有一个子集跟默比乌斯带同胚)，则该曲面是不可定向的.</p>
+<p>下面说明：无论是射影平面，还是克莱因瓶，里面都“藏着”默比乌斯带（事实上，任意单侧曲面都包含着默比乌斯带。所以可以认为默比乌斯带是曲面单侧性的根源）！首先看射影平面。如果从射影平面挖去一个洞，剩余部分是什么呢？直接看射影平面看不清楚，我们回到射影平面的“球面商”模型。因为对径的关系，从射影平面上挖去一个洞，等价于从球面北极和南极附近各挖一个同样的洞，再把剩余的部分按对径点粘合。因为在拓扑中可以连续形变，不妨设挖去了球面的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>z</mi><mo>|</mo><mo>&gt;</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|z| &gt; 1 / 2</annotation></semantics></math> 的部分。于是“射影平面挖去一个洞”在拓扑上就等同于“球面上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>z</mi><mo>|</mo><mo>≤</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|z| \leqslant 1 / 2</annotation></semantics></math> 的部分，按照对径点粘合”。我们再一次拿起剪刀，咔嚓咔嚓，把球面上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>z</mi><mo>|</mo><mo>≤</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|z| \leqslant 1 / 2</annotation></semantics></math> 的这部分剪去一半，例如剪去 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x &lt; 0</annotation></semantics></math> 的部分，因为这部分的点都跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x &gt; 0</annotation></semantics></math> 部分的点是等价的。剩下的部分，只剩下两侧即“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>|</mo><mi>z</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>,</mo><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0, |z| &lt; 1 / 2, y &gt; 0</annotation></semantics></math> 部分”和“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>|</mo><mi>z</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>,</mo><mi>y</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0, |z| &lt; 1 / 2, y &lt; 0</annotation></semantics></math> 部分”需要按照对径的方式粘合。显然，剩下的这一部分，在拓扑上是一个长方形，而“按照对径的方式粘合”恰好相对于是“把该长方形扭曲 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>180</mn><mrow><mo>∘</mo></mrow></msup></mrow><annotation encoding="application/x-tex">180^{\circ}</annotation></semantics></math> 再粘合”！所以我们证明了</p>
+</div>
+<div class="wb-thm" id="tbk_3">
+  <div class="wb-blk-title"><span>命题 6.3.3</span><span class="tag">命题</span></div>
+<p>(射影平面挖洞 = 默比乌斯带) 如果从射影平面中挖去一个小洞, 那么剩余部分同胚于默比乌斯带.</p>
+<p>由这个性质, 可以计算默比乌斯带的欧拉示性数: 从 “张在射影平面的任意抽象多面体” 开始, 不改变它的顶点和线, 而只是任意去掉它的一个多边形面 (拓扑上就是去掉了一个圆盘), 则剩下的抽象 (带边) 多面体就跟默比乌斯带同胚. 于是, 默比乌斯带的欧拉示性数恰好比射影平面的欧拉示性数少 1, 即</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><mi>默比乌斯带</mi><mo>)</mo><mo>=</mo><mi>χ</mi><mo>(</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>1</mn><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\chi (\mathbb {\mathrm{默比乌斯带}}) = \chi (\mathbb {R P} ^ {2}) - 1 = 0.</annotation></semantics></math></div><p>现在我们可以回答上面的问题: 如何理解两个射影平面的连通和是克莱因瓶呢? 根据定义, 用两个射影平面做连通和, 是从每个射影平面挖去一个小圆洞, 然后沿着边界圆粘合. 因为从射影平面中挖去一个小洞后剩余的部分同胚于默比乌斯带, 所以 “用两个射影平面做连通和”就相当于“把两个默比乌斯带沿着边界圆粘合起来”。图6.18展示了如何把两个默比乌斯带沿着边界圆粘合起来得到克莱因瓶。</p></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_113.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图6.18 粘合两个默比乌斯带</p>
+<p>所以</p>
+<div class="wb-thm" id="tbk_4">
+  <div class="wb-blk-title"><span>命题 6.3.4</span><span class="tag">命题</span></div>
+<p>(射影平面连通和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo></mrow><annotation encoding="application/x-tex">=</annotation></semantics></math> 克莱因瓶） 两个射影平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{RP}^2</annotation></semantics></math> 的连通和是克莱因瓶 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math> .</p>
+<p>最后, 这个命题也给出了克莱因瓶 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math> 的欧拉示性数: 用同样的任意抽象多面体张在两个射影平面上, 各挖去一个对应的多边形面, 并沿着边界粘合, 就给出了“张在克莱因瓶上的抽象多面体”. 跟原来的两个抽象多面体相比, 这个多面体少了两个面, 此外, 还少了一些边和点, 即原来抽象多面体中沿着“粘合边界”(即挖去的那个多边形的边界) 的点和边: 显然, 如果挖去的是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 边形, 则这个边界上恰有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 个点和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 条边, 从而在计算欧拉示性数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>−</mo><mi>E</mi><mo>+</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">V - E + F</annotation></semantics></math> 时, 二者抵消了. 于是, 克莱因瓶的欧拉示性数比两个射影平面的欧拉示性数之和少 2, 即</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><mi>K</mi><mo>)</mo><mo>=</mo><mi>χ</mi><mo>(</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>+</mo><mi>χ</mi><mo>(</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>2</mn><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\chi (K) = \chi (\mathbb {R P} ^ {2}) + \chi (\mathbb {R P} ^ {2}) - 2 = 0.</annotation></semantics></math></div><p>如果记两个曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">S_{1}</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">S_{2}</annotation></semantics></math> 的连通和为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mn>1</mn></mrow></msub><mo>#</mo><msub><mi>S</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">S_{1} \# S_{2}</annotation></semantics></math> , 则本质上同样的论证告诉我们</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><msub><mi>S</mi><mrow><mn>1</mn></mrow></msub><mo>#</mo><msub><mi>S</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mi>χ</mi><mo>(</mo><msub><mi>S</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>+</mo><mi>χ</mi><mo>(</mo><msub><mi>S</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>−</mo><mn>2.</mn></mrow><annotation encoding="application/x-tex">\chi (S _ {1} \# S _ {2}) = \chi (S _ {1}) + \chi (S _ {2}) - 2.</annotation></semantics></math></div><p>由此以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma_g</annotation></semantics></math> 可表示成球面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math> 个环面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{T}^2</annotation></semantics></math> 的连通和, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>≥</mo><mn>0</mn><mo>(</mo><mi>g</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">g \geqslant 0 (g = 0</annotation></semantics></math> 时对应的曲面是球面), 并结合 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><msup><mi>S</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>=</mo><mn>2</mn><mo>,</mo><mi>χ</mi><mo>(</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\chi(S^2) = 2, \chi(\mathbb{T}^2) = 0</annotation></semantics></math> , 我们再次得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub><mo>)</mo><mo>=</mo><mi>χ</mi><mo>(</mo><msup><mi>S</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>+</mo><mi>g</mi><mo>·</mo><mi>χ</mi><mo>(</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>2</mn><mi>g</mi><mo>=</mo><mn>2</mn><mo>−</mo><mn>2</mn><mi>g</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\chi (\Sigma_ {g}) = \chi (S ^ {2}) + g \cdot \chi (\mathbb {T} ^ {2}) - 2 g = 2 - 2 g.</annotation></semantics></math></div><p>另一方面, 若记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\widetilde{\Sigma}_l</annotation></semantics></math> 为球面和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{RP}^2</annotation></semantics></math> 的连通和, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">l \geqslant 1</annotation></semantics></math> , 则</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>χ</mi><mo>(</mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mi>l</mi></mrow></msub><mo>)</mo><mo>=</mo><mi>χ</mi><mo>(</mo><msup><mi>S</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>+</mo><mi>l</mi><mo>·</mo><mi>χ</mi><mo>(</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>2</mn><mi>l</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>l</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\chi (\widetilde {\Sigma} _ {l}) = \chi (S ^ {2}) + l \cdot \chi (\mathbb {R P} ^ {2}) - 2 l = 2 - l.</annotation></semantics></math></div></div>
+<h4 class="wb-subhead" id="sub_5"><b>紧致连通曲面分类定理</b></h4>
+<p>综上所述, 我们得到了两族紧致连通曲面, 第一族是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>S</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><msub><mi>Σ</mi><mrow><mn>2</mn></mrow></msub><mo>=</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>#</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><msub><mi>Σ</mi><mrow><mn>3</mn></mrow></msub><mo>=</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>#</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>#</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><mo>…</mo><mo>,</mo><mo> </mo><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub><mo>,</mo><mo> </mo><mo>…</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">S ^ {2}, \quad \mathbb {T} ^ {2}, \quad \Sigma_ {2} = \mathbb {T} ^ {2} \# \mathbb {T} ^ {2}, \quad \Sigma_ {3} = \mathbb {T} ^ {2} \# \mathbb {T} ^ {2} \# \mathbb {T} ^ {2}, \quad \dots , \quad \Sigma_ {g}, \quad \dots ,</annotation></semantics></math></div>
+<p>它们都是双侧曲面, 欧拉示性数两两不同且都是不超过 2 的偶数; 第二族是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mn>2</mn></mrow></msub><mo>=</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>#</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mn>3</mn></mrow></msub><mo>=</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>#</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>#</mo><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><mo>…</mo><mo>,</mo><mo> </mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mi>l</mi></mrow></msub><mo>,</mo><mo> </mo><mo>…</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbb {R P} ^ {2}, \quad \widetilde {\Sigma} _ {2} = \mathbb {R P} ^ {2} \# \mathbb {R P} ^ {2}, \quad \widetilde {\Sigma} _ {3} = \mathbb {R P} ^ {2} \# \mathbb {R P} ^ {2} \# \mathbb {R P} ^ {2}, \quad \dots , \quad \widetilde {\Sigma} _ {l}, \quad \dots ,</annotation></semantics></math></div>
+<p>它们都是单侧曲面, 欧拉示性数两两不同且都是不超过 1 的整数. 因为单侧性以及欧拉示性数都是拓扑量, 所以这两族曲面中任意两个在拓扑上都是不同的曲面.</p>
+<p>事实上, 它们就是 (拓扑上) 所有的紧致连通曲面了:</p>
+<div class="wb-thm" id="tbk_5">
+  <div class="wb-blk-title"><span>定理 6.3.5</span><span class="tag">核心定理</span></div>
+<p>（紧致连通曲面分类定理） 任意紧致连通曲面同胚且仅同胚于下述曲面中的一个：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mo>•</mo></mtd><mtd><msup><mi>S</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><msup><mi>𝕋</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><msub><mi>Σ</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>Σ</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>Σ</mi><mrow><mi>g</mi></mrow></msub><mo>,</mo><mo>…</mo><mo>;</mo></mtd></mtr><mtr><mtd><mo>•</mo></mtd><mtd><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mover><mrow><mi>Σ</mi></mrow><mo>~</mo></mover><mrow><mi>l</mi></mrow></msub><mo>,</mo><mo>…</mo><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{l l} \bullet &amp; S ^ {2}, \mathbb {T} ^ {2}, \Sigma_ {2}, \Sigma_ {3}, \dots , \Sigma_ {g}, \dots ; \\ \bullet &amp; \mathbb {R P} ^ {2}, \widetilde {\Sigma} _ {2}, \widetilde {\Sigma} _ {3}, \dots , \widetilde {\Sigma} _ {l}, \dots . \end{array}</annotation></semantics></math></div><p>特别地, 紧致连通曲面在拓扑变换下的等价类由“该曲面是否是单侧曲面”以及“该曲面的欧拉示性数”完全确定下来.</p></div>
+<p>其证明可参见 [15].</p></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-geometry-101-ch06-s3.html">‹ 上一节：欧拉多面体公式</a><a class="wb-nav-btn hub" href="textbook-geometry-101-ch06.html">📚 本章目录</a><a class="wb-nav-btn next" href="textbook-geometry-101-ch06-s5.html">下一节：习题 6 ›</a></div>
+</main>
+
+<nav class="wb-chtoc" id="wb-chtoc" aria-label="本节目录"><div class="wb-chtoc-h"><span>本节目录</span><button class="wb-chtoc-x" id="wb-chtoc-close" title="收起目录">×</button></div><div class="wb-chtoc-b" id="wb-chtoc-body"><div class="g" data-s="sub_1"><a class="s" href="#sub_1" data-t="sub_1">带柄球面及其欧拉公式</a></div><div class="g" data-s="sub_2"><a class="s" href="#sub_2" data-t="sub_2">作为曲面的射影平面</a><ul><li><a class="b k-thm" href="#tbk_1" data-t="tbk_1" title="定理6.3.1（广义欧拉公式） 若多面体 同胚于亏格为 的曲面 ，则它的欧拉示性数为"><i></i>定理6.3.1</a></li></ul></div><div class="g" data-s="sub_3"><a class="s" href="#sub_3" data-t="sub_3">单侧曲面：射影平面与克莱因瓶</a></div><div class="g" data-s="sub_4"><a class="s" href="#sub_4" data-t="sub_4">单侧性的根源：默比乌斯带</a></div><div class="g" data-s="sub_5"><a class="s" href="#sub_5" data-t="sub_5">紧致连通曲面分类定理</a><ul><li><a class="b k-thm" href="#tbk_2" data-t="tbk_2" title="命题6.3.2（默比乌斯带与单侧性）如果一个曲面里面包含一个默比乌斯带（即该曲面有一个子集跟默比乌斯带同胚)，则该曲面是不可定向的."><i></i>命题6.3.2</a></li><li><a class="b k-thm" href="#tbk_3" data-t="tbk_3" title="命题 6.3.3 (射影平面挖洞 = 默比乌斯带) 如果从射影平面中挖去一个小洞, 那么剩余部分同胚于默比乌斯带."><i></i>命题 6.3.3</a></li><li><a class="b k-thm" href="#tbk_4" data-t="tbk_4" title="命题6.3.4(射影平面连通和 克莱因瓶） 两个射影平面 的连通和是克莱因瓶 ."><i></i>命题6.3.4</a></li><li><a class="b k-thm" href="#tbk_5" data-t="tbk_5" title="定理6.3.5（紧致连通曲面分类定理） 任意紧致连通曲面同胚且仅同胚于下述曲面中的一个："><i></i>定理6.3.5</a></li></ul></div></div></nav><div class="wb-chtoc-mask" id="wb-chtoc-mask"></div>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-geometry-101-ch01.html">第 1 章 ｜ 几何与公理化</a></li>
+<li><a href="textbook-geometry-101-ch02.html">第 2 章 ｜ 向量与欧氏空间</a></li>
+<li><a href="textbook-geometry-101-ch03.html">第 3 章 ｜ 刚体变换</a></li>
+<li><a href="textbook-geometry-101-ch04.html">第 4 章 ｜ 几何与变换</a></li>
+<li><a href="textbook-geometry-101-ch05.html">第 5 章 ｜ 射影平面与射影变换</a></li>
+<li><a href="textbook-geometry-101-ch06.html" class="cur">第 6 章 ｜ 拓扑空间与拓扑变换</a></li>
+<li><a href="textbook-geometry-101-chA.html">第 A 章 ｜ 附录  集合论与代数基础</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_geometry-101_ch06_s4",
+  book_id: "geometry-101",
+  ch_id: "ch06",
+  title: "§6.3 紧致曲面及其分类简介"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (window.wbSetTheme) window.wbSetTheme(isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      if (window.wbSetTheme) window.wbSetTheme(darkNow ? 'dark' : 'light');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById('wb-chtoc');
+  if (!panel) return;
+  var mask = document.getElementById('wb-chtoc-mask');
+  var btn = document.getElementById('wb-btn-chtoc');
+  var closeBtn = document.getElementById('wb-chtoc-close');
+  var body = document.getElementById('wb-chtoc-body');
+  var wide = window.matchMedia('(min-width:1420px)');
+  function setOpen(v){
+    panel.classList.toggle('on', !!v);
+    if (mask) mask.classList.toggle('on', !!v && !wide.matches);
+  }
+  if (btn) btn.addEventListener('click', function(){ setOpen(!panel.classList.contains('on')); });
+  if (closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
+  if (mask) mask.addEventListener('click', function(){ setOpen(false); });
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+
+  var links = [].slice.call(panel.querySelectorAll('a[data-t]'));
+  /* 自己接管跳转：长章节动辄三万像素，默认平滑滚动要滚好几秒，
+     而且 MathJax 懒渲染会在途中改变行高，落点会偏。远距离直接瞬移，落稳后再校正一次。 */
+  function goTo(el){
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 86;
+    var far = Math.abs(y - window.pageYOffset) > 1600;
+    window.scrollTo({ top: y, behavior: far ? 'instant' : 'smooth' });   // 'auto' 会退回 CSS 的 smooth
+    [far ? 420 : 900, 1400].forEach(function(ms){
+      setTimeout(function(){
+        if (!el) return;
+        var d = el.getBoundingClientRect().top - 86;
+        if (Math.abs(d) > 4) window.scrollBy(0, d);   // 补一次：上面懒渲染的公式可能把行高改了
+      }, ms);
+    });
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-t'));
+      if (el){
+        e.preventDefault();
+        goTo(el);
+        try { history.replaceState(null, '', '#' + el.id); } catch (err) { location.hash = el.id; }
+      }
+      if (!wide.matches) setOpen(false);
+    });
+  });
+  var map = links.map(function(a){
+    var el = document.getElementById(a.getAttribute('data-t'));
+    return el ? { a: a, el: el } : null;
+  }).filter(Boolean);
+  var groups = [].slice.call(panel.querySelectorAll('.g'));
+  var raf = null, lastG = null;
+  function spy(){
+    raf = null;
+    var act = null;
+    for (var i = 0; i < map.length; i++){
+      if (map[i].el.getBoundingClientRect().top <= 116) act = map[i]; else break;
+    }
+    if (!act && map.length) act = map[0];
+    links.forEach(function(a){ a.classList.remove('cur'); });
+    if (!act) return;
+    act.a.classList.add('cur');
+    var g = act.a.closest('.g');
+    if (g !== lastG){
+      lastG = g;
+      groups.forEach(function(x){
+        x.classList.toggle('open', x === g);
+        x.classList.toggle('cur', x === g);
+      });
+    }
+    if (body){
+      var br = body.getBoundingClientRect(), ar = act.a.getBoundingClientRect();
+      if (ar.top < br.top + 6 || ar.bottom > br.bottom - 6){
+        body.scrollTop += (ar.top - br.top) - (br.height / 2 - ar.height / 2);
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){ if (raf === null) raf = requestAnimationFrame(spy); }, { passive: true });
+  window.addEventListener('resize', function(){ if (raf === null) raf = requestAnimationFrame(spy); });
+  spy();
+})();
+</script>
+</body>
+</html>

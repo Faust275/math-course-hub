@@ -820,6 +820,11 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+math{max-width:100%}
+/* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
+html,body{overflow-x:clip}
 .wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
  border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
  font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
@@ -1262,9 +1267,44 @@ window.MathJax = {
 </script>
   </script>
   <script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
 </head>
 <body class="wb-lecture-page">
-  <div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-algebra.html?tab=homework">← 代数学Ⅰ作业</a><a href="course-algebra.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html" class="wb-cur">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">代数学Ⅰ <span>›</span> <a href="course-algebra.html?tab=homework" style="color:inherit;text-decoration:none">每周作业</a> <span>›</span> <b>第 02 周作业</b></div><span class="wb-meta">8 必做 · 3 选做</span><a href="homework-algebra-week01.html">‹ 上一周</a><a href="homework-algebra-week03.html">下一周 ›</a><button class="wb-tool-btn" id="wb-hw-toggle-sol" title="一键切换遮挡/展开全部参考解析">🙈 遮挡解析 (自测)</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜题目 / 考点 / 概念 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 题目大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn" id="wb-hl-btn-del" title="删除本条标注" style="display:none;color:#ef4444">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><b>📝 添加划线便签</b><button id="wb-note-close" class="wb-close-btn">×</button></div><div id="wb-note-quote" class="wb-note-quote"></div><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的解题心得、思路批注或疑问..."></textarea><div class="wb-note-foot"><button class="wb-tool-btn" id="wb-note-del-btn" style="color:#ef4444">删除便签</button><button class="wb-tool-btn" id="wb-note-save-btn" style="background:#2563eb;color:#fff;border-color:#2563eb">保存便签</button></div></div></div>
+  <div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-algebra.html?tab=homework">← 代数学Ⅰ作业</a><a href="course-algebra.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html" class="wb-cur">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">代数学Ⅰ <span>›</span> <a href="course-algebra.html?tab=homework" style="color:inherit;text-decoration:none">每周作业</a> <span>›</span> <b>第 02 周作业</b></div><span class="wb-meta">8 必做 · 3 选做</span><a href="homework-algebra-week01.html">‹ 上一周</a><a href="homework-algebra-week03.html">下一周 ›</a><button class="wb-tool-btn" id="wb-hw-toggle-sol" title="一键切换遮挡/展开全部参考解析">🙈 遮挡解析 (自测)</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜题目 / 考点 / 概念 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 题目大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" data-color="underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn" id="wb-hl-btn-del" title="删除本条标注" style="display:none;color:#ef4444">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><b>📝 添加划线便签</b><button id="wb-note-close" class="wb-close-btn">×</button></div><div id="wb-note-quote" class="wb-note-quote"></div><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的解题心得、思路批注或疑问..."></textarea><div class="wb-note-foot"><button class="wb-tool-btn" id="wb-note-del-btn" style="color:#ef4444">删除便签</button><button class="wb-tool-btn" id="wb-note-save-btn" style="background:#2563eb;color:#fff;border-color:#2563eb">保存便签</button></div></div></div>
   <main>
     <div class="wb-hw-container">
 
@@ -1280,7 +1320,7 @@ window.MathJax = {
     <div class="wb-cross-bar" style="margin: 12px 0 16px 0;">
       <span class="wb-cross-label">🎯 本周备考与复习索引</span>
       <div class="wb-cross-pills">
-        <a class="wb-ref-pill wb-ref-lec" href="lecture-algebra-2026-09-28.html">🎥 《101代数》第3章：不可约性与唯一分解</a> <a class="wb-ref-pill wb-ref-lec" href="lecture-algebra-2026-10-08.html">🎥 《101代数》第3章：多项式环与带余除法</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch02.html#sec_5">📖 101代数 · 第2章 §2.3</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch03.html#sec_1">📖 101代数 · 第3章 §3.1</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch03.html#sec_3">📖 101代数 · 第3章 §3.2</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch03.html#sec_5">📖 101代数 · 第3章 §3.3</a>
+        <a class="wb-ref-pill wb-ref-lec" href="lecture-algebra-2026-09-28.html">🎥 《101代数》第3章：不可约性与唯一分解</a> <a class="wb-ref-pill wb-ref-lec" href="lecture-algebra-2026-10-08.html">🎥 《101代数》第3章：多项式环与带余除法</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch02-s5.html">📖 101代数 · 第2章 §2.3</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch03-s1.html">📖 101代数 · 第3章 §3.1</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch03-s3.html">📖 101代数 · 第3章 §3.2</a> <a class="wb-ref-pill wb-ref-tb" href="textbook-algebra-101-ch03-s5.html">📖 101代数 · 第3章 §3.3</a>
       </div>
     </div>
     
@@ -1301,7 +1341,7 @@ window.MathJax = {
               <span class="wb-hw-num-badge">第 1 题</span>
               <span class="wb-hw-prob-title">仿射运算群结构证明 (习题 2.3 第 2 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_1" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#1</a>
           </div>
@@ -1338,7 +1378,7 @@ window.MathJax = {
               <span class="wb-hw-num-badge">第 2 题</span>
               <span class="wb-hw-prob-title">整数加法群自同构群的完全分类 (习题 2.3 第 3 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_2" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#2</a>
           </div>
@@ -1376,7 +1416,7 @@ window.MathJax = {
               <span class="wb-hw-num-badge">第 3 题</span>
               <span class="wb-hw-prob-title">加群倍数子集的子群验证 (习题 2.3 第 4 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_3" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#3</a>
           </div>
@@ -1413,7 +1453,7 @@ window.MathJax = {
               <span class="wb-hw-num-badge">第 4 题</span>
               <span class="wb-hw-prob-title">陪集关系与子群充要条件等价性 (习题 2.3 第 6 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_4" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#4</a>
           </div>
@@ -1451,7 +1491,7 @@ window.MathJax = {
               <span class="wb-hw-num-badge">第 5 题</span>
               <span class="wb-hw-prob-title">环中中心幂等元的补元素性质 (习题 2.3 第 7 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_5" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#5</a>
           </div>
@@ -1489,7 +1529,7 @@ Va∈R.证明若e是含幺环R的中心幂等元素，则1R-e是中心幂等元�
               <span class="wb-hw-num-badge">第 6 题</span>
               <span class="wb-hw-prob-title">数域的交集与并集结构判别 (习题 2.3 第 10 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_6" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#6</a>
           </div>
@@ -1528,7 +1568,7 @@ Va∈R.证明若e是含幺环R的中心幂等元素，则1R-e是中心幂等元�
               <span class="wb-hw-num-badge">第 7 题</span>
               <span class="wb-hw-prob-title">介于实数域与复数域之间的数域刚性 (习题 2.3 第 11 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02.html#sec_5" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch02-s5.html" title="跳转对应教材小节">📖 教材 §2.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-17.html" title="本节讲过相关章节">🎬 09-17 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a>
             </div>
             <a href="#prob_7" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#7</a>
           </div>
@@ -1570,7 +1610,7 @@ Va∈R.证明若e是含幺环R的中心幂等元素，则1R-e是中心幂等元�
               <span class="wb-hw-num-badge">第 8 题</span>
               <span class="wb-hw-prob-title">单位根乘法群与本原单位根个数 (习题 3.1 第 3 题)</span>
               <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03.html#sec_1" title="跳转对应教材小节">📖 教材 §3.1</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03-s1.html" title="跳转对应教材小节">📖 教材 §3.1</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
             </div>
             <a href="#prob_8" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#8</a>
           </div>
@@ -1611,7 +1651,7 @@ iii)若正整数m,n互素，则映射μm×μn→ μmn,(z1,2)→z122是双射；
               <span class="wb-hw-num-badge">第 9 题</span>
               <span class="wb-hw-prob-title">有限域模 5 上的多项式求根 (习题 3.2 第 5 题)</span>
               <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03.html#sec_3" title="跳转对应教材小节">📖 教材 §3.2</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03-s3.html" title="跳转对应教材小节">📖 教材 §3.2</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
             </div>
             <a href="#prob_9" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#9</a>
           </div>
@@ -1649,7 +1689,7 @@ iii)若正整数m,n互素，则映射μm×μn→ μmn,(z1,2)→z122是双射；
               <span class="wb-hw-num-badge">第 10 题</span>
               <span class="wb-hw-prob-title">稀疏多项式的整除与带余除法结构 (习题 3.3 第 7 题)</span>
               <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03.html#sec_5" title="跳转对应教材小节">📖 教材 §3.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03-s5.html" title="跳转对应教材小节">📖 教材 §3.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
             </div>
             <a href="#prob_10" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#10</a>
           </div>
@@ -1690,7 +1730,7 @@ n(a”)a2=(2”-)a.(2”)a2+
               <span class="wb-hw-num-badge">第 11 题</span>
               <span class="wb-hw-prob-title">二项式多项式整除充要条件 (习题 3.3 第 8 题)</span>
               <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
-              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03.html#sec_5" title="跳转对应教材小节">📖 教材 §3.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
+              <a class="wb-ref-pill wb-ref-tb" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="textbook-algebra-101-ch03-s5.html" title="跳转对应教材小节">📖 教材 §3.3</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-21.html" title="本节讲过相关章节">🎬 09-21 课</a> <a class="wb-ref-pill wb-ref-lec" style="font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;" href="lecture-algebra-2026-09-24.html" title="本节讲过相关章节">🎬 09-24 课</a>
             </div>
             <a href="#prob_11" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#11</a>
           </div>
@@ -1725,6 +1765,7 @@ n(a”)a2=(2”-)a.(2”)a2+
   </main>
   <script src="data/core.js"></script>
   <script src="site.js"></script>
+  <script src="wb-hl.js"></script>
   
     <script>
     
@@ -1735,12 +1776,14 @@ n(a”)a2=(2”-)a.(2”)a2+
     var STORE_NAME = 'user_annotations';
     var db = null;
     var mem = {};
+    var raw = null;
+    try { raw = window.localStorage; } catch(e) { raw = null; }
 
     try {
       for (var i = 0; i < localStorage.length; i++) {
         var k = localStorage.key(i);
         if (k && k.indexOf('wb_') === 0) {
-          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+          mem[k] = raw.getItem(k);
         }
       }
     } catch(e) {}
@@ -1777,13 +1820,13 @@ n(a”)a2=(2”-)a.(2”)a2+
     return {
       getItem: function(key) {
         if (key in mem) return mem[key];
-        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+        try { return raw ? raw.getItem(key) : null; } catch(e) { return null; }
       },
       setItem: function(key, val) {
         var s = String(val);
         mem[key] = s;
         try {
-          (window.WB_STORAGE||localStorage).setItem(key, s);
+          if (raw) raw.setItem(key, s);
         } catch(quotaErr) {
           console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
         }
@@ -1797,7 +1840,7 @@ n(a”)a2=(2”-)a.(2”)a2+
       },
       removeItem: function(key) {
         delete mem[key];
-        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        try { if (raw) raw.removeItem(key); } catch(e) {}
         if (db) {
           try {
             var tx = db.transaction(STORE_NAME, 'readwrite');
@@ -1850,6 +1893,7 @@ n(a”)a2=(2”-)a.(2”)a2+
         (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
       function applyTheme(t) {
+        if (window.wbSetTheme) window.wbSetTheme(t);
         if (t === 'dark') {
           document.documentElement.classList.add('wb-dark');
           document.body.classList.add('wb-dark');
@@ -1986,6 +2030,9 @@ n(a”)a2=(2”-)a.(2”)a2+
       /* ---------- 批注与荧光笔系统 ---------- */
       var LID = "algebra-week02";
       window.LID = LID;
+      // 批注引擎 (wb-hl.js) 在本 IIFE 之外，靠这两个钩子回连本页的提示条与抽屉
+      window.showToast = showToast;
+      window.updateNotesDrawer = updateNotesDrawer;
 
       function getStoredHighlights() {
         try { return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]'); } catch(e){ return []; }

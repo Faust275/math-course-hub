@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>练词与听写 · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+
+.qz-wrap{max-width:760px}
+.qz-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0 6px}
+.qz-bar select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.qz-modes{display:flex;gap:6px}
+.qz-modes button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 13px;font-size:13px;cursor:pointer;font-family:inherit}
+.qz-modes button.on{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.qz-stat{font-size:12.5px;color:var(--muted);margin:10px 0 18px;display:flex;gap:16px;flex-wrap:wrap}
+.qz-card{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:22px 22px 18px;min-height:250px}
+.qz-top{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+.qz-prompt{font-size:21px;line-height:1.6;margin:16px 0 6px;font-weight:600}
+.qz-prompt.small{font-size:17px;font-weight:500}
+.qz-sub{font-size:13px;color:var(--muted);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.qz-sub .ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:14px}
+.qz-sub button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:8px;padding:3px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+.qz-opts{display:grid;gap:9px;margin-top:18px}
+.qz-opts button{text-align:left;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:10px;padding:12px 14px;font-size:15px;cursor:pointer;font-family:inherit}
+.qz-opts button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.qz-opts button.right{border-color:#2e9e5b;background:rgba(46,158,91,.12);color:var(--text)}
+.qz-opts button.wrong{border-color:#d9534f;background:rgba(217,83,79,.12);color:var(--text)}
+.qz-opts button:disabled{cursor:default;opacity:.85}
+.qz-input{margin-top:18px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.qz-input input{flex:1;min-width:200px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:10px;padding:11px 13px;font-size:17px;font-family:inherit;letter-spacing:.02em}
+.qz-input input:focus{outline:none;border-color:var(--accent)}
+.qz-input button{border:1px solid var(--accent);background:var(--accent);color:var(--bg);border-radius:10px;padding:11px 20px;font-size:14px;cursor:pointer;font-family:inherit}
+.qz-input button.ghost{background:var(--bg);color:var(--text);border-color:var(--border)}
+.qz-fb{margin-top:16px;font-size:14px;line-height:1.8;min-height:24px}
+.qz-fb .ok{color:#2e9e5b;font-weight:600}
+.qz-fb .no{color:#d9534f;font-weight:600}
+.qz-fb code{font-family:inherit;font-weight:700;color:var(--accent)}
+.qz-next{margin-top:14px}
+.qz-next button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:8px 18px;font-size:13.5px;cursor:pointer;font-family:inherit}
+.qz-empty{color:var(--muted);font-size:14px;line-height:1.9;padding:10px 0}
+table.qz-t{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.qz-t th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.qz-t td{border-bottom:1px solid var(--border);padding:9px 8px;vertical-align:middle}
+.qz-t .n{color:#d9534f;font-variant-numeric:tabular-nums}
+.qz-t button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:7px;padding:2px 9px;font-size:12px;cursor:pointer;font-family:inherit}
+.qz-tabs{display:flex;gap:6px;border-bottom:1px solid var(--border);margin:22px 0 4px}
+.qz-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.qz-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>练词</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Vocabulary Drill</div><h1>练词与听写</h1><div class="eng-meta"><span>347 个词条可练</span><span>两种模式</span><span>错词自动进本</span><a class="eng-chip" href="english.html">← 英语总览</a><a class="eng-chip" href="english-words.html">单词总表</a></div><div class="qz-tabs" id="tabs"><button data-v="drill" class="on">练习</button><button data-v="wrong">错词本</button></div><div id="v-drill"><div class="qz-bar"><select id="scope"><option value="all">全部 8 篇（347 词）</option><option value="u1r1">U1 R1 · The two inventions behind mo</option><option value="u1r2">U1 R2 · How human like do we really </option><option value="u2r1">U2 R1 · Crafting the cities of tomor</option><option value="u2r2">U2 R2 · A dead battery dilemma</option><option value="u3r1">U3 R1 · Fusion energy fuels optimism</option><option value="u3r2">U3 R2 · Is geothermal power heating </option><option value="u4r1">U4 R1 · Life in the sun&#x27;s grip</option><option value="u4r2">U4 R2 · Climate megaprojects that mi</option><option value="wrong">只练错词本</option></select><div class="qz-modes" id="modes"><button data-m="mc" class="on">看中文选英文</button><button data-m="sp">看中文写拼写</button></div></div><div class="qz-stat" id="stat"></div><div class="qz-card" id="card"></div><div class="qz-fb" id="fb"></div></div><div id="v-wrong" hidden><div id="wbody"></div></div><div class="eng-note"><b>说明</b>：选词范围与等级标识都来自课本 Vocabulary 页；每题都带该词的独立音频切片，点 ▶ 只听这一个词。拼写模式判分时忽略大小写、空格与连字符有无。错词本存在本机浏览器里（localStorage），换浏览器或清缓存会丢。</div><script>window.ENGQ={"lessons":[{"id":"u1r1","u":1,"r":1,"title":"The two inventions behind modern barcodes","words":[{"w":"Argumentative","cn":"好争论的；爱辩论的","ipa":"/ˌɑːɡjuˈmentətɪv/","pos":"adj.","c":"assets/english/clips/u1r1-000.m4a","mk":"star"},{"w":"Beanbag ashtray","cn":"豆袋式烟灰缸（条码演示用的样品）","ipa":"/ˈbiːnbæɡ ˈæʃtreɪ/","pos":"n.","c":"assets/english/clips/u1r1-001.m4a","mk":"none"},{"w":"Checkout","cn":"（超市等的）付款台；结账","ipa":"/ˈtʃekaʊt/","pos":"n.","c":"assets/english/clips/u1r1-002.m4a","mk":"tri"},{"w":"Clockwork","cn":"钟表机构；精密机械","ipa":"/ˈklɒkwɜːk/","pos":"n.","c":"assets/english/clips/u1r1-003.m4a","mk":"none"},{"w":"Constraint","cn":"限制，约束","ipa":"/kənˈstreɪnt/","pos":"n.","c":"assets/english/clips/u1r1-004.m4a","mk":"star"},{"w":"Cripple","cn":"严重削弱；使丧失能力","ipa":"/ˈkrɪpl/","pos":"vt.","c":"assets/english/clips/u1r1-005.m4a","mk":"star"},{"w":"Decipher","cn":"破译；辨认","ipa":"/dɪˈsaɪfə(r)/","pos":"vt.","c":"assets/english/clips/u1r1-006.m4a","mk":"none"},{"w":"Decode","cn":"解码","ipa":"/diːˈkəʊd/","pos":"vt.","c":"assets/english/clips/u1r1-007.m4a","mk":"star"},{"w":"Destiny","cn":"命运","ipa":"/ˈdestəni/","pos":"n.","c":"assets/english/clips/u1r1-008.m4a","mk":"star"},{"w":"Electrical impulse","cn":"电脉冲","ipa":"/ɪˈlektrɪkl ˈɪmpʌls/","pos":"n.","c":"assets/english/clips/u1r1-009.m4a","mk":"none"},{"w":"Facilitate","cn":"促进；使便利","ipa":"/fəˈsɪlɪteɪt/","pos":"vt.","c":"assets/english/clips/u1r1-010.m4a","mk":"star"},{"w":"Flawlessly","cn":"完美无缺地","ipa":"/ˈflɔːləsli/","pos":"adv.","c":"assets/english/clips/u1r1-011.m4a","mk":"star"},{"w":"Font","cn":"字体","ipa":"/fɒnt/","pos":"n.","c":"assets/english/clips/u1r1-012.m4a","mk":"star"},{"w":"Horizontal","cn":"水平的","ipa":"/ˌhɒrɪˈzɒntl/","pos":"adj.","c":"assets/english/clips/u1r1-013.m4a","mk":"star"},{"w":"Implementation","cn":"实施，执行","ipa":"/ˌɪmplɪmenˈteɪʃn/","pos":"n.","c":"assets/english/clips/u1r1-014.m4a","mk":"star"},{"w":"Imponderable","cn":"无法估量的；难以捉摸的","ipa":"/ɪmˈpɒndərəbl/","pos":"adj.","c":"assets/english/clips/u1r1-015.m4a","mk":"none"},{"w":"In turn","cn":"反过来；依次","ipa":"/ɪn tɜːn/","pos":"phr.","c":"assets/english/clips/u1r1-016.m4a","mk":""},{"w":"Intrigued","cn":"被激起兴趣的","ipa":"/ɪnˈtriːɡd/","pos":"adj.","c":"assets/english/clips/u1r1-017.m4a","mk":"star"},{"w":"Inventory management","cn":"库存管理","ipa":"/ˈɪnvəntri ˈmænɪdʒmənt/","pos":"n.","c":"assets/english/clips/u1r1-018.m4a","mk":"none"},{"w":"Malfunction","cn":"故障，失灵","ipa":"/ˌmælˈfʌŋkʃn/","pos":"n./v.","c":"assets/english/clips/u1r1-019.m4a","mk":"none"},{"w":"Mechanism","cn":"机制；机械装置","ipa":"/ˈmekənɪzəm/","pos":"n.","c":"assets/english/clips/u1r1-020.m4a","mk":"star"},{"w":"Merchandising","cn":"商品推销；商品陈列","ipa":"/ˈmɜːtʃəndaɪzɪŋ/","pos":"n.","c":"assets/english/clips/u1r1-021.m4a","mk":"star"},{"w":"Mindset","cn":"思维方式","ipa":"/ˈmaɪndset/","pos":"n.","c":"assets/english/clips/u1r1-022.m4a","mk":"star"},{"w":"Omnidirectional","cn":"全向的，全方位可读的","ipa":"/ˌɒmnɪdəˈrekʃənl/","pos":"adj.","c":"assets/english/clips/u1r1-023.m4a","mk":"none"},{"w":"Optical sensor","cn":"光学传感器","ipa":"/ˈɒptɪkl ˈsensə(r)/","pos":"n.","c":"assets/english/clips/u1r1-024.m4a","mk":"none"},{"w":"Original","cn":"最初的；原创的；原作","ipa":"/əˈrɪdʒənl/","pos":"adj./n.","c":"assets/english/clips/u1r1-025.m4a","mk":"star"},{"w":"Perishable","cn":"易腐的；易腐食品","ipa":"/ˈperɪʃəbl/","pos":"adj./n.","c":"assets/english/clips/u1r1-026.m4a","mk":"star"},{"w":"Picture","cn":"设想，想象；图片","ipa":"/ˈpɪktʃə(r)/","pos":"vt./n.","c":"assets/english/clips/u1r1-027.m4a","mk":""},{"w":"Precision","cn":"精确，精密","ipa":"/prɪˈsɪʒn/","pos":"n.","c":"assets/english/clips/u1r1-028.m4a","mk":"star"},{"w":"Propeller","cn":"螺旋桨；推动者","ipa":"/prəˈpelə(r)/","pos":"n.","c":"assets/english/clips/u1r1-029.m4a","mk":"star"},{"w":"Prospector","cn":"勘探者；探寻者","ipa":"/prəˈspektə(r)/","pos":"n.","c":"assets/english/clips/u1r1-030.m4a","mk":"star"},{"w":"Prototype","cn":"原型，样机","ipa":"/ˈprəʊtətaɪp/","pos":"n.","c":"assets/english/clips/u1r1-031.m4a","mk":"star"},{"w":"Receipt","cn":"收据，票据","ipa":"/rɪˈsiːt/","pos":"n.","c":"assets/english/clips/u1r1-032.m4a","mk":"star"},{"w":"Rigid","cn":"僵硬的；严格死板的","ipa":"/ˈrɪdʒɪd/","pos":"adj.","c":"assets/english/clips/u1r1-033.m4a","mk":"star"},{"w":"Rigorous","cn":"严谨的；严格的","ipa":"/ˈrɪɡərəs/","pos":"adj.","c":"assets/english/clips/u1r1-034.m4a","mk":"star"},{"w":"Serial number","cn":"序列号","ipa":"/ˈsɪəriəl ˈnʌmbə(r)/","pos":"n.","c":"assets/english/clips/u1r1-035.m4a","mk":"none"},{"w":"Specification","cn":"规格；具体要求","ipa":"/ˌspesɪfɪˈkeɪʃn/","pos":"n.","c":"assets/english/clips/u1r1-036.m4a","mk":"star"},{"w":"Subliminal","cn":"潜意识的，阈下的","ipa":"/ˌsʌbˈlɪmɪnl/","pos":"adj.","c":"assets/english/clips/u1r1-037.m4a","mk":"none"},{"w":"Supply chain","cn":"供应链","ipa":"/səˈplaɪ tʃeɪn/","pos":"n.","c":"assets/english/clips/u1r1-038.m4a","mk":"none"},{"w":"Torrent","cn":"洪流；滔滔不绝的一连串","ipa":"/ˈtɒrənt/","pos":"n.","c":"assets/english/clips/u1r1-039.m4a","mk":"none"},{"w":"Universal Product Code (UPC)","cn":"通用产品代码（UPC 码）","ipa":"/ˌjuːnɪˈvɜːsl ˈprɒdʌkt kəʊd/","pos":"n.","c":"assets/english/clips/u1r1-040.m4a","mk":"none"},{"w":"Variable","cn":"可变的；变量","ipa":"/ˈveəriəbl/","pos":"adj./n.","c":"assets/english/clips/u1r1-041.m4a","mk":"star"},{"w":"Vexing","cn":"令人烦恼的，棘手的","ipa":"/ˈveksɪŋ/","pos":"adj.","c":"assets/english/clips/u1r1-042.m4a","mk":"none"}]},{"id":"u1r2","u":1,"r":2,"title":"How human like do we really want robots to be?","words":[{"w":"Adhere","cn":"黏附；附着","ipa":"/ədˈhɪə(r)/","pos":"vi.","c":"assets/english/clips/u1r2-000.m4a","mk":"tri"},{"w":"Anatomy","cn":"解剖；解剖结构","ipa":"/əˈnætəmi/","pos":"n.","c":"assets/english/clips/u1r2-001.m4a","mk":"none"},{"w":"Appendage","cn":"附属肢体；附加物","ipa":"/əˈpendɪdʒ/","pos":"n.","c":"assets/english/clips/u1r2-002.m4a","mk":"tri"},{"w":"Bionic","cn":"仿生的","ipa":"/baɪˈɒnɪk/","pos":"adj.","c":"assets/english/clips/u1r2-003.m4a","mk":"none"},{"w":"Coating","cn":"涂层；外层；覆盖层","ipa":"/ˈkəʊtɪŋ/","pos":"n.","c":"assets/english/clips/u1r2-004.m4a","mk":"none"},{"w":"Cognitive","cn":"认知的","ipa":"/ˈkɒɡnətɪv/","pos":"adj.","c":"assets/english/clips/u1r2-005.m4a","mk":"tri"},{"w":"Collagen","cn":"胶原蛋白","ipa":"/ˈkɒlədʒən/","pos":"n.","c":"assets/english/clips/u1r2-006.m4a","mk":"none"},{"w":"Connective tissue","cn":"结缔组织","ipa":"/kəˈnektɪv ˈtɪʃuː/","pos":"n.","c":"assets/english/clips/u1r2-007.m4a","mk":"none"},{"w":"Culture","cn":"培养（细胞、细菌）；文化","ipa":"/ˈkʌltʃə(r)/","pos":"vt./n.","c":"assets/english/clips/u1r2-008.m4a","mk":"star"},{"w":"Cyborg","cn":"半机械人","ipa":"/ˈsaɪbɔːɡ/","pos":"n.","c":"assets/english/clips/u1r2-009.m4a","mk":"none"},{"w":"Dermis","cn":"真皮","ipa":"/ˈdɜːmɪs/","pos":"n.","c":"assets/english/clips/u1r2-010.m4a","mk":"none"},{"w":"Digit","cn":"手指，脚趾；数字","ipa":"/ˈdɪdʒɪt/","pos":"n.","c":"assets/english/clips/u1r2-011.m4a","mk":"star"},{"w":"Dispense","cn":"分配，发放；配制","ipa":"/dɪˈspens/","pos":"vt.","c":"assets/english/clips/u1r2-012.m4a","mk":"tri"},{"w":"Electric motor","cn":"电动机","ipa":"/ɪˈlektrɪk ˈməʊtə(r)/","pos":"n.","c":"assets/english/clips/u1r2-013.m4a","mk":"none"},{"w":"Empathy","cn":"共情，同理心","ipa":"/ˈempəθi/","pos":"n.","c":"assets/english/clips/u1r2-014.m4a","mk":"none"},{"w":"Enforcer","cn":"执法者；强制执行者","ipa":"/ɪnˈfɔːsə(r)/","pos":"n.","c":"assets/english/clips/u1r2-015.m4a","mk":"star"},{"w":"Epidermis","cn":"表皮","ipa":"/ˌepɪˈdɜːmɪs/","pos":"n.","c":"assets/english/clips/u1r2-016.m4a","mk":"none"},{"w":"Flex","cn":"弯曲；屈伸","ipa":"/fleks/","pos":"v.","c":"assets/english/clips/u1r2-017.m4a","mk":"star"},{"w":"Functional","cn":"具备功能的；实用的","ipa":"/ˈfʌŋkʃənl/","pos":"adj.","c":"assets/english/clips/u1r2-018.m4a","mk":"star"},{"w":"Human dermal fibroblast","cn":"人真皮成纤维细胞","ipa":"/ˈhjuːmən ˈdɜːml ˈfɪbrəblæst/","pos":"n.","c":"assets/english/clips/u1r2-019.m4a","mk":"none"},{"w":"Human keratinocyte","cn":"人角质形成细胞","ipa":"/ˈhjuːmən kəˈrætɪnəsaɪt/","pos":"n.","c":"assets/english/clips/u1r2-020.m4a","mk":"none"},{"w":"Hybrid","cn":"混合体；混合的","ipa":"/ˈhaɪbrɪd/","pos":"n./adj.","c":"assets/english/clips/u1r2-021.m4a","mk":"star"},{"w":"Incubator","cn":"恒温培养箱；孵化器","ipa":"/ˈɪŋkjubeɪtə(r)/","pos":"n.","c":"assets/english/clips/u1r2-022.m4a","mk":"none"},{"w":"Instill","cn":"逐渐灌输；注入","ipa":"/ɪnˈstɪl/","pos":"vt.","c":"assets/english/clips/u1r2-023.m4a","mk":"none"},{"w":"Lifelike","cn":"逼真的，栩栩如生的","ipa":"/ˈlaɪflaɪk/","pos":"adj.","c":"assets/english/clips/u1r2-024.m4a","mk":"none"},{"w":"Mold","cn":"模具；塑造","ipa":"/məʊld/","pos":"n./vt.","c":"assets/english/clips/u1r2-025.m4a","mk":"star"},{"w":"Navigate","cn":"导航；穿行于","ipa":"/ˈnævɪɡeɪt/","pos":"v.","c":"assets/english/clips/u1r2-026.m4a","mk":"tri"},{"w":"Neuroscience","cn":"神经科学","ipa":"/ˈnjʊərəʊsaɪəns/","pos":"n.","c":"assets/english/clips/u1r2-027.m4a","mk":"none"},{"w":"Pantheon","cn":"（某领域的）群英谱；万神殿","ipa":"/ˈpænθiən/","pos":"n.","c":"assets/english/clips/u1r2-028.m4a","mk":"none"},{"w":"Portrayal","cn":"描绘，刻画","ipa":"/pɔːˈtreɪəl/","pos":"n.","c":"assets/english/clips/u1r2-029.m4a","mk":"star"},{"w":"Silicone","cn":"硅酮，硅胶","ipa":"/ˈsɪlɪkəʊn/","pos":"n.","c":"assets/english/clips/u1r2-030.m4a","mk":"none"},{"w":"Solution","cn":"溶液；解决方案","ipa":"/səˈluːʃn/","pos":"n.","c":"assets/english/clips/u1r2-031.m4a","mk":"star"},{"w":"Strengthen","cn":"加强，巩固","ipa":"/ˈstreŋθn/","pos":"v.","c":"assets/english/clips/u1r2-032.m4a","mk":"star"},{"w":"Submerge","cn":"使浸没；淹没","ipa":"/səbˈmɜːdʒ/","pos":"vt.","c":"assets/english/clips/u1r2-033.m4a","mk":"star"},{"w":"Threaten","cn":"威胁；危及","ipa":"/ˈθretn/","pos":"v.","c":"assets/english/clips/u1r2-034.m4a","mk":"star"},{"w":"Visibility","cn":"能见度；可见性","ipa":"/ˌvɪzəˈbɪləti/","pos":"n.","c":"assets/english/clips/u1r2-035.m4a","mk":"star"}]},{"id":"u2r1","u":2,"r":1,"title":"Crafting the cities of tomorrow","words":[{"w":"Air conditioner","cn":"空调","ipa":"/ˈeə kəndɪʃənə(r)/","pos":"n.","c":"assets/english/clips/u2r1-000.m4a","mk":"none"},{"w":"Algorithm","cn":"算法","ipa":"/ˈælɡərɪðəm/","pos":"n.","c":"assets/english/clips/u2r1-001.m4a","mk":"none"},{"w":"Antenna","cn":"天线","ipa":"/ænˈtenə/","pos":"n.","c":"assets/english/clips/u2r1-002.m4a","mk":"tri"},{"w":"Array","cn":"阵列；一系列","ipa":"/əˈreɪ/","pos":"n.","c":"assets/english/clips/u2r1-003.m4a","mk":"tri"},{"w":"Audacious","cn":"大胆的，无畏的；冒进的","ipa":"/ɔːˈdeɪʃəs/","pos":"adj.","c":"assets/english/clips/u2r1-004.m4a","mk":"none"},{"w":"Avert","cn":"避免，防止；转移（目光）","ipa":"/əˈvɜːt/","pos":"vt.","c":"assets/english/clips/u2r1-005.m4a","mk":"tri"},{"w":"Behold","cn":"注视，看（尤指令人惊叹之物）","ipa":"/bɪˈhəʊld/","pos":"vt.","c":"assets/english/clips/u2r1-006.m4a","mk":"none"},{"w":"Blackout","cn":"停电；灯火管制","ipa":"/ˈblækaʊt/","pos":"n.","c":"assets/english/clips/u2r1-007.m4a","mk":"none"},{"w":"Civic","cn":"市民的，城市的","ipa":"/ˈsɪvɪk/","pos":"adj.","c":"assets/english/clips/u2r1-008.m4a","mk":"tri"},{"w":"Cog","cn":"齿轮的齿；（大机构中）无足轻重的成员","ipa":"/kɒɡ/","pos":"n.","c":"assets/english/clips/u2r1-009.m4a","mk":"none"},{"w":"Communiqué","cn":"公报；公告","ipa":"/kəˈmjuːnɪkeɪ/","pos":"n.","c":"assets/english/clips/u2r1-010.m4a","mk":"none"},{"w":"Contraption","cn":"奇巧的装置，玩意儿","ipa":"/kənˈtræpʃn/","pos":"n.","c":"assets/english/clips/u2r1-011.m4a","mk":"none"},{"w":"Corporate","cn":"公司的；法人的","ipa":"/ˈkɔːpərət/","pos":"adj.","c":"assets/english/clips/u2r1-012.m4a","mk":"star"},{"w":"Democratization","cn":"大众化，民主化","ipa":"/dɪˌmɒkrətaɪˈzeɪʃn/","pos":"n.","c":"assets/english/clips/u2r1-013.m4a","mk":"star"},{"w":"Dispatch","cn":"派遣；发送","ipa":"/dɪˈspætʃ/","pos":"vt.","c":"assets/english/clips/u2r1-014.m4a","mk":"star"},{"w":"Electromechanical","cn":"机电的","ipa":"/ɪˌlektrəʊməˈkænɪkl/","pos":"adj.","c":"assets/english/clips/u2r1-015.m4a","mk":"none"},{"w":"Expansion","cn":"扩张，扩展","ipa":"/ɪkˈspænʃn/","pos":"n.","c":"assets/english/clips/u2r1-016.m4a","mk":"star"},{"w":"Flick","cn":"轻弹；啪地打开（开关）","ipa":"/flɪk/","pos":"v.","c":"assets/english/clips/u2r1-017.m4a","mk":"none"},{"w":"Flurry","cn":"一阵（忙乱、活动）","ipa":"/ˈflʌri/","pos":"n.","c":"assets/english/clips/u2r1-018.m4a","mk":"none"},{"w":"Fringe","cn":"边缘，外围","ipa":"/frɪndʒ/","pos":"n.","c":"assets/english/clips/u2r1-019.m4a","mk":"tri"},{"w":"Grassroots","cn":"基层的，自下而上的","ipa":"/ˌɡrɑːsˈruːts/","pos":"adj.","c":"assets/english/clips/u2r1-020.m4a","mk":"none"},{"w":"Grid","cn":"电网；网格","ipa":"/ɡrɪd/","pos":"n.","c":"assets/english/clips/u2r1-021.m4a","mk":"tri"},{"w":"Hectic","cn":"忙乱的，紧张忙碌的","ipa":"/ˈhektɪk/","pos":"adj.","c":"assets/english/clips/u2r1-022.m4a","mk":"tri"},{"w":"Iceberg","cn":"冰山","ipa":"/ˈaɪsbɜːɡ/","pos":"n.","c":"assets/english/clips/u2r1-023.m4a","mk":"tri"},{"w":"Innards","cn":"内部结构，内部零件","ipa":"/ˈɪnədz/","pos":"n.","c":"assets/english/clips/u2r1-024.m4a","mk":"none"},{"w":"Intervention","cn":"干预，介入","ipa":"/ˌɪntəˈvenʃn/","pos":"n.","c":"assets/english/clips/u2r1-025.m4a","mk":"tri"},{"w":"Killer APP","cn":"杀手级应用，极具吸引力的应用","ipa":"/ˈkɪlə æp/","pos":"n.","c":"assets/english/clips/u2r1-026.m4a","mk":"none"},{"w":"Lurk","cn":"暗藏；潜伏着；埋伏","ipa":"/lɜːk/","pos":"vi.","c":"assets/english/clips/u2r1-027.m4a","mk":"none"},{"w":"Mainframe","cn":"大型计算机，主机","ipa":"/ˈmeɪnfreɪm/","pos":"n.","c":"assets/english/clips/u2r1-028.m4a","mk":"none"},{"w":"Microbe","cn":"微生物","ipa":"/ˈmaɪkrəʊb/","pos":"n.","c":"assets/english/clips/u2r1-029.m4a","mk":"none"},{"w":"Microprocessor","cn":"微处理器","ipa":"/ˌmaɪkrəʊˈprəʊsesə(r)/","pos":"n.","c":"assets/english/clips/u2r1-030.m4a","mk":"none"},{"w":"Miscreant","cn":"不法之徒，恶棍","ipa":"/ˈmɪskriənt/","pos":"n.","c":"assets/english/clips/u2r1-031.m4a","mk":"none"},{"w":"Morph","cn":"（使）改变形态，变形","ipa":"/mɔːf/","pos":"v.","c":"assets/english/clips/u2r1-032.m4a","mk":"none"},{"w":"Mundane","cn":"平淡的，乏味的","ipa":"/mʌnˈdeɪn/","pos":"adj.","c":"assets/english/clips/u2r1-033.m4a","mk":"none"},{"w":"Open-source","cn":"开放源代码的，提供源程序的","ipa":"/ˌəʊpənˈsɔːs/","pos":"a.","c":"assets/english/clips/u2r1-034.m4a","mk":"none"},{"w":"Optimize","cn":"优化，使最优化","ipa":"/ˈɒptɪmaɪz/","pos":"vt.","c":"assets/english/clips/u2r1-035.m4a","mk":"tri"},{"w":"Predetermined","cn":"预先设定的","ipa":"/ˌpriːdɪˈtɜːmɪnd/","pos":"adj.","c":"assets/english/clips/u2r1-036.m4a","mk":"star"},{"w":"Reading","cn":"（电子设备显示的）读数","ipa":"/ˈriːdɪŋ/","pos":"n.","c":"assets/english/clips/u2r1-037.m4a","mk":"star"},{"w":"Replumb","cn":"重新铺设（房屋、建筑等的）管道系统","ipa":"/ˌriːˈplʌm/","pos":"vt.","c":"assets/english/clips/u2r1-038.m4a","mk":"tri"},{"w":"Roam","cn":"漫游，闲逛","ipa":"/rəʊm/","pos":"v.","c":"assets/english/clips/u2r1-039.m4a","mk":"none"},{"w":"Seductive","cn":"有诱惑力的，诱人的","ipa":"/sɪˈdʌktɪv/","pos":"adj.","c":"assets/english/clips/u2r1-040.m4a","mk":"tri"},{"w":"Sentient","cn":"有感知能力的","ipa":"/ˈsentiənt/","pos":"adj.","c":"assets/english/clips/u2r1-041.m4a","mk":"none"},{"w":"Shunt","cn":"把…转移（到别处）；使分流","ipa":"/ʃʌnt/","pos":"vt.","c":"assets/english/clips/u2r1-042.m4a","mk":"none"},{"w":"Sprout","cn":"长出，冒出","ipa":"/spraʊt/","pos":"v.","c":"assets/english/clips/u2r1-043.m4a","mk":"none"},{"w":"Stitch","cn":"缝合；拼接","ipa":"/stɪtʃ/","pos":"v.","c":"assets/english/clips/u2r1-044.m4a","mk":"tri"},{"w":"Stroll","cn":"散步，闲逛","ipa":"/strəʊl/","pos":"v.","c":"assets/english/clips/u2r1-045.m4a","mk":"tri"},{"w":"Stubby","cn":"短粗的","ipa":"/ˈstʌbi/","pos":"adj.","c":"assets/english/clips/u2r1-046.m4a","mk":"none"},{"w":"Supplant","cn":"取代，替代","ipa":"/səˈplɑːnt/","pos":"vt.","c":"assets/english/clips/u2r1-047.m4a","mk":"none"},{"w":"Surveillance","cn":"监视，监控","ipa":"/səˈveɪləns/","pos":"n.","c":"assets/english/clips/u2r1-048.m4a","mk":"tri"},{"w":"Suspicious","cn":"可疑的；多疑的","ipa":"/səˈspɪʃəs/","pos":"adj.","c":"assets/english/clips/u2r1-049.m4a","mk":"star"},{"w":"Thermostat","cn":"恒温器，温度自动调节器","ipa":"/ˈθɜːməstæt/","pos":"n.","c":"assets/english/clips/u2r1-050.m4a","mk":"none"},{"w":"Toil","cn":"辛苦劳作","ipa":"/tɔɪl/","pos":"v.","c":"assets/english/clips/u2r1-051.m4a","mk":"star"},{"w":"Vigilant","cn":"警惕的，警觉的","ipa":"/ˈvɪdʒɪlənt/","pos":"adj.","c":"assets/english/clips/u2r1-052.m4a","mk":"none"},{"w":"Wield","cn":"运用，行使（权力、技术）","ipa":"/wiːld/","pos":"vt.","c":"assets/english/clips/u2r1-053.m4a","mk":"star"},{"w":"Work","cn":"（钟表或机器的）机件，运转机构","ipa":"/wɜːk/","pos":"n.","c":"assets/english/clips/u2r1-054.m4a","mk":"star"}]},{"id":"u2r2","u":2,"r":2,"title":"A dead battery dilemma","words":[{"w":"Aluminum","cn":"铝","ipa":"/ˌæljəˈmɪniəm/","pos":"n.","c":"assets/english/clips/u2r2-000.m4a","mk":"none"},{"w":"Analyst","cn":"分析师","ipa":"/ˈænəlɪst/","pos":"n.","c":"assets/english/clips/u2r2-001.m4a","mk":"star"},{"w":"Binder","cn":"粘结剂；装订机","ipa":"/ˈbaɪndə(r)/","pos":"n.","c":"assets/english/clips/u2r2-002.m4a","mk":"star"},{"w":"Cathode","cn":"阴极","ipa":"/ˈkæθəʊd/","pos":"n.","c":"assets/english/clips/u2r2-003.m4a","mk":"none"},{"w":"Cement","cn":"水泥；胶合剂","ipa":"/sɪˈment/","pos":"n.","c":"assets/english/clips/u2r2-004.m4a","mk":"star"},{"w":"Chemical","cn":"化学物质；化学的","ipa":"/ˈkemɪkl/","pos":"n./adj.","c":"assets/english/clips/u2r2-005.m4a","mk":"star"},{"w":"Cobalt","cn":"钴","ipa":"/ˈkəʊbɔːlt/","pos":"n.","c":"assets/english/clips/u2r2-006.m4a","mk":"none"},{"w":"Combust","cn":"燃烧","ipa":"/kəmˈbʌst/","pos":"v.","c":"assets/english/clips/u2r2-007.m4a","mk":"none"},{"w":"Combustible","cn":"可燃的","ipa":"/kəmˈbʌstəbl/","pos":"adj.","c":"assets/english/clips/u2r2-008.m4a","mk":"none"},{"w":"Composition","cn":"成分，构成","ipa":"/ˌkɒmpəˈzɪʃn/","pos":"n.","c":"assets/english/clips/u2r2-009.m4a","mk":"star"},{"w":"Cylindrical cell","cn":"圆柱形电芯","ipa":"/səˈlɪndrɪkl sel/","pos":"n.","c":"assets/english/clips/u2r2-010.m4a","mk":"none"},{"w":"Dinosaur","cn":"恐龙；过时落伍之物","ipa":"/ˈdaɪnəsɔː(r)/","pos":"n.","c":"assets/english/clips/u2r2-011.m4a","mk":"star"},{"w":"Disassembly","cn":"拆解，拆卸","ipa":"/ˌdɪsəˈsembli/","pos":"n.","c":"assets/english/clips/u2r2-012.m4a","mk":"star"},{"w":"Dismantle","cn":"拆卸，拆除","ipa":"/dɪsˈmæntl/","pos":"vt.","c":"assets/english/clips/u2r2-013.m4a","mk":"star"},{"w":"Electric vehicle (EV)","cn":"电动汽车（EV）","ipa":"","pos":"n.","c":"assets/english/clips/u2r2-014.m4a","mk":"none"},{"w":"Electrolyte","cn":"电解质","ipa":"/ɪˈlektrəlaɪt/","pos":"n.","c":"assets/english/clips/u2r2-015.m4a","mk":"none"},{"w":"Emission","cn":"排放（物）","ipa":"/ɪˈmɪʃn/","pos":"n.","c":"assets/english/clips/u2r2-016.m4a","mk":"star"},{"w":"Extract","cn":"提取，提炼","ipa":"/ɪkˈstrækt/","pos":"vt.","c":"assets/english/clips/u2r2-017.m4a","mk":"star"},{"w":"Feat","cn":"壮举，了不起的成就","ipa":"/fiːt/","pos":"n.","c":"assets/english/clips/u2r2-018.m4a","mk":"star"},{"w":"Fumes","cn":"（有害的）烟，气体","ipa":"/fjuːmz/","pos":"n.","c":"assets/english/clips/u2r2-019.m4a","mk":"none"},{"w":"Graphite anode","cn":"石墨负极","ipa":"/ˈɡræfaɪt ˈænəʊd/","pos":"n.","c":"assets/english/clips/u2r2-020.m4a","mk":"none"},{"w":"Haystack","cn":"干草堆","ipa":"/ˈheɪstæk/","pos":"n.","c":"assets/english/clips/u2r2-021.m4a","mk":"none"},{"w":"Hazardous","cn":"危险的，有害的","ipa":"/ˈhæzədəs/","pos":"adj.","c":"assets/english/clips/u2r2-022.m4a","mk":"star"},{"w":"Hydrometallurgy","cn":"湿法冶金","ipa":"/ˌhaɪdrəʊməˈtælədʒi/","pos":"n.","c":"assets/english/clips/u2r2-023.m4a","mk":"none"},{"w":"Indestructible","cn":"不可摧毁的","ipa":"/ˌɪndɪˈstrʌktəbl/","pos":"adj.","c":"assets/english/clips/u2r2-024.m4a","mk":"none"},{"w":"Intricate","cn":"错综复杂的，精细的","ipa":"/ˈɪntrɪkət/","pos":"adj.","c":"assets/english/clips/u2r2-025.m4a","mk":"tri"},{"w":"Ion","cn":"离子","ipa":"/ˈaɪən/","pos":"n.","c":"assets/english/clips/u2r2-026.m4a","mk":"none"},{"w":"Landfill","cn":"垃圾填埋场","ipa":"/ˈlændfɪl/","pos":"n.","c":"assets/english/clips/u2r2-027.m4a","mk":"none"},{"w":"Lithium","cn":"锂","ipa":"/ˈlɪθiəm/","pos":"n.","c":"assets/english/clips/u2r2-028.m4a","mk":"none"},{"w":"Mandate","cn":"强制要求；授权","ipa":"/ˈmændeɪt/","pos":"n./vt.","c":"assets/english/clips/u2r2-029.m4a","mk":"tri"},{"w":"Manganese","cn":"锰","ipa":"/ˈmæŋɡəniːz/","pos":"n.","c":"assets/english/clips/u2r2-030.m4a","mk":"none"},{"w":"Massive","cn":"巨大的；大规模的","ipa":"/ˈmæsɪv/","pos":"adj.","c":"assets/english/clips/u2r2-031.m4a","mk":"star"},{"w":"Mixture","cn":"混合物","ipa":"/ˈmɪkstʃə(r)/","pos":"n.","c":"assets/english/clips/u2r2-032.m4a","mk":"star"},{"w":"Module","cn":"模块；组件","ipa":"/ˈmɒdjuːl/","pos":"n.","c":"assets/english/clips/u2r2-033.m4a","mk":"none"},{"w":"Oxide","cn":"氧化物","ipa":"/ˈɒksaɪd/","pos":"n.","c":"assets/english/clips/u2r2-034.m4a","mk":"star"},{"w":"Phosphate","cn":"磷酸盐","ipa":"/ˈfɒsfeɪt/","pos":"n.","c":"assets/english/clips/u2r2-035.m4a","mk":"none"},{"w":"Polyurethane","cn":"聚氨酯","ipa":"/ˌpɒliˈjʊərəθeɪn/","pos":"n.","c":"assets/english/clips/u2r2-036.m4a","mk":"none"},{"w":"Problematic","cn":"成问题的，有害的","ipa":"/ˌprɒbləˈmætɪk/","pos":"adj.","c":"assets/english/clips/u2r2-037.m4a","mk":"star"},{"w":"Propel","cn":"推动，驱动","ipa":"/prəˈpel/","pos":"vt.","c":"assets/english/clips/u2r2-038.m4a","mk":"tri"},{"w":"Pyrometallurgy","cn":"火法冶金","ipa":"/ˌpaɪrəʊməˈtælədʒi/","pos":"n.","c":"assets/english/clips/u2r2-039.m4a","mk":"none"},{"w":"Solvent","cn":"溶剂","ipa":"/ˈsɒlvənt/","pos":"n.","c":"assets/english/clips/u2r2-040.m4a","mk":"star"},{"w":"Sticky","cn":"黏的；棘手的","ipa":"/ˈstɪki/","pos":"adj.","c":"assets/english/clips/u2r2-041.m4a","mk":"star"},{"w":"Tailpipe","cn":"（汽车）排气管","ipa":"/ˈteɪlpaɪp/","pos":"n.","c":"assets/english/clips/u2r2-042.m4a","mk":"none"},{"w":"Toxic","cn":"有毒的","ipa":"/ˈtɒksɪk/","pos":"adj.","c":"assets/english/clips/u2r2-043.m4a","mk":"star"},{"w":"Toxin","cn":"毒素","ipa":"/ˈtɒksɪn/","pos":"n.","c":"assets/english/clips/u2r2-044.m4a","mk":"none"},{"w":"Viable","cn":"可行的；能存活的","ipa":"/ˈvaɪəbl/","pos":"adj.","c":"assets/english/clips/u2r2-045.m4a","mk":"tri"}]},{"id":"u3r1","u":3,"r":1,"title":"Fusion energy fuels optimism for the future","words":[{"w":"Ampere","cn":"安培","ipa":"/ˈæmpeə(r)/","pos":"n.","c":"assets/english/clips/u3r1-000.m4a","mk":"none"},{"w":"Atomic bomb","cn":"原子弹","ipa":"/əˈtɒmɪk bɒm/","pos":"n.","c":"assets/english/clips/u3r1-001.m4a","mk":"none"},{"w":"Collision","cn":"碰撞","ipa":"/kəˈlɪʒn/","pos":"n.","c":"assets/english/clips/u3r1-002.m4a","mk":"tri"},{"w":"Compress","cn":"压缩","ipa":"/kəmˈpres/","pos":"vt.","c":"assets/english/clips/u3r1-003.m4a","mk":"tri"},{"w":"Conventional","cn":"常规的，传统的","ipa":"/kənˈvenʃənl/","pos":"adj.","c":"assets/english/clips/u3r1-004.m4a","mk":"star"},{"w":"Crowning","cn":"最高的，登峰造极的","ipa":"/ˈkraʊnɪŋ/","pos":"adj.","c":"assets/english/clips/u3r1-005.m4a","mk":"star"},{"w":"Deployment","cn":"部署，应用","ipa":"/dɪˈplɔɪmənt/","pos":"n.","c":"assets/english/clips/u3r1-006.m4a","mk":"tri"},{"w":"Devastate","cn":"摧毁，毁灭","ipa":"/ˈdevəsteɪt/","pos":"vt.","c":"assets/english/clips/u3r1-007.m4a","mk":"tri"},{"w":"Elusive","cn":"难以实现的；难以捉摸的","ipa":"/iˈluːsɪv/","pos":"adj.","c":"assets/english/clips/u3r1-008.m4a","mk":"none"},{"w":"Extraordinarily","cn":"极其，非凡地","ipa":"/ɪkˈstrɔːdnrəli/","pos":"adv.","c":"assets/english/clips/u3r1-009.m4a","mk":"star"},{"w":"Fission","cn":"（核）裂变","ipa":"/ˈfɪʃn/","pos":"n.","c":"assets/english/clips/u3r1-010.m4a","mk":"none"},{"w":"Fizzle","cn":"逐渐减弱，虎头蛇尾地结束","ipa":"/ˈfɪzl/","pos":"v.","c":"assets/english/clips/u3r1-011.m4a","mk":"none"},{"w":"Fuse","cn":"（使）熔合；融合","ipa":"/fjuːz/","pos":"v.","c":"assets/english/clips/u3r1-012.m4a","mk":"star"},{"w":"Fusion","cn":"（核）聚变；融合","ipa":"/ˈfjuːʒn/","pos":"n.","c":"assets/english/clips/u3r1-013.m4a","mk":"star"},{"w":"Helium","cn":"氦","ipa":"/ˈhiːliəm/","pos":"n.","c":"assets/english/clips/u3r1-014.m4a","mk":"none"},{"w":"Hoist","cn":"吊起，升起","ipa":"/hɔɪst/","pos":"vt.","c":"assets/english/clips/u3r1-015.m4a","mk":"star"},{"w":"Ignite","cn":"点燃；引发","ipa":"/ɪɡˈnaɪt/","pos":"vt.","c":"assets/english/clips/u3r1-016.m4a","mk":"star"},{"w":"Illuminate","cn":"照亮；阐明","ipa":"/ɪˈluːmɪneɪt/","pos":"vt.","c":"assets/english/clips/u3r1-017.m4a","mk":"star"},{"w":"Inert gas","cn":"惰性气体","ipa":"/ɪˈnɜːt ɡæs/","pos":"n.","c":"assets/english/clips/u3r1-018.m4a","mk":""},{"w":"Intricacy","cn":"错综复杂（之处）","ipa":"/ˈɪntrɪkəsi/","pos":"n.","c":"assets/english/clips/u3r1-019.m4a","mk":"star"},{"w":"Magnetic confinement fusion","cn":"磁约束核聚变","ipa":"","pos":"n.","c":"assets/english/clips/u3r1-020.m4a","mk":"none"},{"w":"Magnetic field","cn":"磁场","ipa":"","pos":"n.","c":"assets/english/clips/u3r1-021.m4a","mk":"none"},{"w":"Matter","cn":"物质；事情","ipa":"/ˈmætə(r)/","pos":"n.","c":"assets/english/clips/u3r1-022.m4a","mk":"star"},{"w":"Meltdown","cn":"（反应堆）堆芯熔毁；崩溃","ipa":"/ˈmeltdaʊn/","pos":"n.","c":"assets/english/clips/u3r1-023.m4a","mk":"none"},{"w":"Minimal","cn":"极少的，最低限度的","ipa":"/ˈmɪnɪməl/","pos":"adj.","c":"assets/english/clips/u3r1-024.m4a","mk":"star"},{"w":"Multiplier","cn":"乘数，倍数","ipa":"/ˈmʌltɪplaɪə(r)/","pos":"n.","c":"assets/english/clips/u3r1-025.m4a","mk":"star"},{"w":"Nucleus","cn":"原子核；核心","ipa":"/ˈnjuːkliəs/","pos":"n.","c":"assets/english/clips/u3r1-026.m4a","mk":"star"},{"w":"Particularly","cn":"尤其，特别","ipa":"/pəˈtɪkjələli/","pos":"adv.","c":"assets/english/clips/u3r1-027.m4a","mk":"star"},{"w":"Plasma","cn":"等离子体","ipa":"/ˈplæzmə/","pos":"n.","c":"assets/english/clips/u3r1-028.m4a","mk":"none"},{"w":"Plutonium","cn":"钚","ipa":"/pluːˈtəʊniəm/","pos":"n.","c":"assets/english/clips/u3r1-029.m4a","mk":"none"},{"w":"Potent","cn":"强有力的，强效的","ipa":"/ˈpəʊtnt/","pos":"adj.","c":"assets/english/clips/u3r1-030.m4a","mk":"tri"},{"w":"Quirk","cn":"古怪之处，怪癖","ipa":"/kwɜːk/","pos":"n.","c":"assets/english/clips/u3r1-031.m4a","mk":"none"},{"w":"Radioactive","cn":"放射性的","ipa":"/ˌreɪdiəʊˈæktɪv/","pos":"adj.","c":"assets/english/clips/u3r1-032.m4a","mk":"tri"},{"w":"Reactor","cn":"反应堆","ipa":"/riˈæktə(r)/","pos":"n.","c":"assets/english/clips/u3r1-033.m4a","mk":"none"},{"w":"Repel","cn":"排斥；击退","ipa":"/rɪˈpel/","pos":"vt.","c":"assets/english/clips/u3r1-034.m4a","mk":"tri"},{"w":"Repulsion","cn":"排斥（力）","ipa":"/rɪˈpʌlʃn/","pos":"n.","c":"assets/english/clips/u3r1-035.m4a","mk":"none"},{"w":"Runaway reaction","cn":"失控反应","ipa":"","pos":"n.","c":"assets/english/clips/u3r1-036.m4a","mk":"none"},{"w":"Semiconductor","cn":"半导体","ipa":"/ˌsemikənˈdʌktə(r)/","pos":"n.","c":"assets/english/clips/u3r1-037.m4a","mk":"star"},{"w":"Shot","cn":"尝试；射击","ipa":"/ʃɒt/","pos":"n.","c":"assets/english/clips/u3r1-038.m4a","mk":"star"},{"w":"Smidgen","cn":"一点点，微量","ipa":"/ˈsmɪdʒən/","pos":"n.","c":"assets/english/clips/u3r1-039.m4a","mk":"none"},{"w":"Solenoid","cn":"螺线管，电磁线圈","ipa":"/ˈsəʊlənɔɪd/","pos":"n.","c":"assets/english/clips/u3r1-040.m4a","mk":"none"},{"w":"Thermonuclear","cn":"热核的","ipa":"/ˌθɜːməʊˈnjuːkliə(r)/","pos":"adj.","c":"assets/english/clips/u3r1-041.m4a","mk":"none"},{"w":"Tokamak","cn":"托卡马克（磁约束聚变装置）","ipa":"/ˈtəʊkəmæk/","pos":"n.","c":"assets/english/clips/u3r1-042.m4a","mk":"none"},{"w":"Uncontrolled","cn":"不受控制的","ipa":"/ˌʌnkənˈtrəʊld/","pos":"adj.","c":"assets/english/clips/u3r1-043.m4a","mk":"star"},{"w":"Uranium","cn":"铀","ipa":"/jʊˈreɪniəm/","pos":"n.","c":"assets/english/clips/u3r1-044.m4a","mk":"tri"}]},{"id":"u3r2","u":3,"r":2,"title":"Is geothermal power heating up as an energy source?","words":[{"w":"Critical","cn":"关键的；危急的","ipa":"/ˈkrɪtɪkl/","pos":"adj.","c":"assets/english/clips/u3r2-000.m4a","mk":"star"},{"w":"Crust","cn":"地壳；外壳","ipa":"/krʌst/","pos":"n.","c":"assets/english/clips/u3r2-001.m4a","mk":"star"},{"w":"Enhanced geothermal system (EGS)","cn":"增强型地热系统（EGS）","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-002.m4a","mk":"none"},{"w":"Enthusiast","cn":"热衷者，爱好者","ipa":"/ɪnˈθjuːziæst/","pos":"n.","c":"assets/english/clips/u3r2-003.m4a","mk":"tri"},{"w":"Expanse","cn":"广阔的区域","ipa":"/ɪkˈspæns/","pos":"n.","c":"assets/english/clips/u3r2-004.m4a","mk":"none"},{"w":"Extraction","cn":"提取，抽取","ipa":"/ɪkˈstrækʃn/","pos":"n.","c":"assets/english/clips/u3r2-005.m4a","mk":"tri"},{"w":"Extraction well","cn":"生产井，抽取井","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-006.m4a","mk":"none"},{"w":"Fahrenheit","cn":"华氏温度（的）","ipa":"/ˈfærənhaɪt/","pos":"n./adj.","c":"assets/english/clips/u3r2-007.m4a","mk":"none"},{"w":"Feasibility","cn":"可行性","ipa":"/ˌfiːzəˈbɪləti/","pos":"n.","c":"assets/english/clips/u3r2-008.m4a","mk":"star"},{"w":"Ghana","cn":"加纳","ipa":"/ˈɡɑːnə/","pos":"n.","c":"assets/english/clips/u3r2-009.m4a","mk":""},{"w":"Generator","cn":"发电机","ipa":"/ˈdʒenəreɪtə(r)/","pos":"n.","c":"assets/english/clips/u3r2-010.m4a","mk":"star"},{"w":"Geological","cn":"地质的","ipa":"/ˌdʒiːəˈlɒdʒɪkl/","pos":"adj.","c":"assets/english/clips/u3r2-011.m4a","mk":"star"},{"w":"Geothermal brine","cn":"地热卤水","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-012.m4a","mk":"none"},{"w":"Glisten","cn":"闪光，闪闪发亮","ipa":"/ˈɡlɪsn/","pos":"v.","c":"assets/english/clips/u3r2-013.m4a","mk":"none"},{"w":"Heat pump","cn":"热泵","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-014.m4a","mk":"none"},{"w":"Hydraulic fracturing","cn":"水力压裂","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-015.m4a","mk":"none"},{"w":"Injection well","cn":"注入井","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-016.m4a","mk":""},{"w":"Installation","cn":"装置；安装","ipa":"/ˌɪnstəˈleɪʃn/","pos":"n.","c":"assets/english/clips/u3r2-017.m4a","mk":"star"},{"w":"Intermittent","cn":"间歇性的，断断续续的","ipa":"/ˌɪntəˈmɪtənt/","pos":"adj.","c":"assets/english/clips/u3r2-018.m4a","mk":"tri"},{"w":"Leverage","cn":"利用，借助","ipa":"/ˈliːvərɪdʒ/","pos":"vt.","c":"assets/english/clips/u3r2-019.m4a","mk":"tri"},{"w":"Magnitude","cn":"震级；巨大程度","ipa":"/ˈmæɡnɪtjuːd/","pos":"n.","c":"assets/english/clips/u3r2-020.m4a","mk":"tri"},{"w":"Methodology","cn":"方法，方法体系","ipa":"/ˌmeθəˈdɒlədʒi/","pos":"n.","c":"assets/english/clips/u3r2-021.m4a","mk":"star"},{"w":"Mineral","cn":"矿物，矿物质","ipa":"/ˈmɪnərəl/","pos":"n.","c":"assets/english/clips/u3r2-022.m4a","mk":"star"},{"w":"Niche","cn":"小众的；合适的位置","ipa":"/niːʃ/","pos":"adj./n.","c":"assets/english/clips/u3r2-023.m4a","mk":"none"},{"w":"Permeable","cn":"可渗透的","ipa":"/ˈpɜːmiəbl/","pos":"adj.","c":"assets/english/clips/u3r2-024.m4a","mk":"none"},{"w":"Porous","cn":"多孔的，可渗透的","ipa":"/ˈpɔːrəs/","pos":"adj.","c":"assets/english/clips/u3r2-025.m4a","mk":"none"},{"w":"Posit","cn":"假定，提出（作为前提）","ipa":"/ˈpɒzɪt/","pos":"vt.","c":"assets/english/clips/u3r2-026.m4a","mk":"none"},{"w":"Protocol","cn":"规程，规范","ipa":"/ˈprəʊtəkɒl/","pos":"n.","c":"assets/english/clips/u3r2-027.m4a","mk":"tri"},{"w":"Radiator","cn":"散热器，暖气片","ipa":"/ˈreɪdieɪtə(r)/","pos":"n.","c":"assets/english/clips/u3r2-028.m4a","mk":"tri"},{"w":"Residential","cn":"住宅的，居住的","ipa":"/ˌrezɪˈdenʃl/","pos":"adj.","c":"assets/english/clips/u3r2-029.m4a","mk":"star"},{"w":"Robust","cn":"稳健的，可靠的","ipa":"/rəʊˈbʌst/","pos":"adj.","c":"assets/english/clips/u3r2-030.m4a","mk":"tri"},{"w":"Seep","cn":"渗漏，缓慢流出","ipa":"/siːp/","pos":"v.","c":"assets/english/clips/u3r2-031.m4a","mk":"none"},{"w":"Shale","cn":"页岩","ipa":"/ʃeɪl/","pos":"n.","c":"assets/english/clips/u3r2-032.m4a","mk":"none"},{"w":"Shutter","cn":"使停业，关闭；百叶窗","ipa":"/ˈʃʌtə(r)/","pos":"vt./n.","c":"assets/english/clips/u3r2-033.m4a","mk":"none"},{"w":"Sizzle","cn":"发出滋滋声；灼热","ipa":"/ˈsɪzl/","pos":"v.","c":"assets/english/clips/u3r2-034.m4a","mk":"none"},{"w":"Supercritical","cn":"超临界的","ipa":"/ˌsuːpəˈkrɪtɪkl/","pos":"adj.","c":"assets/english/clips/u3r2-035.m4a","mk":"none"},{"w":"Tectonic fault","cn":"构造断层","ipa":"","pos":"n.","c":"assets/english/clips/u3r2-036.m4a","mk":"none"},{"w":"Tonne","cn":"公吨（等于 1,000 公斤）","ipa":"/tʌn/","pos":"n.","c":"assets/english/clips/u3r2-037.m4a","mk":"none"},{"w":"Tremor","cn":"轻微地震；颤抖","ipa":"/ˈtremə(r)/","pos":"n.","c":"assets/english/clips/u3r2-038.m4a","mk":"none"},{"w":"Trickle","cn":"细细流淌；缓慢移动","ipa":"/ˈtrɪkl/","pos":"v.","c":"assets/english/clips/u3r2-039.m4a","mk":"star"},{"w":"Untapped","cn":"未开发的，未利用的","ipa":"/ˌʌnˈtæpt/","pos":"adj.","c":"assets/english/clips/u3r2-040.m4a","mk":"none"},{"w":"Variant","cn":"变体，变种","ipa":"/ˈveəriənt/","pos":"n.","c":"assets/english/clips/u3r2-041.m4a","mk":"star"},{"w":"Volcanic","cn":"火山的","ipa":"/vɒlˈkænɪk/","pos":"adj.","c":"assets/english/clips/u3r2-042.m4a","mk":"star"}]},{"id":"u4r1","u":4,"r":1,"title":"Life in the sun's grip","words":[{"w":"Beige","cn":"米黄色的；米黄色","ipa":"/beɪʒ/","pos":"adj./n.","c":"assets/english/clips/u4r1-000.m4a","mk":"none"},{"w":"Blaze","cn":"燃烧，闪耀","ipa":"/bleɪz/","pos":"v.","c":"assets/english/clips/u4r1-001.m4a","mk":"star"},{"w":"Blink","cn":"眨眼","ipa":"/blɪŋk/","pos":"v.","c":"assets/english/clips/u4r1-002.m4a","mk":"star"},{"w":"Brownout","cn":"电压不足，局部断电","ipa":"/ˈbraʊnaʊt/","pos":"n.","c":"assets/english/clips/u4r1-003.m4a","mk":"none"},{"w":"Buzz","cn":"发出嗡嗡声","ipa":"/bʌz/","pos":"v.","c":"assets/english/clips/u4r1-004.m4a","mk":"star"},{"w":"Crouch","cn":"蹲下，蜷缩","ipa":"/kraʊtʃ/","pos":"v.","c":"assets/english/clips/u4r1-005.m4a","mk":"star"},{"w":"Devastation","cn":"毁灭，破坏","ipa":"/ˌdevəˈsteɪʃn/","pos":"n.","c":"assets/english/clips/u4r1-006.m4a","mk":"star"},{"w":"Diesel","cn":"柴油","ipa":"/ˈdiːzl/","pos":"n.","c":"assets/english/clips/u4r1-007.m4a","mk":"star"},{"w":"Dismay","cn":"沮丧，惊恐","ipa":"/dɪsˈmeɪ/","pos":"n.","c":"assets/english/clips/u4r1-008.m4a","mk":"star"},{"w":"Flush","cn":"发红，脸红","ipa":"/flʌʃ/","pos":"v.","c":"assets/english/clips/u4r1-009.m4a","mk":""},{"w":"Flustered","cn":"慌乱的，紧张的","ipa":"/ˈflʌstəd/","pos":"adj.","c":"assets/english/clips/u4r1-010.m4a","mk":"none"},{"w":"Heatwave","cn":"热浪","ipa":"/ˈhiːtweɪv/","pos":"n.","c":"assets/english/clips/u4r1-011.m4a","mk":"star"},{"w":"Hum","cn":"嗡嗡声；发出嗡嗡声","ipa":"/hʌm/","pos":"n./v.","c":"assets/english/clips/u4r1-012.m4a","mk":"tri"},{"w":"Humid","cn":"潮湿的","ipa":"/ˈhjuːmɪd/","pos":"adj.","c":"assets/english/clips/u4r1-013.m4a","mk":"tri"},{"w":"Immerse","cn":"使浸没；使沉浸","ipa":"/ɪˈmɜːs/","pos":"vt.","c":"assets/english/clips/u4r1-014.m4a","mk":"star"},{"w":"Jog","cn":"慢跑","ipa":"/dʒɒɡ/","pos":"v.","c":"assets/english/clips/u4r1-015.m4a","mk":""},{"w":"Kerosene","cn":"煤油","ipa":"/ˈkerəsiːn/","pos":"n.","c":"assets/english/clips/u4r1-016.m4a","mk":"none"},{"w":"Mosquito","cn":"蚊子","ipa":"/məˈskiːtəʊ/","pos":"n.","c":"assets/english/clips/u4r1-017.m4a","mk":"star"},{"w":"Murmur","cn":"低语，喃喃地说","ipa":"/ˈmɜːmə(r)/","pos":"v./n.","c":"assets/english/clips/u4r1-018.m4a","mk":"star"},{"w":"Palpable","cn":"明显的，可感知的","ipa":"/ˈpælpəbl/","pos":"adj.","c":"assets/english/clips/u4r1-019.m4a","mk":"none"},{"w":"Patio","cn":"露台，庭院","ipa":"/ˈpætiəʊ/","pos":"n.","c":"assets/english/clips/u4r1-020.m4a","mk":"none"},{"w":"Prune","cn":"起皱的（尤指手指等在水中浸泡后的皱褶状态）","ipa":"/ˈpruːni/","pos":"a.","c":"assets/english/clips/u4r1-021.m4a","mk":"none"},{"w":"Radiation","cn":"辐射","ipa":"/ˌreɪdiˈeɪʃn/","pos":"n.","c":"assets/english/clips/u4r1-022.m4a","mk":"star"},{"w":"Sauna","cn":"桑拿房","ipa":"/ˈsɔːnə/","pos":"n.","c":"assets/english/clips/u4r1-023.m4a","mk":"none"},{"w":"Sensation","cn":"感觉，感受","ipa":"/senˈseɪʃn/","pos":"n.","c":"assets/english/clips/u4r1-024.m4a","mk":"tri"},{"w":"Spine","cn":"脊柱；刺","ipa":"/spaɪn/","pos":"n.","c":"assets/english/clips/u4r1-025.m4a","mk":"tri"},{"w":"Stifling","cn":"闷热的；令人窒息的","ipa":"/ˈstaɪflɪŋ/","pos":"adj.","c":"assets/english/clips/u4r1-026.m4a","mk":"tri"},{"w":"Stucco","cn":"（外墙）灰泥","ipa":"/ˈstʌkəʊ/","pos":"n.","c":"assets/english/clips/u4r1-027.m4a","mk":"none"},{"w":"Suppress","cn":"抑制，忍住","ipa":"/səˈpres/","pos":"vt.","c":"assets/english/clips/u4r1-028.m4a","mk":"tri"},{"w":"Sweaty","cn":"出汗的，汗湿的","ipa":"/ˈsweti/","pos":"adj.","c":"assets/english/clips/u4r1-029.m4a","mk":"star"},{"w":"Tan","cn":"棕褐色的；棕褐色","ipa":"/tæn/","pos":"adj./n.","c":"assets/english/clips/u4r1-030.m4a","mk":"tri"},{"w":"Tile","cn":"瓷砖，瓦","ipa":"/taɪl/","pos":"n.","c":"assets/english/clips/u4r1-031.m4a","mk":"tri"},{"w":"Townspeople","cn":"镇民，市民","ipa":"/ˈtaʊnzpiːpl/","pos":"n.","c":"assets/english/clips/u4r1-032.m4a","mk":"none"},{"w":"Two-stroke engine","cn":"二冲程发动机","ipa":"","pos":"n.","c":"assets/english/clips/u4r1-033.m4a","mk":"none"},{"w":"Umber","cn":"棕褐色的；赭土色","ipa":"/ˈʌmbə(r)/","pos":"adj./n.","c":"assets/english/clips/u4r1-034.m4a","mk":"none"},{"w":"Unbearable","cn":"难以忍受的","ipa":"/ʌnˈbeərəbl/","pos":"adj.","c":"assets/english/clips/u4r1-035.m4a","mk":"star"},{"w":"Uninhabitable","cn":"无法居住的","ipa":"/ˌʌnɪnˈhæbɪtəbl/","pos":"adj.","c":"assets/english/clips/u4r1-036.m4a","mk":"star"},{"w":"Wail","cn":"哀号，恸哭","ipa":"/weɪl/","pos":"n./v.","c":"assets/english/clips/u4r1-037.m4a","mk":"none"},{"w":"Wet-bulb temperature (WBT)","cn":"湿球温度（WBT）","ipa":"","pos":"n.","c":"assets/english/clips/u4r1-038.m4a","mk":""}]},{"id":"u4r2","u":4,"r":2,"title":"Climate megaprojects that might just save the world","words":[{"w":"Absorbent","cn":"吸收剂；有吸收性的","ipa":"/əbˈzɔːbənt/","pos":"n./adj.","c":"assets/english/clips/u4r2-000.m4a","mk":"star"},{"w":"Alarmingly","cn":"惊人地，令人担忧地","ipa":"/əˈlɑːmɪŋli/","pos":"adv.","c":"assets/english/clips/u4r2-001.m4a","mk":"star"},{"w":"Amine","cn":"胺（用于捕集二氧化碳）","ipa":"/əˈmiːn/","pos":"n.","c":"assets/english/clips/u4r2-002.m4a","mk":"none"},{"w":"Buoyant","cn":"有浮力的；漂浮的","ipa":"/ˈbɔɪənt/","pos":"adj.","c":"assets/english/clips/u4r2-003.m4a","mk":"none"},{"w":"Buttress","cn":"支撑，加固","ipa":"/ˈbʌtrəs/","pos":"vt.","c":"assets/english/clips/u4r2-004.m4a","mk":"none"},{"w":"Civilization","cn":"文明","ipa":"/ˌsɪvəlaɪˈzeɪʃn/","pos":"n.","c":"assets/english/clips/u4r2-005.m4a","mk":"star"},{"w":"Compression","cn":"压缩","ipa":"/kəmˈpreʃn/","pos":"n.","c":"assets/english/clips/u4r2-006.m4a","mk":"tri"},{"w":"Defense","cn":"防御物；保护；防御","ipa":"/dɪˈfens/","pos":"n.","c":"assets/english/clips/u4r2-007.m4a","mk":"star"},{"w":"Direct air capture","cn":"直接空气捕集（DAC）","ipa":"","pos":"n.","c":"assets/english/clips/u4r2-008.m4a","mk":"none"},{"w":"DAC","cn":"直接空气捕集（Direct Air Capture）","ipa":"","pos":"n.","c":"assets/english/clips/u4r2-009.m4a","mk":""},{"w":"Doomsday","cn":"世界末日","ipa":"/ˈduːmzdeɪ/","pos":"n.","c":"assets/english/clips/u4r2-010.m4a","mk":"none"},{"w":"Dub","cn":"把…称为，给…起绰号","ipa":"/dʌb/","pos":"vt.","c":"assets/english/clips/u4r2-011.m4a","mk":"tri"},{"w":"Ecosystem","cn":"生态系统","ipa":"/ˈiːkəʊsɪstəm/","pos":"n.","c":"assets/english/clips/u4r2-012.m4a","mk":"tri"},{"w":"Entertain","cn":"考虑，抱有（想法）","ipa":"/ˌentəˈteɪn/","pos":"vt.","c":"assets/english/clips/u4r2-013.m4a","mk":"star"},{"w":"Epic","cn":"宏大的，史诗般的","ipa":"/ˈepɪk/","pos":"adj.","c":"assets/english/clips/u4r2-014.m4a","mk":"tri"},{"w":"Escalating","cn":"不断升级的","ipa":"/ˈeskəleɪtɪŋ/","pos":"adj.","c":"assets/english/clips/u4r2-015.m4a","mk":"tri"},{"w":"Eschew","cn":"避免，戒除","ipa":"/ɪsˈtʃuː/","pos":"vt.","c":"assets/english/clips/u4r2-016.m4a","mk":"none"},{"w":"Imperative","cn":"势在必行的；必要之事","ipa":"/ɪmˈperətɪv/","pos":"adj./n.","c":"assets/english/clips/u4r2-017.m4a","mk":"tri"},{"w":"Inhospitable","cn":"不适宜居住的；荒凉的","ipa":"/ˌɪnhɒˈspɪtəbl/","pos":"adj.","c":"assets/english/clips/u4r2-018.m4a","mk":"star"},{"w":"Liquefaction","cn":"液化","ipa":"/ˌlɪkwɪˈfækʃn/","pos":"n.","c":"assets/english/clips/u4r2-019.m4a","mk":"none"},{"w":"Liquefy","cn":"（使）液化","ipa":"/ˈlɪkwɪfaɪ/","pos":"v.","c":"assets/english/clips/u4r2-020.m4a","mk":"none"},{"w":"Logistical","cn":"后勤的，物流的","ipa":"/ləˈdʒɪstɪkl/","pos":"adj.","c":"assets/english/clips/u4r2-021.m4a","mk":"tri"},{"w":"Mitigate","cn":"减轻，缓解","ipa":"/ˈmɪtɪɡeɪt/","pos":"vt.","c":"assets/english/clips/u4r2-022.m4a","mk":"none"},{"w":"Onboard carbon capture and storage (OCCS)","cn":"船载碳捕集与封存（OCCS）","ipa":"","pos":"n.","c":"assets/english/clips/u4r2-023.m4a","mk":"none"},{"w":"Point source","cn":"点源（集中排放源）","ipa":"","pos":"n.","c":"assets/english/clips/u4r2-024.m4a","mk":"none"},{"w":"Precipitate","cn":"促成，使突然发生","ipa":"/prɪˈsɪpɪteɪt/","pos":"vt.","c":"assets/english/clips/u4r2-025.m4a","mk":"none"},{"w":"Protruding","cn":"突出的，伸出的","ipa":"/prəˈtruːdɪŋ/","pos":"adj.","c":"assets/english/clips/u4r2-026.m4a","mk":"none"},{"w":"Seabed","cn":"海床","ipa":"/ˈsiːbed/","pos":"n.","c":"assets/english/clips/u4r2-027.m4a","mk":"none"},{"w":"Seagrass","cn":"海草","ipa":"/ˈsiːɡrɑːs/","pos":"n.","c":"assets/english/clips/u4r2-028.m4a","mk":"none"},{"w":"Selectively","cn":"有选择地","ipa":"/sɪˈlektɪvli/","pos":"adv.","c":"assets/english/clips/u4r2-029.m4a","mk":"star"},{"w":"Sequestration","cn":"封存；隔离","ipa":"/ˌsiːkwesˈtreɪʃn/","pos":"n.","c":"assets/english/clips/u4r2-030.m4a","mk":"none"},{"w":"Simultaneously","cn":"同时地","ipa":"/ˌsɪmlˈteɪniəsli/","pos":"adv.","c":"assets/english/clips/u4r2-031.m4a","mk":"tri"},{"w":"Spew","cn":"喷出，涌出","ipa":"/spjuː/","pos":"v.","c":"assets/english/clips/u4r2-032.m4a","mk":"none"},{"w":"Stabilize","cn":"（使）稳定","ipa":"/ˈsteɪbəlaɪz/","pos":"v.","c":"assets/english/clips/u4r2-033.m4a","mk":"star"},{"w":"Strategic","cn":"战略性的","ipa":"/strəˈtiːdʒɪk/","pos":"adj.","c":"assets/english/clips/u4r2-034.m4a","mk":"star"},{"w":"Stuttering","cn":"断断续续的，磕磕绊绊的","ipa":"/ˈstʌtərɪŋ/","pos":"adj.","c":"assets/english/clips/u4r2-035.m4a","mk":""},{"w":"Trillion","cn":"万亿","ipa":"/ˈtrɪljən/","pos":"num.","c":"assets/english/clips/u4r2-036.m4a","mk":""},{"w":"Utilization","cn":"利用，使用","ipa":"/ˌjuːtəlaɪˈzeɪʃn/","pos":"n.","c":"assets/english/clips/u4r2-037.m4a","mk":""},{"w":"Whirr","cn":"呼呼地转动","ipa":"/wɜː(r)/","pos":"v.","c":"assets/english/clips/u4r2-038.m4a","mk":""},{"w":"Whopping","cn":"巨大的，惊人的","ipa":"/ˈwɒpɪŋ/","pos":"adj.","c":"assets/english/clips/u4r2-039.m4a","mk":""}]}]};</script>
+<script>
+(function(){
+  var D=window.ENGQ||{lessons:[]}, all=[];
+  D.lessons.forEach(function(L){
+    L.words.forEach(function(w){
+      if(!w.cn||!w.w)return;
+      w.lid=L.id;w.u=L.u;w.r=L.r;all.push(w);
+    });
+  });
+  var W=window.WBS;
+  function wrongMap(){try{return JSON.parse(W.get('wb_eng_wrong')||'{}')||{};}catch(e){return {};}}
+  function saveWrong(o){W.set('wb_eng_wrong',JSON.stringify(o));}
+
+  var el=function(id){return document.getElementById(id);};
+  var pool=[],idx=0,mode='mc',done=0,ok=0,cur=null,locked=false;
+  var au=null;
+  function play(src){
+    if(!src)return;
+    if(!au){au=new Audio();au.preload='auto';}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;au.play();return;}
+    try{au.currentTime=0;}catch(e){}
+    au.play();
+  }
+  function shuffle(a){
+    a=a.slice();
+    for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+    return a;
+  }
+  function scopeLid(){return el('scope').value;}
+  function scopeWords(){
+    var v=scopeLid();
+    if(v==='wrong'){var wm=wrongMap();return all.filter(function(w){return wm[w.w.toLowerCase()];});}
+    if(v==='all')return all.slice();
+    return all.filter(function(w){return w.lid===v;});
+  }
+  function start(){
+    pool=shuffle(scopeWords());idx=0;done=0;ok=0;
+    if(!pool.length){renderEmpty();return;}
+    next();
+  }
+  function renderEmpty(){
+    el('card').innerHTML='<div class="qz-empty">这个范围里还没有词。先做几组题，错的会自动进错词本。</div>';
+    stat();
+  }
+  function stat(){
+    var pct=done?Math.round(ok*100/done):0;
+    el('stat').innerHTML='<span>已做 '+done+' 题</span><span>正确 '+ok+'</span>'+
+      '<span>正确率 '+pct+'%</span><span>本轮进度 '+(pool.length?Math.min(idx+1,pool.length):0)+' / '+pool.length+'</span>';
+  }
+  function next(){
+    locked=false;
+    if(idx>=pool.length){finish();return;}
+    cur=pool[idx];
+    el('fb').innerHTML='';
+    var head='<div class="qz-top"><span>Unit '+cur.u+' · Reading '+cur.r+'</span>'+
+             '<span>'+(idx+1)+' / '+pool.length+'</span></div>';
+    var cnEsc=(cur.cn||'').replace(/</g,'&lt;');
+    if(mode==='mc'){
+      var opts=[cur],used={};used[cur.w.toLowerCase()]=1;
+      var src=all.filter(function(w){return w.lid===cur.lid&&!used[w.w.toLowerCase()];});
+      if(src.length<3)src=all.filter(function(w){return !used[w.w.toLowerCase()];});
+      var s2=shuffle(src);
+      for(var i=0;i<s2.length&&opts.length<4;i++){opts.push(s2[i]);used[s2[i].w.toLowerCase()]=1;}
+      opts=shuffle(opts);
+      var html=head+'<div class="qz-prompt">'+cnEsc+'</div>'+
+        '<div class="qz-sub"><span>'+(cur.pos||'')+'</span>'+
+        '<button id="qp">▶ 听发音</button></div><div class="qz-opts">';
+      opts.forEach(function(o){
+        html+='<button data-w="'+o.w.replace(/"/g,'&quot;')+'">'+o.w.replace(/</g,'&lt;')+'</button>';
+      });
+      html+='</div>';
+      el('card').innerHTML=html;
+      el('qp').onclick=function(){play(cur.c);};
+      Array.prototype.forEach.call(document.querySelectorAll('.qz-opts button'),function(b){
+        b.onclick=function(){answer(b.getAttribute('data-w'),b);};
+      });
+    }else{
+      el('card').innerHTML=head+'<div class="qz-prompt small">'+cnEsc+'</div>'+
+        '<div class="qz-sub"><span class="ipa">'+(cur.ipa||'')+'</span>'+
+        '<button id="qp">▶ 听发音</button>'+
+        '<button id="qh">给个首字母</button></div>'+
+        '<div class="qz-input"><input id="ans" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="拼出这个单词，回车提交">'+
+        '<button id="sub">提交</button></div>';
+      el('qp').onclick=function(){play(cur.c);};
+      el('qh').onclick=function(){
+        var w=cur.w;
+        el('ans').value=(w[0]||'')+'·'.repeat(Math.max(0,w.length-1));
+      };
+      el('sub').onclick=function(){submit();};
+      el('ans').addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
+      el('ans').focus();
+    }
+    stat();
+  }
+  function normSpell(t){
+    return (t||'').toLowerCase().replace(/[’']/g,"'").replace(/\s+/g,' ').trim();
+  }
+  function lose(){
+    var wm=wrongMap(),k=cur.w.toLowerCase();
+    wm[k]=wm[k]||{w:cur.w,cn:cur.cn,lid:cur.lid,n:0};
+    wm[k].n+=1;wm[k].t=new Date().toISOString().slice(0,10);
+    saveWrong(wm);
+  }
+  function record(good){
+    done++;if(good)ok++;
+    if(!good)lose();
+  }
+  function submit(){
+    if(locked)return;
+    var v=el('ans').value;
+    var good=normSpell(v)===normSpell(cur.w)||
+             normSpell(v).replace(/-/g,'')===normSpell(cur.w).replace(/-/g,'');
+    locked=true;record(good);
+    el('fb').innerHTML=(good?'<span class="ok">✓ 正确</span>':'<span class="no">✗ 写错了</span>')+
+      '　正确答案：<code>'+cur.w.replace(/</g,'&lt;')+'</code>'+(cur.ipa?' <span class="ipa">'+cur.ipa+'</span>':'')+
+      '<div style="color:var(--muted);font-size:13px;margin-top:4px">'+cur.cn+'</div>'+
+      '<div class="qz-next"><button id="nx">下一题 →</button></div>';
+    play(cur.c);
+    el('nx').onclick=function(){idx++;next();};
+    el('ans').disabled=true;
+    stat();
+  }
+  function answer(pick,btn){
+    if(locked)return;
+    locked=true;
+    var good=pick.toLowerCase()===cur.w.toLowerCase();
+    record(good);
+    Array.prototype.forEach.call(document.querySelectorAll('.qz-opts button'),function(b){
+      b.disabled=true;
+      if(b.getAttribute('data-w').toLowerCase()===cur.w.toLowerCase())b.classList.add('right');
+      else if(b===btn)b.classList.add('wrong');
+    });
+    el('fb').innerHTML=(good?'<span class="ok">✓ 正确</span>':'<span class="no">✗ 选错了</span>')+
+      (good?'':'　正确答案：<code>'+cur.w.replace(/</g,'&lt;')+'</code>')+
+      '<div style="color:var(--muted);font-size:13px;margin-top:4px">'+cur.cn+'</div>';
+    play(cur.c);
+    stat();
+    if(good)setTimeout(function(){idx++;next();},900);
+    else{
+      el('fb').innerHTML+='<div class="qz-next"><button id="nx">下一题 →</button></div>';
+      el('nx').onclick=function(){idx++;next();};
+    }
+  }
+  function finish(){
+    var pct=done?Math.round(ok*100/done):0;
+    el('card').innerHTML='<div class="qz-prompt">这一轮做完了</div>'+
+      '<div class="qz-sub">共 '+done+' 题，正确 '+ok+'，正确率 '+pct+'%。'+
+      '错的已经进错词本。</div><div class="qz-input"><button id="again">再来一轮</button>'+
+      '<button class="ghost" id="only-wrong">只练错词</button></div>';
+    el('again').onclick=start;
+    el('only-wrong').onclick=function(){el('scope').value='wrong';start();};
+    stat();renderWrong();
+  }
+  function renderWrong(){
+    var wm=wrongMap(),keys=Object.keys(wm);
+    var box=el('wbody');
+    if(!keys.length){box.innerHTML='<div class="qz-empty">错词本是空的。</div>';return;}
+    keys.sort(function(a,b){return wm[b].n-wm[a].n;});
+    var h='<table class="qz-t"><thead><tr><th>词</th><th>释义</th><th>错次</th><th>出处</th><th></th></tr></thead><tbody>';
+    keys.forEach(function(k){
+      var it=wm[k],o=null;
+      for(var i=0;i<all.length;i++){if(all[i].w.toLowerCase()===k){o=all[i];break;}}
+      h+='<tr><td><b>'+it.w+'</b></td><td style="color:var(--muted)">'+(it.cn||'')+'</td>'+
+         '<td class="n">'+it.n+'</td><td style="color:var(--muted)">'+(it.lid||'')+'</td>'+
+         '<td><button data-p="'+(o?o.c:'')+'">▶</button> <button data-del="'+k+'">移除</button></td></tr>';
+    });
+    box.innerHTML=h+'</tbody></table>';
+    Array.prototype.forEach.call(box.querySelectorAll('button[data-p]'),function(b){
+      b.onclick=function(){play(b.getAttribute('data-p'));};
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('button[data-del]'),function(b){
+      b.onclick=function(){
+        var wm2=wrongMap();delete wm2[b.getAttribute('data-del')];saveWrong(wm2);renderWrong();
+      };
+    });
+  }
+
+  /* ---- 交互装配 ---- */
+  el('scope').onchange=start;
+  el('modes').addEventListener('click',function(ev){
+    var b=ev.target.closest('button');if(!b)return;
+    mode=b.getAttribute('data-m');
+    Array.prototype.forEach.call(el('modes').children,function(x){x.classList.toggle('on',x===b);});
+    start();
+  });
+  el('tabs').addEventListener('click',function(ev){
+    var b=ev.target.closest('button');if(!b)return;
+    var v=b.getAttribute('data-v');
+    Array.prototype.forEach.call(el('tabs').children,function(x){x.classList.toggle('on',x===b);});
+    el('v-drill').hidden=(v!=='drill');
+    el('v-wrong').hidden=(v!=='wrong');
+    if(v==='wrong')renderWrong();
+  });
+  document.addEventListener('keydown',function(ev){
+    // 输入框里的回车已经用来提交答案，这里不能把它再当成「下一题」
+    if(ev.key!=='Enter'||el('v-drill').hidden)return;
+    if(ev.target&&ev.target.id==='ans')return;
+    var nx=el('nx');if(nx){nx.click();}
+  });
+
+  /* 深链：english-quiz.html?u=1&r=2 */
+  var m=location.search.match(/[?&]u=(\d)&r=(\d)/);
+  if(m){var lid='u'+m[1]+'r'+m[2];
+    if(all.some(function(w){return w.lid===lid;}))el('scope').value=lid;}
+  if(/[?&]m=sp/.test(location.search)){
+    mode='sp';
+    Array.prototype.forEach.call(el('modes').children,function(x){
+      x.classList.toggle('on',x.getAttribute('data-m')==='sp');
+    });
+  }
+  if(location.hash==='#wrong'){
+    el('tabs').children[0].classList.remove('on');
+    el('tabs').children[1].classList.add('on');
+    el('v-drill').hidden=true;el('v-wrong').hidden=false;
+  }
+  start();renderWrong();
+})();
+</script>
+</main>
+</body>
+</html>

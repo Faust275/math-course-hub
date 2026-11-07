@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is geothermal power heating up as an energy source? · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 3 R2</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 3 · Reading 2</div><h1>Is geothermal power heating up as an energy source?</h1><div class="eng-meta"><span>15 段 · 46 句</span><span>43 词 + 4 短语 + 2 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=3&amp;r=2">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>46 句</small></button><button data-v="words">词表<small>49</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="10.33" data-e="22.43">Glistening in the dry expanses of the Nevada desert is an unusual kind of power plant that harnesses energy not from the sun or wind, but from the earth itself.</span> </p><p class="eng-p"><span class="sg" data-s="24.06" data-e="35.06">The geothermal project, known as Project Red, pumps water thousands of feet into the ground down where rocks are hot enough to roast a turkey.</span> <span class="sg" data-s="36.01" data-e="43.91">Around the clock the structure sucks the heated water back up. It is then used to power generators.</span> <span class="sg" data-s="44.62" data-e="53.37">Since November 2024 this carbon-free, earth-born power has been flowing onto a local grid in Nevada.</span> </p><p class="eng-p"><span class="sg" data-s="54.7" data-e="68.85">Geothermal energy, though continuously radiating from the earth&#x27;s super hot core, has long been a relatively niche source of electricity, largely limited to volcanic regions.</span> <span class="sg" data-s="69.5" data-e="81.75">But geothermal enthusiasts dream of sourcing the earth&#x27;s power in places without such specific geological conditions, like Project Red&#x27;s Nevada site.</span> </p><p class="eng-p"><span class="sg" data-s="83.28" data-e="96.655">Such next-generation geothermal systems have been in the works for decades, but they&#x27;ve proven expensive and technologically difficult, and have sometimes even triggered earthquakes.</span> <span class="sg" data-s="97.3" data-e="113.975">Some experts hope that newer efforts like Project Red may now finally signal a turning point, by leveraging techniques that were developed in oil and gas extraction to improve reliability and cost efficiency.</span> </p><p class="eng-p"><span class="sg" data-s="115.48" data-e="126.555">The advances have garnered hopes that with enough time and money, geothermal power, which currently generates less than one per cent of the world&#x27;s electricity, could become a mainstream clean energy source.</span> </p><p class="eng-p"><span class="sg" data-s="131.12" data-e="141.995">Some posit that geothermal energy could be a valuable tool in transitioning off of fossil fuels and reducing greenhouse gas emissions.</span> <span class="sg" data-s="142.66" data-e="154.41">For instance, every year China&#x27;s Yangbajing geothermal power station can help cut 420,000 tons of carbon dioxide emissions.</span> <span class="sg" data-s="155.08" data-e="160.28">And save 116,000 tons of standard coal.</span> <span class="sg" data-s="160.92" data-e="170.62">Moreover, geothermal energy can provide a continuous backup for intermittent clean energy sources like solar and wind.</span> </p><p class="eng-p"><span class="sg" data-s="172.08" data-e="180.28">Geothermal energy works best with two things heat plus rocks that are permeable enough to carry water.</span> <span class="sg" data-s="181.2" data-e="193.8">In places where molten rock sizzles close to the surface, water will seep through porous volcanic rocks, warm up and bubble upward as hot water, steam, or both.</span> <span class="sg" data-s="194.56" data-e="207.435">If the water or steam is hot enough, ideally at least around 300 degrees Fahrenheit, it can be extracted from the ground and used to power generators for electricity.</span> </p><p class="eng-p"><span class="sg" data-s="208.92" data-e="216.245">There&#x27;s a huge amount of heat in the earth, and some natural geothermal resources remain untapped.</span> <span class="sg" data-s="216.9" data-e="231.65">But much of the geothermal energy is locked inside the rocks that aren&#x27;t permeable, pushing experts to consider ways of extracting geothermal energy from areas where the energy is much harder to access.</span> </p><p class="eng-p"><span class="sg" data-s="233.19" data-e="242.64">Tapping that heat requires deep drilling and creating cracks in these non volcanic, dense rocks to allow water to flow through.</span> <span class="sg" data-s="243.36" data-e="252.51">Since the 1970s, engineers have been developing enhanced geothermal systems, e GS that do just that.</span> <span class="sg" data-s="253.32" data-e="261.82">Applying methods similar to hydraulic fracturing or fracking, used to suck oil and gas out of deep rocks.</span> <span class="sg" data-s="262.52" data-e="271.52">Water is pumped at high pressure into the injection wells up to several miles deep to blast cracks into the rocks.</span> <span class="sg" data-s="272.2" data-e="282.725">The cracked rocks and water create an underground radiator where water heats before rising to the surface through the extraction wells.</span> </p><p class="eng-p"><span class="sg" data-s="284.08" data-e="294.53">Dozens of such EGS installations have been built in the US, Europe, Australia, the Republic of Korea, Japan, ETC.</span> <span class="sg" data-s="295.36" data-e="300.31">Most of them experimental and government funded with mixed success.</span> <span class="sg" data-s="301.08" data-e="313.755">Famously, one EGS plant in the Republic of Korea was abruptly shuttered in 2017 after having probably caused a 5.5 magnitude earthquake.</span> <span class="sg" data-s="314.38" data-e="319.43">Fracking of any kind can add pressure to nearby tectonic faults.</span> <span class="sg" data-s="320.18" data-e="321.93">Other issues were technological.</span> <span class="sg" data-s="322.86" data-e="332.185">Some plants didn&#x27;t create enough fractures for good heat exchange, or fractures traveled in the wrong direction and failed to connect the wells.</span> </p><p class="eng-p"><span class="sg" data-s="333.66" data-e="338.86">Luckily, solutions exist for both safety and technological problems.</span> <span class="sg" data-s="339.88" data-e="347.455">There are in fact, robust protocols for avoiding earthquakes, such as not drilling near active faults.</span> <span class="sg" data-s="348.14" data-e="356.065">Long term monitoring of the operating EGS plants In France and Germany has documented only minor tremors.</span> <span class="sg" data-s="356.72" data-e="359.82">Building confidence in the safety of the technology.</span> <span class="sg" data-s="360.69" data-e="373.315">Importantly, drilling and fracking methodology has improved by leaps and bounds thanks to the boom in oil and gas extraction from shale rocks that began in the 2010s.</span> </p><p class="eng-p"><span class="sg" data-s="374.75" data-e="381.025">For instance, several techniques from the shale industry have been applied to Project Red.</span> <span class="sg" data-s="381.88" data-e="403.58">Engineers drilled almost 8000 feet downward into the Nevada rocks, where the temperatures reached nearly 380 degrees Fahrenheit, and then at the bottom drilled another 3250 foot horizontal well to expand the area of hot rocks that the system could touch.</span> <span class="sg" data-s="404.24" data-e="409.49">A technique used in oil and gas extraction in order to maximize yield.</span> <span class="sg" data-s="410.2" data-e="421.45">The company also fractured the surrounding rocks at several sites along the horizontal well to create a more extensive web of cracks for water to trickle through.</span> <span class="sg" data-s="422.18" data-e="428.48">Technologically speaking, compared to earlier EGS efforts, they are a big step forward.</span> </p><p class="eng-p"><span class="sg" data-s="430.14" data-e="433.69">There are other types of geothermal technology as well.</span> <span class="sg" data-s="434.5" data-e="441.025">Some companies are exploring the feasibility of extracting super hot rock geothermal energy.</span> <span class="sg" data-s="441.72" data-e="460.345">Essentially a young, extreme variant of EGS that involves drilling down even deeper into the earth&#x27;s crust to a depth where water reaches a supercritical, vapor-like state that allows it to carry much more energy than either steam or liquid.</span> </p><p class="eng-p"><span class="sg" data-s="461.7" data-e="469.525">In short, it&#x27;s an important moment for geothermal energy, and not just for providing carbon-free electricity.</span> <span class="sg" data-s="470.22" data-e="482.245">Geothermal brine hauled out of the earth is rich in lithium and other critical minerals that can be used to build green technologies like solar panels and EV batteries.</span> <span class="sg" data-s="482.88" data-e="496.83">There&#x27;s also a growing push to use geothermal heat directly to warm buildings, either through shallow heat pumps for residential buildings or larger systems designed for entire districts.</span> </p><p class="eng-p"><span class="sg" data-s="498.18" data-e="507.205">As one geologist said, our earth is geothermal, and so we owe it to ourselves to do everything we can to use it.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 43</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Critical</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈkrɪtɪkl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">关键的；危急的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Crust</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/krʌst/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">地壳；外壳</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Enhanced geothermal system (EGS)</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">增强型地热系统（EGS）</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Enthusiast</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ɪnˈθjuːziæst/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">热衷者，爱好者</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Expanse</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪkˈspæns/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">广阔的区域</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Extraction</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ɪkˈstrækʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">提取，抽取</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Extraction well</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">生产井，抽取井</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fahrenheit</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈfærənhaɪt/</span></td><td><span class="eng-pos">n./adj.</span></td><td class="eng-cn">华氏温度（的）</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Feasibility</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌfiːzəˈbɪləti/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">可行性</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Ghana</span></td><td><span class="eng-ipa">/ˈɡɑːnə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">加纳</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Generator</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈdʒenəreɪtə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">发电机</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Geological</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌdʒiːəˈlɒdʒɪkl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">地质的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Geothermal brine</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">地热卤水</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Glisten</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈɡlɪsn/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">闪光，闪闪发亮</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Heat pump</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">热泵</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hydraulic fracturing</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">水力压裂</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Injection well</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">注入井</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Installation</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌɪnstəˈleɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">装置；安装</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Intermittent</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˌɪntəˈmɪtənt/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">间歇性的，断断续续的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Leverage</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈliːvərɪdʒ/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">利用，借助</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Magnitude</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈmæɡnɪtjuːd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">震级；巨大程度</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Methodology</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌmeθəˈdɒlədʒi/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">方法，方法体系</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mineral</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmɪnərəl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">矿物，矿物质</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Niche</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/niːʃ/</span></td><td><span class="eng-pos">adj./n.</span></td><td class="eng-cn">小众的；合适的位置</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Permeable</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpɜːmiəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">可渗透的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Porous</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpɔːrəs/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">多孔的，可渗透的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Posit</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpɒzɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">假定，提出（作为前提）</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Protocol</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈprəʊtəkɒl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">规程，规范</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Radiator</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈreɪdieɪtə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">散热器，暖气片</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Residential</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌrezɪˈdenʃl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">住宅的，居住的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r2-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Robust</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/rəʊˈbʌst/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">稳健的，可靠的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Seep</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/siːp/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">渗漏，缓慢流出</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Shale</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ʃeɪl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">页岩</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Shutter</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈʃʌtə(r)/</span></td><td><span class="eng-pos">vt./n.</span></td><td class="eng-cn">使停业，关闭；百叶窗</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sizzle</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsɪzl/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">发出滋滋声；灼热</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Supercritical</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌsuːpəˈkrɪtɪkl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">超临界的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tectonic fault</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">构造断层</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tonne</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/tʌn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">公吨（等于 1,000 公斤）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tremor</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈtremə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">轻微地震；颤抖</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Trickle</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈtrɪkl/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">细细流淌；缓慢移动</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r2-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Untapped</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌʌnˈtæpt/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">未开发的，未利用的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Variant</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈveəriənt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">变体，变种</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r2-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Volcanic</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/vɒlˈkænɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">火山的</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 4</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-043.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Around or round the clock</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">昼夜不停地</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-044.m4a" title="播放发音">▶</button></td><td><span class="eng-w">By or in leaps and bounds</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">突飞猛进地</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-045.m4a" title="播放发音">▶</button></td><td><span class="eng-w">In the works or pipeline?</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">在筹备中，在进行中</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-046.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Owe it to oneself to do something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">认为自己有必要做某事</td></tr></tbody></table></div><div class="eng-group">Proper names · 2</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-047.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Nevada</span></td><td><span class="eng-ipa">/nəˈvædə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">内华达（美国州名）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r2-048.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Project Red</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">红项目（内华达州地热示范工程）</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u3r2-text.m4a","words":"assets/english/u3r2-words.m4a","dur":507.205,"segs":[[10.33,22.43],[24.06,35.06],[36.01,43.91],[44.62,53.37],[54.7,68.85],[69.5,81.75],[83.28,96.655],[97.3,113.975],[115.48,126.555],[131.12,141.995],[142.66,154.41],[155.08,160.28],[160.92,170.62],[172.08,180.28],[181.2,193.8],[194.56,207.435],[208.92,216.245],[216.9,231.65],[233.19,242.64],[243.36,252.51],[253.32,261.82],[262.52,271.52],[272.2,282.725],[284.08,294.53],[295.36,300.31],[301.08,313.755],[314.38,319.43],[320.18,321.93],[322.86,332.185],[333.66,338.86],[339.88,347.455],[348.14,356.065],[356.72,359.82],[360.69,373.315],[374.75,381.025],[381.88,403.58],[404.24,409.49],[410.2,421.45],[422.18,428.48],[430.14,433.69],[434.5,441.025],[441.72,460.345],[461.7,469.525],[470.22,482.245],[482.88,496.83],[498.18,507.205]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

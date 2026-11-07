@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§3.1 方程与图形 ｜ 刚体变换 ｜ “101计划”核心教材 几何学基础 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* C 级反向联动：课本小节下的相关作业 */
+.wb-sec-related {
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px dashed var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-sec-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-sec-related-list { list-style: none; margin: 0; padding: 0; }
+.wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+.wb-sec-related-list .wb-lk-more { color: var(--muted); font-size: 12px; border-left: none; padding-left: 0; }
+
+/* C 级反向联动 · 章级：章首页整章相关作业（章级关联教材在此呈现） */
+.wb-ch-related {
+  margin: 16px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px solid var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-ch-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-ch-related .wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-ch-related .wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-ch-related .wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+math { max-width: 100%; }
+/* 侧边抽屉在视口外，会把页宽撑大，这里裁掉 */
+html, body { overflow-x: clip; }
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+/* 章首页 hub：本章小节卡片网格 */
+.wb-sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+.wb-sec-card { display: block; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .12s, box-shadow .15s; }
+.wb-sec-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.wb-sec-card .wb-sec-num { display: inline-block; color: var(--accent); font-weight: 700; margin-right: 8px; }
+.wb-sec-card .wb-sec-name { font-weight: 600; }
+.wb-sec-card:hover .wb-sec-name { color: var(--accent); }
+
+/* 节内子标题：独立成块（满足「分成两个卡片 / 把小标题加入目录」），并带锚点便于跳转 */
+.wb-subhead { font-size: 17px; font-weight: 700; color: var(--text); margin: 26px 0 12px; padding: 9px 12px;
+  background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 6px; scroll-margin-top: 86px; }
+.wb-subhead + .wb-def, .wb-subhead + .wb-thm, .wb-subhead + .wb-prop, .wb-subhead + .wb-lemma,
+.wb-subhead + .wb-cor, .wb-subhead + .wb-example, .wb-subhead + .wb-remark, .wb-subhead + .wb-exercise,
+.wb-subhead + .wb-proof { margin-top: 12px; }
+
+/* ---------- 章内目录：宽屏右侧常驻 / 窄屏抽屉 ---------- */
+.wb-chtoc{position:fixed;top:72px;right:14px;width:238px;max-height:calc(100vh - 108px);
+  display:flex;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1c1c1a);
+  border:1px solid var(--border,#e3e2dd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:70;font-size:13px;line-height:1.45;
+  transform:translateX(calc(100% + 26px));transition:transform .22s ease}
+.wb-chtoc.on{transform:none}
+@media (min-width:1420px){.wb-chtoc{transform:none;right:max(14px,calc((100vw - 940px)/2 - 252px))}}
+.wb-chtoc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-bottom:1px solid var(--border,#e3e2dd);
+  color:var(--muted,#6b6b66);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.wb-chtoc-x{border:0;background:none;color:var(--muted,#6b6b66);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.wb-chtoc-x:hover{color:var(--text,#1c1c1a)}
+@media (min-width:1420px){.wb-chtoc-x{display:none}}
+.wb-chtoc-b{overflow-y:auto;overscroll-behavior:contain;padding:5px 0 10px}
+.wb-chtoc .g>.s{display:block;padding:6px 12px 6px 10px;color:var(--text,#1c1c1a);text-decoration:none;
+  font-weight:600;border-left:3px solid transparent}
+.wb-chtoc .g>.s b{color:var(--accent,#0f6e56);margin-right:4px}
+.wb-chtoc .g>.s:hover{background:var(--surface2,#f7f7f5)}
+.wb-chtoc .g.cur>.s{border-left-color:var(--accent,#0f6e56)}
+.wb-chtoc .g>ul{list-style:none;margin:0;padding:0 0 2px;display:none}
+.wb-chtoc .g.open>ul{display:block}
+.wb-chtoc a.b{display:flex;align-items:baseline;gap:7px;padding:3.5px 12px 3.5px 20px;
+  color:var(--muted,#6b6b66);text-decoration:none;border-left:3px solid transparent}
+.wb-chtoc a.b:hover{color:var(--text,#1c1c1a);background:var(--surface2,#f7f7f5)}
+.wb-chtoc a.b i{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.wb-chtoc a.b.k-def i{background:#10b981;opacity:1}
+.wb-chtoc a.b.k-thm i{background:#2563eb;opacity:1}
+.wb-chtoc a.b.k-axiom i{background:#7c3aed;opacity:1}
+.wb-chtoc a.b.k-prop i{background:#0891b2;opacity:1}
+.wb-chtoc a.b.k-ex i{background:#d97706;opacity:1}
+.wb-chtoc a.b.k-rem i{background:#94a3b8;opacity:1}
+.wb-chtoc a.b.k-pf i{background:#cbd5e1;opacity:1}
+.wb-chtoc a.b.cur{color:var(--accent,#0f6e56);background:var(--surface2,#f7f7f5);
+  border-left-color:var(--accent,#0f6e56);font-weight:600}
+.wb-chtoc a.b.cur i{opacity:1}
+.wb-chtoc-mask{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:69;opacity:0;
+  pointer-events:none;transition:opacity .2s}
+.wb-chtoc-mask.on{opacity:1;pointer-events:auto}
+@media (min-width:1420px){.wb-chtoc-mask{display:none}}
+#wb-btn-chtoc{display:none}
+@media (max-width:1419.98px){#wb-btn-chtoc{display:inline-flex}}
+/* 锚点跳转时别被吸顶栏盖住 */
+section.wb-seg[id],div[id^="tbk_"]{scroll-margin-top:86px}
+@media print{.wb-chtoc,.wb-chtoc-mask{display:none}}
+/* 窄屏：改成整屏高的侧滑抽屉，别只盖住半截顶栏 */
+@media (max-width:1419.98px){
+  .wb-chtoc{top:0;right:0;height:100vh;max-height:100vh;width:min(300px,86vw);
+    border-radius:0;border-top:0;border-bottom:0;border-right:0}
+  .wb-chtoc-h{padding:13px 14px}
+}
+/* 顶栏工具多了会挤到换行，按钮文字不许折行 */
+.wb-tool-group{flex-wrap:wrap;justify-content:flex-end}
+.wb-tool-btn{white-space:nowrap}
+@media (max-width:600px){
+  .wb-tool-group{gap:4px}
+  .wb-tool-btn{padding:4px 6px;font-size:12px}
+}
+
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html" class="on">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html">英语</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-geometry.html">几何学</a> <span>›</span>
+    <a href="course-geometry.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 3 章 ｜ §3.1 方程与图形</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-chtoc" title="本章小节与定义定理">📋 本章</button>
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header"><div class="wb-book-tagline">📖 “101计划”核心教材 几何学基础 ｜ 盛茂、王作勤 编著</div><h1 style="font-size:24px;margin:8px 0 4px;">§3.1 ｜ 方程与图形</h1><div class="wb-book-meta-sub">高等教育出版社（教育部计算机与数学101计划核心教材） ｜ 原书对应页码：第  页</div></div>
+
+  
+
+  
+
+  
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§3.1</span> 方程与图形</h3><h4 class="wb-subhead" id="sub_1"><b>3.1.1 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中的平面</b></h4>
+<h4 class="wb-subhead" id="sub_2"><b>平面参数方程</b></h4>
+<p>根据命题 2.4.5, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{3}</annotation></semantics></math> 中任意不共线的三点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>(</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>,</mo><mi>B</mi><mo>(</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>,</mo><mi>C</mi><mo>(</mo><msub><mi>c</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">A(a_{1}, a_{2}, a_{3}), B(b_{1}, b_{2}, b_{3}), C(c_{1}, c_{2}, c_{3})</annotation></semantics></math> 决定了唯一一个平面, 即</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mo>{</mo><mo>(</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>+</mo><mi>t</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>s</mi><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>∣</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>∈</mo><mi>ℝ</mi><mo>}</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\alpha = \{(a _ {1}, a _ {2}, a _ {3}) + t \vec {u} + s \vec {v} \mid t, s \in \mathbb {R} \},</annotation></semantics></math></div>
+<p>其中</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>,</mo></mtd></mtr><mtr><mtd><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>c</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{l} \vec {u} = (u _ {1}, u _ {2}, u _ {3}) = (b _ {1} - a _ {1}, b _ {2} - a _ {2}, b _ {3} - a _ {3}), \\ \vec {v} = (v _ {1}, v _ {2}, v _ {3}) = (c _ {1} - a _ {1}, c _ {2} - a _ {2}, c _ {3} - a _ {3}). \end{array}</annotation></semantics></math></div>
+<p>于是, 点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x, y, z)</annotation></semantics></math> 落在平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 上当且仅当存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>,</mo><mi>s</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">t, s \in \mathbb{R}</annotation></semantics></math> , 使得</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>+</mo><mi>t</mi><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>+</mo><mi>s</mi><mo>(</mo><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">(x, y, z) = (a _ {1}, a _ {2}, a _ {3}) + t (u _ {1}, u _ {2}, u _ {3}) + s (v _ {1}, v _ {2}, v _ {3}).</annotation></semantics></math></div>
+<p>上述方程可被写为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mi>t</mi><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mi>s</mi><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><mi>t</mi><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><mi>s</mi><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>+</mo><mi>t</mi><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>+</mo><mi>s</mi><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l} x = a _ {1} + t u _ {1} + s v _ {1}, \\ y = a _ {2} + t u _ {2} + s v _ {2}, \\ z = a _ {3} + t u _ {3} + s v _ {3}, \end{array} \right.</annotation></semantics></math></div>
+<p>该方程组被称为平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 的参数方程. 注意条件 “ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> 三点不共线” 等价于</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>×</mo><mo>(</mo><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec {u} \times \vec {v} = (u _ {1}, u _ {2}, u _ {3}) \times (v _ {1}, v _ {2}, v _ {3}) \neq \vec {0}.</annotation></semantics></math></div>
+<p>我们也把方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>t</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>s</mi><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>  </mo><mtext>或</mtext><mo>  </mo><mover><mrow><mi>A</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>t</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>s</mi><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow {O P} = \overrightarrow {O A} + t \vec {u} + s \vec {v} \qquad \text {或} \qquad \overrightarrow {A P} = t \vec {u} + s \vec {v}</annotation></semantics></math></div>
+<p>叫做该平面参数方程的向量形式.</p>
+<h4 class="wb-subhead" id="sub_3"><b>平面一般方程</b></h4>
+<p>从参数方程出发, 不难 “看出” 一个平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 是如何 “从一个点出发, 沿着两个不同方向 (及它们组合出来的所有方向) 平直延伸” 而得到的. 但是, 参数方程也有一些缺陷:</p>
+<ul><li>任给空间中一个点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math> , 要判定 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math> 是否在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 中, 我们需要解一个由三个方程所组成 (其中含两个未知数) 的方程组, 而这样的方程组并不总是好解的.</li></ul>
+<ul><li>每个平面里都有无穷多个点, 而任取三个不共线的点都可以写出一个参数方程, 这些参数方程并不一样. 因此, 同一个平面有无穷多个不同的参数方程. 特别地, 给定两个参数方程, 并不能直接看出它们是否代表同一个平面.</li></ul>
+<p>所以, 一个自然的问题是: 是否有一种更简单的方式去表示平面, 使得</p>
+<ul><li>可以比较容易判定一个点在不在一个给定的平面上;</li></ul>
+<ul><li>可以比较容易判定两个表达式是否代表同一个平面.</li></ul>
+<p>幸运的是, 确实有这样的方式去表示平面, 而且不难找到它: 因为在参数方程中, 参数并不是本质的 (即同一个点在不同参数方程中所对应的参数是不一样的), 所以一个自然的想法是 “通过消去参数, 找到同一平面中点的坐标之间本质的关系”!</p>
+<p>经过非常复杂的消元计算, 可以把参数方程化为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd></mtd><mtd><mo>(</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mi>x</mi><mo>+</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mi>y</mi><mo>+</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mi>z</mi></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} &amp; (u _ {2} v _ {3} - u _ {3} v _ {2}) x + (u _ {3} v _ {1} - u _ {1} v _ {3}) y + (u _ {1} v _ {2} - u _ {2} v _ {1}) z \\ &amp; = (u _ {2} v _ {3} - u _ {3} v _ {2}) a _ {1} + (u _ {3} v _ {1} - u _ {1} v _ {3}) a _ {2} + (u _ {1} v _ {2} - u _ {2} v _ {1}) a _ {3}. \end{array}</annotation></semantics></math></div>
+<p>但是, 如果从事后诸葛亮的角度重新审视所得的方程, 那么可以看出这个方程具有明确的几何含义 (因而几乎是显然的): 点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 落在由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> 张成的平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 中, 当且仅当由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>A</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>,</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo>→</mo></mover><mo>,</mo><mover><mrow><mi>A</mi><mi>C</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{AP}, \overrightarrow{AB}, \overrightarrow{AC}</annotation></semantics></math> 所张成的平行六面体体积为零. 因为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>A</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mi>y</mi><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mi>z</mi><mo>−</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>,</mo><mo> </mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>,</mo><mo> </mo><mover><mrow><mi>A</mi><mi>C</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow {A P} = (x - a _ {1}, y - a _ {2}, z - a _ {3}), \quad \overrightarrow {A B} = \vec {u}, \quad \overrightarrow {A C} = \vec {v},</annotation></semantics></math></div>
+<p>所以</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mi>y</mi><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mi>z</mi><mo>−</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>·</mo><mo>(</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">(x - a _ {1}, y - a _ {2}, z - a _ {3}) \cdot (\vec {u} \times \vec {v}) = 0,</annotation></semantics></math></div>
+<p>而这正是刚刚得到的方程！(从这里也可以再次看到条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u} \times \vec{v} \neq \vec{0}</annotation></semantics></math> 的必要性：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u} \times \vec{v} = \vec{0}</annotation></semantics></math> ，则空间中所有点都满足该方程，从而所得到的并不是平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 的方程.)</p>
+<p>如果记</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo> </mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>=</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo> </mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>=</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd><mo>−</mo><mi>D</mi><mo>=</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>v</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{l} N _ {1} = u _ {2} v _ {3} - u _ {3} v _ {2}, \quad N _ {2} = u _ {3} v _ {1} - u _ {1} v _ {3}, \quad N _ {3} = u _ {1} v _ {2} - u _ {2} v _ {1}, \\ - D = (u _ {2} v _ {3} - u _ {3} v _ {2}) a _ {1} + (u _ {3} v _ {1} - u _ {1} v _ {3}) a _ {2} + (u _ {1} v _ {2} - u _ {2} v _ {1}) a _ {3}, \end{array}</annotation></semantics></math></div>
+<p>则上述讨论说明平面方程一定可以表示成</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D = 0</annotation></semantics></math></div>
+<p>的形式, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n} = \vec{u} \times \vec{v} = (N_1, N_2, N_3) \neq \vec{0}</annotation></semantics></math> .</p>
+<div class="wb-thm" id="tbk_1">
+  <div class="wb-blk-title"><span>命题 3.1.1</span><span class="tag">命题</span></div>
+<p>(平面方程的一般形式)</p>
+<ol class="wb-num-list"><li>任何平面都可被表示成</li></ol><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><menclose notation="box"><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn></mrow></menclose><mspace width="1.2em"/><mtext>(3.1)</mtext></mrow><annotation encoding="application/x-tex">\boxed {N _ {1} x + N _ {2} y + N _ {3} z + D = 0}\tag{3.1}</annotation></semantics></math></div><p>的形式, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec{n}=(N_{1},N_{2},N_{3})\neq\vec{0}.</annotation></semantics></math> </p><ol class="wb-num-list" start="2"><li>任给 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n} = (N_1, N_2, N_3) \neq \vec{0}</annotation></semantics></math> , 方程 (3.1) 给出了空间中的一个平面.</li></ol><p>【该方程被称作平面的一般方程.】</p></div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>(1) 已经证完, 还需证 (2). 不失一般性, 假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N_{1} \neq 0</annotation></semantics></math> . 则</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mfrac><mrow><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mi>y</mi><mo>+</mo><mfrac><mrow><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mi>z</mi><mo>+</mo><mfrac><mrow><mi>D</mi></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">x + \frac {N _ {2}}{N _ {1}} y + \frac {N _ {3}}{N _ {1}} z + \frac {D}{N _ {1}} = 0.</annotation></semantics></math></div><p>若记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>t</mi><mo>,</mo><mi>z</mi><mo>=</mo><mi>s</mi></mrow><annotation encoding="application/x-tex">y = t, z = s</annotation></semantics></math> ，则该方程变成</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mi>D</mi></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>−</mo><mfrac><mrow><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mi>t</mi><mo>−</mo><mfrac><mrow><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mi>s</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mi>t</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mi>s</mi><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l} x = - \frac {D}{N _ {1}} - \frac {N _ {2}}{N _ {1}} t - \frac {N _ {3}}{N _ {1}} s, \\ y = t, \\ z = s, \end{array} \right.</annotation></semantics></math></div><p>而这恰好表示过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">(</mo><mo>−</mo><mfrac><mrow><mi>D</mi></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" fence="true">)</mo></mrow><annotation encoding="application/x-tex">\left(-\frac{D}{N_1}, 0, 0\right)</annotation></semantics></math> 且沿着两个方向</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><mo stretchy="true" fence="true">(</mo><mo>−</mo><mfrac><mrow><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" fence="true">)</mo><mo>,</mo><mo>  </mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mo stretchy="true" fence="true">(</mo><mo>−</mo><mfrac><mrow><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub></mrow><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" fence="true">)</mo></mrow><annotation encoding="application/x-tex">\vec {u} = \left(- \frac {N _ {2}}{N _ {1}}, 1, 0\right), \qquad \vec {v} = \left(- \frac {N _ {3}}{N _ {1}}, 0, 1\right)</annotation></semantics></math></div><p>平直延伸的平面.</p><p>还可以用向量内积的语言, 把平面的一般方程写成</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>D</mi><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\vec {n} \cdot \overrightarrow {O P} + D = 0.</annotation></semantics></math></div><p>给定一个平面的一般方程, 很容易验证一个点是否在该平面中: 只要把点的坐标代入方程, 比较方程左右两边的值是否相同即可, 这比从方程组中解未知数要容易太多了.</p><p>同样地, 给定两个一般方程, 也很容易判定它们是否代表同一个平面 (证明留作习题):</p></div>
+<div class="wb-thm" id="tbk_2">
+  <div class="wb-blk-title"><span>引理 3.1.2</span><span class="tag">命题/引理</span></div>
+<p>(一般方程的唯一性) 两个一般方程代表同一个平面, 即</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>∣</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>}</mo><mo>=</mo><mo>{</mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>∣</mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>x</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>y</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0</mn><mo>}</mo></mrow><annotation encoding="application/x-tex">\{(x, y, z) \mid N _ {1} x + N _ {2} y + N _ {3} z + D = 0 \} = \{(x, y, z) \mid N _ {1} ^ {\prime} x + N _ {2} ^ {\prime} y + N _ {3} ^ {\prime} z + D ^ {\prime} = 0 \}</annotation></semantics></math></div><p>当且仅当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>:</mo><mi>D</mi><mo>=</mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msup><mi>D</mi><mrow><mo>′</mo><mn>①</mn></mrow></msup></mrow><annotation encoding="application/x-tex">N_{1}:N_{2}:N_{3}:D=N_{1}^{\prime}:N_{2}^{\prime}:N_{3}^{\prime}:D^{\prime①}</annotation></semantics></math> </p></div>
+<h4 class="wb-subhead" id="sub_4"><b>平面一般方程系数的几何意义</b></h4>
+<p>当然, 平面方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D = 0</annotation></semantics></math></div>
+<p>里出现的系数也并不都是有效系数, 因为如果把所有系数乘一个非零常数, 得到的方程所表示的还是同一个平面. 引理 3.1.2 告诉我们, 在模去这个乘法因子的意义下, 方程的系数是本质的, 从而应该有着明确的几何意义.</p>
+<p>系数的几何意义也不难发现：</p>
+<div class="wb-thm" id="tbk_3">
+  <div class="wb-blk-title"><span>命题 3.1.3</span><span class="tag">命题</span></div>
+<p>(平面的法向量) 向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec{n}=(N_{1},N_{2},N_{3})</annotation></semantics></math> 表示的是平面</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D = 0</annotation></semantics></math></div><p>的法向量（即跟平面垂直的向量）.</p></div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P, Q</annotation></semantics></math> 是平面中的点, 则</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo> </mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>O</mi><mi>Q</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\vec {n} \cdot \overrightarrow {O P} + D = 0, \quad \vec {n} \cdot \overrightarrow {O Q} + D = 0,</annotation></semantics></math></div><p>从而</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>P</mi><mi>Q</mi></mrow><mo>→</mo></mover><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\vec {n} \cdot \overrightarrow {P Q} = 0.</annotation></semantics></math></div><p>于是, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 跟平面中的任意直线都垂直, 即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 是该平面的一个法向量.</p></div>
+<p>注意如果一个非零向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 是一个平面的法向量, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 乘任意非零常数后所得的非零向量依然是该平面的一个法向量. 于是我们再次看到为什么系数可以相差一个常数.</p>
+<p>上述事实有几个非常简单而有用的推论. 首先, 两个平面平行当且仅当它们有相同的法向量, 故</p>
+<div class="wb-thm" id="tbk_4">
+  <div class="wb-blk-title"><span>推论 3.1.4</span><span class="tag">推论</span></div>
+<p>(平面平行的判据) 两个平面</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo> </mo><mtext>和</mtext><mo> </mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>x</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>y</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D = 0 \quad {\text {和}} \quad N _ {1} ^ {\prime} x + N _ {2} ^ {\prime} y + N _ {3} ^ {\prime} z + D ^ {\prime} = 0</annotation></semantics></math></div><p>平行当且仅当</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>=</mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo> </mo><mtext>且</mtext><mo> </mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>:</mo><mi>D</mi><mo>≠</mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>:</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">N _ {1}: N _ {2}: N _ {3} = N _ {1} ^ {\prime}: N _ {2} ^ {\prime}: N _ {3} ^ {\prime} \quad \text {且} \quad N _ {1}: N _ {2}: N _ {3}: D \neq N _ {1} ^ {\prime}: N _ {2} ^ {\prime}: N _ {3} ^ {\prime}: D ^ {\prime}.</annotation></semantics></math></div><p>其次, 两个平面的夹角等于它们的法向量所在直线的夹角, 故</p></div>
+<div class="wb-thm" id="tbk_5">
+  <div class="wb-blk-title"><span>推论 3.1.5</span><span class="tag">推论</span></div>
+<p>(两个平面的夹角) 两个平面</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo> </mo><mtext>和</mtext><mo> </mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>x</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>y</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D = 0 \quad {\text {和}} \quad N _ {1} ^ {\prime} x + N _ {2} ^ {\prime} y + N _ {3} ^ {\prime} z + D ^ {\prime} = 0</annotation></semantics></math></div><p>之间的夹角 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math> 为 (记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec{n} = (N_1, N_2, N_3)</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>′</mo><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>′</mo><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>′</mo><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>′</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec{n}&#x27; = (N_1&#x27;, N_2&#x27;, N_3&#x27;)</annotation></semantics></math> )</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mo>arccos</mo><mfrac><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><msup><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mrow><mo>′</mo></mrow></msup><mo>|</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>|</mo><mo>|</mo><msup><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mrow><mo>′</mo></mrow></msup><mo>|</mo></mrow></mfrac><mo>=</mo><mo>arccos</mo><mfrac><mrow><mo>|</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mo>|</mo></mrow><mrow><msqrt><mrow><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></msubsup></mrow></msqrt><msqrt><mrow><mo>(</mo><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></msqrt></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\theta = \arccos \frac {| \vec {n} \cdot \vec {n} ^ {\prime} |}{| \vec {n} | | \vec {n} ^ {\prime} |} = \arccos \frac {| N _ {1} N _ {1} ^ {\prime} + N _ {2} N _ {2} ^ {\prime} + N _ {3} N _ {3} ^ {\prime} |}{\sqrt {N _ {1} ^ {2} + N _ {2} ^ {2} + N _ {3} ^ {2}} \sqrt {(N _ {1} ^ {\prime}) ^ {2} + (N _ {2} ^ {\prime}) ^ {2} + (N _ {3} ^ {\prime}) ^ {2}}}.</annotation></semantics></math></div><p>平面法向量还可以被用于计算坐标原点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 到平面的距离：设平面里距离 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 最近的点是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> ，则显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math> 垂直于平面，从而存在常数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP} = k\vec{n}</annotation></semantics></math> . 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 位于平面里，代入平面方程可得</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>D</mi><mo>=</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>·</mo><mo>(</mo><mi>k</mi><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>+</mo><mi>D</mi><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\vec {n} \cdot \overrightarrow {O P} + D = \vec {n} \cdot (k \vec {n}) + D = 0.</annotation></semantics></math></div><p>由此解得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mo>−</mo><mi>D</mi><mo>/</mo><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k = -D / |\vec{n}|^2</annotation></semantics></math> ，从而</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mrow><mi>D</mi></mrow><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow {O P} = k \vec {n} = - \frac {D}{| \vec {n} | ^ {2}} \vec {n}.</annotation></semantics></math></div><p>于是, 坐标原点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 到平面的距离为 (注意把平面一般方程的系数同乘一个常数后, 该式的值不变)</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">|</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo stretchy="true" fence="true">|</mo><mo>=</mo><mo stretchy="true" fence="true">|</mo><mo>−</mo><mfrac><mrow><mi>D</mi></mrow><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo stretchy="true" fence="true">|</mo><mo>=</mo><mfrac><mrow><mo>|</mo><mi>D</mi><mo>|</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\left| \overrightarrow {O P} \right| = \left| - \frac {D}{| \vec {n} | ^ {2}} \vec {n} \right| = \frac {| D |}{| \vec {n} |}.</annotation></semantics></math></div><p>所以我们证明了</p></div>
+<div class="wb-thm" id="tbk_6">
+  <div class="wb-blk-title"><span>命题 3.1.6</span><span class="tag">命题</span></div>
+<p>(原点到平面的距离) 原点到平面</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D = 0</annotation></semantics></math></div><p>的距离为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>|</mo><mi>D</mi><mo>|</mo></mrow><mrow><msqrt><mrow><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></msubsup></mrow></msqrt></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{|D|}{\sqrt{N_1^2 + N_2^2 + N_3^2}}.</annotation></semantics></math> </p><p>这也说明了常数项 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 的几何意义：它刻画了点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 到平面的距离。特别地，对于两个平行的平面，通过乘常数可以假设它们的一般方程具有相同的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x, y, z</annotation></semantics></math> 系数，即相同的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 向量，此时 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mrow><mi>D</mi></mrow><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP} = -\frac{D}{|\vec{n}|^2}\vec{n}</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi><mo>′</mo></mrow><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mrow><mi>D</mi><mo>′</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP&#x27;} = -\frac{D&#x27;}{|\vec{n}|^2}\vec{n}</annotation></semantics></math> 共线，从而这两个平面之间的距离就是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo><mi>P</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">P, P&#x27;</annotation></semantics></math> 之间的距离。稍微计算一下就得</p></div>
+<div class="wb-thm" id="tbk_7">
+  <div class="wb-blk-title"><span>推论 3.1.7</span><span class="tag">推论</span></div>
+<p>(平行平面间的距离) 两个平行平面</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><msub><mi>D</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D _ {1} = 0</annotation></semantics></math></div><p>和</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><msub><mi>D</mi><mrow><mn>2</mn></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + N _ {2} y + N _ {3} z + D _ {2} = 0</annotation></semantics></math></div><p>之间的距离为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>|</mo><msub><mi>D</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>D</mi><mrow><mn>2</mn></mrow></msub><mo>|</mo></mrow><mrow><msqrt><mrow><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></msubsup></mrow></msqrt></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{|D_1 - D_2|}{\sqrt{N_1^2 + N_2^2 + N_3^2}}.</annotation></semantics></math> </p><p>最后, 我们简要提一下消去方程系数中非本质 “常数” 的方法. 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec{n} = (N_{1}, N_{2}, N_{3})</annotation></semantics></math> 是非零向量, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">N_{1}, N_{2}, N_{3}</annotation></semantics></math> 中至少有一个是非零的. 不妨设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">N_{1}</annotation></semantics></math> 非零 (即该平面跟 x 轴不平行), 则此时可以把方程约化为</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">x + N _ {2} y + N _ {3} z + D = 0.</annotation></semantics></math></div><p>类似地, 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">N_{2}</annotation></semantics></math> 非零 (即该平面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 轴不平行) 或 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">N_{3}</annotation></semantics></math> 非零 (即该平面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴不平行), 则可以把方程约化为</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo> </mo><mtext>或</mtext><mo> </mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">N _ {1} x + y + N _ {3} z + D = 0 \quad {\text {或}} \quad N _ {1} x + N _ {2} y + z + D = 0.</annotation></semantics></math></div><p>这三个方程被称作平面一般方程的既约形式. 于是, 同一个平面最少有一种、最多有三种既约形式的一般方程, 且每种既约形式的一般方程都唯一.</p></div>
+<h4 class="wb-subhead" id="sub_5"><b>3.1.2 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中的直线</b></h4>
+<h4 class="wb-subhead" id="sub_6"><b>直线参数方程</b></h4>
+<p>下面考虑直线方程. 首先, 从</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>=</mo><mo>{</mo><mi>A</mi><mo>+</mo><mi>t</mi><mo>(</mo><mi>B</mi><mo>−</mo><mi>A</mi><mo>)</mo><mo>∣</mo><mi>t</mi><mo>∈</mo><mi>ℝ</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">l = \{A + t (B - A) \mid t \in \mathbb {R} \}</annotation></semantics></math></div>
+<p>出发, 得到直线的参数方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mi>t</mi><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><mi>t</mi><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>+</mo><mi>t</mi><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x = a _ {1} + t u _ {1}, \\ y = a _ {2} + t u _ {2}, \\ z = a _ {3} + t u _ {3}, \end{array} \right.</annotation></semantics></math></div>
+<p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u} = (u_{1}, u_{2}, u_{3}) \neq \vec{0}</annotation></semantics></math> . 当然, 也可以把它写成向量形式</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>t</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow {O P} = \overrightarrow {O A} + t \vec {u}.</annotation></semantics></math></div>
+<p>参数方程有着明确的几何含义：直线是“从一个点出发，沿着某个给定的方向，双向平直延伸所得的几何对象”.</p>
+<p>因为方向已经蕴含在参数方程里, 所以不难用参数方程给出 (留作习题)</p>
+<div class="wb-thm" id="tbk_8">
+  <div class="wb-blk-title"><span>命题 3.1.8</span><span class="tag">命题</span></div>
+<p>(直线的计算)</p>
+<ol class="wb-num-list"><li>(两条直线平行或相同的条件) 若直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_{1}</annotation></semantics></math> 的方向由向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math> 给出, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_{2}</annotation></semantics></math> 的方向由向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{v}</annotation></semantics></math> 给出, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_{1}, l_{2}</annotation></semantics></math> 平行或相同当且仅当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math> 平行于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{v}</annotation></semantics></math> , 亦即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u} \times \vec{v} = \vec{0}</annotation></semantics></math> .</li><li>(点到直线的距离公式) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 是一条方向为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math> 的直线. 在直线上任取一个点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> , 则空间中任意点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 到直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的距离为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>A</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{|\vec{u} \times \overrightarrow{AP}|}{|\vec{u}|}</annotation></semantics></math> .</li><li>(异面直线的距离公式) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_{1}, l_{2}</annotation></semantics></math> 为两条异面直线, 方向分别为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}, \vec{v}</annotation></semantics></math> . 任取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mi>B</mi><mo>∈</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A \in l_{1}, B \in l_{2}</annotation></semantics></math> . 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_{1}, l_{2}</annotation></semantics></math> 之间的距离为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo>→</mo></mover><mo>·</mo><mo>(</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>|</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{|\overrightarrow{AB} \cdot (\vec{u} \times \vec{v})|}{|\vec{u} \times \vec{v}|}</annotation></semantics></math> .</li><li>(两条直线的夹角) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_{1}, l_{2}</annotation></semantics></math> 是方向分别为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}, \vec{v}</annotation></semantics></math> 的两条直线, 则它们的夹角为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>arccos</mo><mfrac><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\arccos \frac{|\vec{u} \cdot \vec{v}|}{|\vec{u}| |\vec{v}|}</annotation></semantics></math> .</li><li>(直线与平面的夹角) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 是一条方向为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math> 的直线, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 是法向量为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 的平面, 则它们的夹角为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>arcsin</mo><mfrac><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\arcsin \frac{|\vec{u} \cdot \vec{n}|}{|\vec{u}| |\vec{n}|}</annotation></semantics></math> .</li></ol></div>
+<h4 class="wb-subhead" id="sub_7"><b>直线一般方程</b></h4>
+<p>跟平面情形类似, 自然也可以通过消元法, 消去直线参数方程中 “并不本质” 的参变量 t. 因为直线参数方程里有三个方程, 但只要消去一个变量, 所以消元后会剩下两个方程. 当然, 无论是消元的过程还是消元的结果都不是唯一的. 例如, 如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{1} \neq 0</annotation></semantics></math> , 则可以从第一个方程出发, 解出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math> 并代入第二、第三两个方程, 得到</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mfrac><mrow><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mfrac><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd><mfrac><mrow><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mi>x</mi><mo>−</mo><mi>z</mi><mo>+</mo><mfrac><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>=</mo><mn>0.</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l} \frac {u _ {2}}{u _ {1}} x - y + \frac {u _ {1} a _ {2} - u _ {2} a _ {1}}{u _ {1}} = 0, \\ \frac {u _ {3}}{u _ {1}} x - z + \frac {u _ {1} a _ {3} - u _ {3} a _ {1}}{u _ {1}} = 0. \end{array} \right.</annotation></semantics></math></div>
+<p>类似地, 如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{2} \neq 0</annotation></semantics></math> 或者 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{3} \neq 0</annotation></semantics></math> , 也可以得到这样形式的两个方程. 因此, 对于直线, 总是可以得到如下形式的不含参数的方程组:</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>x</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>y</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0.</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l} N _ {1} x + N _ {2} y + N _ {3} z + D = 0, \\ N _ {1} ^ {\prime} x + N _ {2} ^ {\prime} y + N _ {3} ^ {\prime} z + D ^ {\prime} = 0. \end{array} \right.</annotation></semantics></math></div>
+<p>用于表示直线的上述形式的方程组被称作直线的一般方程 (但它其实是一个方程组).</p>
+<p>我们依然可以从几何上理解直线的一般方程．该方程组中每一个方程均表示一个平面, 因此该方程组表示两个平面的交集. 于是, 很显然的是, 并非所有这样形式的方程组都能表示直线: 仅当对应的两个平面交于一条线时, 它才表示直线. 什么时候两个平面不交于一条直线呢? 平行或恒等, 即法向量平行. 若跟前文一样记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec{n} = (N_1, N_2, N_3)</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>′</mo><mo>=</mo><mo>(</mo><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mo>′</mo><mo>,</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mo>′</mo><mo>,</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mo>′</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec{n}&#x27; = (N_1&#x27;, N_2&#x27;, N_3&#x27;)</annotation></semantics></math> , 则上述方程组表示直线的充要条件是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>×</mo><msup><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mrow><mo>′</mo></mrow></msup><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec {n} \times \vec {n} ^ {\prime} \neq \vec {0}.</annotation></semantics></math></div>
+<p>当然, 细心的读者可能已经想到了: 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>′</mo></mrow><annotation encoding="application/x-tex">\vec{n}&#x27;</annotation></semantics></math> 都跟该直线垂直, 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>′</mo></mrow><annotation encoding="application/x-tex">\vec{n} \times \vec{n}&#x27;</annotation></semantics></math> 给出的恰好就是该直线的方向. 特别地, 它必须是非零向量.</p>
+<div class="wb-example" id="tbk_9">
+  <div class="wb-blk-title"><span>例 3.1.9</span><span class="tag">经典例题</span></div>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{1} \neq 0</annotation></semantics></math> . 取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo stretchy="true" fence="true">(</mo><mfrac><mrow><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>,</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" fence="true">)</mo><mo>,</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>′</mo><mo>=</mo><mo stretchy="true" fence="true">(</mo><mfrac><mrow><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>,</mo><mn>0</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo stretchy="true" fence="true">)</mo></mrow><annotation encoding="application/x-tex">\vec{n} = \left(\frac{u_{2}}{u_{1}}, -1,0\right), \vec{n}&#x27; = \left(\frac{u_{3}}{u_{1}}, 0, -1\right)</annotation></semantics></math> , 则易算出</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>×</mo><msup><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mrow><mo>′</mo></mrow></msup><mo>=</mo><mo stretchy="true" fence="true">(</mo><mn>1</mn><mo>,</mo><mfrac><mrow><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo>,</mo><mfrac><mrow><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub></mrow><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub></mrow></mfrac><mo stretchy="true" fence="true">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec {n} \times \vec {n} ^ {\prime} = \left(1, \frac {u _ {2}}{u _ {1}}, \frac {u _ {3}}{u _ {1}}\right).</annotation></semantics></math></div><p>因此条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>×</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>′</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{n} \times \vec{n}&#x27; \neq \vec{0}</annotation></semantics></math> 等价于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>≠</mo><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">(u_1, u_2, u_3) \neq \vec{0}</annotation></semantics></math> .</p></div>
+<p>当然, 无论是直线的参数方程, 还是直线的一般方程, 都不是唯一的. 相对而言, 参数方程更加简洁, 而且参数方程中的向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math> 在差一个常数的意义下唯一 (因为它代表的是该直线对应的方向). 而一般方程的选法则非常多, 因为同一条直线可以被包含在无穷多个平面中 (读者可以试着写出所有这些平面), 且任意两个的交集都是该直线. 那么, 如何找到特定形式的直线表达式, 使得每条直线 (最多) 有一个该形式的方程呢?</p>
+<p>答案就隐藏在上面应用消元法的过程中：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>1</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{1} \neq 0</annotation></semantics></math> （即该直线跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>z</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">yz-</annotation></semantics></math> 平面不平行），则可以得到形如</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><msub><mi>N</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd><msubsup><mi>N</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>x</mi><mo>+</mo><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} N _ {1} x + y + D = 0, \\ N _ {1} ^ {\prime} x + z + D ^ {\prime} = 0 \end{array} \right.</annotation></semantics></math></div>
+<p>的方程组. 不难验证这样形式的表达式是唯一的.</p>
+<p>类似地, 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>2</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{2} \neq 0</annotation></semantics></math> (即该直线跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xz</annotation></semantics></math> -平面不平行) 或者 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mn>3</mn></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_{3} \neq 0</annotation></semantics></math> (即该直线跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xy</annotation></semantics></math> -平面不平行), 则可以得到形如</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd><msubsup><mi>N</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>y</mi><mo>+</mo><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x + N _ {2} y + D = 0, \\ N _ {2} ^ {\prime} y + z + D ^ {\prime} = 0 \end{array} \right.</annotation></semantics></math></div>
+<p>或者</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>+</mo><msub><mi>N</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>+</mo><msubsup><mi>N</mi><mrow><mn>3</mn></mrow><mrow><mo>′</mo></mrow></msubsup><mi>z</mi><mo>+</mo><msup><mi>D</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l} x + N _ {3} z + D = 0, \\ y + N _ {3} ^ {\prime} z + D ^ {\prime} = 0 \end{array} \right.</annotation></semantics></math></div>
+<p>的方程组. 这样形式的方程组叫做直线一般方程的既约形式.</p>
+<h4 class="wb-subhead" id="sub_8"><b>3.1.3 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中的方程与图形</b></h4>
+<p>我们可以总结一下平面与直线这类空间中简单几何对象的数学表示形式. 它们都分别有两种表示方式, 即参数方程和一般方程. 因为平面和直线都是平直的, 所以可以仅用一次方程表示它们 (注意: 无论是直线还是平面, 我们也都可以用更复杂的方程去表示它们, 但一般而言没有必要). 在参数方程中, 每个方程描述一个坐标关于参数的依赖规则, 故方程的个数跟空间维数一致, 而参数个数则等于该图形的维数. 对于一般方程, 方程是约束条件, 因此有效方程的个数是图形的余维数 (即空间的维数与图形的维数之差). 此处需要强调有效方程是因为如果两个平面平行或恒等, 则它们组成的方程组并不表示直线: 前者没有有效方程, 而后者只有一个有效方程 (线性代数课程中将会学到 “对于含多个变元的线性方程组, 如何找到其中有效方程的个数”, 由此可以判定向量空间中相应平直对象 (仿射子空间) 的维数).</p>
+<p>几何的基本研究对象是图形, 即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{3}</annotation></semantics></math> 中某些看上去比较规则的点集. 在生活中看到的图形远不止直线与平面, 很多重要的几何对象是弯曲的. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{3}</annotation></semantics></math> 这个模型为我们提供了表达曲线和曲面, 进而利用更高级数学工具 (例如代数和分析) 研究这些图形的机会.</p>
+<h4 class="wb-subhead" id="sub_9"><b>空间里的曲线</b></h4>
+<p>曲线是直线的自然推广：它们是“线”，但不必是直的。曲线是非常常见的几何对象，例如空间中任意一个移动的质点所经过的轨迹就是一条曲线。它是一维的几何对象，因而可以跟直线一样，仅使用一个参数就可以表示它（对于移动中的质点，一般就取时间变量为参数）。换而言之，空间中的曲线具有如下形式的参数方程：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><msub><mi>f</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><msub><mi>f</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><msub><mi>f</mi><mrow><mn>3</mn></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l} x = f _ {1} (t), \\ y = f _ {2} (t), \\ z = f _ {3} (t), \end{array} \right.</annotation></semantics></math></div>
+<p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>f</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>f</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">f_{1}, f_{2}, f_{3}</annotation></semantics></math> 是三个具有较好性质的函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> ，而 t 一般取某个区间内的全体实数.</p>
+<p>当然, 如果可以消去参数 (这并不总是可行的, 因为要解的方程可能过于复杂以至不可解), 那么也可以用含两个方程的方程组来表示曲线. 但正如直线一样, 一般而言用参数方程表示曲线更好用.</p>
+<p>这里仅举几个简单的例子:</p>
+<div class="wb-example" id="tbk_10">
+  <div class="wb-blk-title"><span>例 3.1.10</span><span class="tag">经典例题</span></div>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">xy-</annotation></semantics></math> 平面里的单位圆可以被表示为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mo>cos</mo><mi>t</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mo>sin</mo><mi>t</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mn>0.</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x = \cos t, \\ y = \sin t, \\ z = 0. \end{array} \right.</annotation></semantics></math></div><p>当然也可以用以下方程组表示它, 其几何意义是明显的:</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mn>0.</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x ^ {2} + y ^ {2} = 1, \\ z = 0. \end{array} \right.</annotation></semantics></math></div></div>
+<div class="wb-example" id="tbk_11">
+  <div class="wb-blk-title"><span>例 3.1.11</span><span class="tag">经典例题</span></div>
+<p>方程组</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mo>cos</mo><mi>t</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mo>sin</mo><mi>t</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mi>t</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x = \cos t, \\ y = \sin t, \\ z = t \end{array} \right.</annotation></semantics></math></div><p>给出了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中的螺旋曲线 (图3.1). 当然也可以用以下方程组表示它:</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd><mi>x</mi><mo>=</mo><mo>cos</mo><mi>z</mi><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x ^ {2} + y ^ {2} = 1, \\ x = \cos z. \end{array} \right.</annotation></semantics></math></div></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_50.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.1 螺旋曲线</p>
+<p>微分几何课程中将会深入学习光滑曲线的度量性质 (长度、弯曲程度等).</p>
+<p>① 在不同的框架里考察曲线时，对函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>f</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>f</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">f_{1}, f_{2}, f_{3}</annotation></semantics></math> 的要求有所不同。例如在微分几何中要求这些函数具有一定的光滑性，而在拓扑学中则只要求它们是连续函数。因为连续性的假设非常弱，以至在拓扑学中会出现“可以填满整个正方形（从而无法画出其图形）”之类的诡异曲线。</p>
+<h4 class="wb-subhead" id="sub_10"><b>空间里的曲面</b></h4>
+<p>下面简单地考察空间里的曲面. 顾名思义, 曲面是平面的自然推广, 它们是“面”, 但不必是平的. 曲面是二维的几何对象, 因此在曲面上移动的质点具有两个自由度. 换言之, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math> 中的曲面在局部可以用如下形式的参数方程表示:</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><msub><mi>f</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>)</mo><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><msub><mi>f</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>)</mo><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><msub><mi>f</mi><mrow><mn>3</mn></mrow></msub><mo>(</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>)</mo><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x = f _ {1} (t, s), \\ y = f _ {2} (t, s), \\ z = f _ {3} (t, s), \end{array} \right.</annotation></semantics></math></div>
+<p>其中参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>,</mo><mi>s</mi></mrow><annotation encoding="application/x-tex">t, s</annotation></semantics></math> 一般是取遍某个平面区域中的所有点.</p>
+<p>在一定的光滑性条件下, 可以把参数都消去并得到一个仅包含 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x, y, z</annotation></semantics></math> 三个坐标的方程,</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F (x, y, z) = 0,</annotation></semantics></math></div>
+<p>该方程被称为曲面的一般方程.</p>
+<p>因此跟直线与平面类似, 在局部上</p>
+<ul><li>曲线是一维的, 所以曲线的参数方程只有一个参变量.</li></ul>
+<ul><li>空间里的曲线余维数是二, 所以曲线的一般方程由两个方程组成.</li></ul>
+<ul><li>曲面是二维的, 所以曲面的参数方程有两个参变量.</li></ul>
+<ul><li>空间里的曲面余维数是一, 所以曲面的一般方程由一个方程组成.</li></ul>
+<p>特别地, 人们希望研究: 给定函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> , 由方程 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x, y, z) = 0</annotation></semantics></math> 给出的曲面是什么? 下面这个例子表明, 在一般情况下, 即使对于非常非常“好”的函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> , 由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x, y, z) = 0</annotation></semantics></math> 给出的点集也未必能构成一个曲面.</p>
+<div class="wb-example" id="tbk_12">
+  <div class="wb-blk-title"><span>例 3.1.12</span><span class="tag">经典例题</span></div>
+<p>下面四个方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">x ^ {2} + y ^ {2} + z ^ {2} + 1 = 0,</annotation></semantics></math></div><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">x ^ {2} + y ^ {2} + z ^ {2} = 0,</annotation></semantics></math></div><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">(x + y + z + 1) ^ {2} + (x + y - z) ^ {2} = 0,</annotation></semantics></math></div><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">(x ^ {2} + y ^ {2} + z ^ {2}) (x + y + z + 1) = 0</annotation></semantics></math></div><p>分别给出了空集、单点集、直线, 以及 “平面与单点集的并集”.</p></div>
+<div class="wb-example" id="tbk_13">
+  <div class="wb-blk-title"><span>例 3.1.13</span><span class="tag">经典例题</span></div>
+<p>给定一个具有较好性质的二元函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math> , 它的图形</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Γ</mi><mrow><mi>f</mi></mrow></msub><mo>:</mo><mo>=</mo><mo>{</mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>∣</mo><mi>z</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>,</mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>∈</mo><mi>D</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">\Gamma_ {f} := \{(x, y, z) \mid z = f (x, y), (x, y) \in D \}</annotation></semantics></math></div><p>是一个曲面 (图 3.2). 我们既可以把它当作参数曲面:</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mi>t</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mi>s</mi><mo>,</mo></mtd><mtd><mo>(</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>)</mo><mo>∈</mo><mi>D</mi><mo>,</mo></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>)</mo><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{ \begin{array}{l l} x = t, \\ y = s, &amp; (t, s) \in D, \\ z = f (t, s), \end{array} \right.</annotation></semantics></math></div><p>也可以写出它的一般方程：</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>:</mo><mo>=</mo><mi>z</mi><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mo> </mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>∈</mo><mi>D</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">F (x, y, z) := z - f (x, y) = 0, \quad (x, y) \in D.</annotation></semantics></math></div></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_51.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.2 曲面</p>
+<h4 class="wb-subhead" id="sub_11"><b>二次曲面举例</b></h4>
+<p>方程和图形紧密相关. 最简单的方程是一次方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>y</mi><mo>+</mo><mi>c</mi><mi>z</mi><mo>+</mo><mi>d</mi><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">a x + b y + c z + d = 0,</annotation></semantics></math></div>
+<p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a, b, c</annotation></semantics></math> 不全为零, 这样的方程表示的是平面. 比一次方程稍微复杂一点的是二次方程, 即由三个变量的二次多项式给出的方程. 最一般的三元二次多项式形如</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><msub><mi>a</mi><mrow><mn>1</mn><mn>1</mn></mrow></msub><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msub><mi>a</mi><mrow><mn>2</mn><mn>2</mn></mrow></msub><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msub><mi>a</mi><mrow><mn>3</mn><mn>3</mn></mrow></msub><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mn>2</mn></mrow></msub><mi>x</mi><mi>y</mi><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mn>3</mn></mrow></msub><mi>x</mi><mi>z</mi><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>2</mn><mn>3</mn></mrow></msub><mi>y</mi><mi>z</mi><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><msub><mi>b</mi><mrow><mn>2</mn></mrow></msub><mi>y</mi><mo>+</mo><msub><mi>b</mi><mrow><mn>3</mn></mrow></msub><mi>z</mi><mo>+</mo><mi>c</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">F (x, y, z) = a _ {1 1} x ^ {2} + a _ {2 2} y ^ {2} + a _ {3 3} z ^ {2} + 2 a _ {1 2} x y + 2 a _ {1 3} x z + 2 a _ {2 3} y z + b _ {1} x + b _ {2} y + b _ {3} z + c,</annotation></semantics></math></div>
+<p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>11</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>22</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>33</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>12</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>13</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>23</mn></mrow></msub></mrow><annotation encoding="application/x-tex">a_{11}, a_{22}, a_{33}, a_{12}, a_{13}, a_{23}</annotation></semantics></math> 不全为零. 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">F(x, y, z)</annotation></semantics></math> 是一个三元二次多项式时，称由方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F (x, y, z) = 0</annotation></semantics></math></div>
+<p>表示的曲面为一个二次曲面. 下面给出最简单的几个二次曲面的例子.</p>
+<div class="wb-example" id="tbk_14">
+  <div class="wb-blk-title"><span>例 3.1.14</span><span class="tag">经典例题</span></div>
+<p>显然方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x ^ {2} + y ^ {2} + z ^ {2} - 1 = 0</annotation></semantics></math></div><p>表示的是单位球面. 更一般地,</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F (x, y, z) = \frac {x ^ {2}}{a ^ {2}} + \frac {y ^ {2}}{b ^ {2}} + \frac {z ^ {2}}{c ^ {2}} - 1 = 0</annotation></semantics></math></div><p>给出的曲面被称为椭球面 (图 3.3), 是椭圆在三维空间里的类比. 不难发现, 椭球面跟每个坐标平面的交都是椭圆.</p></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_52.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.3 椭球面</p>
+<div class="wb-example" id="tbk_15">
+  <div class="wb-blk-title"><span>例 3.1.15</span><span class="tag">经典例题</span></div>
+<p>对于每个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">t \in \mathbb{R}</annotation></semantics></math> , 分别考虑曲面</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mrow><mi>t</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mi>t</mi><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F _ {t} (x, y, z) = \frac {x ^ {2}}{a ^ {2}} + \frac {y ^ {2}}{b ^ {2}} - \frac {z ^ {2}}{c ^ {2}} - t = 0,</annotation></semantics></math></div><p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a, b, c</annotation></semantics></math> 均为非零实数. 注意对不同的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math> 值, 该曲面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">xy-</annotation></semantics></math> 平面 (即平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z = 0</annotation></semantics></math> )、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>z</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">yz-</annotation></semantics></math> 平面 (即平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> ) 的交可能具有很不同的形状 (但它跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>z</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">xz-</annotation></semantics></math> 平面的交与它跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>z</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">yz-</annotation></semantics></math> 平面的交类似):</p></div>
+<ul><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t &gt; 0</annotation></semantics></math> 时, 该曲面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">xy-</annotation></semantics></math> 平面的交为椭圆, 跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>z</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">yz-</annotation></semantics></math> 平面的交是双曲线, 所得的曲面叫做单叶双曲面.</li></ul>
+<ul><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t = 0</annotation></semantics></math> 时, 该曲面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xy</annotation></semantics></math> -平面的交为原点, 跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yz</annotation></semantics></math> -平面的交是两条相交直线, 所得的曲面叫做椭圆锥面.</li></ul>
+<ul><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t &lt; 0</annotation></semantics></math> 时, 该曲面跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xy</annotation></semantics></math> -平面的交为空集, 跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yz</annotation></semantics></math> -平面的交是双曲线, 所得的曲面叫做双叶双曲面.</li></ul>
+<p>它们的形状如图 3.4、图 3.5 和图 3.6 所示.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_53.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.4 单叶双曲面</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_54.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.5 椭圆锥面</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_55.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.6 双叶双曲面</p>
+<div class="wb-example" id="tbk_16">
+  <div class="wb-blk-title"><span>例 3.1.16</span><span class="tag">经典例题</span></div>
+<p>还可以考虑一些特别的二次曲面, 其函数 F 不包含 z 变量, 例如</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn><mo>,</mo><mo>  </mo><mi>a</mi><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mi>y</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>  </mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac {x ^ {2}}{a ^ {2}} + \frac {y ^ {2}}{b ^ {2}} - 1 = 0, \qquad a x ^ {2} - y = 0, \qquad \frac {x ^ {2}}{a ^ {2}} - \frac {y ^ {2}}{b ^ {2}} - 1 = 0,</annotation></semantics></math></div><p>其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a, b \neq 0</annotation></semantics></math> . 根据平面解析几何可知, 作为平面几何对象, 它们给出的分别是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 中的椭圆、抛物线、双曲线. 现在把这些方程中的函数视作 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x, y, z</annotation></semantics></math> 三个变量的函数, 则所得到的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中的曲面恰好是把对应的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 中曲线沿着 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴方向“平行拖动”后所得到的曲面.这三个曲面分别称为椭圆柱面(图3.7)、抛物柱面(图3.8)、双曲柱面(图3.9).</p></div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_56.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.7 椭圆柱面</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_57.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.8 抛物柱面</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_58.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.9 双曲柱面</p>
+<div class="wb-example" id="tbk_17">
+  <div class="wb-blk-title"><span>例 3.1.17</span><span class="tag">经典例题</span></div>
+<p>最后考察</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mrow><mi>t</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>z</mi><mo>−</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mi>t</mi><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">F _ {t} (x, y, z) = z - \frac {x ^ {2}}{a ^ {2}} - t \frac {y ^ {2}}{b ^ {2}} = 0.</annotation></semantics></math></div><p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t = 0</annotation></semantics></math> 时它是 (沿着 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 轴方向的) 抛物柱面, 其形状跟图3.8类似, 只是翻倒了 (从“竖立”变成“躺着”). 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t &gt; 0</annotation></semantics></math> 时, 所得的曲面叫做椭圆抛物面, 因为</p></div>
+<ul><li>用每个跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xy</annotation></semantics></math> -平面平行的平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>h</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z = h &gt; 0</annotation></semantics></math> 截该曲面, 会得到一族椭圆.</li></ul>
+<ul><li>用每个包含 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴的平面截该曲面, 将得到一族抛物线.</li></ul>
+<p>类似地, 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t &lt; 0</annotation></semantics></math> 时, 所得的曲面叫做双曲抛物面 (也因其形似马鞍而被称为马鞍面), 因为</p>
+<ul><li>用每个跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xy</annotation></semantics></math> -平面平行的平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>h</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z = h \neq 0</annotation></semantics></math> 截该曲面, 可以得到一族双曲线. ( <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">h = 0</annotation></semantics></math> 时得到“退化的双曲线”, 即两条相交的直线. 注意退化情形将不同开口方向的双曲线分开了.)</li></ul>
+<ul><li>用每个包含 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴的平面截该曲面, 将得到一族抛物线. (用平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mo>±</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">y = \pm x</annotation></semantics></math> 截该曲面时得到“退化的抛物线”即直线. 注意退化情形将不同开口方向的抛物线分开了.)</li></ul>
+<p>它们的形状如图 3.10 和图 3.11 所示.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_59.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.10 椭圆抛物面</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_60.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.11 双曲抛物面（马鞍面）</p>
+<h4 class="wb-subhead" id="sub_12"><b>曲面的局部与整体性质</b></h4>
+<p>可以预见, 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">F(x, y, z)</annotation></semantics></math> 的次数变大或者根本不是多项式的时候, 方程</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F (x, y, z) = 0</annotation></semantics></math></div>
+<p>对应的图形会越来越复杂. 此时, 对于这些图形的几何, 可以从局部几何性质和整体几何性质来分别研究. 那么, 哪些几何性质是局部性质, 哪些又是整体性质呢?</p>
+<p>由曲面在一点附近的曲面片就能决定的性质是局部性质。例如，在上面的例子中，椭圆锥面上的“锥点”是一个很特别的点，在该点处曲面并不“光滑”，而别的二次曲面上没有这样的点。在上面的例子中，平面（即一次曲面）与所有二次曲面有明显差别：平面在任意一点附近都是“平直”的，而上述二次曲面任一点附近都是“弯曲”的。更进一步，虽然二次曲面都是弯曲的，但互相间也有区别，比如椭球面处处是凸的，而双曲抛物面处处有凸有凹。【要想精确描述曲面在局部的弯曲性状，需要学习微分几何课程。】</p>
+<p>平面和二次曲面不仅是最基本的曲面, 而且是研究一般曲面局部几何时最重要的工具之一. 比如, 在曲面上任一点附近取充分小邻域, 则该 “曲面片” 非常接近于一个平面片, 即曲面在该点的切平面 (图 3.12). 曲面在一点处的切平面是曲面在该点的一阶近似.</p>
+<figure class="wb-figure"><img src="assets/geometry-101/img_61.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图3.12 切平面</p>
+<p>更进一步, 也可考虑曲面在任一点处的二阶近似, 这是比一阶近似更好、更贴合的近似 (当然, 如果曲面本身是平面, 一阶近似就已经给出了精确值, 此时不需要二阶近似了). 不妨设曲面由</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F (x, y, z) = 0</annotation></semantics></math></div>
+<p>给出, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> 是一个良好的函数, 例如为多项式, 此时一阶与二阶近似可以如下得到:</p>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x_0, y_0, z_0)</annotation></semantics></math> 属于该曲面，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x_0, y_0, z_0) = 0</annotation></semantics></math> 。设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 次多项式（当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> 不是多项式时改用泰勒展开即可），则可以把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> 写成</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mi>i</mi><mo>+</mo><mi>j</mi><mo>+</mo><mi>k</mi><mo>≤</mo><mi>n</mi></mrow></munder><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi><mi>k</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>i</mi></mrow></msup><mo>(</mo><mi>y</mi><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>j</mi></mrow></msup><mo>(</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>k</mi></mrow></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">F (x, y, z) = \sum_ {i + j + k \leqslant n} a _ {i j k} (x - x _ {0}) ^ {i} (y - y _ {0}) ^ {j} (z - z _ {0}) ^ {k},</annotation></semantics></math></div>
+<p>其中“常数项” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>000</mn></mrow></msub></mrow><annotation encoding="application/x-tex">a_{000}</annotation></semantics></math> 为零. 此时, 该曲面在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(x_{0}, y_{0}, z_{0})</annotation></semantics></math> 附近的一阶近似是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mi>i</mi><mo>+</mo><mi>j</mi><mo>+</mo><mi>k</mi><mo>≤</mo><mn>1</mn></mrow></munder><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi><mi>k</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>i</mi></mrow></msup><mo>(</mo><mi>y</mi><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>j</mi></mrow></msup><mo>(</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>k</mi></mrow></msup><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F _ {1} (x, y, z) = \sum_ {i + j + k \leqslant 1} a _ {i j k} (x - x _ {0}) ^ {i} (y - y _ {0}) ^ {j} (z - z _ {0}) ^ {k} = 0,</annotation></semantics></math></div>
+<p>而相应的二阶近似则是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mi>i</mi><mo>+</mo><mi>j</mi><mo>+</mo><mi>k</mi><mo>≤</mo><mn>2</mn></mrow></munder><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi><mi>k</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>i</mi></mrow></msup><mo>(</mo><mi>y</mi><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>j</mi></mrow></msup><mo>(</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><msup><mo>)</mo><mrow><mi>k</mi></mrow></msup><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">F _ {2} (x, y, z) = \sum_ {i + j + k \leqslant 2} a _ {i j k} (x - x _ {0}) ^ {i} (y - y _ {0}) ^ {j} (z - z _ {0}) ^ {k} = 0.</annotation></semantics></math></div>
+<p>二阶近似是研究曲面弯曲程度的主要工具.</p>
+<p>曲面的整体几何性质则是那些仅靠观察一点附近的曲面片时得不到的几何性质. 比如, 虽然椭球面与椭圆抛物面都是“处处为凸”的曲面, 但二者具有不同的整体性质: 椭球面可以被放进某个足够大半径的球里 (即有界, 以及拓扑学课程中将要学到的紧致), 而椭圆抛物面却做不到这一点. 又如单叶双曲面与双叶双曲面都是无界的, 但是单叶双曲面上的任何两点可以通过某条曲线段连接, 而双叶双曲面做不到这一点 (显然这就是单叶与双叶这两个名字的来源. 这里牵涉到的是拓扑学中连通 (或道路连通) 的概念, 见第六章).</p>
+<p>在后续的几何学与拓扑学课程中, 将会学到更多局部与整体性质. 而几何中局部性质与整体性质之间的联系, 是现代数学里最引人入胜的风景之一.</p><div class="wb-sec-related"><div class="wb-sec-related-h">📝 相关作业（点击直达对应题目）</div><ul class="wb-sec-related-list"><li><a href="homework-geometry-week05.html#prob_1">📝 第 1 题：由准线与母线方向求柱面方程</a></li>
+<li><a href="homework-geometry-week05.html#prob_2">📝 第 2 题：给定方向的球面外切柱面方程</a></li>
+<li><a href="homework-geometry-week05.html#prob_3">📝 第 3 题：由轴线与面上一点确定圆柱面方程</a></li>
+<li><a href="homework-geometry-week05.html#prob_4">📝 第 4 题：两等半径球面的公共外切圆柱面</a></li>
+<li><a href="homework-geometry-week05.html#prob_5">📝 第 5 题：由顶点与准线求一般锥面方程及齐次性验证</a></li>
+<li><a href="homework-geometry-week05.html#prob_6">📝 第 6 题：由顶点、轴与半顶角建立圆锥面方程</a></li>
+<li><a href="homework-geometry-week05.html#prob_7">📝 第 7 题：包含三条坐标轴的圆锥面方程与轴线确定</a></li>
+<li><a href="homework-geometry-week05.html#prob_8">📝 第 8 题：两直线旋转生成曲面（异面直线生成单叶双曲面）</a></li>
+<li><a href="homework-geometry-week05.html#prob_9">📝 第 9 题：坐标面曲线绕坐标轴旋转的曲面方程</a></li>
+<li><a href="homework-geometry-week05.html#prob_10">📝 第 10 题：二次方程旋转曲面判别与旋转轴和母线确定</a></li>
+<li><a href="homework-geometry-week05.html#prob_12">📝 第 12 题：由三条平行直母线确定圆柱面方程</a></li></ul></div></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-geometry-101-ch03-s1.html">‹ 上一节：本章导引</a><a class="wb-nav-btn hub" href="textbook-geometry-101-ch03.html">📚 本章目录</a><a class="wb-nav-btn next" href="textbook-geometry-101-ch03-s3.html">下一节：刚体变换与图形分类 ›</a></div>
+</main>
+
+<nav class="wb-chtoc" id="wb-chtoc" aria-label="本节目录"><div class="wb-chtoc-h"><span>本节目录</span><button class="wb-chtoc-x" id="wb-chtoc-close" title="收起目录">×</button></div><div class="wb-chtoc-b" id="wb-chtoc-body"><div class="g" data-s="sub_1"><a class="s" href="#sub_1" data-t="sub_1">3.1.1 中的平面</a></div><div class="g" data-s="sub_2"><a class="s" href="#sub_2" data-t="sub_2">平面参数方程</a></div><div class="g" data-s="sub_3"><a class="s" href="#sub_3" data-t="sub_3">平面一般方程</a></div><div class="g" data-s="sub_4"><a class="s" href="#sub_4" data-t="sub_4">平面一般方程系数的几何意义</a><ul><li><a class="b k-thm" href="#tbk_1" data-t="tbk_1" title="命题 3.1.1 (平面方程的一般形式)"><i></i>命题 3.1.1</a></li><li><a class="b k-thm" href="#tbk_2" data-t="tbk_2" title="引理 3.1.2 (一般方程的唯一性) 两个一般方程代表同一个平面, 即"><i></i>引理 3.1.2</a></li></ul></div><div class="g" data-s="sub_5"><a class="s" href="#sub_5" data-t="sub_5">3.1.2 中的直线</a><ul><li><a class="b k-thm" href="#tbk_3" data-t="tbk_3" title="命题 3.1.3 (平面的法向量) 向量 表示的是平面"><i></i>命题 3.1.3</a></li><li><a class="b k-thm" href="#tbk_4" data-t="tbk_4" title="推论 3.1.4 (平面平行的判据) 两个平面"><i></i>推论 3.1.4</a></li><li><a class="b k-thm" href="#tbk_5" data-t="tbk_5" title="推论 3.1.5 (两个平面的夹角) 两个平面"><i></i>推论 3.1.5</a></li><li><a class="b k-thm" href="#tbk_6" data-t="tbk_6" title="命题 3.1.6 (原点到平面的距离) 原点到平面"><i></i>命题 3.1.6</a></li><li><a class="b k-thm" href="#tbk_7" data-t="tbk_7" title="推论3.1.7(平行平面间的距离) 两个平行平面"><i></i>推论3.1.7</a></li></ul></div><div class="g" data-s="sub_6"><a class="s" href="#sub_6" data-t="sub_6">直线参数方程</a></div><div class="g" data-s="sub_7"><a class="s" href="#sub_7" data-t="sub_7">直线一般方程</a><ul><li><a class="b k-thm" href="#tbk_8" data-t="tbk_8" title="命题 3.1.8 (直线的计算)"><i></i>命题 3.1.8</a></li></ul></div><div class="g" data-s="sub_8"><a class="s" href="#sub_8" data-t="sub_8">3.1.3 中的方程与图形</a><ul><li><a class="b k-ex" href="#tbk_9" data-t="tbk_9" title="例3.1.9 设 . 取…"><i></i>例3.1.9</a></li></ul></div><div class="g" data-s="sub_9"><a class="s" href="#sub_9" data-t="sub_9">空间里的曲线</a></div><div class="g" data-s="sub_10"><a class="s" href="#sub_10" data-t="sub_10">空间里的曲面</a><ul><li><a class="b k-ex" href="#tbk_10" data-t="tbk_10" title="例3.1.10 中 平面里的单位圆可以被表示为"><i></i>例3.1.10</a></li><li><a class="b k-ex" href="#tbk_11" data-t="tbk_11" title="例3.1.11 方程组"><i></i>例3.1.11</a></li></ul></div><div class="g" data-s="sub_11"><a class="s" href="#sub_11" data-t="sub_11">二次曲面举例</a><ul><li><a class="b k-ex" href="#tbk_12" data-t="tbk_12" title="例3.1.12 下面四个方程"><i></i>例3.1.12</a></li><li><a class="b k-ex" href="#tbk_13" data-t="tbk_13" title="例3.1.13 给定一个具有较好性质的二元函数 , 它的图形"><i></i>例3.1.13</a></li></ul></div><div class="g" data-s="sub_12"><a class="s" href="#sub_12" data-t="sub_12">曲面的局部与整体性质</a><ul><li><a class="b k-ex" href="#tbk_14" data-t="tbk_14" title="例3.1.14 显然方程"><i></i>例3.1.14</a></li><li><a class="b k-ex" href="#tbk_15" data-t="tbk_15" title="例3.1.15 对于每个 , 分别考虑曲面"><i></i>例3.1.15</a></li><li><a class="b k-ex" href="#tbk_16" data-t="tbk_16" title="例 3.1.16 还可以考虑一些特别的二次曲面, 其函数 F 不包含 z 变量, 例如"><i></i>例 3.1.16</a></li><li><a class="b k-ex" href="#tbk_17" data-t="tbk_17" title="例3.1.17 最后考察"><i></i>例3.1.17</a></li></ul></div></div></nav><div class="wb-chtoc-mask" id="wb-chtoc-mask"></div>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-geometry-101-ch01.html">第 1 章 ｜ 几何与公理化</a></li>
+<li><a href="textbook-geometry-101-ch02.html">第 2 章 ｜ 向量与欧氏空间</a></li>
+<li><a href="textbook-geometry-101-ch03.html" class="cur">第 3 章 ｜ 刚体变换</a></li>
+<li><a href="textbook-geometry-101-ch04.html">第 4 章 ｜ 几何与变换</a></li>
+<li><a href="textbook-geometry-101-ch05.html">第 5 章 ｜ 射影平面与射影变换</a></li>
+<li><a href="textbook-geometry-101-ch06.html">第 6 章 ｜ 拓扑空间与拓扑变换</a></li>
+<li><a href="textbook-geometry-101-chA.html">第 A 章 ｜ 附录  集合论与代数基础</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_geometry-101_ch03_s2",
+  book_id: "geometry-101",
+  ch_id: "ch03",
+  title: "§3.1 方程与图形"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (window.wbSetTheme) window.wbSetTheme(isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      if (window.wbSetTheme) window.wbSetTheme(darkNow ? 'dark' : 'light');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById('wb-chtoc');
+  if (!panel) return;
+  var mask = document.getElementById('wb-chtoc-mask');
+  var btn = document.getElementById('wb-btn-chtoc');
+  var closeBtn = document.getElementById('wb-chtoc-close');
+  var body = document.getElementById('wb-chtoc-body');
+  var wide = window.matchMedia('(min-width:1420px)');
+  function setOpen(v){
+    panel.classList.toggle('on', !!v);
+    if (mask) mask.classList.toggle('on', !!v && !wide.matches);
+  }
+  if (btn) btn.addEventListener('click', function(){ setOpen(!panel.classList.contains('on')); });
+  if (closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
+  if (mask) mask.addEventListener('click', function(){ setOpen(false); });
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+
+  var links = [].slice.call(panel.querySelectorAll('a[data-t]'));
+  /* 自己接管跳转：长章节动辄三万像素，默认平滑滚动要滚好几秒，
+     而且 MathJax 懒渲染会在途中改变行高，落点会偏。远距离直接瞬移，落稳后再校正一次。 */
+  function goTo(el){
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 86;
+    var far = Math.abs(y - window.pageYOffset) > 1600;
+    window.scrollTo({ top: y, behavior: far ? 'instant' : 'smooth' });   // 'auto' 会退回 CSS 的 smooth
+    [far ? 420 : 900, 1400].forEach(function(ms){
+      setTimeout(function(){
+        if (!el) return;
+        var d = el.getBoundingClientRect().top - 86;
+        if (Math.abs(d) > 4) window.scrollBy(0, d);   // 补一次：上面懒渲染的公式可能把行高改了
+      }, ms);
+    });
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-t'));
+      if (el){
+        e.preventDefault();
+        goTo(el);
+        try { history.replaceState(null, '', '#' + el.id); } catch (err) { location.hash = el.id; }
+      }
+      if (!wide.matches) setOpen(false);
+    });
+  });
+  var map = links.map(function(a){
+    var el = document.getElementById(a.getAttribute('data-t'));
+    return el ? { a: a, el: el } : null;
+  }).filter(Boolean);
+  var groups = [].slice.call(panel.querySelectorAll('.g'));
+  var raf = null, lastG = null;
+  function spy(){
+    raf = null;
+    var act = null;
+    for (var i = 0; i < map.length; i++){
+      if (map[i].el.getBoundingClientRect().top <= 116) act = map[i]; else break;
+    }
+    if (!act && map.length) act = map[0];
+    links.forEach(function(a){ a.classList.remove('cur'); });
+    if (!act) return;
+    act.a.classList.add('cur');
+    var g = act.a.closest('.g');
+    if (g !== lastG){
+      lastG = g;
+      groups.forEach(function(x){
+        x.classList.toggle('open', x === g);
+        x.classList.toggle('cur', x === g);
+      });
+    }
+    if (body){
+      var br = body.getBoundingClientRect(), ar = act.a.getBoundingClientRect();
+      if (ar.top < br.top + 6 || ar.bottom > br.bottom - 6){
+        body.scrollTop += (ar.top - br.top) - (br.height / 2 - ar.height / 2);
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){ if (raf === null) raf = requestAnimationFrame(spy); }, { passive: true });
+  window.addEventListener('resize', function(){ if (raf === null) raf = requestAnimationFrame(spy); });
+  spy();
+})();
+</script>
+</body>
+</html>

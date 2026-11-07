@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§1.2 公理体系：从欧几里得到希尔伯特 ｜ 几何与公理化 ｜ “101计划”核心教材 几何学基础 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* C 级反向联动：课本小节下的相关作业 */
+.wb-sec-related {
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px dashed var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-sec-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-sec-related-list { list-style: none; margin: 0; padding: 0; }
+.wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+.wb-sec-related-list .wb-lk-more { color: var(--muted); font-size: 12px; border-left: none; padding-left: 0; }
+
+/* C 级反向联动 · 章级：章首页整章相关作业（章级关联教材在此呈现） */
+.wb-ch-related {
+  margin: 16px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px solid var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-ch-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-ch-related .wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-ch-related .wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-ch-related .wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+math { max-width: 100%; }
+/* 侧边抽屉在视口外，会把页宽撑大，这里裁掉 */
+html, body { overflow-x: clip; }
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+/* 章首页 hub：本章小节卡片网格 */
+.wb-sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+.wb-sec-card { display: block; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .12s, box-shadow .15s; }
+.wb-sec-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.wb-sec-card .wb-sec-num { display: inline-block; color: var(--accent); font-weight: 700; margin-right: 8px; }
+.wb-sec-card .wb-sec-name { font-weight: 600; }
+.wb-sec-card:hover .wb-sec-name { color: var(--accent); }
+
+/* 节内子标题：独立成块（满足「分成两个卡片 / 把小标题加入目录」），并带锚点便于跳转 */
+.wb-subhead { font-size: 17px; font-weight: 700; color: var(--text); margin: 26px 0 12px; padding: 9px 12px;
+  background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 6px; scroll-margin-top: 86px; }
+.wb-subhead + .wb-def, .wb-subhead + .wb-thm, .wb-subhead + .wb-prop, .wb-subhead + .wb-lemma,
+.wb-subhead + .wb-cor, .wb-subhead + .wb-example, .wb-subhead + .wb-remark, .wb-subhead + .wb-exercise,
+.wb-subhead + .wb-proof { margin-top: 12px; }
+
+/* ---------- 章内目录：宽屏右侧常驻 / 窄屏抽屉 ---------- */
+.wb-chtoc{position:fixed;top:72px;right:14px;width:238px;max-height:calc(100vh - 108px);
+  display:flex;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1c1c1a);
+  border:1px solid var(--border,#e3e2dd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:70;font-size:13px;line-height:1.45;
+  transform:translateX(calc(100% + 26px));transition:transform .22s ease}
+.wb-chtoc.on{transform:none}
+@media (min-width:1420px){.wb-chtoc{transform:none;right:max(14px,calc((100vw - 940px)/2 - 252px))}}
+.wb-chtoc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-bottom:1px solid var(--border,#e3e2dd);
+  color:var(--muted,#6b6b66);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.wb-chtoc-x{border:0;background:none;color:var(--muted,#6b6b66);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.wb-chtoc-x:hover{color:var(--text,#1c1c1a)}
+@media (min-width:1420px){.wb-chtoc-x{display:none}}
+.wb-chtoc-b{overflow-y:auto;overscroll-behavior:contain;padding:5px 0 10px}
+.wb-chtoc .g>.s{display:block;padding:6px 12px 6px 10px;color:var(--text,#1c1c1a);text-decoration:none;
+  font-weight:600;border-left:3px solid transparent}
+.wb-chtoc .g>.s b{color:var(--accent,#0f6e56);margin-right:4px}
+.wb-chtoc .g>.s:hover{background:var(--surface2,#f7f7f5)}
+.wb-chtoc .g.cur>.s{border-left-color:var(--accent,#0f6e56)}
+.wb-chtoc .g>ul{list-style:none;margin:0;padding:0 0 2px;display:none}
+.wb-chtoc .g.open>ul{display:block}
+.wb-chtoc a.b{display:flex;align-items:baseline;gap:7px;padding:3.5px 12px 3.5px 20px;
+  color:var(--muted,#6b6b66);text-decoration:none;border-left:3px solid transparent}
+.wb-chtoc a.b:hover{color:var(--text,#1c1c1a);background:var(--surface2,#f7f7f5)}
+.wb-chtoc a.b i{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.wb-chtoc a.b.k-def i{background:#10b981;opacity:1}
+.wb-chtoc a.b.k-thm i{background:#2563eb;opacity:1}
+.wb-chtoc a.b.k-axiom i{background:#7c3aed;opacity:1}
+.wb-chtoc a.b.k-prop i{background:#0891b2;opacity:1}
+.wb-chtoc a.b.k-ex i{background:#d97706;opacity:1}
+.wb-chtoc a.b.k-rem i{background:#94a3b8;opacity:1}
+.wb-chtoc a.b.k-pf i{background:#cbd5e1;opacity:1}
+.wb-chtoc a.b.cur{color:var(--accent,#0f6e56);background:var(--surface2,#f7f7f5);
+  border-left-color:var(--accent,#0f6e56);font-weight:600}
+.wb-chtoc a.b.cur i{opacity:1}
+.wb-chtoc-mask{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:69;opacity:0;
+  pointer-events:none;transition:opacity .2s}
+.wb-chtoc-mask.on{opacity:1;pointer-events:auto}
+@media (min-width:1420px){.wb-chtoc-mask{display:none}}
+#wb-btn-chtoc{display:none}
+@media (max-width:1419.98px){#wb-btn-chtoc{display:inline-flex}}
+/* 锚点跳转时别被吸顶栏盖住 */
+section.wb-seg[id],div[id^="tbk_"]{scroll-margin-top:86px}
+@media print{.wb-chtoc,.wb-chtoc-mask{display:none}}
+/* 窄屏：改成整屏高的侧滑抽屉，别只盖住半截顶栏 */
+@media (max-width:1419.98px){
+  .wb-chtoc{top:0;right:0;height:100vh;max-height:100vh;width:min(300px,86vw);
+    border-radius:0;border-top:0;border-bottom:0;border-right:0}
+  .wb-chtoc-h{padding:13px 14px}
+}
+/* 顶栏工具多了会挤到换行，按钮文字不许折行 */
+.wb-tool-group{flex-wrap:wrap;justify-content:flex-end}
+.wb-tool-btn{white-space:nowrap}
+@media (max-width:600px){
+  .wb-tool-group{gap:4px}
+  .wb-tool-btn{padding:4px 6px;font-size:12px}
+}
+
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html" class="on">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html">英语</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-geometry.html">几何学</a> <span>›</span>
+    <a href="course-geometry.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 1 章 ｜ §1.2 公理体系：从欧几里得到希尔伯特</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-chtoc" title="本章小节与定义定理">📋 本章</button>
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header"><div class="wb-book-tagline">📖 “101计划”核心教材 几何学基础 ｜ 盛茂、王作勤 编著</div><h1 style="font-size:24px;margin:8px 0 4px;">§1.2 ｜ 公理体系：从欧几里得到希尔伯特</h1><div class="wb-book-meta-sub">高等教育出版社（教育部计算机与数学101计划核心教材） ｜ 原书对应页码：第  页</div></div>
+
+  
+
+  
+
+  
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§1.2</span> 公理体系：从欧几里得到希尔伯特</h3><h4 class="wb-subhead" id="sub_1"><b>欧几里得公理体系</b></h4>
+<p>下面对欧几里得《几何原本》的公理体系稍作展开. 前文已经提及, 该书共分十三卷. 在第一卷的开篇, 欧几里得就引入了 23 条定义.</p>
+<div class="wb-def">
+  <div class="wb-blk-title"><span>定义（《几何原本》开篇23条定义）</span><span class="tag">概念定义</span></div>
+<p>定义（《几何原本》开篇23条定义）</p>
+<ol class="wb-num-list"><li>点没有组成部分.</li><li>线只有长度没有宽度.</li><li>圆是平面上到给定点的距离都相等的点所给出的曲线.</li><li>平行线是在同一平面中向两边无限延伸后不相交的直线.</li></ol></div>
+<p>从这里可以看到, 欧几里得试图定义他需要用到的所有概念. 然而, 这些所谓的定义并非都是通过数学性质将所定义对象跟其他对象区分开来. 事实上, 后来人们才逐渐认识到, 不可能在数学体系内对体系需要用到的所有概念都给出定义.</p>
+<p>紧接着这些定义, 欧几里得列出了 5 条公设与 5 条公理, 即</p>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公设（《几何原本》5条公设）</span><span class="tag">公设</span></div>
+<p>公设（《几何原本》5条公设）</p>
+<ol class="wb-num-list"><li>由任意一点到另外任意一点可作直线.</li><li>一条有限直线可以继续延长.</li><li>以任一点为圆心, 任一距离为半径可作圆.</li><li>所有直角相等.</li><li>若一直线与两直线相交, 且若同侧所交两内角之和小于两直角, 则两直线延长后必相交于该侧的一点.</li></ol></div>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理（《几何原本》5条公理）</span><span class="tag">公理</span></div>
+<p>公理（《几何原本》5条公理）</p>
+<ol class="wb-num-list"><li>与同一量相等的量彼此相等.</li><li>等量加等量, 其和仍相等.</li><li>等量减等量, 其差仍相等.</li><li>彼此能重合的物是全等的.</li><li>整体大于部分.</li></ol></div>
+<p>从上述欧几里得公设与欧几里得公理, 可以看出当时公理与公设的区别: 公理是适用于所有学科的逻辑规则, 而公设则专指几何学中大家认可的规则. 需要说明的是, 欧几里得体系的公理一般被翻译成 common notion, 而公设则被翻译成 postulate. 如今大家一般不再做这种公理与公设的区分 (如下文希尔伯特体系那般), 统称公理, 即 axiom.</p>
+<h4 class="wb-subhead" id="sub_2"><b>欧几里得公理体系的剖析</b></h4>
+<p>下面通过两个例子, 近距离地剖析《几何原本》:</p>
+<div class="wb-thm" id="tbk_1">
+  <div class="wb-blk-title"><span>命题 1.2.1</span><span class="tag">命题</span></div>
+<p>（《几何原本》命题1） 从任意给定边长出发可以作正三角形.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 为给定的线段 (图1.7). 以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 为圆心、线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 为半径作圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BCD</annotation></semantics></math> (公设3), 以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 为圆心、线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 为半径作圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">ACE</annotation></semantics></math> (公设3). 记两圆的交点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> , 并连接 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">CA</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">CB</annotation></semantics></math> (公设1). 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 是圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BCD</annotation></semantics></math> 的圆心, 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">AC</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> (定义15). 同理, 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 是圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">ACE</annotation></semantics></math> 的圆心, 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">BA</annotation></semantics></math> (定义15). 因此, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">CA</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">CB</annotation></semantics></math> 都等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> , 从而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">CA</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">CB</annotation></semantics></math> (公理1). 因此, 三条线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">CA</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 两两相等. 于是, 三角形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">ABC</annotation></semantics></math> 就是所求的具有给定边长 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 的正三角形. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>□</mo></mrow><annotation encoding="application/x-tex">\square</annotation></semantics></math> </p>
+</div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_21.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.7 《几何原本》命题1</p>
+<div class="wb-thm" id="tbk_2">
+  <div class="wb-blk-title"><span>命题 1.2.2</span><span class="tag">命题</span></div>
+<p>(《几何原本》命题 2) 以任何一点为端点, 可作跟给定直线段长度相等的线段.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 是给定点, 而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 是给定线段 (图1.8). 连接点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> (公设1). 以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 为边作正三角形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">ABD</annotation></semantics></math> (命题1). 延长 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi><mo>,</mo><mi>D</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">DA, DB</annotation></semantics></math> 为直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>E</mi><mo>,</mo><mi>B</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">AE, BF</annotation></semantics></math> (公设2). 以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 为圆心、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 为半径作圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>G</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">CGH</annotation></semantics></math> (交直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">BF</annotation></semantics></math> 于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> )(公设3). 以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 为圆心、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>G</mi></mrow><annotation encoding="application/x-tex">DG</annotation></semantics></math> 为半径作圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>K</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">GKL</annotation></semantics></math> (交直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">AE</annotation></semantics></math> 于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math> )(公设3). 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 是圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>G</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">CGH</annotation></semantics></math> 的圆心, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>G</mi></mrow><annotation encoding="application/x-tex">BG</annotation></semantics></math> (定义15). 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 是圆 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>K</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">GKL</annotation></semantics></math> 的圆心, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">DL</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>G</mi></mrow><annotation encoding="application/x-tex">DG</annotation></semantics></math> (定义15). 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">DA</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">DB</annotation></semantics></math> , 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">AL</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>G</mi></mrow><annotation encoding="application/x-tex">BG</annotation></semantics></math> (公理3). 又因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>G</mi></mrow><annotation encoding="application/x-tex">BG</annotation></semantics></math> , 所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">AL</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> (公理1). <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>□</mo></mrow><annotation encoding="application/x-tex">\square</annotation></semantics></math> </p>
+</div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_22.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.8 《几何原本》命题2</p>
+<p>从上述两个例子, 不难体会出《几何原本》的一些基本特色:</p>
+<ul><li>不假设任何对象的存在性, 必须能用尺规作出来才会被认可.</li></ul>
+<ul><li>每一步推理都有明确依据：定义、公理、公设或者已经证明的命题.</li></ul>
+<ul><li>公理与公设的选取、命题的排布顺序都是精心设计的.</li></ul>
+<p>不过，《几何原本》的证明依然依赖于几何直觉。例如在证明命题1时，用了“两个半径相同的圆，若圆心距等于半径，则一定相交于两点”这个既未假设也未证明的结论。两千多年以来，人们在《几何原本》中发现了越来越多的漏洞：隐藏的假设、非数学的定义、逻辑上不完备之处、对作图或物理直觉的依赖等。但不可否认的是，《几何原本》对数学、科学乃至人类历史起到了无法估量的巨大作用, 是史上最有影响力的著作之一.</p>
+<p>前文已经提及, 欧几里得本人也尽量避免使用第五公设, 直至命题 29 才开始第一次使用该公设. 例如, 欧几里得在不使用第五公设的前提下证明了</p>
+<div class="wb-thm" id="tbk_3">
+  <div class="wb-blk-title"><span>命题 1.2.3</span><span class="tag">命题</span></div>
+<p>(《几何原本》命题 11) 给定一条直线 l 以及直线上一点 P, 可作过 P 且垂直于 l 的直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">l&#x27;</annotation></semantics></math> .</p>
+</div>
+<div class="wb-thm" id="tbk_4">
+  <div class="wb-blk-title"><span>命题 1.2.4</span><span class="tag">命题</span></div>
+<p>(《几何原本》命题 12) 给定一条直线 l 以及直线外一点 P, 可作过 P 且垂直于 l 的直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">l&#x27;</annotation></semantics></math> .</p>
+</div>
+<div class="wb-thm" id="tbk_5">
+  <div class="wb-blk-title"><span>命题 1.2.5</span><span class="tag">命题</span></div>
+<p>（《几何原本》命题28）若一直线和两直线相交所成的同位角相等，或者同旁内角的和等于两直角，则这两条直线相互平行.</p>
+<p>特别地, 下述性质不依赖于第五公设:</p>
+</div>
+<div class="wb-thm" id="tbk_6">
+  <div class="wb-blk-title"><span>命题 1.2.6</span><span class="tag">命题</span></div>
+<p>给定直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 外一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> , 一定存在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">l&#x27;</annotation></semantics></math> 过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 且平行于给定直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> .</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>由《几何原本》命题12, 过 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 可作直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的垂线. 记垂足为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math> . 由命题11, 可作过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 且垂直于直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>Q</mi></mrow><annotation encoding="application/x-tex">PQ</annotation></semantics></math> 的直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">l&#x27;</annotation></semantics></math> . 由命题28, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">l&#x27;</annotation></semantics></math> 平行于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>□</mo></mrow><annotation encoding="application/x-tex">\square</annotation></semantics></math> </p>
+<p>这就是为什么平行公设 (即公设 1.1.7) 的陈述中是 “至多有一条” 而不是 “恰有一条”.</p>
+<p><b>希尔伯特公理体系</b></p>
+<p>建立几何学公理体系的实质就是要把我们的空间直观加以逻辑分析．希尔伯特在《几何基础》 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> 一书中,建立了一个完善的公理系统,从而使欧氏几何获得了牢固的基础.</p>
+<p>在希尔伯特公理体系里, 首先有两组不加定义的对象, 即</p>
+<ol class="wb-num-list"><li>三个不加定义的本源对象: 点、直线、平面.</li><li>涉及本源对象的三个不加定义的本源关系:</li><li>关联 (位于……之内): 分为直线与点关联 (也称 “直线包含点”“点在直线里”)、平面与点关联 (也称 “平面包含点”“点在平面里”);</li><li>在……之间：第三个点在两个点之间；</li><li>合同: 线段与线段合同, 角与角合同.</li></ol><p>按照希尔伯特的说法，</p><p>在任何时候, 我们都可以把 “点、线、面” 换成 “桌子、椅子、啤酒杯”.</p></div>
+<p>也就是说, 这些本源对象和本源关系不必有任何特定的含义 (这是任何形式逻辑体系的起点). 但是, 本源对象/关系也并非可以随意指定: 它们必须满足后面给出的公理体系. 注意从本源对象、本源关系及诸多公理出发, 可以衍生出 “线段”“角” 等可定义对象, 以及 “直线与平面关联”“三角形与三角形合同 (即全等)” 等可定义关系.</p>
+<p>希尔伯特公理体系共有五组, 分别为关联公理、顺序公理、合同公理、平行公理、连续公理, 下面逐一分析. 为简单起见, 在公理中将用大写字母 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">A, B, C, \cdots</annotation></semantics></math> 表示点, 小写字母 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">a, b, c, \cdots</annotation></semantics></math> 表示直线, 希腊字母 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>γ</mi><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">\alpha, \beta, \gamma, \cdots</annotation></semantics></math> 表示平面, 并且在说到 “两点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> ” 或 “三点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A, B</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> ” 时, 总表示不同的点.</p>
+<h4 class="wb-subhead" id="sub_3"><b>希尔伯特公理体系：关联公理</b></h4>
+<p>关联公理所表述的是点、线、面这三种本源对象之间的关联关系：</p>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理（第一组：关联公理）</span><span class="tag">公理</span></div>
+<p>公理（第一组：关联公理）</p>
+<p>(I.1) 对于两点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> , 恒有一直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> , 它同 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 都关联.</p>
+<p>(I.2) 对于两点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> , 至多有一直线, 它同 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 都关联.</p>
+<p>(I.3) 任一直线至少跟两点关联, 且至少跟一点不关联.</p>
+<p>(I.4) 对于不在同一直线上的任意三点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A, B</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> , 恒有一平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 同 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A, B</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 这三点都关联. 任一平面至少跟一点关联.</p>
+<p>(I.5) 对于不在同一直线上的三点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> , 至多有一平面, 它同 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> 这三点都关联.</p>
+<p>(I.6) 若平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 跟直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的两点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 关联, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的每一点都关联.</p>
+<p>(I.7) 若两平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta</annotation></semantics></math> 有一公共点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> , 则它们至少还有另一公共点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> .</p>
+<p>(I.8) 至少有四点不在同一平面里.</p>
+<p>我们把公理 (I.1)—(I.3) 称为第一组公理中的平面公理, 而把公理 (I.4)—(I.8) 称为第一组公理中的空间公理. 注意后五条公理仅对三维空间有意义, 其中公理 (I.7) 意味着空间的维数不超过三, 而公理 (I.8) 意味着空间的维数至少是三. 在仅考虑二维几何即平面时, 一般去掉公理 (I.4)—(I.7) 并把公理 (I.8) 改为 “至少有三点不在同一直线里”.</p>
+<p>可以看到, 关联公理仅涉及点、线、面之间的关联关系, 所界定的几何信息非常少. 如果限制仅仅使用关联公理, 能够证明的性质很少. 不过, 在习题 1 第 9 题中, 将会让大家寻找一个仅用关联公理就能证明的结论. 此外, 本书第五章讨论射影几何, 其中关联关系是至关重要的.</p>
+<p><b>希尔伯特公理体系：顺序公理</b></p>
+<p>顾名思义, 顺序公理表述的是点排列时的顺序关系:</p>
+</div>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理（第二组：顺序公理）、</span><span class="tag">公理</span></div>
+<p>公理（第二组：顺序公理）、</p>
+<p>(II.1) 若点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 之间, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> 是同一直线上不同的三点, 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 也在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 之间.</p>
+<p>(II.2) 对于两点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> , 直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">AC</annotation></semantics></math> 上恒有一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> , 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 之间.</p>
+<p>(II.3) 一直线的任意三点中, 至多有一点在其他两点之间.</p>
+<p>(II.4) (帕施公理) 任给不共线的三点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> 及平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">ABC</annotation></semantics></math> 中不过这三点的直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> ,</p>
+<p>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 过线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 中的某点, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 一定过线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">AC</annotation></semantics></math> 或线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 中的某点 (图1.9).</p>
+</div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_23.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.9 帕施公理</p>
+<p>帕施公理中出现的“线段”是由顺序关系所衍生出来的概念, 其定义如下:</p>
+<div class="wb-def" id="tbk_7">
+  <div class="wb-blk-title"><span>定义 1.2.7</span><span class="tag">概念定义</span></div>
+<p>(线段) 设 A 和 B 是直线 a 上的两点. 称由 A 和 B 所成的点组为一条线段, 用 AB 或 BA 表示. 在 A 和 B 之间的点叫做线段 AB 的点 (或线段 AB 内部的点); A 和 B 叫做线段 AB 的端点, 直线 a 上其他的点叫做线段 AB 外部的点.</p>
+<p>注意公理 (II.3) 仅仅断言：一直线的任意三点中“至多有一点在其他两点之间”，而不是说“有且只有一点在其他两点之间”。事实上，“有且只有一点在其他两点之间”也是对的，但“必有一点在其他两点之间”这个存在性论断是其他公理的推论。下面用关联公理以及顺序公理证明它：</p>
+</div>
+<div class="wb-thm" id="tbk_8">
+  <div class="wb-blk-title"><span>定理 1.2.8</span><span class="tag">核心定理</span></div>
+<p>（共线三点，必有一点在中间） 一直线上任意三点，必有一点在其他两点之间.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, B, C</annotation></semantics></math> 在同一条直线上, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 不在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">B, C</annotation></semantics></math> 之间, 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 不在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A, B</annotation></semantics></math> 之间 (图1.10). 由公理(I.3), 该直线外必有点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> . 由公理(I.1), 存在连接 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>,</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">B, D</annotation></semantics></math> 的直线. 由公理(II.2), 直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BD</annotation></semantics></math> 上存在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>,</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">B, E</annotation></semantics></math> 之间. 对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>E</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle EBC</annotation></semantics></math> 和直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">AD</annotation></semantics></math> 应用帕施公理, 可知直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">AD</annotation></semantics></math> 交线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">EC</annotation></semantics></math> 于某点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math> . 同理对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>E</mi><mi>B</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">\triangle EBA</annotation></semantics></math> 和直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">CD</annotation></semantics></math> 应用帕施公理, 可知直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">CD</annotation></semantics></math> 交线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">EA</annotation></semantics></math> 于某点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> . 接着对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>F</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">\triangle AFE</annotation></semantics></math> 和直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>G</mi></mrow><annotation encoding="application/x-tex">CG</annotation></semantics></math> 应用帕施公理, 可知点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 是线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>F</mi></mrow><annotation encoding="application/x-tex">AF</annotation></semantics></math> 中的点. 最后对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>F</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle AFC</annotation></semantics></math> 和直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">ED</annotation></semantics></math> 应用帕施公理, 就得到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A, C</annotation></semantics></math> 之间.</p>
+</div>
+<figure class="wb-figure"><img src="assets/geometry-101/img_24.jpg" alt="image"><figcaption>image</figcaption></figure>
+<p>图1.10 定理1.2.8的证明</p>
+<p>因此, 在希尔伯特公理体系中就只写 “至多有一点在其他两点之间”, 而不是正确但更强的 “恰有一点在其他两点之间”. 这种处理方式体现的是公理体系的 “极小性”, 或者说, 公理之间的 “独立性”:</p>
+<p>公理中每个论断都是必要的, 独立于其他公理, 而不能是其他公理的推论.</p>
+<h4 class="wb-subhead" id="sub_4"><b>顺序公理与“侧”的概念</b></h4>
+<p>顺序公理中的前三条描述了直线上的顺序关系, 而第四条帕施公理描述的是平面顺序关系. 在几何上, 顺序关系最重要的表现在于把点集分成两组, 即 “两侧” 的概念. 先给出直线上 “点的某侧” 的概念:</p>
+<div class="wb-def" id="tbk_9">
+  <div class="wb-blk-title"><span>定义 1.2.9</span><span class="tag">概念定义</span></div>
+<p>(直线上一点的“同侧”) 在直线 a 上给定任意一点 O. 对于 a 上异于点 O 的两点 A, B, 如果点 O 不在 A 和 B 之间, 则称 A, B 两点位于点 O 的同侧, 否则称它们位于点 O 的异侧.</p>
+<p>可以证明 (留作习题)</p>
+</div>
+<div class="wb-thm" id="tbk_10">
+  <div class="wb-blk-title"><span>定理 1.2.10</span><span class="tag">核心定理</span></div>
+<p>（直线上点的两侧）直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 上任意一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 把直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 恰好分成两侧（即：直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 上除了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 之外的点分为两个集合， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mo>+</mo></mrow></msup></mrow><annotation encoding="application/x-tex">a^{+}</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mo>−</mo></mrow></msup></mrow><annotation encoding="application/x-tex">a^{-}</annotation></semantics></math> ，使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mo>+</mo></mrow></msup></mrow><annotation encoding="application/x-tex">a^{+}</annotation></semantics></math> 里任意两点都在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 的同侧， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mo>−</mo></mrow></msup></mrow><annotation encoding="application/x-tex">a^{-}</annotation></semantics></math> 里任意两点都在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 的同侧，且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mo>+</mo></mrow></msup></mrow><annotation encoding="application/x-tex">a^{+}</annotation></semantics></math> 里的点跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mo>−</mo></mrow></msup></mrow><annotation encoding="application/x-tex">a^{-}</annotation></semantics></math> 里的点一定位于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 的异侧).</p>
+<p>类似地, 可以定义 “平面被直线所分割而成的侧” 的概念:</p>
+</div>
+<div class="wb-def" id="tbk_11">
+  <div class="wb-blk-title"><span>定义 1.2.11</span><span class="tag">概念定义</span></div>
+<p>(平面上一直线的“同侧”) 在平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 上给定任意一条直线 a. 对于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 上不在 a 中的两点 A, B, 如果线段 AB 跟 a 不相交, 则称 A, B 两点位于直线 a 的同侧, 否则称它们位于直线 a 的异侧.</p>
+<p>注意由公理 (I.2), 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A, B</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的异侧, 则线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 交于唯一的一点. 不难想象, 下述结论依然是正确的:</p>
+</div>
+<div class="wb-thm" id="tbk_12">
+  <div class="wb-blk-title"><span>定理 1.2.12</span><span class="tag">核心定理</span></div>
+<p>（平面上直线的两侧） 平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 上任意一条直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 把平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 恰好分成两侧（请读者仿照定理1.2.10写出这句话的具体含义).</p>
+<p>公理化方法的优点在于其严格性, 但是即使这样一个 “看似显然” 的结论, 其证明也远非几句话就能说清楚的. 为了不陷入过多的细节, 我们将不加证明地承认它.</p>
+<p>此外, 不必再引入描述空间顺序的新公理, 还可以证明:</p>
+<p>任何平面也把空间分成两侧.</p>
+<p>我们把空间两侧的定义以及上述定理“空间版本”的陈述留作习题.</p>
+<p>以下概念是直观而自然的：</p>
+</div>
+<ul><li>称直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 上任一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 的一侧为“以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 为起点的一条射线”.</li></ul>
+<ul><li>称平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 上任意一条直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的一侧为“以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 为边界的一个半平面”.</li></ul>
+<ul><li>称空间中任意平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 的一侧为“以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 为边界的一个半空间”.</li></ul>
+<p>两点确定了一条线段. 类似地, 从同一点出发的两条射线确定了一个角:</p>
+<div class="wb-def" id="tbk_13">
+  <div class="wb-blk-title"><span>定义 1.2.13</span><span class="tag">概念定义</span></div>
+<p>(角) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 是一平面, 而 h 和 k 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 中从一点 O 起始的、不属于同一直线的两条射线. 我们把这一对射线 h 和 k 所组成的线组叫做一个角, 用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>h</mi><mo>,</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(h,k)</annotation></semantics></math> 或 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>k</mi><mo>,</mo><mi>h</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(k,h)</annotation></semantics></math> 表示. 点 O 称为这个角的顶点, 射线 h 和 k 叫做这个角的边.</p>
+</div>
+<div class="wb-remark">
+  <div class="wb-blk-title"><span>注意</span><span class="tag">深入诠释</span></div>
+<p>这里所定义的 “角” 都是常义下小于平角的角. 读者可以尝试定义 “角的内部”“角的大小比较” 等关系, 此处不再赘述.</p>
+<p><b>希尔伯特公理体系：合同公理</b></p>
+<p>有了“侧”和“角”的概念, 接下来给出第三组公理:</p>
+</div>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理 (第三组: 合同公理)</span><span class="tag">公理</span></div>
+<p>公理 (第三组: 合同公理)</p>
+<p>(Ⅲ.1) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 是一直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 上的两点, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;</annotation></semantics></math> 是该直线或另一直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 上的点, 则在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 上点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;</annotation></semantics></math> 的任意给定的一侧, 恒有一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">B&#x27;</annotation></semantics></math> , 使得线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 和线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;B&#x27;</annotation></semantics></math> 合同【记为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>≡</mo><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">AB \equiv A&#x27;B&#x27;</annotation></semantics></math> 】.</p>
+<p>(Ⅲ.2) 若两线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;B&#x27;</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo><mo>′</mo><mi>B</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;&#x27;B&#x27;&#x27;</annotation></semantics></math> 都和线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 合同, 则线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;B&#x27;</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo><mo>′</mo><mi>B</mi><mo>′</mo><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;&#x27;B&#x27;&#x27;</annotation></semantics></math> 合同.</p>
+<p>(Ⅲ.3) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">BC</annotation></semantics></math> 是在同一直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 上除了端点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 之外无公共点的两条线段, 且设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;B&#x27;</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">B&#x27;C&#x27;</annotation></semantics></math> 是在这直线或另一直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 上除了端点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">B&#x27;</annotation></semantics></math> 之外无公共点的两条线段. 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>≡</mo><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">AB \equiv A&#x27;B&#x27;</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>C</mi><mo>≡</mo><mi>B</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">BC \equiv B&#x27;C&#x27;</annotation></semantics></math> , 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi><mo>≡</mo><mi>A</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">AC \equiv A&#x27;C&#x27;</annotation></semantics></math> .</p>
+<p>(Ⅲ.4) 给定平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 上的角 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>h</mi><mo>,</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(h, k)</annotation></semantics></math> , 平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\alpha&#x27;</annotation></semantics></math> 上的直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 和 “ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\alpha&#x27;</annotation></semantics></math> 上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 的一侧”. 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">h&#x27;</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 里以点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">O&#x27;</annotation></semantics></math> 为起点的一条射线, 则平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\alpha&#x27;</annotation></semantics></math> 上恰有一条射线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">k&#x27;</annotation></semantics></math> 使 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>h</mi><mo>′</mo><mo>,</mo><mi>k</mi><mo>′</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(h&#x27;, k&#x27;)</annotation></semantics></math> 的内部被包含在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">a&#x27;</annotation></semantics></math> 的这给定的一侧, 且使 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>h</mi><mo>,</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(h, k)</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>h</mi><mo>′</mo><mo>,</mo><mi>k</mi><mo>′</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(h&#x27;, k&#x27;)</annotation></semantics></math> 合同【记为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mo>(</mo><mi>h</mi><mo>,</mo><mi>k</mi><mo>)</mo><mo>≡</mo><mo>∠</mo><mo>(</mo><mi>h</mi><mo>′</mo><mo>,</mo><mi>k</mi><mo>′</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\angle(h, k) \equiv \angle(h&#x27;, k&#x27;)</annotation></semantics></math> 】. 每个角都跟自身合同.</p>
+<p>(Ⅲ.5) 若两个三角形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle ABC</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\triangle A&#x27;B&#x27;C&#x27;</annotation></semantics></math> 之间有下列合同关系:</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>≡</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo> </mo><mi>A</mi><mi>C</mi><mo>≡</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo> </mo><mo>∠</mo><mi>B</mi><mi>A</mi><mi>C</mi><mo>≡</mo><mo>∠</mo><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">A B \equiv A ^ {\prime} B ^ {\prime}, \quad A C \equiv A ^ {\prime} C ^ {\prime}, \quad \angle B A C \equiv \angle B ^ {\prime} A ^ {\prime} C ^ {\prime},</annotation></semantics></math></div><p>则有合同关系 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>B</mi><mi>C</mi><mo>≡</mo><mo>∠</mo><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\angle ABC \equiv \angle A&#x27;B&#x27;C&#x27;</annotation></semantics></math> .</p></div>
+<p>合同公理中的前三条描述了直线元素 (线段) 间的合同, 而后两条描述了平面元素 (角与三角形) 间的合同. 跟顺序关系类似, 空间元素的合同是直线、平面合同的推论. 从本质上来说, 合同公理给出的是运动或迁移的概念: 公理 (Ⅲ.1)—(Ⅲ.3) 描述了线段迁移的性质 (其中公理 (Ⅲ.3) 是加法的基础), 公理 (Ⅲ.4) 给出了角的迁移, 而公理 (Ⅲ.5) 则是三角形迁移的基础.</p>
+<p>三角形的概念以及三角形间的合同都是由前述概念、关系所衍生的可定义概念、可定义关系. 例如, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle ABC</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\triangle A&#x27;B&#x27;C&#x27;</annotation></semantics></math> 合同的意思是所有对应边以及对应角合同, 即</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>≡</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo>  </mo><mi>A</mi><mi>C</mi><mo>≡</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo>  </mo><mi>B</mi><mi>C</mi><mo>≡</mo><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">A B \equiv A ^ {\prime} B ^ {\prime}, \qquad A C \equiv A ^ {\prime} C ^ {\prime}, \qquad B C \equiv B ^ {\prime} C ^ {\prime},</annotation></semantics></math></div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>B</mi><mi>A</mi><mi>C</mi><mo>≡</mo><mo>∠</mo><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo> </mo><mo>∠</mo><mi>A</mi><mi>B</mi><mi>C</mi><mo>≡</mo><mo>∠</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo> </mo><mo>∠</mo><mi>A</mi><mi>C</mi><mi>B</mi><mo>≡</mo><mo>∠</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\angle B A C \equiv \angle B ^ {\prime} A ^ {\prime} C ^ {\prime}, \quad \angle A B C \equiv \angle A ^ {\prime} B ^ {\prime} C ^ {\prime}, \quad \angle A C B \equiv \angle A ^ {\prime} C ^ {\prime} B ^ {\prime}.</annotation></semantics></math></div>
+<p>为了跟通用的术语一致, 此时也称 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle ABC</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mo>′</mo><mi>B</mi><mo>′</mo><mi>C</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">\triangle A&#x27;B&#x27;C&#x27;</annotation></semantics></math> 全等.</p>
+<p>利用公理 (Ⅲ.5) 以及公理 (Ⅲ.4), 不难证明用以判定三角形全等的边角边判据 (SAS)、角边角判据 (ASA), 而三角形全等的边边边判据 (SSS) 以及角角边判据 (AAS) 的证明则更加复杂, 下面将不加证明地承认它们. 我们再次提及以下事实: 从公理体系出发, 即使看似很显然的结论, 其证明也未必简单. 例如,</p>
+<p>若两个角都跟第三个角合同, 则这两个角合同.</p>
+<p>这个看似显然的事实需要用到 SSS 判据来证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> ，而角的大小比较关系则依赖于该结论.</p>
+<h4 class="wb-subhead" id="sub_5"><b>希尔伯特公理体系：平行公理与连续公理</b></h4>
+<p>接下来列出剩下两组公理, 其中平行公理是一条平面公理, 而两条连续公理则都是直线公理:</p>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理 (第四组: 平行公理 (又称欧几里得公理))</span><span class="tag">公理</span></div>
+<p>公理 (第四组: 平行公理 (又称欧几里得公理))</p>
+<p>(IV) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 是任一直线, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 外的任一点, 则在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 所确定的平面上, 至多有一条直线通过 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> , 而且和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 不相交.</p>
+<p>可以证明, 在假设前三组公理的前提下, 过直线外一点至少可作一条直线与给定直线不相交. 于是结合平行公理可知, 过直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 外一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 恰有一条直线跟给定直线不相交, 该直线就叫做 “通过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 的直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 的平行线”. (从这里以及前文, 我们一再看到选取公理时的标准之一: 公理的断言应该独立于其他公理.) 希尔伯特对平行公理的评价是</p>
+<p>平行公理的引进, 使几何的基础大大地简单化了, 也使几何的构造容易多了.</p>
+<p>最后是连续公理, 它被分为两个部分, 其中第一部分即前面提到的阿基米德公理, 它的作用是替完备性 (用以表征连续性) 做准备, 而第二部分即直线完备公理, 则是完成整个公理体系的临门一脚 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>②</mn></mrow><annotation encoding="application/x-tex">^{②}</annotation></semantics></math> .</p>
+</div>
+<div class="wb-axiom">
+  <div class="wb-blk-title"><span>公理（第五组：连续公理）</span><span class="tag">公理</span></div>
+<p>公理（第五组：连续公理）</p>
+<p>(V.1) (阿基米德公理) 对于任意两线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">CD</annotation></semantics></math> , 必存在一个数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 使得“在沿 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 的射线上, 自 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 作首尾相接的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 个线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">CD</annotation></semantics></math> 后, 必将越过 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 点”.</p>
+<p>(V.2) (直线完备公理)“一直线上的点集连同其顺序关系与合同关系”不可能再被扩充, 使得该直线上原来元素之间所具有的关系, 从公理 (I)—公理 (III) 所推出的直线顺序与合同的基本性质以及公理 (V.1) 都仍旧保持.</p>
+<p>读者不难体会到, 希尔伯特对公理的分组方式使得几何的逻辑结构变得非常清晰. 而且, 在这样的划分下, 我们可以自然地取出某些组公理, 研究相应的几何学.</p>
+<p>在学习公理化思想的时候一定要注意：几何公理化的目的是用逻辑分析几何直观，从而使我们在运用几何直观时，有完备的逻辑体系可以依靠。几何公理化并不意味着要摒弃几何直观，把几何变成逻辑符号推导（不过，“公理体系与逻辑推导”相结合这一点，近些年在“定理机器证明”等方面大放异彩）。再次强调一下，</p>
+<p>几何公理化并不意味着要摒弃几何直观, 几何直观在数学中从来都是不可或缺的!</p>
+<p>¶ 在公理体系里证明定理举例：垂线的存在唯一性</p>
+<p>接下来展示如何在希尔伯特公理体系内证明平面几何中几个熟知的结果. 我们的目的不是从希尔伯特公理体系出发, 重新建立平面几何, 而只是通过几个例子, 向大家展示公理化方法的严格性. 请读者仔细体会 “证明过程是如何不依赖于几何图形” 以及 “任何一个看似显然的结论, 其证明也未必平凡” 这两点.</p>
+<p>为了不陷入过多的细节, 下面将不加证明地假定一些结论 (有兴趣的读者可以查阅希尔伯特的《几何基础》, 找到这些结论在公理体系内的证明). 例如, 我们将承认</p>
+</div>
+<div class="wb-thm" id="tbk_14">
+  <div class="wb-blk-title"><span>定理 1.2.14</span><span class="tag">核心定理</span></div>
+<p>（外角定理）三角形的外角大于不相邻的内角.以及</p>
+</div>
+<div class="wb-thm" id="tbk_15">
+  <div class="wb-blk-title"><span>定理 1.2.15</span><span class="tag">核心定理</span></div>
+<p>(对顶角定理) 对顶角相等.</p>
+<p>下面用公理体系的语言给出中点的定义：</p>
+</div>
+<div class="wb-def" id="tbk_16">
+  <div class="wb-blk-title"><span>定义 1.2.16</span><span class="tag">概念定义</span></div>
+<p>(中点) 若点 O 位于点 A 与点 B 之间, 且 AO 与 OB 合同, 则称 O 为 A 与 B 的中点.</p>
+<p>首先要证明中点的存在性和唯一性：</p>
+</div>
+<div class="wb-thm" id="tbk_17">
+  <div class="wb-blk-title"><span>定理 1.2.17</span><span class="tag">核心定理</span></div>
+<p>(中点的存在唯一性) 任意两点 A, B 有唯一的中点.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>首先证明存在性. 由公理 (I.3), 存在不在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 上的点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> . 于是, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 落在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 的一侧. 由公理 (III.4), 在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 的另一侧, 存在射线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BD</annotation></semantics></math> , 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>C</mi><mi>A</mi><mi>B</mi><mo>=</mo><mo>∠</mo><mi>D</mi><mi>B</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">\angle CAB = \angle DBA</annotation></semantics></math> . 由公理 (III.1), 可以在射线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BD</annotation></semantics></math> 上选取点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BD</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">AC</annotation></semantics></math> 合同. 根据定义 1.2.11, 线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">CD</annotation></semantics></math> 与直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math> 相交于唯一的点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> . 由定理 1.2.14 以及反证法可知, 点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 不同于点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> , 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 不在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 之间, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 不在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 之间. 于是由定理 1.2.8, 点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 位于点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 之间. 最后, 由三角形合同的 AAS 判据可知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">AO</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">BO</annotation></semantics></math> 合同, 即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 的中点.</p>
+<p>接下来证明唯一性. 假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">O&#x27;</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 的另一个中点. 由公理 (II.3), 要么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">O&#x27;</annotation></semantics></math> 位于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 之间, 要么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 位于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">O&#x27;</annotation></semantics></math> 之间. 不妨设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">O&#x27;</annotation></semantics></math> 位于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 之间, 则①</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>O</mi><mo>&gt;</mo><mi>A</mi><msup><mi>O</mi><mrow><mo>′</mo></mrow></msup><mo>=</mo><msup><mi>O</mi><mrow><mo>′</mo></mrow></msup><mi>B</mi><mo>&gt;</mo><mi>O</mi><mi>B</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">A O &gt; A O ^ {\prime} = O ^ {\prime} B &gt; O B,</annotation></semantics></math></div><p>矛盾. 同理若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 位于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">O&#x27;</annotation></semantics></math> 之间也得到矛盾. 于是中点必然唯一. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>□</mo></mrow><annotation encoding="application/x-tex">\square</annotation></semantics></math> </p></div>
+<div class="wb-def" id="tbk_18">
+  <div class="wb-blk-title"><span>定义 1.2.18</span><span class="tag">概念定义</span></div>
+<p>(直角) 设 O 位于 A 与 B 之间, 且 C 是直线 AB 之外的一点. 如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>O</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\angle AOC</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>B</mi><mi>O</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\angle BOC</annotation></semantics></math> 合同, 则称 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>O</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\angle AOC</annotation></semantics></math> 是一个直角. 此时称 OC 与 AB 垂直, 并记为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>C</mi><mo>⊥</mo><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">OC \perp AB</annotation></semantics></math> .</p>
+<p>当然, 直角的存在性也是需要证明的. 对于下面这个定理, 我们仅证明 (1), 而把 (2) 的证明留作习题 (注意 (2) 在欧几里得公理体系里是作为公设存在的).</p>
+</div>
+<div class="wb-thm" id="tbk_19">
+  <div class="wb-blk-title"><span>定理 1.2.19</span><span class="tag">核心定理</span></div>
+<p>(直角的存在唯一性)</p>
+<p><b>(1) 直角是存在的.</b></p>
+<p><b>(2) 所有直角均合同.</b></p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>【(1) 的证明】由公理 (I.1) 以及公理 (I.3), 存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>O</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\angle AOB</annotation></semantics></math> . 由公理 (III.1), 可以取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> , 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">AO</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">BO</annotation></semantics></math> 合同. 由定理 1.2.17, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 有唯一的中点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> . 根据 SSS 判据, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>O</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle AOC</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>B</mi><mi>O</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle BOC</annotation></semantics></math> 是合同的, 从而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>C</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">\angle ACO</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>B</mi><mi>C</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">\angle BCO</annotation></semantics></math> 合同. 于是, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>C</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">\angle ACO</annotation></semantics></math> 是直角. □ 最后我们给出下述定理, 作为下一章定义“反射变换”的起点:</p>
+</div>
+<div class="wb-thm" id="tbk_20">
+  <div class="wb-blk-title"><span>定理 1.2.20</span><span class="tag">核心定理</span></div>
+<p>（垂线的存在唯一性） 任给点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> , 存在唯一一条过 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 且垂直于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的直线.</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>分两种情况讨论.</p>
+<p>若点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 位于直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 上, 则由公理 (III.4) 以及定理 1.2.19(1), 存在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>⊥</mo><mi>l</mi></mrow><annotation encoding="application/x-tex">AB \perp l</annotation></semantics></math> . 再由公理 (III.4) 以及定义, 该直线是唯一的.</p>
+<p>若点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 不在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 上, 则由公理 (I.3), 可以在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 上取不同的点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> . 因为点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的一侧, 由公理 (III.4) 以及公理 (III.1), 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的另一侧存在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">A&#x27;</annotation></semantics></math> 使得</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>B</mi><mi>C</mi><mo>=</mo><mo>∠</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><mi>B</mi><mi>C</mi><mo>,</mo><mo> </mo><mi>A</mi><mi>B</mi><mo>=</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><mi>B</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\angle A B C = \angle A ^ {\prime} B C, \quad A B = A ^ {\prime} B.</annotation></semantics></math></div><p>由定义 1.2.11, 线段 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>A</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">AA&#x27;</annotation></semantics></math> 交直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 于唯一一点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> . 由 SAS 判据, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>B</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">\triangle ABO</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mo>′</mo><mi>B</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">\triangle A&#x27;BO</annotation></semantics></math> 合同. 于是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>O</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\angle AOB</annotation></semantics></math> 为直角, 从而直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">AO</annotation></semantics></math> 即为所求.</p></div>
+<p>最后证明该直线的唯一性. 设直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 上存在不同的两个点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>,</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">D, E</annotation></semantics></math> , 使得直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">AD</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">AE</annotation></semantics></math> 均垂直于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> . 因为点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的一侧, 由过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math> 存在垂直于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的直线以及公理 (III.1), 在直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的另一侧存在点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> , 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>B</mi><mo>⊥</mo><mi>l</mi></mrow><annotation encoding="application/x-tex">EB \perp l</annotation></semantics></math> , 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">AD</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">EB</annotation></semantics></math> 合同. 由公理 (III.5) 以及定理 1.2.19(2), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>D</mi><mi>E</mi><mo>≡</mo><mo>△</mo><mi>B</mi><mi>E</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">\triangle ADE \equiv \triangle BED</annotation></semantics></math> . 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>E</mi><mo>⊥</mo><mi>l</mi></mrow><annotation encoding="application/x-tex">AE \perp l</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>A</mi><mi>E</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">\angle AED</annotation></semantics></math> 是直角. 同理 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>B</mi><mi>D</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">\angle BDE</annotation></semantics></math> 是直角. 由公理 (III.4), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 位于直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">AD</annotation></semantics></math> 上, 而这跟公理 (I.2) 矛盾.</p>
+<p>最后, 值得指出的是, 上述证明仅用到了希尔伯特公理体系的前三组公理, 从而在很多 “非欧几里得” 或者 “非阿基米德” 几何中依然成立.</p>
+<h4 class="wb-subhead" id="sub_6"><b>展望：公理体系与人工智能</b></h4>
+<p>几何学公理体系的演化, 从欧几里得提出到希尔伯特完善, 时间跨度超过两千两百年. 完善后的希尔伯特公理体系就像一座耸立的雕像, 优美却质地坚硬, 让人望而生畏. 人们不禁要问, 公理体系是否已经完成了它的历史使命? 在本章结束之际, 我们希望将读者的目光从公理体系的学习引向方兴未艾的人工智能 (artificial intelligence, 简称 AI) 领域.</p>
+<p>2016 年 3 月, 由谷歌公司开发的人工智能围棋软件 AlphaGo 战胜了人类世界的围棋冠军. 由于围棋的复杂性, 它一度被认为是仅凭算力无法逾越的博弈型智力游戏.</p>
+<p>AlphaGo 的成功使得人类真正意识到人工智能应用在现实生活中的巨大潜力. 的确, 许多由人工智能技术驱动的新产品正在改变着我们的生活. 人工智能不仅深刻改变着工业界的面貌, 也同样深刻影响着科学界. 在刚刚揭晓的 2024 年诺贝尔物理学奖和诺贝尔化学奖五位得主中, 竟有四位科学家其获奖工作和人工智能直接相关. 人工智能在跨学科融合中发挥重要作用, 毋庸置疑, 人类已经离不开人工智能.</p>
+<p>尽管人工智能已经取得令人惊叹的成功, 但是我们并非已经了解它的运作机理. 事实上, 人工智能的数学原理正是当今科学研究前沿的一个热门问题. 在 2022 年《人工智能与学 “问”》的演讲中, 丘成桐先生对人工智能提出这样的问题与见解:</p>
+<p>从几百个平面几何定理中, 找到其中的精髓, 设立五条公理, 推导出这些定理,</p>
+<p>机器应该可以做得到, 但是如何去做呢? 人工智能要想得到智慧, 我觉得这</p>
+<p>是重要的一步.</p>
+<p>鉴于公理体系对于整个科学体系发展已经产生的巨大影响, 上述问题无疑是基本的和重要的. 它赋予了公理体系新的生命力.</p></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-geometry-101-ch01-s2.html">‹ 上一节：古典几何简史</a><a class="wb-nav-btn hub" href="textbook-geometry-101-ch01.html">📚 本章目录</a><a class="wb-nav-btn next" href="textbook-geometry-101-ch01-s4.html">下一节：习题 1 ›</a></div>
+</main>
+
+<nav class="wb-chtoc" id="wb-chtoc" aria-label="本节目录"><div class="wb-chtoc-h"><span>本节目录</span><button class="wb-chtoc-x" id="wb-chtoc-close" title="收起目录">×</button></div><div class="wb-chtoc-b" id="wb-chtoc-body"><div class="g" data-s="sub_1"><a class="s" href="#sub_1" data-t="sub_1">欧几里得公理体系</a></div><div class="g" data-s="sub_2"><a class="s" href="#sub_2" data-t="sub_2">欧几里得公理体系的剖析</a></div><div class="g" data-s="sub_3"><a class="s" href="#sub_3" data-t="sub_3">希尔伯特公理体系：关联公理</a><ul><li><a class="b k-thm" href="#tbk_1" data-t="tbk_1" title="命题1.2.1（《几何原本》命题1） 从任意给定边长出发可以作正三角形."><i></i>命题1.2.1</a></li><li><a class="b k-thm" href="#tbk_2" data-t="tbk_2" title="命题 1.2.2 (《几何原本》命题 2) 以任何一点为端点, 可作跟给定直线段长度相等的线段."><i></i>命题 1.2.2</a></li><li><a class="b k-thm" href="#tbk_3" data-t="tbk_3" title="命题 1.2.3 (《几何原本》命题 11) 给定一条直线 l 以及直线上一点 P, 可作过 P 且垂直于 l 的直线 ."><i></i>命题 1.2.3</a></li><li><a class="b k-thm" href="#tbk_4" data-t="tbk_4" title="命题 1.2.4 (《几何原本》命题 12) 给定一条直线 l 以及直线外一点 P, 可作过 P 且垂直于 l 的直线 ."><i></i>命题 1.2.4</a></li><li><a class="b k-thm" href="#tbk_5" data-t="tbk_5" title="命题1.2.5（《几何原本》命题28）若一直线和两直线相交所成的同位角相等，或者同旁内角的和等于两直角，则这两条直线相互平行."><i></i>命题1.2.5</a></li><li><a class="b k-thm" href="#tbk_6" data-t="tbk_6" title="命题1.2.6 给定直线 外一点 , 一定存在直线 过点 且平行于给定直线 ."><i></i>命题1.2.6</a></li></ul></div><div class="g" data-s="sub_4"><a class="s" href="#sub_4" data-t="sub_4">顺序公理与“侧”的概念</a><ul><li><a class="b k-def" href="#tbk_7" data-t="tbk_7" title="定义 1.2.7 (线段) 设 A 和 B 是直线 a 上的两点. 称由 A 和 B 所成的点组为一条线段, 用 AB 或 BA 表示. 在 A 和 B 之间的"><i></i>定义 1.2.7</a></li><li><a class="b k-thm" href="#tbk_8" data-t="tbk_8" title="定理1.2.8（共线三点，必有一点在中间） 一直线上任意三点，必有一点在其他两点之间."><i></i>定理1.2.8</a></li></ul></div><div class="g" data-s="sub_5"><a class="s" href="#sub_5" data-t="sub_5">希尔伯特公理体系：平行公理与连续公理</a><ul><li><a class="b k-def" href="#tbk_9" data-t="tbk_9" title="定义 1.2.9 (直线上一点的“同侧”) 在直线 a 上给定任意一点 O. 对于 a 上异于点 O 的两点 A, B, 如果点 O 不在 A 和 B 之间,"><i></i>定义 1.2.9</a></li><li><a class="b k-thm" href="#tbk_10" data-t="tbk_10" title="定理1.2.10（直线上点的两侧）直线 上任意一点 把直线 恰好分成两侧（即：直线 上除了 之外的点分为两个集合…"><i></i>定理1.2.10</a></li><li><a class="b k-def" href="#tbk_11" data-t="tbk_11" title="定义 1.2.11 (平面上一直线的“同侧”) 在平面 上给定任意一条直线 a. 对于 上不在 a 中的两点 A, B, 如"><i></i>定义 1.2.11</a></li><li><a class="b k-thm" href="#tbk_12" data-t="tbk_12" title="定理1.2.12（平面上直线的两侧） 平面 上任意一条直线 把平面 恰好分成两侧（请读者仿照定理1.2.10写出这句"><i></i>定理1.2.12</a></li><li><a class="b k-def" href="#tbk_13" data-t="tbk_13" title="定义 1.2.13 (角) 设 是一平面, 而 h 和 k 是 中从一点 O 起始的、不属于同一直线的两条射线. 我们把这一"><i></i>定义 1.2.13</a></li></ul></div><div class="g" data-s="sub_6"><a class="s" href="#sub_6" data-t="sub_6">展望：公理体系与人工智能</a><ul><li><a class="b k-thm" href="#tbk_14" data-t="tbk_14" title="定理 1.2.14（外角定理）三角形的外角大于不相邻的内角.以及"><i></i>定理 1.2.14</a></li><li><a class="b k-thm" href="#tbk_15" data-t="tbk_15" title="定理 1.2.15 (对顶角定理) 对顶角相等."><i></i>定理 1.2.15</a></li><li><a class="b k-def" href="#tbk_16" data-t="tbk_16" title="定义 1.2.16 (中点) 若点 O 位于点 A 与点 B 之间, 且 AO 与 OB 合同, 则称 O 为 A 与 B 的中点."><i></i>定义 1.2.16</a></li><li><a class="b k-thm" href="#tbk_17" data-t="tbk_17" title="定理 1.2.17 (中点的存在唯一性) 任意两点 A, B 有唯一的中点."><i></i>定理 1.2.17</a></li><li><a class="b k-def" href="#tbk_18" data-t="tbk_18" title="定义 1.2.18 (直角) 设 O 位于 A 与 B 之间, 且 C 是直线 AB 之外的一点. 如果 与"><i></i>定义 1.2.18</a></li><li><a class="b k-thm" href="#tbk_19" data-t="tbk_19" title="定理 1.2.19 (直角的存在唯一性)"><i></i>定理 1.2.19</a></li><li><a class="b k-thm" href="#tbk_20" data-t="tbk_20" title="定理1.2.20（垂线的存在唯一性） 任给点 与直线 , 存在唯一一条过 且垂直于 的直线."><i></i>定理1.2.20</a></li></ul></div></div></nav><div class="wb-chtoc-mask" id="wb-chtoc-mask"></div>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-geometry-101-ch01.html" class="cur">第 1 章 ｜ 几何与公理化</a></li>
+<li><a href="textbook-geometry-101-ch02.html">第 2 章 ｜ 向量与欧氏空间</a></li>
+<li><a href="textbook-geometry-101-ch03.html">第 3 章 ｜ 刚体变换</a></li>
+<li><a href="textbook-geometry-101-ch04.html">第 4 章 ｜ 几何与变换</a></li>
+<li><a href="textbook-geometry-101-ch05.html">第 5 章 ｜ 射影平面与射影变换</a></li>
+<li><a href="textbook-geometry-101-ch06.html">第 6 章 ｜ 拓扑空间与拓扑变换</a></li>
+<li><a href="textbook-geometry-101-chA.html">第 A 章 ｜ 附录  集合论与代数基础</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_geometry-101_ch01_s3",
+  book_id: "geometry-101",
+  ch_id: "ch01",
+  title: "§1.2 公理体系：从欧几里得到希尔伯特"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (window.wbSetTheme) window.wbSetTheme(isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      if (window.wbSetTheme) window.wbSetTheme(darkNow ? 'dark' : 'light');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById('wb-chtoc');
+  if (!panel) return;
+  var mask = document.getElementById('wb-chtoc-mask');
+  var btn = document.getElementById('wb-btn-chtoc');
+  var closeBtn = document.getElementById('wb-chtoc-close');
+  var body = document.getElementById('wb-chtoc-body');
+  var wide = window.matchMedia('(min-width:1420px)');
+  function setOpen(v){
+    panel.classList.toggle('on', !!v);
+    if (mask) mask.classList.toggle('on', !!v && !wide.matches);
+  }
+  if (btn) btn.addEventListener('click', function(){ setOpen(!panel.classList.contains('on')); });
+  if (closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
+  if (mask) mask.addEventListener('click', function(){ setOpen(false); });
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+
+  var links = [].slice.call(panel.querySelectorAll('a[data-t]'));
+  /* 自己接管跳转：长章节动辄三万像素，默认平滑滚动要滚好几秒，
+     而且 MathJax 懒渲染会在途中改变行高，落点会偏。远距离直接瞬移，落稳后再校正一次。 */
+  function goTo(el){
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 86;
+    var far = Math.abs(y - window.pageYOffset) > 1600;
+    window.scrollTo({ top: y, behavior: far ? 'instant' : 'smooth' });   // 'auto' 会退回 CSS 的 smooth
+    [far ? 420 : 900, 1400].forEach(function(ms){
+      setTimeout(function(){
+        if (!el) return;
+        var d = el.getBoundingClientRect().top - 86;
+        if (Math.abs(d) > 4) window.scrollBy(0, d);   // 补一次：上面懒渲染的公式可能把行高改了
+      }, ms);
+    });
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-t'));
+      if (el){
+        e.preventDefault();
+        goTo(el);
+        try { history.replaceState(null, '', '#' + el.id); } catch (err) { location.hash = el.id; }
+      }
+      if (!wide.matches) setOpen(false);
+    });
+  });
+  var map = links.map(function(a){
+    var el = document.getElementById(a.getAttribute('data-t'));
+    return el ? { a: a, el: el } : null;
+  }).filter(Boolean);
+  var groups = [].slice.call(panel.querySelectorAll('.g'));
+  var raf = null, lastG = null;
+  function spy(){
+    raf = null;
+    var act = null;
+    for (var i = 0; i < map.length; i++){
+      if (map[i].el.getBoundingClientRect().top <= 116) act = map[i]; else break;
+    }
+    if (!act && map.length) act = map[0];
+    links.forEach(function(a){ a.classList.remove('cur'); });
+    if (!act) return;
+    act.a.classList.add('cur');
+    var g = act.a.closest('.g');
+    if (g !== lastG){
+      lastG = g;
+      groups.forEach(function(x){
+        x.classList.toggle('open', x === g);
+        x.classList.toggle('cur', x === g);
+      });
+    }
+    if (body){
+      var br = body.getBoundingClientRect(), ar = act.a.getBoundingClientRect();
+      if (ar.top < br.top + 6 || ar.bottom > br.bottom - 6){
+        body.scrollTop += (ar.top - br.top) - (br.height / 2 - ar.height / 2);
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){ if (raf === null) raf = requestAnimationFrame(spy); }, { passive: true });
+  window.addEventListener('resize', function(){ if (raf === null) raf = requestAnimationFrame(spy); });
+  spy();
+})();
+</script>
+</body>
+</html>

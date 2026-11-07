@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fusion energy fuels optimism for the future · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 3 R1</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 3 · Reading 1</div><h1>Fusion energy fuels optimism for the future</h1><div class="eng-meta"><span>14 段 · 57 句</span><span>45 词 + 6 短语 + 6 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=3&amp;r=1">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>57 句</small></button><button data-v="words">词表<small>57</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="18.13" data-e="22.305">Fusion energy is perhaps the longest of long shots.</span> <span class="sg" data-s="23.02" data-e="28.42">To build a fusion reactor is essentially to create an artificial star.</span> <span class="sg" data-s="29.28" data-e="37.555">Scientists have been studying the physics of fusion for about a century and working to harness the process for decades.</span> <span class="sg" data-s="38.34" data-e="42.79">Despite the challenges it poses, fusion has enormous potential.</span> <span class="sg" data-s="43.76" data-e="55.66">It could safely provide an immense and steady torrent of electricity by harnessing abundant fuel made from sea water to ignite the same reaction that powers the sun.</span> <span class="sg" data-s="56.5" data-e="62.9">It would produce no greenhouse gases and minimal waste compared to conventional energy sources.</span> </p><p class="eng-p"><span class="sg" data-s="64.29" data-e="75.04">People are well aware of the power of nuclear fission, which is what happens when big atoms like uranium and plutonium split apart and release energy.</span> <span class="sg" data-s="75.68" data-e="83.405">These reactions powered the very first atomic bombs, and today they power conventional nuclear reactors.</span> </p><p class="eng-p"><span class="sg" data-s="84.83" data-e="87.105">Fusion is even more potent.</span> <span class="sg" data-s="87.86" data-e="96.06">It&#x27;s what happens when light atomic nuclei stick together, fusing to create heavier ones and releasing energy.</span> <span class="sg" data-s="96.72" data-e="102.795">The most common form is two hydrogen atoms fusing to create a helium atom.</span> </p><p class="eng-p"><span class="sg" data-s="104.16" data-e="113.46">The reason that fusion generates so much energy is that the new nucleus weighs a smidgen less than the sum of the parts that formed it.</span> <span class="sg" data-s="114.14" data-e="118.815">That tiny bit of lost matter is converted into energy.</span> <span class="sg" data-s="119.55" data-e="123.65">According to the famous formula, E = mc2.</span> <span class="sg" data-s="124.38" data-e="127.93">E stands for energy and m stands for mass.</span> <span class="sg" data-s="128.88" data-e="140.185">The last part of the formula C, a constant that measures the speed of light about 300,000 kilometers per second, which is then squared.</span> <span class="sg" data-s="140.92" data-e="150.27">So there&#x27;s an enormous multiplier for the matter that&#x27;s converted into energy, making fusion an extraordinarily powerful reaction.</span> </p><p class="eng-p"><span class="sg" data-s="151.69" data-e="159.74">These basics are well understood, and researchers are confident that it&#x27;s possible to harness fusion to power our planet.</span> <span class="sg" data-s="160.58" data-e="162.63">But so far, it&#x27;s been elusive.</span> </p><p class="eng-p"><span class="sg" data-s="164.02" data-e="169.57">For a demonstration of fusion, one only has to look up at the sun during the day.</span> <span class="sg" data-s="170.4" data-e="179.55">Even from about 93 million miles away, our nearest star generates enough energy to heat up the earth through the vacuum of space.</span> <span class="sg" data-s="180.32" data-e="184.295">But the sun has an advantage that we don&#x27;t have here on the earth.</span> <span class="sg" data-s="185.04" data-e="187.24">It is very, very big.</span> <span class="sg" data-s="188.16" data-e="209.055">One of the difficulties with fusion is that atomic nuclei, the positively charged cores of atoms normally repel each other. To overcome that repulsion and spark fusion, we have to get the atoms moving really fast in a confined space, which makes collisions more likely.</span> </p><p class="eng-p"><span class="sg" data-s="210.46" data-e="226.06">A star like the sun, which is about 333,000 times the mass of the earth, generates gravity that accelerates atoms towards its centre, heating them up, confining them and igniting fusion.</span> <span class="sg" data-s="226.68" data-e="235.53">The fusion reactions then provide the energy to speed up other atomic nuclei and trigger even more fusion reactions.</span> </p><p class="eng-p"><span class="sg" data-s="236.94" data-e="240.39">Imitating the sun on the earth is a tall order.</span> <span class="sg" data-s="241.28" data-e="251.205">Humans have been able to trigger fusion, but in ways that are uncontrolled, like in thermonuclear weapons sometimes called hydrogen bombs.</span> <span class="sg" data-s="252.01" data-e="261.735">Controlled fusion has been demonstrated in laboratories, but usually under conditions that consume far more energy than the reaction produces.</span> <span class="sg" data-s="262.38" data-e="267.055">While certain experiments have achieved net energy gains temporarily.</span> <span class="sg" data-s="268.08" data-e="274.48">Sustaining a fusion reaction with a net energy gain over a longer period remains a challenge.</span> <span class="sg" data-s="275.48" data-e="289.08">Besides, the reaction generally requires creating and maintaining a high energy state of matter known as plasma, which has quirks and behaviors that scientists are still trying to understand.</span> </p><p class="eng-p"><span class="sg" data-s="290.62" data-e="300.32">To harness fusion as an energy source, scientists need to trigger it in a controlled way that yields far more energy than they put in.</span> <span class="sg" data-s="301.08" data-e="305.655">Teams around the world are studying different ways to accomplish this.</span> <span class="sg" data-s="306.4" data-e="310.2">But the approaches tend to fall into two broad categories.</span> <span class="sg" data-s="310.92" data-e="320.82">One involves using magnets to contain the plasma. This is the approach used by China&#x27;s HL-3 tokamak.</span> <span class="sg" data-s="321.56" data-e="340.06">In 2023 the magnetic field structure achieved a successful high confinement operation under a plasma current of 1 million amperes, demonstrating a significant improvement in the operational capabilities of China&#x27;s magnetic confinement fusion facilities.</span> <span class="sg" data-s="340.74" data-e="349.215">The other category involves confining the fusion fuel and compressing it in a tiny space with the aid of lasers.</span> <span class="sg" data-s="349.94" data-e="358.64">This is the approach used by the National Ignition Facility (NIF) at Lawrence Livermore National Laboratory in California, US.</span> </p><p class="eng-p"><span class="sg" data-s="360.18" data-e="371.93">Replicating a star requires doing this research at massive scales, so fusion experiments often involve the most powerful scientific instruments ever built.</span> <span class="sg" data-s="372.62" data-e="389.07">The central solenoid of the international thermonuclear experimental reactor iter, the world&#x27;s largest fusion project, for example, can generate a magnetic force strong enough to hoist an aircraft carrier six feet out of the water.</span> </p><p class="eng-p"><span class="sg" data-s="390.58" data-e="397.43">Building hardware to withstand such extreme conditions is its own scientific and engineering challenge.</span> <span class="sg" data-s="398.34" data-e="402.59">Managing such massive experiments has also been a struggle.</span> <span class="sg" data-s="403.48" data-e="412.03">According to its 2001 design, the initial estimated construction cost for the ITER project was 5 billion Euros.</span> <span class="sg" data-s="412.76" data-e="417.26">Now the cost has far exceeded the estimate and is still rising.</span> </p><p class="eng-p"><span class="sg" data-s="418.66" data-e="432.185">An upside to the intricacy of fusion reactions, is that it is almost impossible to cause a runaway reaction or meltdown of the sort that has devastated nuclear power plants like Chernobyl.</span> <span class="sg" data-s="432.76" data-e="437.86">If a fusion reactor is disrupted, the reaction rapidly fizzles out.</span> <span class="sg" data-s="438.62" data-e="444.895">In addition, the main waste product of hydrogen fusion is helium, an inert gas.</span> <span class="sg" data-s="445.56" data-e="450.385">The process can induce some reactor materials to become radioactive.</span> <span class="sg" data-s="451.04" data-e="461.69">But the radioactivity is much lower and the quantity of hazardous waste is far smaller than those produced by conventional nuclear power plants.</span> <span class="sg" data-s="462.32" data-e="467.945">So nuclear fusion energy could become one of the safest sources of electricity.</span> </p><p class="eng-p"><span class="sg" data-s="469.26" data-e="481.91">The journey toward fusion energy has yielded benefits for other fields, particularly in plasma physics, which is used extensively in manufacturing semiconductors for electronics.</span> <span class="sg" data-s="482.52" data-e="484.845">As put by one fusion researcher.</span> <span class="sg" data-s="485.54" data-e="489.69">Plasma processing is one of the things that make your smartphones possible.</span> </p><p class="eng-p"><span class="sg" data-s="491.12" data-e="495.695">Artificial star power might not illuminate the world for decades.</span> <span class="sg" data-s="496.38" data-e="501.53">But the foundations have to be laid now through research, development and deployment.</span> <span class="sg" data-s="502.24" data-e="508.29">It may very well become humanity&#x27;s crowning achievement more than a century in the making.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 45</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Ampere</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈæmpeə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">安培</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Atomic bomb</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/əˈtɒmɪk bɒm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">原子弹</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Collision</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/kəˈlɪʒn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">碰撞</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Compress</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/kəmˈpres/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">压缩</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Conventional</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/kənˈvenʃənl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">常规的，传统的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Crowning</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈkraʊnɪŋ/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">最高的，登峰造极的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Deployment</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/dɪˈplɔɪmənt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">部署，应用</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Devastate</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈdevəsteɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">摧毁，毁灭</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Elusive</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/iˈluːsɪv/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">难以实现的；难以捉摸的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Extraordinarily</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪkˈstrɔːdnrəli/</span></td><td><span class="eng-pos">adv.</span></td><td class="eng-cn">极其，非凡地</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fission</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈfɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（核）裂变</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fizzle</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈfɪzl/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">逐渐减弱，虎头蛇尾地结束</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fuse</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/fjuːz/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">（使）熔合；融合</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fusion</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈfjuːʒn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（核）聚变；融合</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Helium</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈhiːliəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">氦</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hoist</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/hɔɪst/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">吊起，升起</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Ignite</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪɡˈnaɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">点燃；引发</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Illuminate</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪˈluːmɪneɪt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">照亮；阐明</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Inert gas</span></td><td><span class="eng-ipa">/ɪˈnɜːt ɡæs/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">惰性气体</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Intricacy</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈɪntrɪkəsi/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">错综复杂（之处）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Magnetic confinement fusion</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">磁约束核聚变</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Magnetic field</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">磁场</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Matter</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmætə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">物质；事情</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Meltdown</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmeltdaʊn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（反应堆）堆芯熔毁；崩溃</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Minimal</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmɪnɪməl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">极少的，最低限度的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Multiplier</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmʌltɪplaɪə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">乘数，倍数</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Nucleus</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈnjuːkliəs/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">原子核；核心</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Particularly</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/pəˈtɪkjələli/</span></td><td><span class="eng-pos">adv.</span></td><td class="eng-cn">尤其，特别</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Plasma</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈplæzmə/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">等离子体</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Plutonium</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/pluːˈtəʊniəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">钚</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Potent</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈpəʊtnt/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">强有力的，强效的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Quirk</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kwɜːk/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">古怪之处，怪癖</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Radioactive</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˌreɪdiəʊˈæktɪv/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">放射性的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Reactor</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/riˈæktə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">反应堆</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Repel</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/rɪˈpel/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">排斥；击退</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Repulsion</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/rɪˈpʌlʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">排斥（力）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Runaway reaction</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">失控反应</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Semiconductor</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌsemikənˈdʌktə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">半导体</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Shot</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ʃɒt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">尝试；射击</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Smidgen</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsmɪdʒən/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">一点点，微量</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Solenoid</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsəʊlənɔɪd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">螺线管，电磁线圈</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Thermonuclear</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌθɜːməʊˈnjuːkliə(r)/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">热核的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u3r1-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tokamak</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈtəʊkəmæk/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">托卡马克（磁约束聚变装置）</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u3r1-043.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Uncontrolled</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌʌnkənˈtrəʊld/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">不受控制的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u3r1-044.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Uranium</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/jʊˈreɪniəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">铀</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 6</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-045.m4a" title="播放发音">▶</button></td><td><span class="eng-w">A long shot</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">希望渺茫的尝试</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-046.m4a" title="播放发音">▶</button></td><td><span class="eng-w">A tall order</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">难以完成的任务，很高的要求</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-047.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fall into something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">归入（某类）；落入</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-048.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Heat up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">加热；升温</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-049.m4a" title="播放发音">▶</button></td><td><span class="eng-w">In the making</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">在形成中，在配酿中</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-050.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Speed up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">加速</td></tr></tbody></table></div><div class="eng-group">Proper names · 6</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-051.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Chernobyl</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">切尔诺贝利（乌克兰，1986 年核事故地）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-052.m4a" title="播放发音">▶</button></td><td><span class="eng-w">HL-3 (Huanliu-3)</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">HL-3 中国环流三号（中国自主设计的可控核聚变大科学装置）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-053.m4a" title="播放发音">▶</button></td><td><span class="eng-w">International Thermonuclear Experimental Reactor</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">国际热核聚变实验堆（ITER）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-054.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Iter</span></td><td><span class="eng-ipa">/ˈiːtə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">国际热核聚变实验堆（ITER）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-055.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Lawrence Livermore National Laboratory, LLNL</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">劳伦斯·利弗莫尔国家实验室（美国）</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u3r1-056.m4a" title="播放发音">▶</button></td><td><span class="eng-w">National Ignition Facility (NIF)</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">国家点火装置（美国）</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u3r1-text.m4a","words":"assets/english/u3r1-words.m4a","dur":508.29,"segs":[[18.13,22.305],[23.02,28.42],[29.28,37.555],[38.34,42.79],[43.76,55.66],[56.5,62.9],[64.29,75.04],[75.68,83.405],[84.83,87.105],[87.86,96.06],[96.72,102.795],[104.16,113.46],[114.14,118.815],[119.55,123.65],[124.38,127.93],[128.88,140.185],[140.92,150.27],[151.69,159.74],[160.58,162.63],[164.02,169.57],[170.4,179.55],[180.32,184.295],[185.04,187.24],[188.16,209.055],[210.46,226.06],[226.68,235.53],[236.94,240.39],[241.28,251.205],[252.01,261.735],[262.38,267.055],[268.08,274.48],[275.48,289.08],[290.62,300.32],[301.08,305.655],[306.4,310.2],[310.92,320.82],[321.56,340.06],[340.74,349.215],[349.94,358.64],[360.18,371.93],[372.62,389.07],[390.58,397.43],[398.34,402.59],[403.48,412.03],[412.76,417.26],[418.66,432.185],[432.76,437.86],[438.62,444.895],[445.56,450.385],[451.04,461.69],[462.32,467.945],[469.26,481.91],[482.52,484.845],[485.54,489.69],[491.12,495.695],[496.38,501.53],[502.24,508.29]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

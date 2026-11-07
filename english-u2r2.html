@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A dead battery dilemma · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 2 R2</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 2 · Reading 2</div><h1>A dead battery dilemma</h1><div class="eng-meta"><span>15 段 · 63 句</span><span>46 词 + 5 短语 + 1 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=2&amp;r=2">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>63 句</small></button><button data-v="words">词表<small>52</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="7.63" data-e="13.73">The battery pack of an electric vehicle (EV) is a feat of intricate engineering.</span> <span class="sg" data-s="14.42" data-e="21.02">Some battery packs have thousands of cylindrical cells with components sourced from around the world.</span> <span class="sg" data-s="21.8" data-e="33.0">These cells transform lithium and electrons into enough energy to propel the car hundreds of kilometers, again and again without tailpipe emissions.</span> <span class="sg" data-s="33.66" data-e="38.535">But when the battery comes to the end of its life, its green benefits fade.</span> <span class="sg" data-s="39.2" data-e="46.275">If it ends up in a landfill, its cells can release problematic toxins, including heavy metals.</span> <span class="sg" data-s="46.92" data-e="52.82">Recycling the battery can also be a hazardous business, warn some materials scientists.</span> <span class="sg" data-s="53.48" data-e="61.755">Cutting too deep into a cell or in the wrong place can make it short circuit, combust and release toxic fumes.</span> </p><p class="eng-p"><span class="sg" data-s="63.19" data-e="69.54">That&#x27;s just one of the many challenges confronting researchers who are trying to tackle an emerging problem.</span> <span class="sg" data-s="70.46" data-e="78.085">How to recycle the millions of EV batteries that manufacturers expect to produce over the next few decades.</span> </p><p class="eng-p"><span class="sg" data-s="79.53" data-e="82.905">That wasn&#x27;t much of a problem when EVs were rare.</span> <span class="sg" data-s="83.6" data-e="85.95">But now the technology is taking off.</span> <span class="sg" data-s="86.72" data-e="92.17">Several carmakers have said they plan to phase out combustion engines within a few decades.</span> <span class="sg" data-s="92.86" data-e="100.36">And industry analysts predict about 380 million EVs will be on the road by 2030.</span> <span class="sg" data-s="101.18" data-e="104.48">Up from just 11 million in 2020.</span> </p><p class="eng-p"><span class="sg" data-s="105.94" data-e="110.165">Governments are inching toward requiring some level of recycling.</span> <span class="sg" data-s="110.86" data-e="118.785">In 2018 China imposed new rules aimed at promoting the reuse of EV battery components.</span> <span class="sg" data-s="119.48" data-e="124.48">The European Union implemented its requirements in 2022.</span> <span class="sg" data-s="125.28" data-e="134.505">In the United States, the federal government has yet to advance recycling mandates, but several states are exploring setting their own rules.</span> </p><p class="eng-p"><span class="sg" data-s="135.88" data-e="137.705">Complying won&#x27;t be easy.</span> <span class="sg" data-s="138.42" data-e="145.895">Batteries differ widely in chemistry and construction, which makes it difficult to create efficient recycling systems.</span> <span class="sg" data-s="146.56" data-e="152.56">And the cells are often held together with tough glues that make them difficult to take apart.</span> <span class="sg" data-s="153.38" data-e="156.255">That has contributed to an economic obstacle.</span> <span class="sg" data-s="156.98" data-e="163.905">It&#x27;s often cheaper for battery makers to buy freshly mined metals than to use recycled materials.</span> </p><p class="eng-p"><span class="sg" data-s="165.28" data-e="169.255">EV batteries are constructed a bit like nested dolls.</span> <span class="sg" data-s="169.96" data-e="177.085">Typically, a main pack holds several modules, each of which is constructed from numerous smaller cells.</span> <span class="sg" data-s="177.88" data-e="187.68">Inside each cell, lithium atoms move through an electrolyte between a graphite anode and a cathode sheet composed of a metal oxide.</span> <span class="sg" data-s="188.47" data-e="192.195">Batteries are usually defined by the metals in the cathode.</span> <span class="sg" data-s="192.88" data-e="202.205">There are three main types lithium nickel cobalt aluminum, lithium iron phosphate and lithium nickel manganese cobalt.</span> </p><p class="eng-p"><span class="sg" data-s="203.66" data-e="211.385">Now, recyclers primarily target metals in the cathode, such as cobalt and nickel that fetch high prices.</span> <span class="sg" data-s="212.06" data-e="218.81">But because of the small quantities, the metals are like needles in a haystack, hard to find and recover.</span> </p><p class="eng-p"><span class="sg" data-s="220.36" data-e="229.335">To extract those needles, recyclers rely on two techniques known as pyrometallurgy and hydrometallurgy.</span> <span class="sg" data-s="229.96" data-e="232.71">Each has advantages and disadvantages.</span> <span class="sg" data-s="233.46" data-e="246.35">Pyro metallurgy, for example, doesn&#x27;t require the recycler to know the battery&#x27;s design or composition, or even whether it is completely discharged, but it is energy intensive.</span> <span class="sg" data-s="247.02" data-e="255.57">Hydro metallurgy can extract materials not easily obtained through burning, but it can involve chemicals that pose health risks.</span> <span class="sg" data-s="256.24" data-e="261.94">Both processes produce extensive waste and emit greenhouse gases, studies have found.</span> </p><p class="eng-p"><span class="sg" data-s="263.51" data-e="269.11">The ideal approach is direct recycling, which would keep the cathode mixture intact.</span> <span class="sg" data-s="269.88" data-e="276.955">That&#x27;s attractive to battery makers because cathodes recycled this way wouldn&#x27;t require heavy processing.</span> <span class="sg" data-s="277.62" data-e="286.57">So far, direct recycling experiments have only focused on single cells and produced tiny yields of cathode powders.</span> <span class="sg" data-s="287.18" data-e="296.755">But some researchers have built economic models showing the technique could, if scaled up under the right conditions, be viable in the future.</span> </p><p class="eng-p"><span class="sg" data-s="298.1" data-e="306.85">To realize direct recycling, however, battery makers, recyclers and researchers need to sort out a host of issues.</span> <span class="sg" data-s="307.6" data-e="315.2">One is making sure manufacturers label their batteries so recyclers know what kind of cell they are dealing with.</span> <span class="sg" data-s="315.82" data-e="318.32">And whether the cathode metals have any value.</span> <span class="sg" data-s="319.24" data-e="324.115">Given the rapidly changing battery market, as noted by some researchers, cathodes manufactured today might not be able to find a future buyer.</span> </p><p class="eng-p"><span class="sg" data-s="330.48" data-e="333.205">Recyclers would be recovering a dinosaur.</span> <span class="sg" data-s="333.9" data-e="335.3">No one will want the product.</span> </p><p class="eng-p"><span class="sg" data-s="337.14" data-e="340.94">Another challenge is efficiently cracking open EV batteries.</span> <span class="sg" data-s="341.66" data-e="345.235">Some battery modules can take hours to dismantle.</span> <span class="sg" data-s="345.94" data-e="357.54">And some battery cells are unique not only for their cylindrical shape, but also for the almost indestructible polyurethane cement that holds them together.</span> <span class="sg" data-s="358.39" data-e="369.865">Engineers might be able to build robots that could speed battery disassembly, but sticky issues remain even after you get inside the cell, researchers note.</span> <span class="sg" data-s="370.46" data-e="376.56">That&#x27;s because more glues are used to hold the anodes, cathodes and other components in place.</span> <span class="sg" data-s="377.46" data-e="387.31">One solvent that recyclers use to dissolve cathode binders is so toxic that the European Union has introduced restrictions on its use.</span> </p><p class="eng-p"><span class="sg" data-s="388.82" data-e="397.27">To ease the process, researchers are urging EV and battery makers to start designing their products with recycling in mind.</span> <span class="sg" data-s="398.1" data-e="406.625">As an example, they point to the blade battery, a lithium ion phosphate battery made by a Chinese EV maker.</span> <span class="sg" data-s="407.32" data-e="413.77">Its pack does away with the module component, instead storing flat cells directly inside.</span> <span class="sg" data-s="414.58" data-e="420.13">The cells can be removed easily by hand without fighting with wires and glues.</span> <span class="sg" data-s="420.8" data-e="432.075">The blade battery emerged after China in 2018 began to make EV manufacturers responsible for ensuring that batteries are recycled.</span> <span class="sg" data-s="432.76" data-e="438.26">China now recycles more lithium ion batteries than the rest of the world combined.</span> </p><p class="eng-p"><span class="sg" data-s="439.65" data-e="447.025">Recycling researchers say effective battery recycling will require more than just technological advances.</span> <span class="sg" data-s="447.72" data-e="455.495">The high cost of transporting combustible items over long distances or across borders can discourage recycling.</span> <span class="sg" data-s="456.14" data-e="461.69">As a result, placing recycling centers in the right places could have a massive impact.</span> </p><p class="eng-p"><span class="sg" data-s="463.3" data-e="466.425">There&#x27;s little time to waste says one researcher.</span> <span class="sg" data-s="467.12" data-e="474.87">What you don&#x27;t want is 10 years worth of production of a cell that is absolutely impossible to pull apart he says.</span> <span class="sg" data-s="475.66" data-e="479.61">It&#x27;s not happening yet, but people are worried it will happen.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 46</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Aluminum</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌæljəˈmɪniəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">铝</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Analyst</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈænəlɪst/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">分析师</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Binder</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈbaɪndə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">粘结剂；装订机</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cathode</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈkæθəʊd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">阴极</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cement</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/sɪˈment/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">水泥；胶合剂</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Chemical</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈkemɪkl/</span></td><td><span class="eng-pos">n./adj.</span></td><td class="eng-cn">化学物质；化学的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cobalt</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈkəʊbɔːlt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">钴</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Combust</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kəmˈbʌst/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">燃烧</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Combustible</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kəmˈbʌstəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">可燃的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Composition</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌkɒmpəˈzɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">成分，构成</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cylindrical cell</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/səˈlɪndrɪkl sel/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">圆柱形电芯</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dinosaur</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈdaɪnəsɔː(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">恐龙；过时落伍之物</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Disassembly</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌdɪsəˈsembli/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">拆解，拆卸</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dismantle</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/dɪsˈmæntl/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">拆卸，拆除</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Electric vehicle (EV)</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">电动汽车（EV）</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Electrolyte</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪˈlektrəlaɪt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">电解质</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Emission</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪˈmɪʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">排放（物）</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Extract</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪkˈstrækt/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">提取，提炼</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Feat</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/fiːt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">壮举，了不起的成就</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Fumes</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/fjuːmz/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（有害的）烟，气体</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Graphite anode</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈɡræfaɪt ˈænəʊd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">石墨负极</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Haystack</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈheɪstæk/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">干草堆</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hazardous</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈhæzədəs/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">危险的，有害的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hydrometallurgy</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌhaɪdrəʊməˈtælədʒi/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">湿法冶金</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Indestructible</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌɪndɪˈstrʌktəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">不可摧毁的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r2-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Intricate</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈɪntrɪkət/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">错综复杂的，精细的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Ion</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈaɪən/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">离子</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Landfill</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈlændfɪl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">垃圾填埋场</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Lithium</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈlɪθiəm/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">锂</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r2-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mandate</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈmændeɪt/</span></td><td><span class="eng-pos">n./vt.</span></td><td class="eng-cn">强制要求；授权</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Manganese</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmæŋɡəniːz/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">锰</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Massive</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmæsɪv/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">巨大的；大规模的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mixture</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈmɪkstʃə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">混合物</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Module</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈmɒdjuːl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">模块；组件</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Oxide</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈɒksaɪd/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">氧化物</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Phosphate</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈfɒsfeɪt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">磷酸盐</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Polyurethane</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌpɒliˈjʊərəθeɪn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">聚氨酯</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Problematic</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌprɒbləˈmætɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">成问题的，有害的</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r2-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Propel</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/prəˈpel/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">推动，驱动</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pyrometallurgy</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌpaɪrəʊməˈtælədʒi/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">火法冶金</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-040.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Solvent</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈsɒlvənt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">溶剂</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-041.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Sticky</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈstɪki/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">黏的；棘手的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-042.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Tailpipe</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈteɪlpaɪp/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（汽车）排气管</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u2r2-043.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Toxic</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈtɒksɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">有毒的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u2r2-044.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Toxin</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈtɒksɪn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">毒素</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u2r2-045.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Viable</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈvaɪəbl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">可行的；能存活的</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 5</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r2-046.m4a" title="播放发音">▶</button></td><td><span class="eng-w">A needle in a haystack</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">大海捞针</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r2-047.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Phase out something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">逐步淘汰</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r2-048.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Phase something out</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">逐步淘汰</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r2-049.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Scale up something</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">扩大规模</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r2-050.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Scale something up</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">扩大规模</td></tr></tbody></table></div><div class="eng-group">Proper names · 1</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u2r2-051.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Blade battery</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">刀片电池（比亚迪）</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u2r2-text.m4a","words":"assets/english/u2r2-words.m4a","dur":479.61,"segs":[[7.63,13.73],[14.42,21.02],[21.8,33.0],[33.66,38.535],[39.2,46.275],[46.92,52.82],[53.48,61.755],[63.19,69.54],[70.46,78.085],[79.53,82.905],[83.6,85.95],[86.72,92.17],[92.86,100.36],[101.18,104.48],[105.94,110.165],[110.86,118.785],[119.48,124.48],[125.28,134.505],[135.88,137.705],[138.42,145.895],[146.56,152.56],[153.38,156.255],[156.98,163.905],[165.28,169.255],[169.96,177.085],[177.88,187.68],[188.47,192.195],[192.88,202.205],[203.66,211.385],[212.06,218.81],[220.36,229.335],[229.96,232.71],[233.46,246.35],[247.02,255.57],[256.24,261.94],[263.51,269.11],[269.88,276.955],[277.62,286.57],[287.18,296.755],[298.1,306.85],[307.6,315.2],[315.82,318.32],[319.24,324.115],[330.48,333.205],[333.9,335.3],[337.14,340.94],[341.66,345.235],[345.94,357.54],[358.39,369.865],[370.46,376.56],[377.46,387.31],[388.82,397.27],[398.1,406.625],[407.32,413.77],[414.58,420.13],[420.8,432.075],[432.76,438.26],[439.65,447.025],[447.72,455.495],[456.14,461.69],[463.3,466.425],[467.12,474.87],[475.66,479.61]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>

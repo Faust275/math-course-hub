@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§5.3 实数的构造 ｜ 实数 ｜ 陶哲轩实分析（第3版） · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* C 级反向联动：课本小节下的相关作业 */
+.wb-sec-related {
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px dashed var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-sec-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-sec-related-list { list-style: none; margin: 0; padding: 0; }
+.wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+.wb-sec-related-list .wb-lk-more { color: var(--muted); font-size: 12px; border-left: none; padding-left: 0; }
+
+/* C 级反向联动 · 章级：章首页整章相关作业（章级关联教材在此呈现） */
+.wb-ch-related {
+  margin: 16px 0 4px;
+  padding: 12px 16px;
+  background: var(--okbg, rgba(37,99,235,0.05));
+  border: 1px solid var(--accent, #2563eb);
+  border-radius: 8px;
+}
+.wb-ch-related-h {
+  font-size: 13px; font-weight: 700; color: var(--accent, #2563eb); margin-bottom: 8px;
+}
+.wb-ch-related .wb-sec-related-list li { margin: 0 0 6px; line-height: 1.5; }
+.wb-ch-related .wb-sec-related-list a {
+  color: var(--text); text-decoration: none; font-size: 13.5px;
+  border-left: 3px solid var(--accent, #2563eb); padding-left: 8px;
+}
+.wb-ch-related .wb-sec-related-list a:hover { color: var(--accent, #2563eb); text-decoration: underline; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+math { max-width: 100%; }
+/* 侧边抽屉在视口外，会把页宽撑大，这里裁掉 */
+html, body { overflow-x: clip; }
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: decimal !important;
+  margin: 12px 0 !important;
+  padding-left: 1.9em !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-num-list li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+/* 章首页 hub：本章小节卡片网格 */
+.wb-sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+.wb-sec-card { display: block; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .12s, box-shadow .15s; }
+.wb-sec-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.wb-sec-card .wb-sec-num { display: inline-block; color: var(--accent); font-weight: 700; margin-right: 8px; }
+.wb-sec-card .wb-sec-name { font-weight: 600; }
+.wb-sec-card:hover .wb-sec-name { color: var(--accent); }
+
+/* 节内子标题：独立成块（满足「分成两个卡片 / 把小标题加入目录」），并带锚点便于跳转 */
+.wb-subhead { font-size: 17px; font-weight: 700; color: var(--text); margin: 26px 0 12px; padding: 9px 12px;
+  background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 6px; scroll-margin-top: 86px; }
+.wb-subhead + .wb-def, .wb-subhead + .wb-thm, .wb-subhead + .wb-prop, .wb-subhead + .wb-lemma,
+.wb-subhead + .wb-cor, .wb-subhead + .wb-example, .wb-subhead + .wb-remark, .wb-subhead + .wb-exercise,
+.wb-subhead + .wb-proof { margin-top: 12px; }
+
+/* ---------- 章内目录：宽屏右侧常驻 / 窄屏抽屉 ---------- */
+.wb-chtoc{position:fixed;top:72px;right:14px;width:238px;max-height:calc(100vh - 108px);
+  display:flex;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1c1c1a);
+  border:1px solid var(--border,#e3e2dd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:70;font-size:13px;line-height:1.45;
+  transform:translateX(calc(100% + 26px));transition:transform .22s ease}
+.wb-chtoc.on{transform:none}
+@media (min-width:1420px){.wb-chtoc{transform:none;right:max(14px,calc((100vw - 940px)/2 - 252px))}}
+.wb-chtoc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-bottom:1px solid var(--border,#e3e2dd);
+  color:var(--muted,#6b6b66);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.wb-chtoc-x{border:0;background:none;color:var(--muted,#6b6b66);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.wb-chtoc-x:hover{color:var(--text,#1c1c1a)}
+@media (min-width:1420px){.wb-chtoc-x{display:none}}
+.wb-chtoc-b{overflow-y:auto;overscroll-behavior:contain;padding:5px 0 10px}
+.wb-chtoc .g>.s{display:block;padding:6px 12px 6px 10px;color:var(--text,#1c1c1a);text-decoration:none;
+  font-weight:600;border-left:3px solid transparent}
+.wb-chtoc .g>.s b{color:var(--accent,#0f6e56);margin-right:4px}
+.wb-chtoc .g>.s:hover{background:var(--surface2,#f7f7f5)}
+.wb-chtoc .g.cur>.s{border-left-color:var(--accent,#0f6e56)}
+.wb-chtoc .g>ul{list-style:none;margin:0;padding:0 0 2px;display:none}
+.wb-chtoc .g.open>ul{display:block}
+.wb-chtoc a.b{display:flex;align-items:baseline;gap:7px;padding:3.5px 12px 3.5px 20px;
+  color:var(--muted,#6b6b66);text-decoration:none;border-left:3px solid transparent}
+.wb-chtoc a.b:hover{color:var(--text,#1c1c1a);background:var(--surface2,#f7f7f5)}
+.wb-chtoc a.b i{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.wb-chtoc a.b.k-def i{background:#10b981;opacity:1}
+.wb-chtoc a.b.k-thm i{background:#2563eb;opacity:1}
+.wb-chtoc a.b.k-axiom i{background:#7c3aed;opacity:1}
+.wb-chtoc a.b.k-prop i{background:#0891b2;opacity:1}
+.wb-chtoc a.b.k-ex i{background:#d97706;opacity:1}
+.wb-chtoc a.b.k-rem i{background:#94a3b8;opacity:1}
+.wb-chtoc a.b.k-pf i{background:#cbd5e1;opacity:1}
+.wb-chtoc a.b.cur{color:var(--accent,#0f6e56);background:var(--surface2,#f7f7f5);
+  border-left-color:var(--accent,#0f6e56);font-weight:600}
+.wb-chtoc a.b.cur i{opacity:1}
+.wb-chtoc-mask{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:69;opacity:0;
+  pointer-events:none;transition:opacity .2s}
+.wb-chtoc-mask.on{opacity:1;pointer-events:auto}
+@media (min-width:1420px){.wb-chtoc-mask{display:none}}
+#wb-btn-chtoc{display:none}
+@media (max-width:1419.98px){#wb-btn-chtoc{display:inline-flex}}
+/* 锚点跳转时别被吸顶栏盖住 */
+section.wb-seg[id],div[id^="tbk_"]{scroll-margin-top:86px}
+@media print{.wb-chtoc,.wb-chtoc-mask{display:none}}
+/* 窄屏：改成整屏高的侧滑抽屉，别只盖住半截顶栏 */
+@media (max-width:1419.98px){
+  .wb-chtoc{top:0;right:0;height:100vh;max-height:100vh;width:min(300px,86vw);
+    border-radius:0;border-top:0;border-bottom:0;border-right:0}
+  .wb-chtoc-h{padding:13px 14px}
+}
+/* 顶栏工具多了会挤到换行，按钮文字不许折行 */
+.wb-tool-group{flex-wrap:wrap;justify-content:flex-end}
+.wb-tool-btn{white-space:nowrap}
+@media (max-width:600px){
+  .wb-tool-group{gap:4px}
+  .wb-tool-btn{padding:4px 6px;font-size:12px}
+}
+
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html" class="on">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html">英语</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-analysis.html">分析学Ⅰ</a> <span>›</span>
+    <a href="course-analysis.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 5 章 ｜ §5.3 实数的构造</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-chtoc" title="本章小节与定义定理">📋 本章</button>
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header"><div class="wb-book-tagline">📖 陶哲轩实分析（第3版） ｜ 陶哲轩 (Terence Tao) 著 ｜ 李馨 译</div><h1 style="font-size:24px;margin:8px 0 4px;">§5.3 ｜ 实数的构造</h1><div class="wb-book-meta-sub">人民邮电出版社（图灵数学经典） ｜ 原书对应页码：第  页</div></div>
+
+  
+
+  
+
+  
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§5.3</span> 实数的构造</h3><p>我们现在已经做好了构造实数的准备。我们将引入一个新的形式记号 LIM，它类似于前面定义的形式记号 — 和 //。正如记号本身所表明的，它最终将与我们所熟悉的极限运算相匹配，而且到那时这个形式上的极限记号也会被丢弃。</p>
+<div class="wb-def" id="tbk_1">
+  <div class="wb-blk-title"><span>定义 5.3.1</span><span class="tag">概念定义</span></div>
+<p>（实数）实数被定义为形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty}a_{n}</annotation></semantics></math> 的对象，其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 是有理数的一个柯西序列。称两个实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty}a_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty}b_{n}</annotation></semantics></math> 是相等的，当且仅当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n=1}^{\infty}</annotation></semantics></math> 是等价的柯西序列。由全体实数构成的集合记作 R。</p>
+</div>
+<div class="wb-example" id="tbk_2">
+  <div class="wb-blk-title"><span>例 5.3.2</span><span class="tag">经典例题</span></div>
+<p>（非正式的）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">a_{1}, a_{2}, a_{3}, \cdots</annotation></semantics></math> 表示序列</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.</mn><mn>4</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mn>4</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mn>4</mn><mn>2</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mn>4</mn><mn>2</mn><mn>1</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">1. 4, 1. 4 1, 1. 4 1 4, 1. 4 1 4 2, 1. 4 1 4 2 1, \dots</annotation></semantics></math></div><p>并且设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">b_{1}, b_{2}, b_{3}, \cdots</annotation></semantics></math> 表示序列</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.</mn><mn>5</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>2</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mn>5</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mn>4</mn><mn>3</mn><mo>,</mo><mn>1.</mn><mn>4</mn><mn>1</mn><mn>4</mn><mn>2</mn><mn>2</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">1. 5, 1. 4 2, 1. 4 1 5, 1. 4 1 4 3, 1. 4 1 4 2 2, \dots</annotation></semantics></math></div><p>那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}a_{n}</annotation></semantics></math> 是一个实数，而且它与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}b_{n}</annotation></semantics></math> 是相同的实数，因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n=1}^{\infty}</annotation></semantics></math> 是等价的柯西序列： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}a_{n}=\operatorname{LIM}_{n\to\infty}b_{n}</annotation></semantics></math> 。</p></div>
+<p>我们把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}a_n</annotation></semantics></math> 看作序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 的形式极限。后面我们会定义真正的极限概念，并且证明一个柯西序列的形式极限与该序列的极限是同一回事。之后，我们就不再需要形式极限了（这种情形与我们对形式减法——和形式除法//所做的处理非常相似）。</p>
+<p>为了保证该定义是有效的，我们需要证明定义中“实数相等”的概念遵守“相等”的前三个定律。</p>
+<div class="wb-thm" id="tbk_3">
+  <div class="wb-blk-title"><span>命题 5.3.3</span><span class="tag">命题</span></div>
+<p>（形式极限是定义明确的）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">z = \operatorname{LIM}_{n \to \infty} c_n</annotation></semantics></math> 都是实数。于是根据前文中实数相等的定义，我们有 x = x。而且如果 x = y，那么 y = x。最后，如果 x = y 且 y = z，那么 x = z。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>参见习题5.3.1。</p>
+<p>因为有了这个命题，我们知道两个实数相等的定义是合理的。当然，在定义实数上的其他运算时，我们都必须证明这些运算都遵守替换公理：如果把两个相等的实数作为输入应用到任意一个关于实数的运算上，那么它们应该给出相等的输出。</p>
+<p>现在我们想要定义实数上全部常用的算术运算，如加法和乘法。我们从加法开始。</p>
+</div>
+<div class="wb-def" id="tbk_4">
+  <div class="wb-blk-title"><span>定义 5.3.4</span><span class="tag">概念定义</span></div>
+<p>（实数的加法）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> 是实数，那么我们定义它们的和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y</annotation></semantics></math> 为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>:</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">x + y := \operatorname{LIM}_{n \to \infty}(a_n + b_n)</annotation></semantics></math> 。</p>
+</div>
+<div class="wb-example" id="tbk_5">
+  <div class="wb-blk-title"><span>例 5.3.5</span><span class="tag">经典例题</span></div>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>/</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}(1 + 1 / n)</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>/</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}(2 + 3 / n)</annotation></semantics></math> 的和是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><mn>3</mn><mo>+</mo><mn>4</mn><mo>/</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}(3 + 4 / n)</annotation></semantics></math> 。</p>
+<p>现在我们证明这个定义是有效的。我们首先确认两个实数的和确实是实数。</p>
+</div>
+<div class="wb-thm" id="tbk_6">
+  <div class="wb-blk-title"><span>引理 5.3.6</span><span class="tag">命题/引理</span></div>
+<p>（柯西序列的和是柯西序列）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> 是实数，那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y</annotation></semantics></math> 也是一个实数（即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo>)</mo><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n + b_n)^{\infty}_{n=1}</annotation></semantics></math> 是有理数的一个柯西序列）。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>我们需要证明对于每一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math> ，序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n} + b_{n})_{n=1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的。现在根据假设可知， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的，而且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n=1}^{\infty}</annotation></semantics></math> 也是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的，但是只有这些还不够（这蕴涵着 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n} + b_{n})_{n=1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>ε</mi></mrow><annotation encoding="application/x-tex">2\varepsilon</annotation></semantics></math> -稳定的，但这并不是我们想要的）。所以我们需要对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> 的值采取一些小技巧。</p>
+<p>我们知道对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\delta &gt; 0</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 都是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi></mrow><annotation encoding="application/x-tex">\delta</annotation></semantics></math> -稳定的。这表明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 不仅仅是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的，它也是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon/2</annotation></semantics></math> -稳定的。类似地，序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n=1}^{\infty}</annotation></semantics></math> 也是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon/2</annotation></semantics></math> -稳定的。这足以推出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n} + b_{n})_{n=1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的。</p>
+<p>由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> -稳定的，所以存在一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N\geqslant 1</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mi>N</mi></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = N}^{\infty}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn><mo>−</mo></mrow><annotation encoding="application/x-tex">\varepsilon /2-</annotation></semantics></math> 稳定的，即对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n,m\geqslant N</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{m}</annotation></semantics></math> 都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> -接近的。类似地，存在一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">M\geqslant 1</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mi>M</mi></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = M}^{\infty}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> -稳定的，即对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">n,m\geqslant M</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{m}</annotation></semantics></math> 都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> -接近的。</p>
+<p>令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>max</mo><mo>(</mo><mi>N</mi><mo>,</mo><mi>M</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\max (N,M)</annotation></semantics></math> 表示 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 中较大的那一个（根据命题2.2.13可知，其中一个数一定大于或等于另外一个）。如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mo>max</mo><mo>(</mo><mi>N</mi><mo>,</mo><mi>M</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">n,m\geqslant \max (N,M)</annotation></semantics></math> ，那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{m}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> -接近的，并且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{m}</annotation></semantics></math> 也是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> -接近的，从而根据命题4.3.7可知，对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mo>max</mo><mo>(</mo><mi>N</mi><mo>,</mo><mi>M</mi><mo>)</mo><mo>,</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">n,m\geqslant \max (N,M),a_n + b_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{m} + b_{m}</annotation></semantics></math> 都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的。这表明序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n} + b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的，结论得证。</p>
+<p>我们还需要验证的替换公理（参见 A.7 节）：如果我们把实数 x 换成与它相等的另外一个数，那么这不会改变和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y</annotation></semantics></math> 的值（而且类似地，如果我们把 y 换成与它相等的另外一个数，和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y</annotation></semantics></math> 的值也不会改变）。</p>
+</div>
+<div class="wb-thm" id="tbk_7">
+  <div class="wb-blk-title"><span>引理 5.3.7</span><span class="tag">命题/引理</span></div>
+<p>(等价的柯西序列之和是等价的) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>′</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>′</mo></mrow><annotation encoding="application/x-tex">x&#x27; = \operatorname{LIM}_{n \to \infty} a_n&#x27;</annotation></semantics></math> 是实数。设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>x</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">x = x&#x27;</annotation></semantics></math> ，那么我们有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mi>x</mi><mo>′</mo><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y = x&#x27; + y</annotation></semantics></math> 。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>′</mo></mrow></msup></mrow><annotation encoding="application/x-tex">x^{\prime}</annotation></semantics></math> 相等，所以柯西序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>′</mo></mrow></msubsup><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n^\prime)_{n = 1}^{\infty}</annotation></semantics></math> 是等价的，即对任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> ，它们都是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的。我们需要证明序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n} + b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>′</mo></mrow></msubsup><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo>)</mo><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n^\prime +b_n)^{\infty}_{n = 1}</annotation></semantics></math> 对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> 都是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的。而我们已经知道存在一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N\geqslant 1</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mi>N</mi></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = N}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>′</mo></mrow></msubsup><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mi>N</mi></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n^\prime)_{n = N}^{\infty}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的，即对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n\geqslant N</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>′</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">a_{n}^{\prime}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的。由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{n}</annotation></semantics></math> 显然是0-接近于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{n}</annotation></semantics></math> 的，于是根据命题4.3.7（明显推广到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\delta = 0</annotation></semantics></math> 的情况），对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n\geqslant N</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n} + b_{n}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>′</mo></mrow></msubsup><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}^{\prime} + b_{n}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的。所以对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n} + b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>′</mo></mrow></msubsup><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo>)</mo><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n^\prime +b_n)^{\infty}_{n = 1}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近的，结论得证。</p>
+<p>注5.3.8 上述引理证明了替换公理关于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y</annotation></semantics></math> 中的变量“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ”是成立的，我们也可以类似地证明替换公理对于变量“ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> ”也是成立的（一种快捷的方法是，从<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x + y</annotation></semantics></math> 的定义中观察到，因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n} + b_{n} = b_{n} + a_{n}</annotation></semantics></math> ，所以一定有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mi>y</mi><mo>+</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">x + y = y + x)</annotation></semantics></math> 。</p>
+<p>按照定义加法运算的方式，我们可以类似地定义实数的乘法运算。</p>
+</div>
+<div class="wb-def" id="tbk_8">
+  <div class="wb-blk-title"><span>定义 5.3.9</span><span class="tag">概念定义</span></div>
+<p>（实数的乘法）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> 是实数，那么我们定义乘积 xy 为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>:</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">xy := \operatorname{LIM}_{n \to \infty} a_n b_n</annotation></semantics></math> 。</p>
+<p>下面这个命题保证了该定义是有效的，而且两个实数的乘积的确是实数。</p>
+</div>
+<div class="wb-thm" id="tbk_9">
+  <div class="wb-blk-title"><span>命题 5.3.10</span><span class="tag">命题</span></div>
+<p>（乘法是定义明确的）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>′</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>′</mo></mrow><annotation encoding="application/x-tex">x&#x27; = \operatorname{LIM}_{n \to \infty} a_n&#x27;</annotation></semantics></math> 是实数，那么 xy 也是实数。另外，如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>x</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">x = x&#x27;</annotation></semantics></math> ，那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>=</mo><mi>x</mi><mo>′</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">xy = x&#x27;y</annotation></semantics></math> 。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>参见习题5.3.2。</p>
+<p>当然，如果用一个与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 相等的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>′</mo></mrow><annotation encoding="application/x-tex">y&#x27;</annotation></semantics></math> 来代替它，那么我们也能证明类似的替换公理成立。</p>
+<p>此时，我们把每一个有理数 q 都等同于一个实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>q</mi></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}q</annotation></semantics></math> ，从而把有理数嵌入到实数中。例如，若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">a_{1}, a_{2}, a_{3}, \cdots</annotation></semantics></math> 是序列</p>
+<p>0.5, 0.5, 0.5, 0.5, 0.5, … </p>
+<p>那么令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}a_n</annotation></semantics></math> 等于0.5。这种嵌入与我们所定义的加法运算和乘法运算是一致的，因为对于任意的有理数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math> ，我们有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd></mtd><mtd><mo>(</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>a</mi><mo>)</mo><mo>+</mo><mo>(</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>b</mi><mo>)</mo><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mtd></mtr><mtr><mtd></mtd><mtd><mtext>和</mtext><mo>(</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>a</mi><mo>)</mo><mo>×</mo><mo>(</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>b</mi><mo>)</mo><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><mi>a</mi><mi>b</mi><mo>)</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} &amp; {(\mathrm{LIM} _ {n \to \infty} a) + (\mathrm{LIM} _ {n \to \infty} b) = \mathrm{LIM} _ {n \to \infty} (a + b)} \\ &amp; {\text {和} (\mathrm{LIM} _ {n \to \infty} a) \times (\mathrm{LIM} _ {n \to \infty} b) = \mathrm{LIM} _ {n \to \infty} (a b)} \end{array}</annotation></semantics></math></div><p>这表明当两个有理数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math> 相加或者相乘时，我们把它们看作有理数还是看作实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>a</mi></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}a</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>b</mi></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}b</annotation></semantics></math> 是无关紧要的。另外，这种有理数和实数的等同关系与我们给出的“相等”的定义是一致的（习题5.3.3）。</p><p>现在我们很容易定义关于一个实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 的负运算 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">-x</annotation></semantics></math> ，即</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>x</mi><mo>:</mo><mo>=</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>×</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">- x := (- 1) \times x</annotation></semantics></math></div><p>因为 -1 是有理数，所以它也是实数。注意，这和有理数的负运算显然是一致的，因为对于任意的有理数 q，有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>q</mi><mo>=</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>×</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">-q = (-1) \times q</annotation></semantics></math> 。而且根据我们给出的定义显然有</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><mo>−</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">- \mathrm{LIM} _ {n \rightarrow \infty} a _ {n} = \mathrm{LIM} _ {n \rightarrow \infty} (- a _ {n})</annotation></semantics></math></div><p>(为什么?)一旦有了加法运算和负运算, 我们就可以像以往一样来定义减法运算:</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>y</mi><mo>:</mo><mo>=</mo><mi>x</mi><mo>+</mo><mo>(</mo><mo>−</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">x - y := x + (- y)</annotation></semantics></math></div></div>
+<div class="wb-remark">
+  <div class="wb-blk-title"><span>注意</span><span class="tag">深入诠释</span></div>
+<p>这蕴涵着</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>−</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>−</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathrm{LIM} _ {n \rightarrow \infty} a _ {n} - \mathrm{LIM} _ {n \rightarrow \infty} b _ {n} = \mathrm{LIM} _ {n \rightarrow \infty} (a _ {n} - b _ {n})</annotation></semantics></math></div><p>现在很容易证明实数遵守所有常用的代数法则（或许会排除一些包含除法的定律，稍后我们会涉及这些内容）。</p></div>
+<div class="wb-thm" id="tbk_10">
+  <div class="wb-blk-title"><span>命题 5.3.11</span><span class="tag">命题</span></div>
+<p>命题 4.1.6 中所有的代数定律不仅对于整数成立，对于实数也是成立的。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>我们通过证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>(</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>x</mi><mi>y</mi><mo>+</mo><mi>x</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">x(y + z) = xy + xz</annotation></semantics></math> 这一条定律来阐述这个命题。设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \mathrm{LIM}_{n\to \infty}a_n</annotation></semantics></math> 、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y = \mathrm{LIM}_{n\to \infty}b_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">z = \mathrm{LIM}_{n\to \infty}c_n</annotation></semantics></math> 是实数，那么根据定义有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">xy = \mathrm{LIM}_{n\to \infty}a_nb_n</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>z</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">xz = \mathrm{LIM}_{n\to \infty}a_nc_n</annotation></semantics></math> ，从而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>+</mo><mi>x</mi><mi>z</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">xy + xz = \mathrm{LIM}_{n\to \infty}(a_nb_n + a_nc_n)</annotation></semantics></math> 。同理可以证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>(</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>)</mo><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">x(y + z) = \mathrm{LIM}_{n\to \infty}a_n(b_n + c_n)</annotation></semantics></math> 。而且我们已经知道对于有理数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}, b_{n}, c_{n}</annotation></semantics></math> 有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">a_{n}(b_{n} + c_{n})</annotation></semantics></math> 等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msub><mi>c</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}b_{n} + a_{n}c_{n}</annotation></semantics></math> ，从而得到结论。其他的代数定律也可以类似地证明。</p>
+<p>我们要定义的最后一种基本算术运算是倒数运算： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x \rightarrow x^{-1}</annotation></semantics></math> ，这个运算有些微妙。对于如何定义这个运算，最早的一个猜想显然是这样来定义的：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msup><mo stretchy="true" fence="true">)</mo><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>:</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\left(\operatorname{LIM} _ {n \rightarrow \infty} a _ {n}\right) ^ {- 1} := \operatorname{LIM} _ {n \rightarrow \infty} a _ {n} ^ {- 1}</annotation></semantics></math></div><p>但这种定义存在一些问题。例如，设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">a_{1}, a_{2}, a_{3}, \cdots</annotation></semantics></math> 是柯西序列</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.</mn><mn>1</mn><mo>,</mo><mn>0.</mn><mn>0</mn><mn>1</mn><mo>,</mo><mn>0.</mn><mn>0</mn><mn>0</mn><mn>1</mn><mo>,</mo><mn>0.</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">0. 1, 0. 0 1, 0. 0 0 1, 0. 0 0 0 1, \dots</annotation></semantics></math></div><p>并且令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>:</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x := \operatorname{LIM}_{n \to \infty} a_n</annotation></semantics></math> 。那么按照这种定义， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^{-1}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n \to \infty} b_n</annotation></semantics></math> ，其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>b</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><mo>⋯</mo></mrow><annotation encoding="application/x-tex">b_1, b_2, b_3, \cdots</annotation></semantics></math> 是序列</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mn>0</mn><mo>,</mo><mn>1</mn><mn>0</mn><mn>0</mn><mo>,</mo><mn>1</mn><mn>0</mn><mn>0</mn><mn>0</mn><mo>,</mo><mn>1</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">1 0, 1 0 0, 1 0 0 0, 1 0 0 0 0, \dots</annotation></semantics></math></div><p>但这个序列不是柯西序列（它甚至是无界的）。当然，这里的问题在于原来的柯西序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 等价于零序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(0)_{n = 1}^{\infty}</annotation></semantics></math> ，（为什么？）所以我们给出的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 实际上等于0。因此，只有当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 不为零时，才能进行上述倒数运算。</p><p>然而，即便我们把范围限制在非零实数上，仍然会有一个小问题，因为一个非零的实数可能是某个包含零的柯西序列的形式极限。例如，是有理数从而也是实数的数字1是柯西序列</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>,</mo><mn>0.</mn><mn>9</mn><mo>,</mo><mn>0.</mn><mn>9</mn><mn>9</mn><mo>,</mo><mn>0.</mn><mn>9</mn><mn>9</mn><mn>9</mn><mo>,</mo><mn>0.</mn><mn>9</mn><mn>9</mn><mn>9</mn><mn>9</mn><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">0, 0. 9, 0. 9 9, 0. 9 9 9, 0. 9 9 9 9, \dots</annotation></semantics></math></div><p>的形式极限 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">1 = \lim_{n \to \infty} a_n</annotation></semantics></math> ，但利用我们给出的“倒数”的朴素定义，我们无法把实数 1 倒过来，因为我们没办法把上述柯西序列的第一个元素 0 倒过来。</p></div>
+<p>为了避免这些问题，我们需要让柯西序列远离 0。因此我们首先需要一个定义。</p>
+<div class="wb-def" id="tbk_11">
+  <div class="wb-blk-title"><span>定义 5.3.12</span><span class="tag">概念定义</span></div>
+<p>（远离 0 的序列）称有理数序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 是远离 0 的，当且仅当存在一个有理数 c &gt; 0 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≥</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">|a_{n}| \geqslant c</annotation></semantics></math> 对一切 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geqslant 1</annotation></semantics></math> 均成立。</p>
+</div>
+<div class="wb-example" id="tbk_12">
+  <div class="wb-blk-title"><span>例 5.3.13</span><span class="tag">经典例题</span></div>
+<p>序列 1, -1, 1, -1, 1, -1, 1, … 是远离 0 的（每一项的绝对值都至少为 1），但序列 0.1, 0.01, 0.001, … 不是远离 0 的，而序列 0, 0.9, 0.99, 0.999, 0.9999, … 也不是远离 0 的。序列 10, 100, 1000, 10000, … 是远离 0 的，但它不是有界的。</p>
+<p>现在我们证明每一个不为零的实数都是某个远离 0 的柯西序列的形式极限。</p>
+</div>
+<div class="wb-thm" id="tbk_13">
+  <div class="wb-blk-title"><span>引理 5.3.14</span><span class="tag">命题/引理</span></div>
+<p>设 x 是一个不为零的实数，那么存在某个远离 0 的柯西序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_{n}</annotation></semantics></math> 。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 是实数，所以存在一个柯西序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \mathrm{LIM}_{n\to \infty}b_n</annotation></semantics></math> 。但是到这里还没有结束，因为我们还不知道 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_{n}</annotation></semantics></math> 是否远离0。另外，根据已知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≠</mo><mn>0</mn><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mn>0</mn></mrow><annotation encoding="application/x-tex">x\neq 0 = \mathrm{LIM}_{n\to \infty}0</annotation></semantics></math> 可得，序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 不等价于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(0)_{n = 1}^{\infty}</annotation></semantics></math> 。于是序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 并非对任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> 都最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(0)_{n = 1}^{\infty}</annotation></semantics></math> 。所以我们可以找到一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> 使得序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 不是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(0)_{n = 1}^{\infty}</annotation></semantics></math> 的。</p>
+<p>把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> 设为定值，因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是柯西序列，所以它是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的。由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2 &gt; 0</annotation></semantics></math> ，所以它还是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn><mo>−</mo></mrow><annotation encoding="application/x-tex">\varepsilon /2-</annotation></semantics></math> 稳定的。于是存在一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N\geqslant 1</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>−</mo><msub><mi>b</mi><mrow><mi>m</mi></mrow></msub><mo>|</mo><mo>≤</mo><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|b_n - b_m|\leqslant \varepsilon /2</annotation></semantics></math> 对任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n,m\geqslant N</annotation></semantics></math> 均成立。</p>
+<p>另外，我们得不到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≤</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|b_n| \leqslant \varepsilon</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n \geqslant N</annotation></semantics></math> 都成立，因为该结论蕴涵着 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_n)_{n=1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -接近于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(0)_{n=1}^{\infty}</annotation></semantics></math> 的。因此必定存在一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mn>0</mn></mrow></msub><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n_0 \geqslant N</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>b</mi><mrow><msub><mi>n</mi><mrow><mn>0</mn></mrow></msub></mrow></msub><mo>|</mo><mo>&gt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|b_{n_0}| &gt; \varepsilon</annotation></semantics></math> 。又因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>b</mi><mrow><msub><mi>n</mi><mrow><mn>0</mn></mrow></msub></mrow></msub><mo>−</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≤</mo><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|b_{n_0} - b_n| \leqslant \varepsilon / 2</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n \geqslant N</annotation></semantics></math> 均成立，于是我们可以从三角不等式中推导出（如何推导？） <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≥</mo><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|b_n| \geqslant \varepsilon / 2</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n \geqslant N</annotation></semantics></math> 均成立。</p>
+<p>这几乎证明了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是远离0的。事实上，这只是证明了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是最终远离0的。而通过定义下面这个新序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 很容易证得该引理的结论。如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&lt;</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n &lt; N</annotation></semantics></math> ，则令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>≔</mo><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">a_{n}\coloneqq \varepsilon /2</annotation></semantics></math> ；如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n\geqslant N</annotation></semantics></math> ，则令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>≔</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{n}\coloneqq b_{n}</annotation></semantics></math> 。由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是一个柯西序列，不难证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是一个与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 等价的柯西序列（因为两个序列最终是一样的），从而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \mathrm{LIM}_{n\to \infty}a_n</annotation></semantics></math> 。又因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≥</mo><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|b_n|\geqslant \varepsilon /2</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n\geqslant N</annotation></semantics></math> 均成立，所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≥</mo><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|a_n|\geqslant \varepsilon /2</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n\geqslant 1</annotation></semantics></math> 均成立（分成 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n\geqslant N</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&lt;</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n &lt; N</annotation></semantics></math> 两种情形）。于是我们得到一个远离0的柯西序列（用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2</annotation></semantics></math> 来代替 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> 是可行的，因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>/</mo><mn>2</mn><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon /2 &gt; 0</annotation></semantics></math> )，并且该序列把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 作为它的形式极限。结论得证。</p>
+<p>一旦某个序列是远离 0 的，那么我们就很容易求它的倒数。</p>
+</div>
+<div class="wb-thm" id="tbk_14">
+  <div class="wb-blk-title"><span>引理 5.3.15</span><span class="tag">命题/引理</span></div>
+<p>假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 是一个远离 0 的柯西序列，那么序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n}^{-1})_{n=1}^{\infty}</annotation></semantics></math> 也是一个柯西序列。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 是一个远离0的柯西序列，所以存在一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c &gt; 0</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≥</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">|a_n|\geqslant c</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n\geqslant 1</annotation></semantics></math> 均成立。现在我们要证明对于任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n}^{-1})_{n = 1}^{\infty}</annotation></semantics></math> 都是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的。于是我们固定一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt;0</annotation></semantics></math> ，现在我们的任务是找到一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N\geqslant 1</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>−</mo><msubsup><mi>a</mi><mrow><mi>m</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>|</mo><mo>≤</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|a_{n}^{-1} - a_{m}^{-1}|\leqslant \varepsilon</annotation></semantics></math> 对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n,m\geqslant N</annotation></semantics></math> 均成立。而</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" fence="true">|</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>−</mo><msubsup><mi>a</mi><mrow><mi>m</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="true" fence="true">|</mo><mo>=</mo><mo stretchy="true" fence="true">|</mo><mfrac><mrow><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><mrow><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow></mfrac><mo stretchy="true" fence="true">|</mo><mo>≤</mo><mfrac><mrow><mo stretchy="true" fence="true">|</mo><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo stretchy="true" fence="true">|</mo></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\left| a _ {n} ^ {- 1} - a _ {m} ^ {- 1} \right| = \left| \frac {a _ {m} - a _ {n}}{a _ {m} a _ {n}} \right| \leqslant \frac {\left| a _ {m} - a _ {n} \right|}{c ^ {2}}</annotation></semantics></math></div><p>（因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><mo>|</mo><mo>,</mo><mo>|</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≥</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">|a_{m}|, |a_{n}| \geqslant c</annotation></semantics></math> ），于是为了使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>−</mo><msubsup><mi>a</mi><mrow><mi>m</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>|</mo></mrow><annotation encoding="application/x-tex">|a_{n}^{-1} - a_{m}^{-1}|</annotation></semantics></math> 小于或等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> ，只需要让 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo></mrow><annotation encoding="application/x-tex">|a_{m} - a_{n}|</annotation></semantics></math> 小于或等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mi>ε</mi></mrow><annotation encoding="application/x-tex">c^{2}\varepsilon</annotation></semantics></math> 即可。又因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 是一个柯西序列并且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c^{2}\varepsilon &gt; 0</annotation></semantics></math> ，所以可以找到一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 使得序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mi>N</mi></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=N}^{\infty}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mi>ε</mi></mrow><annotation encoding="application/x-tex">c^{2}\varepsilon</annotation></semantics></math> -稳定的，即对所有的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n, m \geqslant N</annotation></semantics></math> 均有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>|</mo><mo>≤</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mi>ε</mi></mrow><annotation encoding="application/x-tex">|a_{m} - a_{n}| \leqslant c^{2}\varepsilon</annotation></semantics></math> 。</p></div>
+<p>根据前文所述，这表明对任意的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">n, m \geqslant N</annotation></semantics></math> 均有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>−</mo><msubsup><mi>a</mi><mrow><mi>m</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>|</mo><mo>≤</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|a_n^{-1} - a_m^{-1}| \leqslant \varepsilon</annotation></semantics></math> ，从而序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n^{-1})_{n=1}^{\infty}</annotation></semantics></math> 是最终 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> -稳定的。由于我们对每一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math> 都证明了这个结论，所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_n^{-1})_{n=1}^{\infty}</annotation></semantics></math> 是一个柯西序列，结论得证。</p>
+<p>现在我们准备定义倒数运算。</p>
+<div class="wb-def" id="tbk_15">
+  <div class="wb-blk-title"><span>定义 5.3.16</span><span class="tag">概念定义</span></div>
+<p>（实数的倒数）设 x 是一个不为零的实数，设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 是一个远离 0 的柯西序列并且使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x = \operatorname{LIM}_{n \to \infty} a_{n}</annotation></semantics></math> （由引理 5.3.14 可知，这样的序列存在）。那么我们定义倒数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^{-1}</annotation></semantics></math> 为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>:</mo><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">x^{-1} := \operatorname{LIM}_{n \to \infty} a_{n}^{-1}</annotation></semantics></math> （根据引理 5.3.15 可知， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^{-1}</annotation></semantics></math> 是一个实数）。</p>
+<p>在确保这个定义是有意义的之前，我们需要验证一件事：如果存在两个不同的柯西序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n = 1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n = 1}^{\infty}</annotation></semantics></math> 都把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 作为它们各自的形式极限，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo></mrow><annotation encoding="application/x-tex">x = \mathrm{LIM}_{n\to \infty}a_n =</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}b_n</annotation></semantics></math> ，那么将会出现什么情况？不难想象，上述定义可能会给出两个不同的倒数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^{-1}</annotation></semantics></math> ，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}a_n^{-1}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}b_n^{-1}</annotation></semantics></math> 。幸运的是，这种事情不可能发生。</p>
+</div>
+<div class="wb-thm" id="tbk_16">
+  <div class="wb-blk-title"><span>引理 5.3.17</span><span class="tag">命题/引理</span></div>
+<p>（倒数运算是定义明确的）设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(a_{n})_{n=1}^{\infty}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(b_{n})_{n=1}^{\infty}</annotation></semantics></math> 是两个远离 0 的柯西序列，并且满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}a_{n}=\operatorname{LIM}_{n\to\infty}b_{n}</annotation></semantics></math> （即两个序列是等价的），那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}a_{n}^{-1}=\operatorname{LIM}_{n\to\infty}b_{n}^{-1}</annotation></semantics></math> 。</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明</span></div>
+<p>考虑三个实数的下述乘积 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> </p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>:</mo><mo>=</mo><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="true" fence="true">)</mo><mo>×</mo><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo stretchy="true" fence="true">)</mo><mo>×</mo><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="true" fence="true">)</mo></mrow><annotation encoding="application/x-tex">P := \left(\operatorname{LIM} _ {n \rightarrow \infty} a _ {n} ^ {- 1}\right) \times \left(\operatorname{LIM} _ {n \rightarrow \infty} a _ {n}\right) \times \left(\operatorname{LIM} _ {n \rightarrow \infty} b _ {n} ^ {- 1}\right)</annotation></semantics></math></div><p>如果把乘积计算出来，那么可以得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">P = \mathrm{LIM} _ {n \rightarrow \infty} a _ {n} ^ {- 1} a _ {n} b _ {n} ^ {- 1} = \mathrm{LIM} _ {n \rightarrow \infty} b _ {n} ^ {- 1}</annotation></semantics></math></div><p>另外，由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>a</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}a_n = \mathrm{LIM}_{n\to \infty}b_n</annotation></semantics></math> ，我们可以把 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 写成另一种形式：</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="true" fence="true">)</mo><mo>×</mo><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><mo stretchy="true" fence="true">)</mo><mo>×</mo><mo stretchy="true" fence="true">(</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="true" fence="true">)</mo></mrow><annotation encoding="application/x-tex">P = \left(\operatorname{LIM} _ {n \rightarrow \infty} a _ {n} ^ {- 1}\right) \times \left(\operatorname{LIM} _ {n \rightarrow \infty} b _ {n}\right) \times \left(\operatorname{LIM} _ {n \rightarrow \infty} b _ {n} ^ {- 1}\right)</annotation></semantics></math></div><p>（参见命题 5.3.10）同样把这个乘积计算出来，可以得到</p><div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msub><mi>b</mi><mrow><mi>n</mi></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">P = \operatorname{LIM} _ {n \rightarrow \infty} a _ {n} ^ {- 1} b _ {n} b _ {n} ^ {- 1} = \operatorname{LIM} _ {n \rightarrow \infty} a _ {n} ^ {- 1}</annotation></semantics></math></div><p>通过比较关于 P 的不同式子，我们有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>a</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><msub><mtext>LIM</mtext><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msubsup><mi>b</mi><mrow><mi>n</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\operatorname{LIM}_{n\to\infty}a_{n}^{-1}=\operatorname{LIM}_{n\to\infty}b_{n}^{-1}</annotation></semantics></math> ，这就是要证明的结论。</p></div>
+<p>所以倒数是定义明确的（对于每一个不为零的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ，恰好有一个确定的倒数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^{-1}</annotation></semantics></math> ），注意，由定义显然可得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">xx^{-1} = x^{-1}x = 1</annotation></semantics></math> （为什么？）。于是所有的域公理（命题4.2.4）都适用于实数，就像适用于有理数一样。我们显然不能对0求倒数，因为任何数乘以0都等于0，而不是1。还要注意，如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math> 是一个非零的有理数，那么它等于实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>q</mi></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}q</annotation></semantics></math> ，于是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><mi>q</mi></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}q</annotation></semantics></math> 的倒数是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mstyle mathvariant="normal"><mrow><mi>L</mi><mi>I</mi><mi>M</mi></mrow></mstyle><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></msub><msup><mi>q</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>q</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathrm{LIM}_{n\to \infty}q^{-1} = q^{-1}</annotation></semantics></math> 。因此，实数上的倒数运算与有理数上的倒数运算是一致的。</p>
+<p>一旦有了倒数，我们就可以像定义有理数上的除法那样来定义两个实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 的除法 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>/</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x / y</annotation></semantics></math> （其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 不为零）：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>/</mo><mi>y</mi><mo>:</mo><mo>=</mo><mi>x</mi><mo>×</mo><msup><mi>y</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x / y := x \times y ^ {- 1}</annotation></semantics></math></div>
+<p>特别地，我们有下述消去律：如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x, y, z</annotation></semantics></math> 是实数，它们满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>z</mi><mo>=</mo><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xz = yz</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 不为零，那么等式两端同时除以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> ，我们能够推导出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x = y</annotation></semantics></math> 。注意，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 为零时，消去律不成立。</p>
+<p>现在我们有了关于实数的全部四种基本算术运算：加法运算、减法运算、乘法运算和除法运算，并且这些运算遵守所有常用的代数法则。接下来，我们开始学习实数上序的概念。</p></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-analysis-taozhexuan-ch05-s4.html">‹ 上一节：习题 </a><a class="wb-nav-btn hub" href="textbook-analysis-taozhexuan-ch05.html">📚 本章目录</a><a class="wb-nav-btn next" href="textbook-analysis-taozhexuan-ch05-s6.html">下一节：习题  ›</a></div>
+</main>
+
+<nav class="wb-chtoc" id="wb-chtoc" aria-label="本节目录"><div class="wb-chtoc-h"><span>本节目录</span><button class="wb-chtoc-x" id="wb-chtoc-close" title="收起目录">×</button></div><div class="wb-chtoc-b" id="wb-chtoc-body"><div class="g"><a class="s" href="#tbk_1" data-t="tbk_1">本节内容</a><ul><li><a class="b k-def" href="#tbk_1" data-t="tbk_1" title="定义 5.3.1（实数）实数被定义为形如 的对象，其中 是有"><i></i>定义 5.3.1</a></li><li><a class="b k-ex" href="#tbk_2" data-t="tbk_2" title="例 5.3.2（非正式的）设 表示序列"><i></i>例 5.3.2</a></li><li><a class="b k-thm" href="#tbk_3" data-t="tbk_3" title="命题 5.3.3（形式极限是定义明确的）设 …"><i></i>命题 5.3.3</a></li><li><a class="b k-def" href="#tbk_4" data-t="tbk_4" title="定义 5.3.4（实数的加法）设 和…"><i></i>定义 5.3.4</a></li><li><a class="b k-ex" href="#tbk_5" data-t="tbk_5" title="例5.3.5 与…"><i></i>例5.3.5</a></li><li><a class="b k-thm" href="#tbk_6" data-t="tbk_6" title="引理 5.3.6（柯西序列的和是柯西序列）设 和…"><i></i>引理 5.3.6</a></li><li><a class="b k-thm" href="#tbk_7" data-t="tbk_7" title="引理 5.3.7(等价的柯西序列之和是等价的) 设 …"><i></i>引理 5.3.7</a></li><li><a class="b k-def" href="#tbk_8" data-t="tbk_8" title="定义 5.3.9（实数的乘法）设 和…"><i></i>定义 5.3.9</a></li><li><a class="b k-thm" href="#tbk_9" data-t="tbk_9" title="命题 5.3.10（乘法是定义明确的）设 …"><i></i>命题 5.3.10</a></li><li><a class="b k-thm" href="#tbk_10" data-t="tbk_10" title="命题 5.3.11 命题 4.1.6 中所有的代数定律不仅对于整数成立，对于实数也是成立的。"><i></i>命题 5.3.11</a></li><li><a class="b k-def" href="#tbk_11" data-t="tbk_11" title="定义 5.3.12（远离 0 的序列）称有理数序列 是远离 0 的，当且仅当存在一个有理数 c &amp;gt; 0 使得"><i></i>定义 5.3.12</a></li><li><a class="b k-ex" href="#tbk_12" data-t="tbk_12" title="例 5.3.13 序列 1, -1, 1, -1, 1, -1, 1, … 是远离 0 的（每一项的绝对值都至少为 1），但序列 0.1, 0.01, 0.00"><i></i>例 5.3.13</a></li><li><a class="b k-thm" href="#tbk_13" data-t="tbk_13" title="引理 5.3.14 设 x 是一个不为零的实数，那么存在某个远离 0 的柯西序列 使得…"><i></i>引理 5.3.14</a></li><li><a class="b k-thm" href="#tbk_14" data-t="tbk_14" title="引理 5.3.15 假设 是一个远离 0 的柯西序列，那么序列…"><i></i>引理 5.3.15</a></li><li><a class="b k-def" href="#tbk_15" data-t="tbk_15" title="定义 5.3.16（实数的倒数）设 x 是一个不为零的实数，设 是一个远离 0 的柯西序列并且使得…"><i></i>定义 5.3.16</a></li><li><a class="b k-thm" href="#tbk_16" data-t="tbk_16" title="引理 5.3.17（倒数运算是定义明确的）设 和 是两个远离"><i></i>引理 5.3.17</a></li></ul></div></div></nav><div class="wb-chtoc-mask" id="wb-chtoc-mask"></div>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-analysis-taozhexuan-ch01.html">第 1 章 ｜ 引言</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch02.html">第 2 章 ｜ 从头开始: 自然数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch03.html">第 3 章 ｜ 集合论</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch04.html">第 4 章 ｜ 整数和有理数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch05.html" class="cur">第 5 章 ｜ 实数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch06.html">第 6 章 ｜ 序列的极限</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch07.html">第 7 章 ｜ 级数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch08.html">第 8 章 ｜ 无限集</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch09.html">第 9 章 ｜ R上的连续函数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch10.html">第 10 章 ｜ 函数的微分</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch11.html">第 11 章 ｜ 黎曼积分</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch12.html">第 12 章 ｜ 度量空间</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch13.html">第 13 章 ｜ 度量空间上的连续函数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch14.html">第 14 章 ｜ 一致收敛</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch15.html">第 15 章 ｜ 幂级数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch16.html">第 16 章 ｜ 傅里叶级数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch17.html">第 17 章 ｜ 多元微分学</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch18.html">第 18 章 ｜ 勒贝格测度</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch19.html">第 19 章 ｜ 勒贝格积分</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_analysis-taozhexuan_ch05_s5",
+  book_id: "analysis-taozhexuan",
+  ch_id: "ch05",
+  title: "§5.3 实数的构造"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (window.wbSetTheme) window.wbSetTheme(isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      if (window.wbSetTheme) window.wbSetTheme(darkNow ? 'dark' : 'light');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById('wb-chtoc');
+  if (!panel) return;
+  var mask = document.getElementById('wb-chtoc-mask');
+  var btn = document.getElementById('wb-btn-chtoc');
+  var closeBtn = document.getElementById('wb-chtoc-close');
+  var body = document.getElementById('wb-chtoc-body');
+  var wide = window.matchMedia('(min-width:1420px)');
+  function setOpen(v){
+    panel.classList.toggle('on', !!v);
+    if (mask) mask.classList.toggle('on', !!v && !wide.matches);
+  }
+  if (btn) btn.addEventListener('click', function(){ setOpen(!panel.classList.contains('on')); });
+  if (closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
+  if (mask) mask.addEventListener('click', function(){ setOpen(false); });
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+
+  var links = [].slice.call(panel.querySelectorAll('a[data-t]'));
+  /* 自己接管跳转：长章节动辄三万像素，默认平滑滚动要滚好几秒，
+     而且 MathJax 懒渲染会在途中改变行高，落点会偏。远距离直接瞬移，落稳后再校正一次。 */
+  function goTo(el){
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 86;
+    var far = Math.abs(y - window.pageYOffset) > 1600;
+    window.scrollTo({ top: y, behavior: far ? 'instant' : 'smooth' });   // 'auto' 会退回 CSS 的 smooth
+    [far ? 420 : 900, 1400].forEach(function(ms){
+      setTimeout(function(){
+        if (!el) return;
+        var d = el.getBoundingClientRect().top - 86;
+        if (Math.abs(d) > 4) window.scrollBy(0, d);   // 补一次：上面懒渲染的公式可能把行高改了
+      }, ms);
+    });
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-t'));
+      if (el){
+        e.preventDefault();
+        goTo(el);
+        try { history.replaceState(null, '', '#' + el.id); } catch (err) { location.hash = el.id; }
+      }
+      if (!wide.matches) setOpen(false);
+    });
+  });
+  var map = links.map(function(a){
+    var el = document.getElementById(a.getAttribute('data-t'));
+    return el ? { a: a, el: el } : null;
+  }).filter(Boolean);
+  var groups = [].slice.call(panel.querySelectorAll('.g'));
+  var raf = null, lastG = null;
+  function spy(){
+    raf = null;
+    var act = null;
+    for (var i = 0; i < map.length; i++){
+      if (map[i].el.getBoundingClientRect().top <= 116) act = map[i]; else break;
+    }
+    if (!act && map.length) act = map[0];
+    links.forEach(function(a){ a.classList.remove('cur'); });
+    if (!act) return;
+    act.a.classList.add('cur');
+    var g = act.a.closest('.g');
+    if (g !== lastG){
+      lastG = g;
+      groups.forEach(function(x){
+        x.classList.toggle('open', x === g);
+        x.classList.toggle('cur', x === g);
+      });
+    }
+    if (body){
+      var br = body.getBoundingClientRect(), ar = act.a.getBoundingClientRect();
+      if (ar.top < br.top + 6 || ar.bottom > br.bottom - 6){
+        body.scrollTop += (ar.top - br.top) - (br.height / 2 - ar.height / 2);
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){ if (raf === null) raf = requestAnimationFrame(spy); }, { passive: true });
+  window.addEventListener('resize', function(){ if (raf === null) raf = requestAnimationFrame(spy); });
+  spy();
+})();
+</script>
+</body>
+</html>

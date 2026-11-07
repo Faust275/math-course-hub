@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How human like do we really want robots to be? · 英语</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.eng-wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
+.eng-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-wrap h1{font-size:26px;line-height:1.35;margin:8px 0 6px;font-weight:700}
+.eng-meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.eng-chip{border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--muted)}
+.eng-chip.q{border-color:#c98a2e;color:#a86b12}
+
+/* 播放条 */
+.eng-player{margin:18px 0 6px;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eng-player button{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.eng-player button:hover{border-color:var(--accent);color:var(--accent)}
+.eng-time{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:96px}
+.eng-track{flex:1;min-width:180px;height:6px;border-radius:99px;background:var(--border);overflow:hidden;cursor:pointer}
+.eng-track i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 标签页 */
+.eng-tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.eng-tabs button{border:0;background:none;font-family:inherit;font-size:14px;color:var(--muted);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.eng-tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.eng-tabs small{font-size:11px;color:var(--muted);margin-left:4px}
+
+/* 课文 */
+.eng-p{line-height:1.95;margin:0 0 16px;font-size:16px}
+.sg{cursor:pointer;border-radius:3px;transition:background .12s}
+.sg:hover{background:var(--okbg)}
+.sg.on{background:var(--okbg);box-shadow:inset 0 -2px 0 var(--accent)}
+.eng-hint{font-size:12px;color:var(--muted);margin:-6px 0 18px}
+
+/* 词表 */
+.eng-tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.eng-tools input[type=text]{flex:1;min-width:160px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+border-radius:9px;padding:7px 11px;font-size:13px;font-family:inherit}
+.eng-tools label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;cursor:pointer}
+.eng-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:700}
+.eng-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.eng-t{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+table.eng-t th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px}
+table.eng-t td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+table.eng-t tr:hover td{background:var(--surface)}
+.eng-w{font-weight:600;font-size:15px}
+.eng-ipa{font-family:"Times New Roman",Georgia,serif;color:var(--accent);font-size:13.5px}
+.eng-pos{color:var(--muted);font-size:12px;font-style:italic}
+.eng-cn{color:var(--text);font-size:13.5px}
+.eng-play{border:1px solid var(--border);background:var(--bg);color:var(--accent);border-radius:7px;width:30px;height:26px;
+cursor:pointer;font-size:11px;line-height:1}
+.eng-play:hover{background:var(--okbg)}
+.eng-play.playing{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.eng-out{white-space:nowrap;color:var(--muted);font-size:12px}
+.badge-q{display:inline-block;margin-left:6px;font-size:10.5px;color:#a86b12;border:1px solid #c98a2e;border-radius:6px;padding:0 5px;vertical-align:2px}
+
+/* 课本分级标识 */
+.badge-mk{display:inline-block;margin-left:5px;font-size:10.5px;border:1px solid var(--border);border-radius:6px;padding:0 5px;vertical-align:2px;line-height:1.5}
+.badge-mk.m4{color:var(--accent);border-color:var(--accent)}
+.badge-mk.m6{color:#a855f7;border-color:#a855f7}
+.badge-mk.m0{color:var(--muted);border-style:dashed;border-color:var(--muted)}
+.eng-tools select{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit}
+.eng-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.eng-legend span b{font-weight:600}
+
+/* 总览 */
+.eng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.eng-card{border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s}
+.eng-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eng-card .u{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.eng-card h3{margin:6px 0 8px;font-size:16.5px;line-height:1.45}
+.eng-card .m{font-size:12px;color:var(--muted);display:flex;gap:12px}
+.eng-note{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);line-height:1.85}
+.eng-note b{color:var(--text)}
+@media (max-width:640px){
+  .eng-wrap{padding:18px 14px 60px}
+  .eng-wrap h1{font-size:21px}
+  /* 手机上把词表改成「一行一个词条」：左边发音、右边词 + 释义，音标/词性/出处先收起来，不用横向滑 */
+  .eng-tw{overflow:visible}
+  table.eng-t{display:block;min-width:0}
+  table.eng-t colgroup,table.eng-t thead{display:none}
+  table.eng-t tbody{display:block}
+  table.eng-t tr{display:grid;grid-template-columns:40px 1fr;column-gap:9px;align-items:baseline;
+    padding:9px 2px;border-bottom:1px solid var(--border)}
+  table.eng-t tr:hover td{background:none}
+  table.eng-t td{display:block;border:0;padding:0}
+  table.eng-t td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  table.eng-t td:nth-child(2){grid-column:2;font-size:15.5px}
+  table.eng-t td:nth-child(3),table.eng-t td:nth-child(4),table.eng-t td:nth-child(6){display:none}
+  table.eng-t td:nth-child(5){grid-column:2;font-size:13px;color:var(--muted);line-height:1.5}
+}
+</style>
+<script>
+(function(){
+  var raw=null;try{raw=window.localStorage;}catch(e){}
+  var mem={};
+  window.WBS={
+    get:function(k){
+      if(k in mem)return mem[k];
+      try{var v=raw?raw.getItem(k):null;if(v!==null){mem[k]=v;}return v;}catch(e){return null;}
+    },
+    set:function(k,v){v=String(v);mem[k]=v;try{if(raw)raw.setItem(k,v);}catch(e){}}
+  };
+  function apply(t){
+    var d=t==='dark';
+    if(window.wbSetTheme)window.wbSetTheme(t);
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.classList.toggle('wb-dark',d);
+    document.documentElement.classList.toggle('wb-light',!d);
+    var b=document.getElementById('theme-btn');
+    if(b)b.textContent=d?'\u2600\ufe0f':'\ud83c\udf19';
+  }
+  window.WBS.applyTheme=apply;
+  var t=window.WBS.get('wb_theme');
+  if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  apply(t);
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(window.WBS.get('wb_theme')||t);
+    var b=document.getElementById('theme-btn');
+    if(b)b.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      window.WBS.set('wb_theme',cur);apply(cur);
+    });
+  });
+})();
+</script>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+    <a href="english.html" class="on">英语</a>
+  </nav>
+  <div class="crumb"><a href="index.html">首页</a> <span>›</span> <a href="english.html">英语</a> <span>›</span> <b>Unit 1 R2</b></div>
+  <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+</header>
+<main class="eng-wrap">
+<div class="eng-kicker">Unit 1 · Reading 2</div><h1>How human like do we really want robots to be?</h1><div class="eng-meta"><span>11 段 · 47 句</span><span>36 词 + 3 短语 + 1 专名</span><a class="eng-chip" href="english.html">← 全部单元</a><a class="eng-chip" href="english-quiz.html?u=1&amp;r=2">练词 / 听写 →</a></div><div class="eng-player"><button id="pp">▶ 播放</button><span class="eng-time" id="tm">0:00 / 0:00</span><div class="eng-track" id="tr"><i id="pr"></i></div><button id="r15" title="后退 15 秒">−15s</button><button id="f15" title="前进 15 秒">+15s</button></div><div class="eng-hint">点句子从该处开始播放；再点同一句暂停。词表里的 ▶ 只播那一个词。</div><div class="eng-tabs"><button data-v="text" class="on">课文<small>47 句</small></button><button data-v="words">词表<small>40</small></button></div><div id="v-text"><p class="eng-p"><span class="sg" data-s="9.58" data-e="17.98">From bionic law enforcers to mechanical warriors, the movie industry has produced a pantheon of memorable cyborgs.</span> <span class="sg" data-s="18.62" data-e="31.07">These hybrids fascinate us for the same reason, they blur the lines between humans and robots in ways that have never happened in our history but just might be part of our future.</span> </p><p class="eng-p"><span class="sg" data-s="32.48" data-e="36.33">Fully functional cyborgs are still quite a way off.</span> <span class="sg" data-s="37.14" data-e="42.39">But scientists are pioneering a new way to combine humans and machines.</span> <span class="sg" data-s="43.08" data-e="51.98">A Japanese team has designed a robotic finger that&#x27;s covered with living skin grown from actual human skin cells.</span> <span class="sg" data-s="52.62" data-e="57.37">The process gives the robotic appendage an extremely lifelike look.</span> <span class="sg" data-s="58.16" data-e="63.76">Not least because the skin can move and flex naturally as a three-joint digit does.</span> <span class="sg" data-s="64.56" data-e="74.385">To the touch, the skin also feels far more like human skin and silicone robot skins do, and can even heal when cut or split.</span> </p><p class="eng-p"><span class="sg" data-s="75.7" data-e="80.85">To create the lifelike appendage, the team employed a two-part process.</span> <span class="sg" data-s="81.64" data-e="92.485">They first prepared a mixed solution of collagen and human dermal fibroblasts, the two main components in our skin&#x27;s connective tissues.</span> <span class="sg" data-s="93.18" data-e="100.63">The finger was submerged in this solution and while being cultured in an incubator for around three days.</span> <span class="sg" data-s="101.48" data-e="111.83">This artificial dermis adhered to the digit as the tissues naturally shrank to produce a solid, close-fitting coating over the finger.</span> <span class="sg" data-s="112.66" data-e="120.27">This coating served as a foundation for the molding and application of a second coat, and epidermis.</span> <span class="sg" data-s="120.94" data-e="134.84">To form the epidermal layer, a second solution containing human keratinocytes was prepared and carefully poured onto the finger and then left to be cultured for two weeks to produce the finished product.</span> </p><p class="eng-p"><span class="sg" data-s="136.42" data-e="143.62">This innovative approach addresses a key limitation of existing methods for creating artificial skin.</span> <span class="sg" data-s="144.4" data-e="149.075">While other methods such as creating sheets of living human skin, face challenges in conforming to the unique shapes of human anatomy.</span> </p><p class="eng-p"><span class="sg" data-s="155.08" data-e="158.08">This approach achieves a form fit more easily.</span> <span class="sg" data-s="158.86" data-e="164.885">The finger moved by an electric motor is only one small part of the human anatomy.</span> <span class="sg" data-s="165.54" data-e="172.94">But its movements do represent a way to explore how the skin can cover moving parts in a lifelike way.</span> </p><p class="eng-p"><span class="sg" data-s="174.45" data-e="176.725">Of course, appearance isn&#x27;t everything.</span> <span class="sg" data-s="177.48" data-e="186.605">Humans don&#x27;t just look at one another&#x27;s skin, they touch it too, and the living skin provides a much more natural feel than silicone.</span> <span class="sg" data-s="187.32" data-e="193.72">But to enable robots to interact more naturally and safely in our everyday human environment.</span> <span class="sg" data-s="194.72" data-e="197.795">It&#x27;s not enough for their skin to feel natural to us.</span> <span class="sg" data-s="198.56" data-e="201.61">The robots must also have their own sense of touch.</span> <span class="sg" data-s="202.48" data-e="209.655">Scientists have tried various electronic sensors and other methods to create a sense of touch in robots.</span> <span class="sg" data-s="210.34" data-e="222.365">For example, researchers in China have developed an electronic skin that enables robots to navigate their surroundings through touch when visibility is limited.</span> <span class="sg" data-s="222.98" data-e="232.18">In the case of the finger experiment, the team plans to explore reproducing a natural nerve system to instill a sense of touch in the skin.</span> </p><p class="eng-p"><span class="sg" data-s="233.7" data-e="248.275">But how human-like do we really want robots to be? Answers vary. A study from the Georgia Institute of Technology found that most college aged adults preferred their robots to look like robots.</span> <span class="sg" data-s="248.9" data-e="252.675">While older adults preferred those with more human faces.</span> <span class="sg" data-s="253.42" data-e="256.52">A given robot&#x27;s role is also a factor.</span> <span class="sg" data-s="257.52" data-e="264.395">For example, most individuals in the study preferred house cleaning robots to look more like machines.</span> <span class="sg" data-s="265.08" data-e="272.93">While those communicating with us and performing smart tasks like giving information were preferred to look more like us.</span> </p><p class="eng-p"><span class="sg" data-s="274.74" data-e="280.84">Increasingly, we&#x27;ll be interacting meaningfully with social robots in our daily lives.</span> <span class="sg" data-s="281.78" data-e="291.905">Neuroscience studies have found our empathy for them when they are treated harshly isn&#x27;t yet at the same level as what we feel for other humans.</span> <span class="sg" data-s="292.54" data-e="299.84">We view robots as less than human, so making them more human-like may strengthen our relationships.</span> <span class="sg" data-s="300.54" data-e="310.04">That might be useful as robots are increasingly socially tasked with things like caregiving or dispensing important information and advice.</span> </p><p class="eng-p"><span class="sg" data-s="311.64" data-e="321.14">Yet some researchers describe our evolving relationships with social robots that look increasingly like us as a paradox.</span> <span class="sg" data-s="321.7" data-e="330.75">On the one hand, humans want social robots to be human enough in appearance and behavior to fulfill our relationship needs.</span> <span class="sg" data-s="331.6" data-e="339.275">On the other hand, robots that are too human can threaten our sense of human identity and uniqueness.</span> <span class="sg" data-s="339.96" data-e="348.96">A fear that might be fueled by cognitive systems that aren&#x27;t accustomed to confusing blurred boundaries between humans and machines.</span> </p><p class="eng-p"><span class="sg" data-s="350.34" data-e="361.34">If you have machines that are too similar to us, you start to have this blurring of human identity and people can be threatened by that one researcher says.</span> <span class="sg" data-s="362.06" data-e="366.11">If they are as human as I am, then what does it mean to be human?</span> </p><p class="eng-p"><span class="sg" data-s="367.87" data-e="370.97">Another question may lie near the core of such doubt.</span> <span class="sg" data-s="371.74" data-e="374.065">Can we ever really trust robots?</span> <span class="sg" data-s="374.74" data-e="382.04">Right now, some individuals remain very wary, perhaps in part because of the portrayals of robots in some movies.</span> <span class="sg" data-s="383.0" data-e="396.275">Our relationships with robots and our attitudes toward them will continue to evolve, for better or worse, as humans have more and more experiences with intelligent machines.</span> <span class="sg" data-s="396.92" data-e="402.695">In that way, the robots we produce will really shape our attitudes toward them.</span> </p></div><div id="v-words" hidden><div class="eng-tools"><input type="text" id="q" placeholder="筛单词 / 音标 / 释义…" autocomplete="off"><select id="mk"><option value="">全部等级</option><option value="star">四级</option><option value="tri">六级</option><option value="none">超纲</option></select><label><input type="checkbox" id="onlyq"> 只看待核对</label></div><div class="eng-legend"><span><b class="badge-mk m4">四</b> 四级词汇</span><span><b class="badge-mk m6">六</b> 六级词汇</span><span><b class="badge-mk m0">纲</b> 超纲词汇（课本未标注）</span><span>无徽标 = 短语 / 专名，课本不分级</span></div><div class="eng-group">New words · 36</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u1r2-000.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Adhere</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ədˈhɪə(r)/</span></td><td><span class="eng-pos">vi.</span></td><td class="eng-cn">黏附；附着</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-001.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Anatomy</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/əˈnætəmi/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">解剖；解剖结构</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u1r2-002.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Appendage</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/əˈpendɪdʒ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">附属肢体；附加物</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-003.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Bionic</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/baɪˈɒnɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">仿生的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-004.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Coating</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈkəʊtɪŋ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">涂层；外层；覆盖层</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u1r2-005.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cognitive</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈkɒɡnətɪv/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">认知的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-006.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Collagen</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈkɒlədʒən/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">胶原蛋白</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-007.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Connective tissue</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/kəˈnektɪv ˈtɪʃuː/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">结缔组织</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-008.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Culture</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈkʌltʃə(r)/</span></td><td><span class="eng-pos">vt./n.</span></td><td class="eng-cn">培养（细胞、细菌）；文化</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-009.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Cyborg</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsaɪbɔːɡ/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">半机械人</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-010.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dermis</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈdɜːmɪs/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">真皮</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-011.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Digit</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈdɪdʒɪt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">手指，脚趾；数字</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u1r2-012.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Dispense</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/dɪˈspens/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">分配，发放；配制</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-013.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Electric motor</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪˈlektrɪk ˈməʊtə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">电动机</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-014.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Empathy</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈempəθi/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">共情，同理心</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-015.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Enforcer</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ɪnˈfɔːsə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">执法者；强制执行者</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-016.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Epidermis</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˌepɪˈdɜːmɪs/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">表皮</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-017.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Flex</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/fleks/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">弯曲；屈伸</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-018.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Functional</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈfʌŋkʃənl/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">具备功能的；实用的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-019.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Human dermal fibroblast</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈhjuːmən ˈdɜːml ˈfɪbrəblæst/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">人真皮成纤维细胞</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-020.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Human keratinocyte</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈhjuːmən kəˈrætɪnəsaɪt/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">人角质形成细胞</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-021.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Hybrid</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈhaɪbrɪd/</span></td><td><span class="eng-pos">n./adj.</span></td><td class="eng-cn">混合体；混合的</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-022.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Incubator</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈɪŋkjubeɪtə(r)/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">恒温培养箱；孵化器</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-023.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Instill</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ɪnˈstɪl/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">逐渐灌输；注入</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-024.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Lifelike</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈlaɪflaɪk/</span></td><td><span class="eng-pos">adj.</span></td><td class="eng-cn">逼真的，栩栩如生的</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-025.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Mold</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/məʊld/</span></td><td><span class="eng-pos">n./vt.</span></td><td class="eng-cn">模具；塑造</td></tr><tr data-mk="tri"><td><button class="eng-play" data-a="assets/english/clips/u1r2-026.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Navigate</span><span class="badge-mk m6" title="课本标 △ ：六级词汇">六</span></td><td><span class="eng-ipa">/ˈnævɪɡeɪt/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">导航；穿行于</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-027.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Neuroscience</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈnjʊərəʊsaɪəns/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">神经科学</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-028.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Pantheon</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈpænθiən/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">（某领域的）群英谱；万神殿</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-029.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Portrayal</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/pɔːˈtreɪəl/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">描绘，刻画</td></tr><tr data-mk="none"><td><button class="eng-play" data-a="assets/english/clips/u1r2-030.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Silicone</span><span class="badge-mk m0" title="课本未标注：超纲词汇">纲</span></td><td><span class="eng-ipa">/ˈsɪlɪkəʊn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">硅酮，硅胶</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-031.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Solution</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/səˈluːʃn/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">溶液；解决方案</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-032.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Strengthen</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈstreŋθn/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">加强，巩固</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-033.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Submerge</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/səbˈmɜːdʒ/</span></td><td><span class="eng-pos">vt.</span></td><td class="eng-cn">使浸没；淹没</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-034.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Threaten</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˈθretn/</span></td><td><span class="eng-pos">v.</span></td><td class="eng-cn">威胁；危及</td></tr><tr data-mk="star"><td><button class="eng-play" data-a="assets/english/clips/u1r2-035.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Visibility</span><span class="badge-mk m4" title="课本标 * ：四级词汇">四</span></td><td><span class="eng-ipa">/ˌvɪzəˈbɪləti/</span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">能见度；可见性</td></tr></tbody></table></div><div class="eng-group">Phrases and expressions · 3</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r2-036.m4a" title="播放发音">▶</button></td><td><span class="eng-w">For better or worse</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">无论好坏，不管是福是祸</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r2-037.m4a" title="播放发音">▶</button></td><td><span class="eng-w">For better or for worse</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">无论好坏，不管是福是祸</td></tr><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r2-038.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Not least</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">phr.</span></td><td class="eng-cn">尤其，特别是</td></tr></tbody></table></div><div class="eng-group">Proper names · 1</div><div class="eng-tw"><table class="eng-t" id="wt"><colgroup><col style="width:46px"><col style="width:29%"><col style="width:23%"><col style="width:74px"><col></colgroup><thead><tr><th></th><th>词条</th><th>音标</th><th>词性</th><th>释义</th></tr></thead><tbody><tr data-mk=""><td><button class="eng-play" data-a="assets/english/clips/u1r2-039.m4a" title="播放发音">▶</button></td><td><span class="eng-w">Georgia Institute of Technology</span></td><td><span class="eng-ipa"></span></td><td><span class="eng-pos">n.</span></td><td class="eng-cn">佐治亚理工学院（美国）</td></tr></tbody></table></div></div><script>window.ENG={"text":"assets/english/u1r2-text.m4a","words":"assets/english/u1r2-words.m4a","dur":402.695,"segs":[[9.58,17.98],[18.62,31.07],[32.48,36.33],[37.14,42.39],[43.08,51.98],[52.62,57.37],[58.16,63.76],[64.56,74.385],[75.7,80.85],[81.64,92.485],[93.18,100.63],[101.48,111.83],[112.66,120.27],[120.94,134.84],[136.42,143.62],[144.4,149.075],[155.08,158.08],[158.86,164.885],[165.54,172.94],[174.45,176.725],[177.48,186.605],[187.32,193.72],[194.72,197.795],[198.56,201.61],[202.48,209.655],[210.34,222.365],[222.98,232.18],[233.7,248.275],[248.9,252.675],[253.42,256.52],[257.52,264.395],[265.08,272.93],[274.74,280.84],[281.78,291.905],[292.54,299.84],[300.54,310.04],[311.64,321.14],[321.7,330.75],[331.6,339.275],[339.96,348.96],[350.34,361.34],[362.06,366.11],[367.87,370.97],[371.74,374.065],[374.74,382.04],[383.0,396.275],[396.92,402.695]]};</script>
+<script>
+(function(){
+  var E=window.ENG||{};
+  var au=null, cu=null, stopAt=0, segs=E.segs||[], lastSeg=-1;
+  var pp=document.getElementById('pp'), tm=document.getElementById('tm'),
+      pr=document.getElementById('pr'), tr=document.getElementById('tr');
+
+  function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+
+  if(tm)tm.textContent='0:00 / '+fmt(E.dur);
+  function ensure(src){
+    if(!src)return null;
+    if(!au){au=new Audio();au.preload='metadata';
+      au.addEventListener('timeupdate',tick);
+      au.addEventListener('loadedmetadata',tick);
+      au.addEventListener('ended',tick);}
+    if(au.getAttribute('data-src')!==src){au.setAttribute('data-src',src);au.src=src;}
+    return au;
+  }
+  /* 关键：src 刚设上时元数据还没到，此时赋 currentTime 会被浏览器忽略，
+     于是"点一句却从 0 开始播、再被 stopAt 半路掐断"。统一等 loadedmetadata 再定位。 */
+  function withTime(t,stop,then){
+    var a=ensure(E.text);if(!a)return;
+    var go=function(){
+      stopAt=stop||0;
+      try{a.currentTime=Math.max(0,t);}catch(e){}
+      if(then)then(a);
+    };
+    if(a.readyState>=1){go();return;}
+    var h=function(){a.removeEventListener('loadedmetadata',h);go();};
+    a.addEventListener('loadedmetadata',h);
+  }
+  /* 逐词切片：每个词一个独立文件，从头播出来就是那个词 */
+  function playClip(src){
+    if(!cu){cu=new Audio();cu.preload='auto';}
+    if(cu.getAttribute('data-src')!==src){
+      cu.setAttribute('data-src',src);cu.src=src;cu.play();return;
+    }
+    try{cu.currentTime=0;}catch(e){}
+    cu.play();
+  }
+  function tick(){
+    if(!au)return;
+    var d=au.duration||0;
+    if(tm)tm.textContent=fmt(au.currentTime)+' / '+(d?fmt(d):fmt(E.dur));
+    if(pr&&d)pr.style.width=(au.currentTime/d*100)+'%';
+    if(pp)pp.textContent=au.paused?'▶ 播放':'⏸ 暂停';
+    if(stopAt&&au.currentTime>stopAt){au.pause();stopAt=0;}
+    if(segs.length){
+      var t=au.currentTime,i=-1;
+      for(var k=0;k<segs.length;k++){if(segs[k][0]<=t+0.05&&t<segs[k][1]+0.4){i=k;break;}}
+      if(i!==lastSeg){
+        var old=document.querySelector('.sg.on');if(old)old.classList.remove('on');
+        var el=document.querySelectorAll('.sg')[i];if(el)el.classList.add('on');
+        lastSeg=i;
+      }
+    }
+  }
+
+  if(pp){
+    pp.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      stopAt=0;if(a.paused)a.play();else a.pause();
+    });
+  }
+  if(tr){
+    tr.addEventListener('click',function(ev){
+      var a=ensure(E.text);if(!a)return;
+      var r=tr.getBoundingClientRect();
+      var t=(ev.clientX-r.left)/r.width*(a.duration||E.dur);
+      withTime(t,0,function(x){x.play();});
+    });
+  }
+  ['r15','f15'].forEach(function(id){
+    var b=document.getElementById(id);if(!b)return;
+    b.addEventListener('click',function(){
+      var a=ensure(E.text);if(!a)return;
+      var d=a.duration||E.dur||0;
+      var t=Math.max(0,Math.min(Math.max(0,d-0.3),a.currentTime+(id==='r15'?-15:15)));
+      withTime(t,0,null);
+    });
+  });
+
+  /* 点句播放 / 再点暂停 */
+  document.addEventListener('click',function(ev){
+    var sg=ev.target.closest('.sg');
+    if(sg){
+      var a=ensure(E.text);if(!a)return;
+      var s0=parseFloat(sg.getAttribute('data-s'));
+      if(!a.paused&&Math.abs(a.currentTime-s0)<2.2){a.pause();return;}
+      withTime(Math.max(0,s0-0.15),0,function(x){x.play();});
+      return;
+    }
+    var pb=ev.target.closest('.eng-play');
+    if(pb){
+      var src=pb.getAttribute('data-a');
+      if(src){
+        playClip(src);
+      }else{
+        var s2=parseFloat(pb.getAttribute('data-s'));
+        var e2=parseFloat(pb.getAttribute('data-e'));
+        withTime(Math.max(0,s2-0.12),e2+0.3,function(x){x.play();});
+      }
+      document.querySelectorAll('.eng-play.playing').forEach(function(b){b.classList.remove('playing');});
+      pb.classList.add('playing');
+      setTimeout(function(){pb.classList.remove('playing');},1500);
+    }
+  });
+
+  /* 标签页 */
+  document.querySelectorAll('.eng-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.eng-tabs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      var v=b.getAttribute('data-v');
+      var t=document.getElementById('v-text'),w=document.getElementById('v-words');
+      if(t)t.hidden=(v!=='text');
+      if(w)w.hidden=(v!=='words');
+      if(v==='words'&&au&&!au.paused)au.pause();
+    });
+  });
+
+  /* 深链：?tab=words */
+  if(/[?&]tab=words/.test(location.search)||location.hash==='#words'){
+    var wb=document.querySelector('.eng-tabs button[data-v=words]');
+    if(wb)wb.click();
+  }
+
+  /* 过滤 */
+  var q=document.getElementById('q'), oq=document.getElementById('onlyq'),
+      sv=document.getElementById('mk');
+  function filter(){
+    var v=(q&&q.value||'').trim().toLowerCase(), only=oq&&oq.checked,
+        lv=(sv&&sv.value)||'';
+    document.querySelectorAll('table.eng-t tbody tr').forEach(function(tr){
+      var txt=tr.textContent.toLowerCase();
+      var mk=tr.getAttribute('data-mk')||'';
+      var okq=!v||txt.indexOf(v)>=0;
+      var okq2=!only||!!tr.querySelector('.badge-q');
+      var ok3=!lv||mk===lv;
+      tr.style.display=(okq&&okq2&&ok3)?'':'none';
+    });
+  }
+  if(q)q.addEventListener('input',filter);
+  if(oq)oq.addEventListener('change',filter);
+  if(sv)sv.addEventListener('change',filter);
+})();
+</script>
+</main>
+</body>
+</html>
