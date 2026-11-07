@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>代数学Ⅰ · 第 06 周作业（极大线性无关组、基与维数、过渡矩阵与维数公式）</title>
+  <style>
+  
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+/* 基础导航条与主题变量 */
+:root {
+  --wb-bg: #ffffff;
+  --wb-surface: #f7f7f5;
+  --wb-surface2: #fbfbf9;
+  --wb-text: #1f2328;
+  --wb-muted: #6b7280;
+  --wb-border: #e3e6ec;
+  --wb-accent: #0f6e56;
+  --wb-accent2: #185fa5;
+  --wb-h-color: #1a3d7c;
+  --wb-h3-bg: #f2f6fc;
+  --wb-h3-color: #24508c;
+  --wb-card-bg: #fbfaf6;
+  --wb-card-head: #f3ecde;
+  --wb-card-border: #ece5d8;
+  --wb-seg-line: #c3d5f0;
+  --wb-ts-bg: #eef2f8;
+  --wb-ts-color: #24508c;
+  --wb-ts-border: #d3deec;
+  --wb-code-bg: #f8f9fa;
+  --wb-code-border: #e9ecef;
+  --wb-pre-bg: #f4f5f7;
+  --wb-pill-bg: #f4f3f0;
+  --wb-pill-text: #5f5a54;
+  --wb-toc-bg: #ffffff;
+  --wb-drawer-bg: #ffffff;
+  --wb-drawer-border: #e3e6ec;
+  --wb-math-bg: #fcfcfb;
+  --wb-math-border: #e6e8ee;
+}
+
+html.wb-dark, body.wb-dark {
+  --wb-bg: #181817;
+  --wb-surface: #222220;
+  --wb-surface2: #282826;
+  --wb-text: #e6e6e3;
+  --wb-muted: #9ca3af;
+  --wb-border: #383834;
+  --wb-accent: #5dcaa5;
+  --wb-accent2: #85b7eb;
+  --wb-h-color: #85b7eb;
+  --wb-h3-bg: #1e2634;
+  --wb-h3-color: #93c5fd;
+  --wb-card-bg: #201f1d;
+  --wb-card-head: #2c2822;
+  --wb-card-border: #3d3a34;
+  --wb-seg-line: #263852;
+  --wb-ts-bg: #1e2634;
+  --wb-ts-color: #93c5fd;
+  --wb-ts-border: #2c394d;
+  --wb-code-bg: #222220;
+  --wb-code-border: #333330;
+  --wb-pre-bg: #141413;
+  --wb-pill-bg: #2b2825;
+  --wb-pill-text: #d1cbc5;
+  --wb-toc-bg: #1e222a;
+  --wb-drawer-bg: #1c1c1a;
+  --wb-drawer-border: #333330;
+  --wb-math-bg: #21211f;
+  --wb-math-border: #353531;
+  background-color: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not(.wb-light) {
+    --wb-bg: #181817;
+    --wb-surface: #222220;
+    --wb-surface2: #282826;
+    --wb-text: #e6e6e3;
+    --wb-muted: #9ca3af;
+    --wb-border: #383834;
+    --wb-accent: #5dcaa5;
+    --wb-accent2: #85b7eb;
+    --wb-h-color: #85b7eb;
+    --wb-h3-bg: #1e2634;
+    --wb-h3-color: #93c5fd;
+    --wb-card-bg: #201f1d;
+    --wb-card-head: #2c2822;
+    --wb-card-border: #3d3a34;
+    --wb-seg-line: #263852;
+    --wb-ts-bg: #1e2634;
+    --wb-ts-color: #93c5fd;
+    --wb-ts-border: #2c394d;
+    --wb-code-bg: #222220;
+    --wb-code-border: #333330;
+    --wb-pre-bg: #141413;
+    --wb-pill-bg: #2b2825;
+    --wb-pill-text: #d1cbc5;
+    --wb-toc-bg: #1e222a;
+    --wb-drawer-bg: #1c1c1a;
+    --wb-drawer-border: #333330;
+  }
+}
+
+body.wb-dark h1, html.wb-dark h1 { color: var(--wb-h-color) !important; border-bottom-color: #2a4365 !important; }
+body.wb-dark h2, html.wb-dark h2 { color: var(--wb-h-color) !important; border-left-color: #2a4365 !important; }
+body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; background: var(--wb-h3-bg) !important; }
+body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
+body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
+body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
+body.wb-dark .wb-excard p > strong:first-child,
+body.wb-dark .wb-excard li > strong:first-child,
+html.wb-dark .wb-excard p > strong:first-child,
+html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
+body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
+body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
+body.wb-dark code, html.wb-dark code { background: #282825 !important; color: #f0f0ed !important; }
+body.wb-dark pre, html.wb-dark pre { background: var(--wb-pre-bg) !important; border-color: #333330 !important; color: #f0f0ed !important; }
+body.wb-dark #TOC, html.wb-dark #TOC { background: var(--wb-toc-bg) !important; border-color: #333d4d !important; }
+body.wb-dark table th, html.wb-dark table th { background: #1e2634 !important; color: #93c5fd !important; border-color: #333d4d !important; }
+body.wb-dark table td, html.wb-dark table td { border-color: #333d4d !important; }
+body.wb-dark tr:nth-child(even) td, html.wb-dark tr:nth-child(even) td { background: #1a1f29 !important; }
+body.wb-dark blockquote, html.wb-dark blockquote { background: #1a222e !important; border-left-color: #3b82f6 !important; color: #c4ccd8 !important; }
+body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark mjx-container { color: var(--wb-text) !important; }
+
+
+/* 数学公式容器增强与横向滚动 */
+.wb-math-wrap {
+  position: relative;
+  margin: 18px 0;
+  border: 1px solid var(--wb-math-border);
+  border-radius: 8px;
+  background: var(--wb-math-bg);
+  padding: 12px 16px 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wb-math-wrap:hover {
+  border-color: var(--wb-accent2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.wb-math-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+  opacity: 0.55;
+  transition: opacity .15s;
+}
+.wb-math-wrap:hover .wb-math-bar { opacity: 1; }
+.wb-math-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-muted);
+  margin-right: auto;
+  letter-spacing: .04em;
+}
+.wb-math-copy, .wb-math-zoom {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: all .15s;
+}
+.wb-math-copy:hover, .wb-math-zoom:hover {
+  background: var(--wb-surface2);
+  border-color: var(--wb-accent2);
+  color: var(--wb-accent2);
+}
+.wb-math-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  text-align: center;
+}
+.wb-math-scroll mjx-container { max-width: 100%; }
+
+/* 公式高清放大模态浮层 */
+.wb-math-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.62);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-math-modal.wb-open { display: flex; }
+.wb-math-modal-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.28);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-modal-pop .2s ease-out;
+}
+@keyframes wb-modal-pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.wb-math-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-math-modal-body {
+  padding: 34px 24px;
+  overflow: auto;
+  text-align: center;
+  font-size: 1.4em;
+  background: var(--wb-surface2);
+}
+.wb-math-modal-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 搜索结果关键词正文高亮 */
+.wb-hit-mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px #fde047;
+}
+html.wb-dark .wb-hit-mark, body.wb-dark .wb-hit-mark {
+  background: #854d0e;
+  color: #fef08a;
+  box-shadow: 0 0 0 1px #a16207;
+}
+.wb-res.active {
+  background: var(--wb-surface);
+  border-left: 3px solid var(--wb-accent2);
+  padding-left: 7px;
+}
+
+
+/* 阅读进度条 */
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #185fa5, #0f6e56);
+  z-index: 999;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+html.wb-dark .wb-read-progress, body.wb-dark .wb-read-progress {
+  background: linear-gradient(90deg, #85b7eb, #5dcaa5);
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,.15);
+  transition: transform .15s;
+  display: inline-block;
+}
+.wb-hl-color-dot:hover { transform: scale(1.22); }
+.wb-dot-yellow { background: #fef08a; }
+.wb-dot-green  { background: #bbf7d0; }
+.wb-dot-red    { background: #fecaca; }
+.wb-dot-purple { background: #e9d5ff; }
+
+.wb-hl-btn {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-hl-btn:hover { background: var(--wb-surface2); border-color: var(--wb-accent2); color: var(--wb-accent2); }
+.wb-hl-btn.wb-btn-del { color: #dc2626; border-color: #fca5a5; }
+
+/* 用户划词高亮样式 (4 色荧光笔 + 下划线) */
+.wb-user-hl {
+  border-radius: 2px;
+  padding: 1px 1px;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.wb-user-hl:hover { filter: brightness(.93); }
+.wb-user-hl-yellow { background: #fef08a; color: inherit; }
+.wb-user-hl-green  { background: #bbf7d0; color: inherit; }
+.wb-user-hl-red    { background: #fecaca; color: inherit; }
+.wb-user-hl-purple { background: #e9d5ff; color: inherit; }
+.wb-user-hl-underline {
+  background: transparent;
+  text-decoration: underline wavy #185fa5 2px;
+  text-underline-offset: 3px;
+}
+html.wb-dark .wb-user-hl-yellow, body.wb-dark .wb-user-hl-yellow { background: #714207; color: #fef08a; }
+html.wb-dark .wb-user-hl-green,  body.wb-dark .wb-user-hl-green  { background: #134e2a; color: #bbf7d0; }
+html.wb-dark .wb-user-hl-red,    body.wb-dark .wb-user-hl-red    { background: #6b1717; color: #fecaca; }
+html.wb-dark .wb-user-hl-purple, body.wb-dark .wb-user-hl-purple { background: #4a1570; color: #e9d5ff; }
+html.wb-dark .wb-user-hl-underline, body.wb-dark .wb-user-hl-underline { text-decoration-color: #85b7eb; }
+
+.wb-user-hl-has-note::after {
+  content: " 📝";
+  font-size: 10px;
+  vertical-align: super;
+  cursor: pointer;
+}
+body.wb-hl-hidden .wb-user-hl {
+  background: transparent !important;
+  text-decoration: none !important;
+}
+body.wb-hl-hidden .wb-user-hl::after { display: none !important; }
+
+/* 便签便签编辑模态浮层 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  width: 460px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-pop-in .15s ease-out;
+}
+.wb-note-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.wb-note-quote {
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-border);
+  font-size: 12.5px;
+  color: var(--wb-muted);
+  max-height: 80px;
+  overflow-y: auto;
+  font-style: italic;
+}
+.wb-note-body {
+  padding: 14px 16px;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.wb-note-textarea:focus { border-color: var(--wb-accent2); }
+.wb-note-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--wb-muted);
+}
+.wb-note-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 大纲抽屉的双 Tab 导航与批注列表 */
+.wb-drawer-nav {
+  display: flex;
+  gap: 4px;
+}
+.wb-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-tab-btn:hover { background: var(--wb-surface); color: var(--wb-text); }
+.wb-tab-btn.on { background: var(--wb-surface2); color: var(--wb-accent2); }
+.wb-notes-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.wb-note-card {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-note-card:hover {
+  border-color: var(--wb-accent2);
+  transform: translateY(-1px);
+}
+.wb-nc-quote {
+  font-size: 12px;
+  color: var(--wb-text);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  border-left: 3px solid #fde047;
+  padding-left: 8px;
+}
+.wb-nc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wb-h-color);
+  background: var(--wb-surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+.wb-nc-meta {
+  font-size: 11px;
+  color: var(--wb-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.wb-notes-tools {
+  padding: 10px 12px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* 断点续读右下角浮动提示 */
+.wb-resume-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-accent);
+  border-left: 4px solid var(--wb-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  z-index: 930;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: wb-pop-in .2s ease-out;
+}
+.wb-resume-btn {
+  background: var(--wb-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+
+/* 例题卡片攻克打卡与切题工具条 */
+.wb-excard > h4 {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-ex-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wb-mastery-btn {
+  border: 1px solid var(--wb-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  line-height: 1.3;
+  transition: all .15s;
+}
+.wb-mastery-btn:hover { border-color: var(--wb-accent); }
+.wb-mastery-btn.wb-st-todo  { background: var(--wb-surface2); color: var(--wb-muted); border-color: var(--wb-border); }
+.wb-mastery-btn.wb-st-doubt { background: #fef9c3; color: #854d0e; border-color: #fde047; font-weight: 600; }
+.wb-mastery-btn.wb-st-done  { background: #dcfce7; color: #15803d; border-color: #86efac; font-weight: 600; }
+html.wb-dark .wb-mastery-btn.wb-st-doubt { background: #713f12; color: #fef08a; border-color: #a16207; }
+html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; border-color: #16a34a; }
+
+.wb-ex-nav-btns {
+  display: inline-flex;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--wb-bg);
+}
+.wb-step-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  padding: 2px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-step-btn:hover { background: var(--wb-surface2); color: var(--wb-text); }
+.wb-step-btn:first-child { border-right: 1px solid var(--wb-border); }
+
+/* 大纲抽屉内的攻克率进度条 */
+.wb-mastery-bar {
+  padding: 10px 14px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-drawer-border);
+  font-size: 12px;
+}
+.wb-mb-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--wb-muted);
+}
+.wb-mb-text b { color: var(--wb-accent); font-weight: 600; }
+.wb-mb-track {
+  height: 6px;
+  background: var(--wb-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wb-mb-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width .25s ease;
+}
+
+/* 移动端专属底部悬浮控制台 (手机单手握持热区) */
+.wb-mobile-dock {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--wb-bg);
+  border-top: 1px solid var(--wb-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  z-index: 890;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(8px);
+}
+.wb-dock-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-text);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+.wb-dock-btn:active {
+  background: var(--wb-surface);
+  color: var(--wb-accent2);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 50px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 74px !important;
+  }
+  .wb-mobile-dock {
+    display: flex !important;
+  }
+  .wb-in {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  #wb-selftest-btn, #wb-toc-btn, .wb-font-tools, #wb-theme-btn, .wb-meta, .wb-subj, .wb-tag {
+    display: none !important;
+  }
+  .wb-crumb {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .wb-q {
+    width: 110px !important;
+    font-size: 11.5px !important;
+    padding: 4px 6px !important;
+  }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 18px !important; margin-top: 26px !important; }
+  h3 { font-size: 15px !important; padding: 6px 10px !important; }
+  .wb-excard {
+    padding: 0 12px 14px !important;
+    margin: 16px 0 !important;
+  }
+  .wb-excard > h4 {
+    margin: 0 -12px 12px !important;
+    padding: 9px 12px !important;
+    font-size: 14px !important;
+  }
+  .wb-ex-head-tools {
+    gap: 4px !important;
+    font-size: 11px !important;
+  }
+  .wb-math-modal-dialog {
+    width: 95vw !important;
+  }
+  .wb-math-modal-body {
+    padding: 20px 8px !important;
+    font-size: 1.15em !important;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* 移动端底部高亮悬浮面板 (防系统菜单与手指遮挡) */
+  .wb-hl-popover.wb-hl-mobile, .wb-hl-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 64px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 26px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.22) !important;
+    background: var(--wb-bg) !important;
+    border: 1px solid var(--wb-border) !important;
+    z-index: 1000 !important;
+    gap: 12px !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .wb-hl-color-dot {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .wb-hl-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+  /* 移动端公式溢出横向滑动提示与滚动条优化 */
+  .wb-math-wrap {
+    position: relative;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .wb-math-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  .wb-math-wrap::-webkit-scrollbar-thumb {
+    background: var(--wb-border);
+    border-radius: 2px;
+  }
+}
+
+/* 导航栏 */
+.wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
+ border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
+ font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
+.wb-in{max-width:1320px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-bar a{color:var(--wb-accent2);text-decoration:none;white-space:nowrap}
+.wb-bar a:hover{text-decoration:underline}
+.wb-bar a.wb-off{color:var(--wb-muted);pointer-events:none;text-decoration:none}
+.wb-crumb{color:var(--wb-muted);font-size:12px;flex:1;min-width:140px;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.wb-crumb b{color:var(--wb-text);font-weight:600}
+.wb-tag{font-size:11px;background:#eef4fb;color:#2f5597;border-radius:4px;padding:2px 7px;margin-left:8px}
+html.wb-dark .wb-tag, body.wb-dark .wb-tag{background:#1e293b;color:#93c5fd}
+.wb-subj{display:flex;gap:2px;margin-left:2px}
+.wb-subj a{color:var(--wb-muted);font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.wb-subj a:hover{color:var(--wb-accent2);background:var(--wb-surface)}
+.wb-subj a.wb-cur{color:#fff;background:#2f5597}
+html.wb-dark .wb-subj a.wb-cur, body.wb-dark .wb-subj a.wb-cur{background:#2563eb}
+.wb-meta{margin-left:6px;color:var(--wb-muted);font-size:11px;white-space:nowrap}
+
+/* 工具按钮 */
+.wb-tool-btn{border:1px solid var(--wb-border);background:var(--wb-surface);color:var(--wb-text);
+ border-radius:6px;padding:4px 9px;font-size:12px;cursor:pointer;white-space:nowrap;line-height:1.2;
+ display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.wb-tool-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-tool-btn.wb-btn-active{background:#e8f0fe;border-color:#185fa5;color:#185fa5;font-weight:600}
+html.wb-dark .wb-tool-btn.wb-btn-active, body.wb-dark .wb-tool-btn.wb-btn-active{background:#1e2e4a;border-color:#85b7eb;color:#85b7eb}
+.wb-font-tools{display:inline-flex;gap:1px}
+.wb-font-tools .wb-tool-btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.wb-font-tools .wb-tool-btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+
+.wb-q{border:1px solid var(--wb-border);border-radius:6px;padding:5px 9px;font-size:12px;
+ width:170px;outline:none;color:var(--wb-text);background:var(--wb-bg)}
+.wb-q:focus{border-color:var(--wb-accent2)}
+.wb-panel{position:fixed;top:46px;right:max(20px,calc((100vw - 1320px)/2));
+ width:min(520px,calc(100vw - 40px));max-height:70vh;overflow:auto;background:var(--wb-bg);
+ border:1px solid var(--wb-border);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.15);
+ padding:10px;display:none;z-index:910}
+.wb-res{display:block;padding:8px 10px;border-bottom:1px solid var(--wb-border);color:var(--wb-text);
+ font-size:12.5px;text-decoration:none}
+.wb-res:hover{background:var(--wb-surface);text-decoration:none}
+.wb-res small{display:block;color:var(--wb-muted);font-size:11px;margin-top:2px}
+
+/* 大纲抽屉 (Floating TOC Drawer) */
+.wb-toc-drawer{position:fixed;top:48px;right:0;bottom:0;width:340px;max-width:85vw;
+ background:var(--wb-drawer-bg);border-left:1px solid var(--wb-drawer-border);
+ box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:950;display:flex;flex-direction:column;
+ transform:translateX(100%);transition:transform .25s ease-in-out}
+.wb-toc-drawer.wb-open{transform:translateX(0)}
+.wb-toc-head{padding:12px 16px;border-bottom:1px solid var(--wb-drawer-border);
+ display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px}
+.wb-close-btn{border:none;background:transparent;color:var(--wb-muted);font-size:20px;
+ cursor:pointer;padding:0 4px;line-height:1}
+.wb-close-btn:hover{color:var(--wb-text)}
+.wb-toc-body{flex:1;overflow-y:auto;padding:12px 8px}
+.wb-toc-item{padding:5px 8px;margin:2px 0;border-radius:6px;cursor:pointer;font-size:12.5px;
+ color:var(--wb-muted);line-height:1.45;transition:all .15s;border-left:2px solid transparent;word-break:break-word}
+.wb-toc-item:hover{background:var(--wb-surface);color:var(--wb-text)}
+.wb-toc-item.wb-toc-active{color:var(--wb-accent2);background:var(--wb-surface);
+ font-weight:600;border-left-color:var(--wb-accent2)}
+.wb-toc-h2{font-weight:600;color:var(--wb-text);margin-top:8px}
+.wb-toc-h3{padding-left:14px;font-size:12px}
+.wb-toc-h4{padding-left:24px;font-size:11.5px;color:var(--wb-muted)}
+.wb-toc-backdrop{position:fixed;top:48px;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);
+ z-index:940;display:none;opacity:0;transition:opacity .25s}
+.wb-toc-backdrop.wb-open{display:block;opacity:1}
+
+/* 推导折叠控制 (Self-Test Mode) */
+.wb-derive-ctrl{margin:10px 0 6px}
+.wb-derive-btn{border:1px dashed var(--wb-border);background:var(--wb-surface);
+ color:var(--wb-accent2);border-radius:6px;padding:4px 10px;font-size:12px;
+ cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.wb-derive-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-derive-box.wb-hidden{display:none !important}
+
+/* 代码块增强 */
+.wb-code-wrap{margin:18px 0;border:1px solid var(--wb-code-border);border-radius:8px;
+ overflow:hidden;background:var(--wb-code-bg)}
+.wb-code-head{display:flex;align-items:center;justify-content:space-between;
+ padding:6px 12px;background:var(--wb-surface);border-bottom:1px solid var(--wb-code-border);
+ font-size:11.5px;color:var(--wb-muted)}
+.wb-code-lang{font-weight:600;font-family:ui-monospace,Consolas,monospace}
+.wb-code-copy-btn{border:1px solid var(--wb-border);background:var(--wb-bg);
+ color:var(--wb-text);border-radius:4px;padding:2px 8px;font-size:11.5px;cursor:pointer}
+.wb-code-copy-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-code-wrap pre{margin:0 !important;border:none !important;border-radius:0 !important;
+ padding:12px !important;overflow-x:auto}
+
+/* 锚点复制链接 */
+.wb-anchor{opacity:0;margin-left:6px;font-size:13px;color:var(--wb-accent2);
+ text-decoration:none;cursor:pointer;transition:opacity .15s}
+h2:hover .wb-anchor, h3:hover .wb-anchor, h4:hover .wb-anchor{opacity:.75}
+.wb-anchor:hover{opacity:1 !important}
+
+/* 落地平滑闪烁高亮 */
+@keyframes wb-flash-anim{
+ 0%{background-color:rgba(254,240,138,.85)}
+ 50%{background-color:rgba(254,240,138,.45)}
+ 100%{background-color:transparent}
+}
+.wb-flash-highlight{animation:wb-flash-anim 2.5s ease-out;border-radius:4px}
+
+/* Toast 提示浮条 */
+.wb-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+ background:#1f2328;color:#fff;padding:8px 16px;border-radius:20px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+html.wb-dark .wb-toast, body.wb-dark .wb-toast{background:#f3f4f6;color:#111827}
+.wb-toast-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 打印样式优化 */
+@media print{
+ body{padding-top:0 !important;max-width:100% !important;font-size:12pt !important;line-height:1.6 !important;color:#000 !important;background:#fff !important}
+ .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor{display:none !important}
+ .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill{break-inside:avoid !important;page-break-inside:avoid !important}
+ .wb-excard{border:1px solid #aaa !important;background:#fff !important}
+ .wb-derive-box.wb-hidden{display:block !important}
+ a{text-decoration:none !important;color:#000 !important}
+}
+body{padding-top:54px}
+@media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
+
+  
+/* 作业专属卡片与自测排版样式 */
+.wb-hw-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 20px 80px;
+}
+
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+.wb-hw-header {
+  margin: 20px 0 24px;
+  padding: 24px 28px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.wb-hw-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.wb-hw-week-pill {
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+.wb-hw-meta-chip {
+  background: var(--wb-card-bg);
+  color: var(--wb-muted);
+  border: 1px solid var(--wb-border);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.wb-hw-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--wb-text);
+  margin: 0 0 14px;
+  line-height: 1.35;
+}
+.wb-hw-notice {
+  font-size: 13.5px;
+  color: var(--wb-text);
+  line-height: 1.7;
+  border-left: 3px solid #2563eb;
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-radius: 0 8px 8px 0;
+  margin-top: 14px;
+}
+.wb-hw-part-head {
+  margin: 38px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--wb-border);
+}
+.wb-hw-part-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--wb-h-color);
+  margin: 0 0 6px;
+}
+.wb-hw-part-desc {
+  font-size: 13.5px;
+  color: var(--wb-muted);
+  margin: 0;
+}
+.wb-hw-card {
+  margin: 22px 0;
+  padding: 24px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-card-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.wb-hw-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.wb-hw-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed var(--wb-border);
+  padding-bottom: 12px;
+}
+.wb-hw-num-badge {
+  font-size: 17px;
+  font-weight: 800;
+  color: #2563eb;
+}
+.wb-hw-prob-title {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wb-text);
+}
+.wb-hw-stem {
+  font-size: 15.5px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.wb-hw-hint {
+  margin: 14px 0 18px;
+  padding: 12px 16px;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  color: #78350f;
+  line-height: 1.7;
+}
+html.wb-dark .wb-hw-hint {
+  background: #272115;
+  color: #fde68a;
+  border-left-color: #d97706;
+}
+.wb-hw-sol-box {
+  margin-top: 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: var(--wb-surface);
+  overflow: hidden;
+}
+html.wb-dark .wb-hw-sol-box {
+  border-color: #1e3a8a;
+  background: #1e293b;
+}
+.wb-hw-sol-summary {
+  padding: 12px 18px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  list-style: none;
+}
+.wb-hw-sol-summary::-webkit-details-marker { display: none; }
+html.wb-dark .wb-hw-sol-summary {
+  background: #172554;
+  color: #93c5fd;
+}
+.wb-hw-sol-body {
+  padding: 20px 22px;
+  font-size: 15px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  background: var(--wb-bg);
+  border-top: 1px solid #dbeafe;
+}
+html.wb-dark .wb-hw-sol-body {
+  border-top-color: #1e3a8a;
+}
+.wb-hw-sol-section {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--wb-border);
+}
+.wb-hw-sol-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.wb-hw-sol-label {
+  display: inline-block;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.wb-label-analysis { background: #dbeafe; color: #1e40af; }
+.wb-label-proof { background: #dcfce7; color: #15803d; }
+html.wb-dark .wb-label-analysis { background: #1e3a8a; color: #bfdbfe; }
+html.wb-dark .wb-label-proof { background: #14532d; color: #86efac; }
+
+/* Display Math Block Center */
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+math[display="inline"] {
+  display: inline;
+}
+
+  </style>
+  <script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+  </script>
+  <script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</head>
+<body class="wb-lecture-page">
+  <div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-algebra.html?tab=homework">← 代数学Ⅰ作业</a><a href="course-algebra.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html" class="wb-cur">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">代数学Ⅰ <span>›</span> <a href="course-algebra.html?tab=homework" style="color:inherit;text-decoration:none">每周作业</a> <span>›</span> <b>第 06 周作业</b></div><span class="wb-meta">10 必做 · 4 选做</span><a href="homework-algebra-week05.html">‹ 上一周</a><a class="off">下一周 ›</a><button class="wb-tool-btn" id="wb-hw-toggle-sol" title="一键切换遮挡/展开全部参考解析">🙈 遮挡解析 (自测)</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜题目 / 考点 / 概念 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 题目大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn" id="wb-hl-btn-del" title="删除本条标注" style="display:none;color:#ef4444">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><b>📝 添加划线便签</b><button id="wb-note-close" class="wb-close-btn">×</button></div><div id="wb-note-quote" class="wb-note-quote"></div><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的解题心得、思路批注或疑问..."></textarea><div class="wb-note-foot"><button class="wb-tool-btn" id="wb-note-del-btn" style="color:#ef4444">删除便签</button><button class="wb-tool-btn" id="wb-note-save-btn" style="background:#2563eb;color:#fff;border-color:#2563eb">保存便签</button></div></div></div>
+  <main>
+    <div class="wb-hw-container">
+
+    <div class="wb-hw-header">
+      <div class="wb-hw-pills">
+        <span class="wb-hw-week-pill">第 06 周作业</span>
+        <span class="wb-hw-meta-chip">覆盖：第五章前四节（10 月 29 日—11 月 5 日，覆盖极大线性无关组唯一性、矩阵对易子子空间维数、多项式赋值子空间、基变换与过渡矩阵、维数公式与余维数）</span>
+        <span class="wb-hw-meta-chip">发布：2026-10-29</span>
+        <span class="wb-hw-meta-chip">截止：2026-11-05 课上交</span>
+      </div>
+      <h1 class="wb-hw-title">极大线性无关组、基与维数、过渡矩阵与维数公式</h1>
+      
+    <div class="wb-hw-notice">
+        <b>💡 作业说明与自测指南</b>：<br>
+        • 本周重点：极大无关组与秩的内蕴性质、全对易子空间维数 $\dim W = n^2 - 1$、过渡矩阵坐标变换、Grassmann 维数公式应用。<br>• 推荐使用「🙈 遮挡解析 (自测)」模式：先独立推导解题，再展开核对解析。
+      </div>
+    </div>
+    
+            <div class="wb-hw-part-head" id="part_一极大线性无关组与秩">
+              <div class="wb-hw-part-title">一、极大线性无关组与秩</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_1">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 1 题</span>
+              <span class="wb-hw-prob-title">极大线性无关组唯一性的结构限制定理 (习题 5.1 第 4 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.1.4</span>
+            </div>
+            <a href="#prob_1" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#1</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设α1,α2,…,αr为线性空间V中不同向量.求证：若α1,α2,…,αr的极大线
+性无关组是唯一的，则向量组α1,α2,··,αr要么秩为r,要么秩为r-1且其中有一个
+向量为0.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：若极大无关组唯一，说明任何不在该组中的向量都必须只能是零向量！否则若存在非零外向量，可替换构造出另一个不同的极大无关组。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                拟阵理论与线性空间基底的刚性定理：基底几乎从来不是唯一的，除非整个集合本身就已线性无关或只差一个零向量。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 设向量组 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo>{</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>r</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">S = \{\alpha_1, \alpha_2, \dots, \alpha_r\}</annotation></semantics></math> 的秩为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math>。设其极大线性无关组为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math>（含有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 个向量）。</p><p>2. 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">k = r</annotation></semantics></math>，则整个向量组本身就是线性无关的，其唯一的极大线性无关组就是它自身，此时秩为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math>。</p><p>3. 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>&lt;</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">k &lt; r</annotation></semantics></math>，设存在不属于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 的向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>S</mi><mo>∖</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">v \in S \setminus B</annotation></semantics></math>。因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 是极大线性无关组，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math> 可由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 线性表示：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><munder><mo>∑</mo><mrow><msub><mi>b</mi><mrow><mi>i</mi></mrow></msub><mo>∈</mo><mi>B</mi></mrow></munder><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><msub><mi>b</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">v = \sum_{b_i \in B} c_i b_i</annotation></semantics></math></p><ul><li>若存在某个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>j</mi></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_j \neq 0</annotation></semantics></math>，则由 Steinitz 替换定理，可用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math> 替换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">b_j</annotation></semantics></math>，得到一个新的极大线性无关组 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>&#x27;</mi><mo>=</mo><mo>(</mo><mi>B</mi><mo>∖</mo><mo>{</mo><msub><mi>b</mi><mrow><mi>j</mi></mrow></msub><mo>}</mo><mo>)</mo><mo>∪</mo><mo>{</mo><mi>v</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">B&#x27; = (B \setminus \{b_j\}) \cup \{v\}</annotation></semantics></math>。因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∉</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">v \notin B</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>&#x27;</mi><mo>≠</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">B&#x27; \neq B</annotation></semantics></math>！这与极大线性无关组唯一矛盾！</li><li>因此，对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>i</mi></mrow></msub><mo>∈</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">b_i \in B</annotation></semantics></math>，在上述表示中所有系数必须全为 0，即必须有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">v = 0</annotation></semantics></math>。</li></ul><p>4. 题设向量两两不同，故最多只能有一个零向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>∈</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">0 \in S</annotation></semantics></math>。因此 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>∖</mo><mi>B</mi><mo>=</mo><mo>{</mo><mn>0</mn><mo>}</mo></mrow><annotation encoding="application/x-tex">S \setminus B = \{0\}</annotation></semantics></math>，推出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">|S| = k + 1 = r</annotation></semantics></math>，即秩为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">r - 1</annotation></semantics></math> 且多出的那个向量就是 0。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_2">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 2 题</span>
+              <span class="wb-hw-prob-title">补和向量组的等价性证明 (习题 5.1 第 5 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.1.5</span>
+            </div>
+            <a href="#prob_2" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#2</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设复线性空间V中有向量
+求证向量组α1,α2,…,αn与β1,β2,…,βn等价.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：计算两向量组之间的变换矩阵：全 1 矩阵减去单位阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi><mo>−</mo><msub><mi>I</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">J - I_n</annotation></semantics></math>。计算其行列式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">(n-1)(-1)^{n-1} \neq 0</annotation></semantics></math> 证明变换可逆。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                循环对称变换下的基底等价性。行列式非零保证了线性表出的可逆双向性。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>≠</mo><mi>i</mi></mrow></munder><msub><mi>α</mi><mrow><mi>j</mi></mrow></msub><mo>=</mo><mo stretchy="true">(</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><msub><mi>α</mi><mrow><mi>j</mi></mrow></msub><mo stretchy="true">)</mo><mo>−</mo><msub><mi>α</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\beta_i = \sum_{j \neq i} \alpha_j = \left(\sum_{j=1}^n \alpha_j\right) - \alpha_i</annotation></semantics></math>。写出变换矩阵：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>β</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>β</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">(\beta_1, \beta_2, \dots, \beta_n) = (\alpha_1, \alpha_2, \dots, \alpha_n) A</annotation></semantics></math> 其中矩阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>J</mi><mrow><mi>n</mi></mrow></msub><mo>−</mo><msub><mi>I</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A = J_n - I_n</annotation></semantics></math>（主对角线全为 0，其余元素全为 1）。</p><p>2. 计算矩阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 的特征值与行列式：因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>J</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">J_n</annotation></semantics></math> 的特征值为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math>（1 重）与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> 重），故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>J</mi><mrow><mi>n</mi></mrow></msub><mo>−</mo><msub><mi>I</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A = J_n - I_n</annotation></semantics></math> 的特征值为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>（1 重）与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> 重）。</p><p>3. 因此行列式为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>det</mo><mi>A</mi><mo>=</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\det A = (n - 1)(-1)^{n-1}</annotation></semantics></math> 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n \ge 2</annotation></semantics></math> 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>det</mo><mi>A</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\det A \neq 0</annotation></semantics></math>，故矩阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 严格可逆！</p><p>4. 因为过渡矩阵可逆，向量组 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 可以互相线性表出，故两向量组等价。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_3">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 3 题</span>
+              <span class="wb-hw-prob-title">二阶矩阵空间的极大线性无关组求解 (习题 5.1 第 7 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.1.7</span>
+            </div>
+            <a href="#prob_3" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#3</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求R2×2中向量组
+4=(6-2),A2=(-1 2),A?=(12) A=(-22)
+的一个极大线性无关组.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：将 4 个二阶方阵展成 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^4</annotation></semantics></math> 中的行向量，按行构成 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 \times 4</annotation></semantics></math> 矩阵实施行初等变换求秩与阶梯头。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                抽象矩阵空间向数值向量空间的坐标化（Isomorphism via Coordinate Mapping），是高维空间求基与秩的通用算法。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解与计算</b>：</p><p>在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^{2 \times 2}</annotation></semantics></math> 的标准基 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>E</mi><mrow><mn>11</mn></mrow></msub><mo>,</mo><msub><mi>E</mi><mrow><mn>12</mn></mrow></msub><mo>,</mo><msub><mi>E</mi><mrow><mn>21</mn></mrow></msub><mo>,</mo><msub><mi>E</mi><mrow><mn>22</mn></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">\{E_{11}, E_{12}, E_{21}, E_{22}\}</annotation></semantics></math> 下写出 4 个矩阵的坐标：</p><ul><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A_1 = (1, 0, 0, -2)</annotation></semantics></math>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub><mo>=</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A_2 = (-1, 2, 0, 0)</annotation></semantics></math>；</li><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>3</mn></mrow></msub><mo>=</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A_3 = (0, 2, 1, 0)</annotation></semantics></math>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>4</mn></mrow></msub><mo>=</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A_4 = (-2, 4, 1, 2)</annotation></semantics></math>。</li></ul><p>构造坐标矩阵并实施初等行变换：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr></mtable><mo>)</mo></mrow><mi>xrightarrow</mi><msub><mi>R</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>R</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>R</mi><mrow><mn>4</mn></mrow></msub><mo>+</mo><mn>2</mn><msub><mi>R</mi><mrow><mn>1</mn></mrow></msub><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr></mtable><mo>)</mo></mrow><mi>xrightarrow</mi><msub><mi>R</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>R</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>R</mi><mrow><mn>4</mn></mrow></msub><mo>−</mo><mn>2</mn><msub><mi>R</mi><mrow><mn>2</mn></mrow></msub><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr></mtable><mo>)</mo></mrow><mi>xrightarrow</mi><msub><mi>R</mi><mrow><mn>4</mn></mrow></msub><mo>−</mo><msub><mi>R</mi><mrow><mn>3</mn></mrow></msub><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; -2 \\ -1 &amp; 2 &amp; 0 &amp; 0 \\ 0 &amp; 2 &amp; 1 &amp; 0 \\ -2 &amp; 4 &amp; 1 &amp; 2 \end{pmatrix} \xrightarrow{R_2+R_1, R_4+2R_1} \begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; -2 \\ 0 &amp; 2 &amp; 0 &amp; -2 \\ 0 &amp; 2 &amp; 1 &amp; 0 \\ 0 &amp; 4 &amp; 1 &amp; -2 \end{pmatrix} \xrightarrow{R_3-R_2, R_4-2R_2} \begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; -2 \\ 0 &amp; 2 &amp; 0 &amp; -2 \\ 0 &amp; 0 &amp; 1 &amp; 2 \\ 0 &amp; 0 &amp; 1 &amp; 2 \end{pmatrix} \xrightarrow{R_4-R_3} \begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; -2 \\ 0 &amp; 2 &amp; 0 &amp; -2 \\ 0 &amp; 0 &amp; 1 &amp; 2 \\ 0 &amp; 0 &amp; 0 &amp; 0 \end{pmatrix}</annotation></semantics></math><p>矩阵的秩为 3。前三行线性无关，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>A</mi><mrow><mn>3</mn></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">\{A_1, A_2, A_3\}</annotation></semantics></math> 是该向量组的一个极大线性无关组，且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>4</mn></mrow></msub><mo>=</mo><mn>2</mn><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>A</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_4 = 2A_2 + A_3</annotation></semantics></math>。计算完成。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_二基与维数判定">
+              <div class="wb-hw-part-title">二、基与维数判定</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_4">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 4 题</span>
+              <span class="wb-hw-prob-title">多项式空间中基底判定 (习题 5.2 第 4 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.2.4</span>
+            </div>
+            <a href="#prob_4" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#4</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            判断下列向量组是否构成 R[x]4的基：
+(i)α1=1+x,α2=x+x2,a?=1+x3,α4=2+2x+x2+x3;
+(ii) β?=-1+z,β?=1-x2,β?=-2+2x+x2,β4=x3.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：在单项式基 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><msup><mi>x</mi><mrow><mn>3</mn></mrow></msup><mo>}</mo></mrow><annotation encoding="application/x-tex">\{1, x, x^2, x^3\}</annotation></semantics></math> 下写出 4 个多项式的坐标构成 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 \times 4</annotation></semantics></math> 矩阵，计算行列式是否为零。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                多项式空间基底判定的大题模板，行列式非零即为基底。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解与计算</b>：</p><p><b>(i) 考察 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>4</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha_1, \alpha_2, \alpha_3, \alpha_4</annotation></semantics></math></b>：</p><p>坐标矩阵为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>det</mo><msub><mi>M</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><mrow><mo>|</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>|</mo></mrow></mrow><annotation encoding="application/x-tex">\det M_1 = \begin{vmatrix} 1 &amp; 0 &amp; 1 &amp; 2 \\ 1 &amp; 1 &amp; 0 &amp; 2 \\ 0 &amp; 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 1 &amp; 1 \end{vmatrix}</annotation></semantics></math> 易见第 4 列正好等于前三列之和：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mrow><mn>4</mn></mrow></msub><mo>=</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>α</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>α</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha_4 = \alpha_1 + \alpha_2 + \alpha_3</annotation></semantics></math>！故行列式为 0，向量组线性相关，<b>不构成</b>基。</p><p><b>(ii) 考察 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>3</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>4</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\beta_1, \beta_2, \beta_3, \beta_4</annotation></semantics></math></b>：</p><p>坐标矩阵为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>det</mo><msub><mi>M</mi><mrow><mn>2</mn></mrow></msub><mo>=</mo><mrow><mo>|</mo><mtable><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>|</mo></mrow><mo>=</mo><mn>1</mn><mo>·</mo><mrow><mo>|</mo><mtable><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>|</mo></mrow><mo>=</mo><mn>1</mn><mo>·</mo><mo>(</mo><mn>0</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>2</mn><mo>−</mo><mo>(</mo><mn>0</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>)</mo><mo>)</mo><mo>=</mo><mn>1</mn><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\det M_2 = \begin{vmatrix} -1 &amp; 1 &amp; -2 &amp; 0 \\ 1 &amp; 0 &amp; 2 &amp; 0 \\ 0 &amp; -1 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{vmatrix} = 1 \cdot \begin{vmatrix} -1 &amp; 1 &amp; -2 \\ 1 &amp; 0 &amp; 2 \\ 0 &amp; -1 &amp; 1 \end{vmatrix} = 1 \cdot (0 + 0 + 2 - (0 - 2 + 1)) = 1 \neq 0</annotation></semantics></math> 行列式非零，向量组线性无关，<b>构成</b> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℝ</mi><mo>[</mo><mi>x</mi><msub><mo>]</mo><mrow><mn>4</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbb{R}[x]_4</annotation></semantics></math> 的一组基。结论成立。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_5">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 5 题</span>
+              <span class="wb-hw-prob-title">矩阵对易子生成空间的维数定理 (习题 5.2 第 10 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.2.10</span>
+            </div>
+            <a href="#prob_5" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#5</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设W是Fn×n中所有形如AB-BA(A,B∈Fn×n)的矩阵生成的子空间，求
+证：dimW=n2-1.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：所有对易子 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>−</mo><mi>B</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">AB - BA</annotation></semantics></math> 的迹均为 0，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>⊆</mo><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo></mrow><annotation encoding="application/x-tex">W \subseteq \ker(\text{tr})</annotation></semantics></math>。只需显式构造出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo></mrow><annotation encoding="application/x-tex">\ker(\text{tr})</annotation></semantics></math> 的一组基均是对易子，维数即为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n^2 - 1</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                单李代数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>mathfrak</mi><msub><mi>s</mi><mi>l</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>F</mi><mo>)</mo><mo>=</mo><mo>[</mo><mi>mathfrak</mi><msub><mi>g</mi><mi>l</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>F</mi><mo>)</mo><mo>,</mo><mi>mathfrak</mi><msub><mi>g</mi><mi>l</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>F</mi><mo>)</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">\mathfrak{sl}_n(F) = [\mathfrak{gl}_n(F), \mathfrak{gl}_n(F)]</annotation></semantics></math> 的换位子代数维数定理。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 由前面的习题已知，对任意方阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A, B</annotation></semantics></math>，恒有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>tr</mtext><mo>(</mo><mi>A</mi><mi>B</mi><mo>−</mo><mi>B</mi><mi>A</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\text{tr}(AB - BA) = 0</annotation></semantics></math>。因此生成子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>⊆</mo><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo><mo>=</mo><mo>{</mo><mi>X</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msup><mo>∣</mo><mtext>tr</mtext><mo>(</mo><mi>X</mi><mo>)</mo><mo>=</mo><mn>0</mn><mo>}</mo></mrow><annotation encoding="application/x-tex">W \subseteq \ker(\text{tr}) = \{X \in F^{n \times n} \mid \text{tr}(X) = 0\}</annotation></semantics></math>。</p><p>2. 迹映射 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>tr</mtext><mo>:</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msup><mo>→</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\text{tr}: F^{n \times n} \to F</annotation></semantics></math> 是非零线性泛函，其核空间的维数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo><mo>=</mo><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dim \ker(\text{tr}) = n^2 - 1</annotation></semantics></math>。故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mi>W</mi><mo>≤</mo><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dim W \le n^2 - 1</annotation></semantics></math>。</p><p>3. 现证 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo><mo>⊆</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">\ker(\text{tr}) \subseteq W</annotation></semantics></math>：只需证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo></mrow><annotation encoding="application/x-tex">\ker(\text{tr})</annotation></semantics></math> 的标准基元素均可写成对易子：</p><ul><li>非对角元 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">E_{ij}</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>≠</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i \neq j</annotation></semantics></math>）：取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><mo>,</mo><mi>B</mi><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A = E_{ii}, B = E_{ij}</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>−</mo><mi>B</mi><mi>A</mi><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mn>0</mn><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∈</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">AB - BA = E_{ij} - 0 = E_{ij} \in W</annotation></semantics></math>；</li><li>对角差元 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mi>E</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn><mo>,</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">E_{ii} - E_{i+1, i+1}</annotation></semantics></math>：取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mo>,</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>B</mi><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn><mo>,</mo><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A = E_{i, i+1}, B = E_{i+1, i}</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>−</mo><mi>B</mi><mi>A</mi><mo>=</mo><msub><mi>E</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mi>E</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn><mo>,</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>∈</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">AB - BA = E_{ii} - E_{i+1, i+1} \in W</annotation></semantics></math>。</li></ul><p>4. 这两类矩阵共有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mi>n</mi><mo>)</mo><mo>+</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">(n^2 - n) + (n - 1) = n^2 - 1</annotation></semantics></math> 个，且显然线性无关，构成了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo></mrow><annotation encoding="application/x-tex">\ker(\text{tr})</annotation></semantics></math> 的一组基。由于它们全落在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math> 中，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mo>ker</mo><mo>(</mo><mtext>tr</mtext><mo>)</mo></mrow><annotation encoding="application/x-tex">W = \ker(\text{tr})</annotation></semantics></math>，维数严格等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n^2 - 1</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_6">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 6 题</span>
+              <span class="wb-hw-prob-title">有限幂集对称差空间的基与维数 (习题 5.2 第 11 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.2.11</span>
+            </div>
+            <a href="#prob_6" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#6</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设X为n元集.求Z?上线性空间2×的一组基和维数.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：单元素子集全体 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mo>{</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>}</mo><mo>,</mo><mo>{</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>}</mo><mo>,</mo><mo>…</mo><mo>,</mo><mo>{</mo><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>}</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">\{\{x_1\}, \{x_2\}, \dots, \{x_n\}\}</annotation></semantics></math> 构成基底，空间与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ℤ</mi><mrow><mn>2</mn></mrow><mrow><mi>n</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">\mathbb{Z}_2^n</annotation></semantics></math> 自然同构，维数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                将集合论中的有限幂集布尔环自然同构于模 2 域上的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 维向量空间。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解与证明</b>：</p><p>1. 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mo>{</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">X = \{x_1, x_2, \dots, x_n\}</annotation></semantics></math>。由第 1 章习题，幂集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>X</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^X</annotation></semantics></math> 在对称差加法与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℤ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbb{Z}_2</annotation></semantics></math> 标量乘法下构成向量空间。</p><p>2. 考察单点集族 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mo>{</mo><mo>{</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>}</mo><mo>,</mo><mo>{</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>}</mo><mo>,</mo><mo>…</mo><mo>,</mo><mo>{</mo><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>}</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">\mathcal{B} = \{\{x_1\}, \{x_2\}, \dots, \{x_n\}\}</annotation></semantics></math>：</p><ul><li><b>线性无关</b>：设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><mo>{</mo><msub><mi>x</mi><mrow><mi>i</mi></mrow></msub><mo>}</mo><mo>=</mo><mo>∅</mo></mrow><annotation encoding="application/x-tex">\sum_{i=1}^n c_i \{x_i\} = \emptyset</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><mo>∈</mo><mo>{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>}</mo></mrow><annotation encoding="application/x-tex">c_i \in \{0, 1\}</annotation></semantics></math>）。因单点集不相交，对称差即为非交并，只有当所有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_i = 0</annotation></semantics></math> 时并集才为空集；</li><li><b>生成全空间</b>：任意子集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>⊆</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">A \subseteq X</annotation></semantics></math> 均可唯一写成包含在其中的单点集的无交并，即对称差：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>Δ</mi><mrow><msub><mi>x</mi><mrow><mi>i</mi></mrow></msub><mo>∈</mo><mi>A</mi></mrow></msub><mo>{</mo><msub><mi>x</mi><mrow><mi>i</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">A = \Delta_{x_i \in A} \{x_i\}</annotation></semantics></math>。</li></ul><p>3. 故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">\mathcal{B}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>X</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^X</annotation></semantics></math> 的一组基，其维数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>B</mi><mo>|</mo><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">|\mathcal{B}| = n</annotation></semantics></math>。结论成立。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_7">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 7 题</span>
+              <span class="wb-hw-prob-title">单点赋值为零的多项式子空间基与维数 (习题 5.2 第 12 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.2.12</span>
+            </div>
+            <a href="#prob_7" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#7</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            定义实线性空间V={f(x)∈R[x]n |f(1)=0}≌R[x]n.求V的一组基和
+维数.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用余数定理，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇔</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>∣</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(1) = 0 \iff (x-1) \mid f(x)</annotation></semantics></math>。基底可取为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>,</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>,</mo><mo>…</mo><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(x-1), x(x-1), \dots, x^{n-2}(x-1)</annotation></semantics></math>，维数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                代数中极大理想的有限维截断核空间。单点求值泛函的核空间维数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n - 1</annotation></semantics></math>。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解与证明</b>：</p><p>1. 由因式定理，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>∈</mo><mi>ℝ</mi><mo>[</mo><mi>x</mi><msub><mo>]</mo><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">f(x) \in \mathbb{R}[x]_n</annotation></semantics></math> 满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f(1) = 0</annotation></semantics></math> 当且仅当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>q</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x) = (x - 1)q(x)</annotation></semantics></math>，其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>deg</mo><mi>q</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>&lt;</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\deg q(x) &lt; n - 1</annotation></semantics></math>。</p><p>2. 因为商式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>∈</mo><mi>ℝ</mi><mo>[</mo><mi>x</mi><msub><mo>]</mo><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">q(x) \in \mathbb{R}[x]_{n-1}</annotation></semantics></math> 的标准基为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo>…</mo><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup><mo>}</mo></mrow><annotation encoding="application/x-tex">\{1, x, x^2, \dots, x^{n-2}\}</annotation></semantics></math>，将其分别乘以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(x-1)</annotation></semantics></math>，得到向量组：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>,</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>,</mo><mo>…</mo><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">\mathcal{B} = \{x - 1, x(x - 1), x^2(x - 1), \dots, x^{n-2}(x - 1)\}</annotation></semantics></math></p><p>3. 这 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> 个多项式次数互不相同（依次为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1, 2, \dots, n-1</annotation></semantics></math>），显然线性无关，且任意满足条件的多项式均可由其唯一线性表出。</p><p>4. 故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">\mathcal{B}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math> 的一组基，子空间维数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mi>V</mi><mo>=</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dim V = n - 1</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_8">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 8 题</span>
+              <span class="wb-hw-prob-title">代数数单扩张域的向量空间维数 (习题 5.2 第 13 题)</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.2.13</span>
+            </div>
+            <a href="#prob_8" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#8</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设α是Q上不可约多项式f(x)∈Q[z]的一个复根.求所有形如g(a)的数
+(其中g(x)∈Q[z])构成的Q上线性空间Q[a]的维数.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 的极小多项式次数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mo>deg</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n = \deg f</annotation></semantics></math>。利用带余除法 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>q</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>r</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">g(x) = q(x)f(x) + r(x)</annotation></semantics></math>，将所有元素唯一表示为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>α</mi><mo>,</mo><mo>…</mo><mo>,</mo><msup><mi>α</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1, \alpha, \dots, \alpha^{n-1}</annotation></semantics></math> 的线性组合。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                代数数论与伽罗瓦理论的开端：代数单扩张的维数严格等于其极小多项式的次数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>ℚ</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>:</mo><mi>ℚ</mi><mo>]</mo><mo>=</mo><mo>deg</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">[\mathbb{Q}(\alpha) : \mathbb{Q}] = \deg f</annotation></semantics></math>。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明与求解</b>：</p><p>1. 设不可约多项式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>∈</mo><mi>ℚ</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f(x) \in \mathbb{Q}[x]</annotation></semantics></math> 的次数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mo>deg</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">n = \deg f(x)</annotation></semantics></math>，且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f(\alpha) = 0</annotation></semantics></math>。</p><p>2. 对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>∈</mo><mi>ℚ</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">g(x) \in \mathbb{Q}[x]</annotation></semantics></math>，作除以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的带余除法：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>q</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>r</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>,</mo><mo> </mo><mtext>其中 </mtext><mi>r</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msub><mi>c</mi><mrow><mn>0</mn></mrow></msub><mo>+</mo><msub><mi>c</mi><mrow><mn>1</mn></mrow></msub><mi>x</mi><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>c</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">g(x) = q(x)f(x) + r(x), \quad \text{其中 } r(x) = c_0 + c_1 x + \cdots + c_{n-1} x^{n-1}</annotation></semantics></math> 代入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">x = \alpha</annotation></semantics></math> 得：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>=</mo><mi>q</mi><mo>(</mo><mi>α</mi><mo>)</mo><mi>f</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>+</mo><mi>r</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>=</mo><mi>r</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>=</mo><msub><mi>c</mi><mrow><mn>0</mn></mrow></msub><mo>+</mo><msub><mi>c</mi><mrow><mn>1</mn></mrow></msub><mi>α</mi><mo>+</mo><mo>…</mo><mo>+</mo><msub><mi>c</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>α</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">g(\alpha) = q(\alpha)f(\alpha) + r(\alpha) = r(\alpha) = c_0 + c_1 \alpha + \dots + c_{n-1} \alpha^{n-1}</annotation></semantics></math>。这表明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mi>α</mi><mo>,</mo><msup><mi>α</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo>…</mo><mo>,</mo><msup><mi>α</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>}</mo></mrow><annotation encoding="application/x-tex">\{1, \alpha, \alpha^2, \dots, \alpha^{n-1}\}</annotation></semantics></math> 生成整个空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi><mo>[</mo><mi>α</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">\mathbb{Q}[\alpha]</annotation></semantics></math>。</p><p>3. 现证线性无关性：若存在不全为零的有理数使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mn>0</mn></mrow></msub><mo>+</mo><msub><mi>c</mi><mrow><mn>1</mn></mrow></msub><mi>α</mi><mo>+</mo><mo>…</mo><mo>+</mo><msub><mi>c</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>α</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_0 + c_1 \alpha + \dots + c_{n-1} \alpha^{n-1} = 0</annotation></semantics></math>，则非零多项式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>∑</mo><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><msup><mi>x</mi><mrow><mi>i</mi></mrow></msup></mrow><annotation encoding="application/x-tex">h(x) = \sum c_i x^i</annotation></semantics></math> 以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 为根。但 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>deg</mo><mi>h</mi><mo>≤</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\deg h \le n - 1 &lt; n</annotation></semantics></math>，这与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 的最低次极小多项式矛盾！</p><p>4. 故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mi>α</mi><mo>,</mo><mo>…</mo><mo>,</mo><msup><mi>α</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>}</mo></mrow><annotation encoding="application/x-tex">\{1, \alpha, \dots, \alpha^{n-1}\}</annotation></semantics></math> 构成一组基，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> 上线性空间的维数严格为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mo>deg</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">n = \deg f(x)</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_三过渡矩阵与坐标变换">
+              <div class="wb-hw-part-title">三、过渡矩阵与坐标变换</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_9">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 9 题</span>
+              <span class="wb-hw-prob-title">两组三维基的过渡矩阵与坐标转换 (习题 5.3 第 1 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.3.1</span>
+            </div>
+            <a href="#prob_9" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#9</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            已知 R3有两组基
+-()= 2-()
+A-)-1)-(}
+(i)求从基α到基β的过渡矩阵；
+(ii)设v∈R3在基β下的坐标为(1,1,3)T,求v 在基α下的坐标.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用矩阵方程 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>β</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mn>3</mn></mrow></msub><mo>)</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">(\beta_1, \beta_2, \beta_3) = (\alpha_1, \alpha_2, \alpha_3) P</annotation></semantics></math>，得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msubsup><mi>A</mi><mrow><mi>α</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msub><mi>A</mi><mrow><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P = A_\alpha^{-1} A_\beta</annotation></semantics></math>。坐标变换公式为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>v</mi><msub><mo>]</mo><mrow><mi>α</mi></mrow></msub><mo>=</mo><mi>P</mi><mo>[</mo><mi>v</mi><msub><mo>]</mo><mrow><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">[v]_\alpha = P [v]_\beta</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                坐标与基变换的基础计算，注意基过渡矩阵与向量坐标变换方向的逆变性质。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解与计算</b>：</p><p>1. 写出两基列矩阵：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>α</mi></mrow></msub><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>)</mo></mrow><mo>,</mo><mo> </mo><msub><mi>A</mi><mrow><mi>β</mi></mrow></msub><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">A_\alpha = \begin{pmatrix} 1 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 0 \\ 1 &amp; -1 &amp; 1 \end{pmatrix}, \quad A_\beta = \begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 3 &amp; 4 \\ 1 &amp; 3 &amp; 5 \end{pmatrix}</annotation></semantics></math></p><p>2. <b>(i) 求过渡矩阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msubsup><mi>A</mi><mrow><mi>α</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msub><mi>A</mi><mrow><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P = A_\alpha^{-1} A_\beta</annotation></semantics></math></b>：</p><p>初等行变换求 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><msub><mi>A</mi><mrow><mi>α</mi></mrow></msub><mo>∣</mo><msub><mi>A</mi><mrow><mi>β</mi></mrow></msub><mo>]</mo><mo>→</mo><mo>[</mo><mi>I</mi><mo>∣</mo><mi>P</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[A_\alpha \mid A_\beta] \to [I \mid P]</annotation></semantics></math>：求得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mrow><mi>α</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">A_\alpha^{-1} = \begin{pmatrix} 0 &amp; 1 &amp; 0 \\ 1 &amp; -1 &amp; 0 \\ 1 &amp; -2 &amp; 1 \end{pmatrix}</annotation></semantics></math>。相乘得：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>)</mo></mrow><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">P = \begin{pmatrix} 0 &amp; 1 &amp; 0 \\ 1 &amp; -1 &amp; 0 \\ 1 &amp; -2 &amp; 1 \end{pmatrix} \begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 3 &amp; 4 \\ 1 &amp; 3 &amp; 5 \end{pmatrix} = \begin{pmatrix} 2 &amp; 3 &amp; 4 \\ -1 &amp; -1 &amp; -1 \\ -2 &amp; -1 &amp; 0 \end{pmatrix}</annotation></semantics></math></p><p>3. <b>(ii) 坐标变换</b>：已知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>v</mi><msub><mo>]</mo><mrow><mi>β</mi></mrow></msub><mo>=</mo><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>3</mn><msup><mo>)</mo><mrow><mi>T</mi></mrow></msup></mrow><annotation encoding="application/x-tex">[v]_\beta = (1, 1, 3)^T</annotation></semantics></math>。代入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>v</mi><msub><mo>]</mo><mrow><mi>α</mi></mrow></msub><mo>=</mo><mi>P</mi><mo>[</mo><mi>v</mi><msub><mo>]</mo><mrow><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">[v]_\alpha = P [v]_\beta</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>v</mi><msub><mo>]</mo><mrow><mi>α</mi></mrow></msub><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd></mtr></mtable><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>12</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>−</mo><mn>3</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mn>17</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>5</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>3</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">[v]_\alpha = \begin{pmatrix} 2 &amp; 3 &amp; 4 \\ -1 &amp; -1 &amp; -1 \\ -2 &amp; -1 &amp; 0 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \\ 3 \end{pmatrix} = \begin{pmatrix} 2 + 3 + 12 \\ -1 - 1 - 3 \\ -2 - 1 + 0 \end{pmatrix} = \begin{pmatrix} 17 \\ -5 \\ -3 \end{pmatrix}</annotation></semantics></math> 计算完成。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_10">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 10 题</span>
+              <span class="wb-hw-prob-title">三组基过渡矩阵连乘传递公式 (习题 5.3 第 3 题)</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.3.3</span>
+            </div>
+            <a href="#prob_10" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#10</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设α,β,γ是n维线性空间V的三组基.求证：Ma,sMβ,γ=Ma,γ·
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用基变换矩阵定义 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>=</mo><mi>α</mi><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>β</mi></mrow></msub><mo>,</mo><mi>γ</mi><mo>=</mo><mi>β</mi><msub><mi>M</mi><mrow><mi>β</mi><mo>,</mo><mi>γ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\beta = \alpha M_{\alpha, \beta}, \gamma = \beta M_{\beta, \gamma}</annotation></semantics></math>，代入直接利用形式矩阵结合律。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                群胚（Groupoid）结构在基变换中的体现。过渡矩阵构成了以基底为对象的范畴中的可逆态射。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>γ</mi></mrow><annotation encoding="application/x-tex">\alpha, \beta, \gamma</annotation></semantics></math> 为空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math> 的三组基。根据过渡矩阵定义：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>β</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>α</mi><mo>)</mo><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>β</mi></mrow></msub><mo>,</mo><mo> </mo><mo>(</mo><mi>γ</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>β</mi><mo>)</mo><msub><mi>M</mi><mrow><mi>β</mi><mo>,</mo><mi>γ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\beta) = (\alpha) M_{\alpha, \beta}, \quad (\gamma) = (\beta) M_{\beta, \gamma}</annotation></semantics></math></p><p>2. 将第一式代入第二式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>γ</mi><mo>)</mo><mo>=</mo><mi>Big</mi><mo>(</mo><mo>(</mo><mi>α</mi><mo>)</mo><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>β</mi></mrow></msub><mi>Big</mi><mo>)</mo><msub><mi>M</mi><mrow><mi>β</mi><mo>,</mo><mi>γ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\gamma) = \Big( (\alpha) M_{\alpha, \beta} \Big) M_{\beta, \gamma}</annotation></semantics></math></p><p>3. 由形式矩阵运算的结合律：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>γ</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>α</mi><mo>)</mo><mi>Big</mi><mo>(</mo><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>β</mi></mrow></msub><msub><mi>M</mi><mrow><mi>β</mi><mo>,</mo><mi>γ</mi></mrow></msub><mi>Big</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(\gamma) = (\alpha) \Big( M_{\alpha, \beta} M_{\beta, \gamma} \Big)</annotation></semantics></math></p><p>4. 另一方面，由从基 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> 到基 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math> 的过渡矩阵定义，存在唯一的矩阵 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>γ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">M_{\alpha, \gamma}</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>γ</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>α</mi><mo>)</mo><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>γ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\gamma) = (\alpha) M_{\alpha, \gamma}</annotation></semantics></math>。由基表示的唯一性，必有：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>γ</mi></mrow></msub><mo>=</mo><msub><mi>M</mi><mrow><mi>α</mi><mo>,</mo><mi>β</mi></mrow></msub><msub><mi>M</mi><mrow><mi>β</mi><mo>,</mo><mi>γ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">M_{\alpha, \gamma} = M_{\alpha, \beta} M_{\beta, \gamma}</annotation></semantics></math> 证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_11">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 11 题</span>
+              <span class="wb-hw-prob-title">组合多项式基底与整数值多项式性质 (习题 5.3 第 5 题)</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.3.5</span>
+            </div>
+            <a href="#prob_11" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#11</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            对非负整数i定义多项式
+(“)=(z-1)(a-2+1)∈Qla]
+(i)证明 (;),x=0,1,一，n-1,构成QIaJ,的一组基，
+(ii)求f(x)∈Q[x]n在上述基下的坐标；
+iii)证明若f(x)∈Qx]n,f(0),f(1),…,f(n-1)∈Z,则对任意整数k 均有
+f(k)∈Z.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：(i) 次数互异阶梯三角基；(ii) 利用前向差分算子 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\Delta f(x) = f(x+1) - f(x)</annotation></semantics></math> 与二项式反演；(iii) 组合数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>k</mi></mrow><mrow><mi>i</mi></mrow></mfrac><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\binom{k}{i}</annotation></semantics></math> 恒为整数。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                离散微积分（Umbral Calculus）与整数值多项式环（Integer-valued Polynomials）的核心定理。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p><b>(i) 构成基底</b>：组合多项式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋯</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mi>i</mi><mi>!</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\binom{x}{i} = \frac{x(x-1)\cdots(x-i+1)}{i!}</annotation></semantics></math> 的次数恰好为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math>。对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i = 0, 1, \dots, n-1</annotation></semantics></math>，其最高次幂系数全非零，构成上三角阶梯形，故在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi><mo>[</mo><mi>x</mi><msub><mo>]</mo><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbb{Q}[x]_n</annotation></semantics></math> 中线性无关，维数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math>，必然构成一组基。</p><p><b>(ii) 坐标求解与差分</b>：定义差分算子 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\Delta f(x) = f(x+1) - f(x)</annotation></semantics></math>。注意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></mfrac><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\Delta \binom{x}{i} = \binom{x}{i-1}</annotation></semantics></math>。通过逐次作用差分算子并在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> 处求值，可得坐标分量为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mo>(</mo><msup><mi>Δ</mi><mrow><mi>i</mi></mrow></msup><mi>f</mi><mo>)</mo><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>i</mi></mrow></munderover><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>i</mi><mo>−</mo><mi>j</mi></mrow></msup><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>i</mi></mrow><mrow><mi>j</mi></mrow></mfrac><mo>)</mo></mrow><mi>f</mi><mo>(</mo><mi>j</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">c_i = (\Delta^i f)(0) = \sum_{j=0}^i (-1)^{i-j} \binom{i}{j} f(j)</annotation></semantics></math></p><p><b>(iii) 整数值推论</b>：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>,</mo><mo>…</mo><mo>,</mo><mi>f</mi><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">f(0), f(1), \dots, f(n-1) \in \mathbb{Z}</annotation></semantics></math>，则由上述公式，所有的坐标系数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math> 均为整数的整系数线性组合，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">c_i \in \mathbb{Z}</annotation></semantics></math>。对任意整数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>k</mi></mrow><mrow><mi>i</mi></mrow></mfrac><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\binom{k}{i}</annotation></semantics></math> 均为整数组合数，因此 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>k</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><msub><mi>c</mi><mrow><mi>i</mi></mrow></msub><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>k</mi></mrow><mrow><mi>i</mi></mrow></mfrac><mo>)</mo></mrow><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">f(k) = \sum_{i=0}^{n-1} c_i \binom{k}{i} \in \mathbb{Z}</annotation></semantics></math> 必为整数。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_四维数公式与子空间交和">
+              <div class="wb-hw-part-title">四、维数公式与子空间交和</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_12">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 12 题</span>
+              <span class="wb-hw-prob-title">和空间与交空间维数差 1 的包含关系判定 (习题 5.4 第 2 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.4.2</span>
+            </div>
+            <a href="#prob_12" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#12</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设V?,V?是线性空间V的有限维子空间，且满足等式
+dim(V?+V?)=dim(V?∩V?)+1.
+证明必有V?CV2或V? CV?.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用维数公式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2) + \dim(V_1\cap V_2) = \dim V_1 + \dim V_2</annotation></semantics></math>。代入条件推出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>)</mo><mo>+</mo><mo>(</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">(\dim V_1 - \dim(V_1\cap V_2)) + (\dim V_2 - \dim(V_1\cap V_2)) = 1</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                Grassmann 维数公式的极值推论。非负整数相加为 1 意味着其中必有一个为 0。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 应用 Grassmann 维数公式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\dim(V_1 + V_2) + \dim(V_1 \cap V_2) = \dim V_1 + \dim V_2</annotation></semantics></math></p><p>2. 代入已知条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dim(V_1 + V_2) = \dim(V_1 \cap V_2) + 1</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Big</mi><mo>(</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>+</mo><mn>1</mn><mi>Big</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\Big(\dim(V_1 \cap V_2) + 1\Big) + \dim(V_1 \cap V_2) = \dim V_1 + \dim V_2</annotation></semantics></math> 移项整理得：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Big</mi><mo>(</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mi>Big</mi><mo>)</mo><mo>+</mo><mi>Big</mi><mo>(</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mi>Big</mi><mo>)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\Big(\dim V_1 - \dim(V_1 \cap V_2)\Big) + \Big(\dim V_2 - \dim(V_1 \cap V_2)\Big) = 1</annotation></semantics></math></p><p>3. 因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">V_1 \cap V_2</annotation></semantics></math> 分别是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">V_1</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">V_2</annotation></semantics></math> 的子空间，故两项均为非负整数：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>≥</mo><mn>0</mn><mo>,</mo><mo> </mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dim V_1 - \dim(V_1 \cap V_2) \ge 0, \quad \dim V_2 - \dim(V_1 \cap V_2) \ge 0</annotation></semantics></math></p><p>4. 两个非负整数之和等于 1，只有两种可能：</p><ul><li>第一种可能：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇒</mo><mo>dim</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim V_1 - \dim(V_1 \cap V_2) = 0 \implies \dim V_1 = \dim(V_1 \cap V_2)</annotation></semantics></math>。因有限维子空间包含且维数相等必重合，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>⇒</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>⊆</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">V_1 = V_1 \cap V_2 \implies V_1 \subseteq V_2</annotation></semantics></math>；</li><li>第二种可能：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><mo>dim</mo><mo>(</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>∩</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇒</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>⊆</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\dim V_2 - \dim(V_1 \cap V_2) = 0 \implies V_2 \subseteq V_1</annotation></semantics></math>。</li></ul><p>综上，必有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub><mo>⊆</mo><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">V_1 \subseteq V_2</annotation></semantics></math> 或 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mn>2</mn></mrow></msub><mo>⊆</mo><msub><mi>V</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">V_2 \subseteq V_1</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_13">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 13 题</span>
+              <span class="wb-hw-prob-title">真子空间表为余维数 1 超平面交集定理 (习题 5.4 第 3 题)</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.4.3</span>
+            </div>
+            <a href="#prob_13" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#13</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            对有限维线性空间V及其子空间W,称dimV-dimW为W在V中的余
+维数，并记作codimW.求证：若W是V的真子空间，则存在余维数为1的子空间
+W1,W2?,…,W,使得 Dw.=w
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math> 的基并扩充为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math> 的一组基 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi></mrow></msub><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha_1, \dots, \alpha_m, \alpha_{m+1}, \dots, \alpha_n</annotation></semantics></math>。去掉其中一个基向量张成的子空间即为余维数 1 的超平面。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                对偶空间（Dual Space）与零化子（Annihilator）定理的初等几何形式：每一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math> 维子空间都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n - m</annotation></semantics></math> 个超平面的交。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mi>V</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\dim V = n</annotation></semantics></math>，真子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mi>W</mi><mo>=</mo><mi>m</mi><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\dim W = m &lt; n</annotation></semantics></math>。记余维数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mi>n</mi><mo>−</mo><mi>m</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">r = n - m \ge 1</annotation></semantics></math>。</p><p>2. 取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math> 的一组基 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_1, \dots, \alpha_m\}</annotation></semantics></math>，并将其扩充为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math> 的一组基：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>β</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>β</mi><mrow><mi>r</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_1, \dots, \alpha_m, \beta_1, \beta_2, \dots, \beta_r\}</annotation></semantics></math></p><p>3. 对每个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">1 \le i \le r</annotation></semantics></math>，构造子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_i</annotation></semantics></math> 为去掉 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\beta_i</annotation></semantics></math> 后的其余 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> 个基向量张成的空间：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mtext>Span</mtext><mi>Big</mi><mo>(</mo><mo>{</mo><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi></mrow></msub><mo>}</mo><mo>∪</mo><mo>(</mo><mo>{</mo><msub><mi>β</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>β</mi><mrow><mi>r</mi></mrow></msub><mo>}</mo><mo>∖</mo><mo>{</mo><msub><mi>β</mi><mrow><mi>i</mi></mrow></msub><mo>}</mo><mo>)</mo><mi>Big</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">W_i = \text{Span}\Big( \{\alpha_1, \dots, \alpha_m\} \cup (\{\beta_1, \dots, \beta_r\} \setminus \{\beta_i\}) \Big)</annotation></semantics></math></p><p>4. 显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><msub><mi>W</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dim W_i = n - 1</annotation></semantics></math>，其余维数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>codim </mtext><msub><mi>W</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mi>n</mi><mo>−</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\text{codim } W_i = n - (n-1) = 1</annotation></semantics></math>。且每个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_i</annotation></semantics></math> 均包含 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math>。</p><p>5. 考察交集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>⋂</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>r</mi></mrow></msubsup><msub><mi>W</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\bigcap_{i=1}^r W_i</annotation></semantics></math>：任意向量在该基下的坐标必须在每一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\beta_i</annotation></semantics></math> 上的分量全为 0，因此只能由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha_1, \dots, \alpha_m</annotation></semantics></math> 线性表出，故严格等于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_14">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 14 题</span>
+              <span class="wb-hw-prob-title">三子空间交和维数对称恒等式 (习题 5.4 第 5 题 (i))</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 5.4.5</span>
+            </div>
+            <a href="#prob_14" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#14</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设U,V,W是某向量空间的有限维子空间，求证：
+(i) dim((U+V)nW)+dim(UnV)=dim((V+W)nU)+dim(VnW);
+(ii)习题4.2第2题(iii)中两子空间的维数差为偶数.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：对子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>+</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">U+V</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math> 应用维数公式，结合 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>∩</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">(U+V)\cap W</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>∩</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">U\cap V</annotation></semantics></math> 的交并对称性展开。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                模格（Modular Lattice）的经典同构定理。线性子空间格是模格，满足五边形无嵌入条件。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 对子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>+</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">U+V</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math> 应用 Grassmann 维数公式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>+</mo><mi>W</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>∩</mo><mi>W</mi><mo>)</mo><mo>=</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><mi>W</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim((U+V) + W) + \dim((U+V) \cap W) = \dim(U+V) + \dim(W)</annotation></semantics></math> 移项得：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>∩</mo><mi>W</mi><mo>)</mo><mo>=</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mi>W</mi><mo>−</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>+</mo><mi>W</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim((U+V) \cap W) = \dim(U+V) + \dim W - \dim(U+V+W)</annotation></semantics></math></p><p>2. 再对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math> 应用维数公式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>=</mo><mo>dim</mo><mi>U</mi><mo>+</mo><mo>dim</mo><mi>V</mi><mo>−</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>∩</mo><mi>V</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim(U+V) = \dim U + \dim V - \dim(U \cap V)</annotation></semantics></math>，代入上式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>∩</mo><mi>W</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>∩</mo><mi>V</mi><mo>)</mo><mo>=</mo><mo>dim</mo><mi>U</mi><mo>+</mo><mo>dim</mo><mi>V</mi><mo>+</mo><mo>dim</mo><mi>W</mi><mo>−</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>+</mo><mi>W</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim((U+V) \cap W) + \dim(U \cap V) = \dim U + \dim V + \dim W - \dim(U + V + W)</annotation></semantics></math></p><p>3. 观察该等式右端：表达式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mi>U</mi><mo>+</mo><mo>dim</mo><mi>V</mi><mo>+</mo><mo>dim</mo><mi>W</mi><mo>−</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>+</mo><mi>W</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim U + \dim V + \dim W - \dim(U + V + W)</annotation></semantics></math> 关于三个子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>,</mo><mi>V</mi><mo>,</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">U, V, W</annotation></semantics></math> 具有完全的置换对称性！</p><p>4. 同理，对子空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>+</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">V+W</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math> 应用同样步骤，其和也必然等于该完全对称表达式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><mo>(</mo><mi>V</mi><mo>+</mo><mi>W</mi><mo>)</mo><mo>∩</mo><mi>U</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><mi>V</mi><mo>∩</mo><mi>W</mi><mo>)</mo><mo>=</mo><mo>dim</mo><mi>U</mi><mo>+</mo><mo>dim</mo><mi>V</mi><mo>+</mo><mo>dim</mo><mi>W</mi><mo>−</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>+</mo><mi>W</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim((V+W) \cap U) + \dim(V \cap W) = \dim U + \dim V + \dim W - \dim(U + V + W)</annotation></semantics></math></p><p>5. 两式右端相等，故左端严格相等：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>dim</mo><mo>(</mo><mo>(</mo><mi>U</mi><mo>+</mo><mi>V</mi><mo>)</mo><mo>∩</mo><mi>W</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><mi>U</mi><mo>∩</mo><mi>V</mi><mo>)</mo><mo>=</mo><mo>dim</mo><mo>(</mo><mo>(</mo><mi>V</mi><mo>+</mo><mi>W</mi><mo>)</mo><mo>∩</mo><mi>U</mi><mo>)</mo><mo>+</mo><mo>dim</mo><mo>(</mo><mi>V</mi><mo>∩</mo><mi>W</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\dim((U+V) \cap W) + \dim(U \cap V) = \dim((V+W) \cap U) + \dim(V \cap W)</annotation></semantics></math> 证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        </div>
+
+  </main>
+  <script src="data/core.js"></script>
+  <script src="site.js"></script>
+  
+    <script>
+    
+  /* ---------- window.WB_STORAGE: 纯前端零外部依赖 IndexedDB + LocalStorage 双模持久化引擎 ---------- */
+  window.WB_STORAGE = window.WB_STORAGE || (function() {
+    var DB_NAME = 'wb_course_notes_db';
+    var DB_VERSION = 1;
+    var STORE_NAME = 'user_annotations';
+    var db = null;
+    var mem = {};
+
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wb_') === 0) {
+          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+        }
+      }
+    } catch(e) {}
+
+    if (window.indexedDB) {
+      try {
+        var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          var d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) {
+            d.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+        req.onsuccess = function(e) {
+          db = e.target.result;
+          try {
+            var tx = db.transaction(STORE_NAME, 'readonly');
+            var st = tx.objectStore(STORE_NAME);
+            var cursorReq = st.openCursor();
+            cursorReq.onsuccess = function(evt) {
+              var cursor = evt.target.result;
+              if (cursor) {
+                if (cursor.value && cursor.value.key) {
+                  mem[cursor.value.key] = cursor.value.val;
+                }
+                cursor.continue();
+              }
+            };
+          } catch(err) {}
+        };
+      } catch(err) {}
+    }
+
+    return {
+      getItem: function(key) {
+        if (key in mem) return mem[key];
+        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+      },
+      setItem: function(key, val) {
+        var s = String(val);
+        mem[key] = s;
+        try {
+          (window.WB_STORAGE||localStorage).setItem(key, s);
+        } catch(quotaErr) {
+          console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
+        }
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.put({ key: key, val: s, time: Date.now() });
+          } catch(e) {}
+        }
+      },
+      removeItem: function(key) {
+        delete mem[key];
+        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.delete(key);
+          } catch(e) {}
+        }
+      },
+      exportAllNotes: function() {
+        var out = { export_time: new Date().toISOString(), notes: {} };
+        for (var k in mem) {
+          if (k.indexOf('wb_hl_') === 0 || k.indexOf('wb_note_') === 0 || k.indexOf('wb_scroll_') === 0) {
+            try { out.notes[k] = JSON.parse(mem[k]); } catch(e) { out.notes[k] = mem[k]; }
+          }
+        }
+        return JSON.stringify(out, null, 2);
+      }
+    };
+  })();
+
+    (function(){
+      var q = document.getElementById('wb-q'), p = document.getElementById('wb-panel');
+      var S = window.SITE || {docs:[],courses:[],lectures:[]};
+
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function cname(id){var c=(S.courses||[]).filter(function(x){return x.id===id})[0];return c?c.name:id}
+
+      /* ---------- Toast 提示浮条 ---------- */
+      function showToast(msg) {
+        var t = document.getElementById('wb-toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('wb-toast-show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
+      }
+
+      /* ---------- 闪烁高亮 ---------- */
+      function flashEl(el) {
+        if (!el) return;
+        el.classList.remove('wb-flash-highlight');
+        void el.offsetWidth;
+        el.classList.add('wb-flash-highlight');
+        setTimeout(function() { el.classList.remove('wb-flash-highlight'); }, 2600);
+      }
+
+      /* ---------- 深色模式同步与切换 (Dark / Light Mode) ---------- */
+      var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      function applyTheme(t) {
+        if (t === 'dark') {
+          document.documentElement.classList.add('wb-dark');
+          document.body.classList.add('wb-dark');
+          document.documentElement.classList.remove('wb-light');
+          document.body.classList.remove('wb-light');
+        } else {
+          document.documentElement.classList.remove('wb-dark');
+          document.body.classList.remove('wb-dark');
+          document.documentElement.classList.add('wb-light');
+          document.body.classList.add('wb-light');
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        (window.WB_STORAGE||localStorage).setItem('wb_theme', t);
+        var btn = document.getElementById('wb-theme-btn');
+        if (btn) btn.innerHTML = (t === 'dark' ? '☀️ 浅色' : '🌙 深色');
+      }
+      applyTheme(curTheme);
+
+      var themeBtn = document.getElementById('wb-theme-btn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function() {
+          curTheme = (document.documentElement.classList.contains('wb-dark') ? 'light' : 'dark');
+          applyTheme(curTheme);
+          showToast(curTheme === 'dark' ? '已切换为深色模式' : '已切换为浅色模式');
+        });
+      }
+
+      /* ---------- 字号缩放调节 (A- / A+) ---------- */
+      var curFontScale = parseInt((window.WB_STORAGE||localStorage).getItem('wb_fontscale') || '0', 10);
+      function applyFontScale(scale) {
+        curFontScale = Math.max(-2, Math.min(4, scale));
+        (window.WB_STORAGE||localStorage).setItem('wb_fontscale', curFontScale);
+        var baseSize = 16 + curFontScale * 1.5;
+        document.body.style.fontSize = baseSize + 'px';
+      }
+      if (curFontScale !== 0) applyFontScale(curFontScale);
+
+      var fDec = document.getElementById('wb-font-dec');
+      var fInc = document.getElementById('wb-font-inc');
+      if (fDec) fDec.addEventListener('click', function(){ applyFontScale(curFontScale - 1); showToast('字号已调小 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+      if (fInc) fInc.addEventListener('click', function(){ applyFontScale(curFontScale + 1); showToast('字号已调大 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+
+      /* ---------- 大纲抽屉与导航 ---------- */
+      var tocDrawer = document.getElementById('wb-toc-drawer');
+      var tocBackdrop = document.getElementById('wb-toc-backdrop');
+      var tocClose = document.getElementById('wb-toc-close');
+
+      function toggleToc(open) {
+        if (!tocDrawer) return;
+        var isOpen = (open !== undefined) ? open : !tocDrawer.classList.contains('wb-open');
+        tocDrawer.classList.toggle('wb-open', isOpen);
+        if (tocBackdrop) tocBackdrop.classList.toggle('wb-open', isOpen);
+      }
+      if (tocClose) tocClose.addEventListener('click', function(){ toggleToc(false); });
+      if (tocBackdrop) tocBackdrop.addEventListener('click', function(){ toggleToc(false); });
+
+      document.addEventListener('keydown', function(e) {
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 't') {
+          e.preventDefault();
+          toggleToc();
+        }
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          toggleToc(true);
+          switchDrawerTab(true);
+        }
+        if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
+          toggleToc(false);
+        }
+      });
+
+      /* ---------- 交互式自测模式 (折叠/展开全部题目解析) ---------- */
+      var toggleBtn = document.getElementById('wb-hw-toggle-sol');
+      var isSolFolded = false;
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(){
+          isSolFolded = !isSolFolded;
+          var sols = document.querySelectorAll('.wb-hw-sol-box');
+          sols.forEach(function(el){
+            el.open = !isSolFolded;
+          });
+          toggleBtn.textContent = isSolFolded ? '💡 展开全部解析' : '🙈 遮挡解析 (自测)';
+          toggleBtn.classList.toggle('wb-btn-active', isSolFolded);
+          showToast(isSolFolded ? '🙈 已开启自测做题模式：全部解析已遮挡收起，可独立推导演算' : '💡 已展开所有题目的解题思路与完整步骤');
+        });
+      }
+
+      /* ---------- 抽屉 Tab 切换 (题目大纲 vs 本节批注) ---------- */
+      var tabToc = document.getElementById('wb-tab-toc');
+      var tabNotes = document.getElementById('wb-tab-notes');
+      var tocBody = document.getElementById('wb-toc-tree');
+      var notesBody = document.getElementById('wb-notes-list');
+      var notesTools = document.getElementById('wb-notes-tools');
+      var notesNum = document.getElementById('wb-notes-num');
+
+      function switchDrawerTab(isNotes) {
+        if (tabToc) tabToc.classList.toggle('on', !isNotes);
+        if (tabNotes) tabNotes.classList.toggle('on', isNotes);
+        if (tocBody) tocBody.style.display = isNotes ? 'none' : 'block';
+        if (notesBody) notesBody.style.display = isNotes ? 'block' : 'none';
+        if (notesTools) notesTools.style.display = isNotes ? 'flex' : 'none';
+        if (isNotes) renderNotesList();
+      }
+      if (tabToc) tabToc.onclick = function(){ switchDrawerTab(false); };
+      if (tabNotes) tabNotes.onclick = function(){ switchDrawerTab(true); };
+
+      var notesBtn = document.getElementById('wb-notes-btn');
+      if (notesBtn) {
+        notesBtn.onclick = function() {
+          toggleToc(true);
+          switchDrawerTab(true);
+        };
+      }
+
+      // 题目导航跳转
+      var tocTree = document.getElementById('wb-toc-tree');
+      if (tocTree) {
+        tocTree.innerHTML = "<div class=\"toc\" style=\"padding:10px;\"><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_1\">第 1 题 · 极大线性无关组唯一性的结构限制定理 (习题 5.1 第 4 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_2\">第 2 题 · 补和向量组的等价性证明 (习题 5.1 第 5 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_3\">第 3 题 · 二阶矩阵空间的极大线性无关组求解 (习题 5.1 第 7 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_4\">第 4 题 · 多项式空间中基底判定 (习题 5.2 第 4 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_5\">第 5 题 · 矩阵对易子生成空间的维数定理 (习题 5.2 第 10 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_6\">第 6 题 · 有限幂集对称差空间的基与维数 (习题 5.2 第 11 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_7\">第 7 题 · 单点赋值为零的多项式子空间基与维数 (习题 5.2 第 12 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_8\">第 8 题 · 代数数单扩张域的向量空间维数 (习题 5.2 第 13 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_9\">第 9 题 · 两组三维基的过渡矩阵与坐标转换 (习题 5.3 第 1 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_10\">第 10 题 · 三组基过渡矩阵连乘传递公式 (习题 5.3 第 3 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_11\">第 11 题 · 组合多项式基底与整数值多项式性质 (习题 5.3 第 5 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_12\">第 12 题 · 和空间与交空间维数差 1 的包含关系判定 (习题 5.4 第 2 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_13\">第 13 题 · 真子空间表为余维数 1 超平面交集定理 (习题 5.4 第 3 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_14\">第 14 题 · 三子空间交和维数对称恒等式 (习题 5.4 第 5 题 (i))</div></div>";
+        tocTree.querySelectorAll('.wb-toc-item').forEach(function(item){
+          item.onclick = function(){
+            var sel = this.getAttribute('data-target');
+            var target = document.querySelector(sel);
+            if (target) {
+              var rect = target.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 64;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(target);
+            }
+            toggleToc(false);
+          };
+        });
+      }
+
+      /* ---------- 批注与荧光笔系统 ---------- */
+      var LID = "algebra-week06";
+      window.LID = LID;
+
+      function getStoredHighlights() {
+        try { return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]'); } catch(e){ return []; }
+      }
+      function saveStoredHighlights(list) {
+        (window.WB_STORAGE||localStorage).setItem('wb_hl_' + LID, JSON.stringify(list));
+        updateNotesDrawer();
+      }
+
+      function updateNotesDrawer() {
+        var list = getStoredHighlights();
+        if (notesNum) notesNum.textContent = String(list.length);
+        var barCount = document.getElementById('wb-bar-notes-count');
+        if (barCount) barCount.textContent = String(list.length);
+        if (notesBody && notesBody.style.display !== 'none') renderNotesList();
+      }
+
+      function renderNotesList() {
+        if (!notesBody) return;
+        var list = getStoredHighlights();
+        if (!list.length) {
+          notesBody.innerHTML = '<div style="font-size:12.5px;color:var(--wb-muted);padding:30px 10px;text-align:center">本作业暂无划线与批注。<br><small style="margin-top:6px;display:block">用鼠标划选题目文字，即可呼出 4 色荧光笔与便签工具！</small></div>';
+          return;
+        }
+        var colorNames = {yellow:'🟡 核心', green:'🟢 概念', red:'🔴 易错', purple:'🟣 技巧', underline:'<u>U</u> 划线'};
+        var h = '';
+        list.forEach(function(item) {
+          var dateStr = new Date(item.time || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+          h += '<div class="wb-note-card" data-aid="' + item.id + '">' +
+               '<div class="wb-nc-quote" style="border-left-color:' + (item.color==='green'?'#22c55e':(item.color==='red'?'#ef4444':(item.color==='purple'?'#a855f7':'#eab308'))) + '">“' + esc(item.text.slice(0, 65)) + (item.text.length>65?'…':'') + '”</div>' +
+               (item.note ? '<div class="wb-nc-text">📝 ' + esc(item.note) + '</div>' : '') +
+               '<div class="wb-nc-meta"><span>' + (colorNames[item.color]||'高亮') + '</span><span>' + dateStr + ' ｜ 直达 ➔</span></div>' +
+               '</div>';
+        });
+        notesBody.innerHTML = h;
+
+        notesBody.querySelectorAll('.wb-note-card').forEach(function(card) {
+          card.onclick = function() {
+            var aid = this.getAttribute('data-aid');
+            var targetEl = document.querySelector('[data-hl-id="' + aid + '"]');
+            if (targetEl) {
+              var rect = targetEl.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 70;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(targetEl);
+              if (window.innerWidth < 900) toggleToc(false);
+            }
+          };
+        });
+      }
+
+      var btnClearNotes = document.getElementById('wb-btn-clear-notes');
+      var btnExportNotes = document.getElementById('wb-btn-export-notes');
+      if (btnClearNotes) {
+        btnClearNotes.onclick = function() {
+          if (!confirm('确定要清空本周作业的所有批注吗？')) return;
+          (window.WB_STORAGE||localStorage).removeItem('wb_hl_' + LID);
+          updateNotesDrawer();
+          showToast('✓ 批注已清空');
+        };
+      }
+      if (btnExportNotes) {
+        btnExportNotes.onclick = function() {
+          var list = getStoredHighlights();
+          if (!list.length) { showToast('暂无批注可导出'); return; }
+          var jsonStr = JSON.stringify({homework: LID, exportedAt: new Date().toISOString(), notes: list}, null, 2);
+          var blob = new Blob([jsonStr], {type: 'application/json'});
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = '作业批注_' + LID + '.json';
+          a.click();
+          showToast('✓ 已导出 JSON 备份');
+        };
+      }
+      updateNotesDrawer();
+
+      /* ---------- 搜索输入与快捷键 Ctrl+K ---------- */
+      if (q) {
+        q.addEventListener('input', function(e) {
+          var v = (e.target.value || '').trim();
+          if (!v) { p.style.display = 'none'; p.innerHTML = ''; return; }
+          var low = v.toLowerCase(), r = [];
+          (S.docs||[]).forEach(function(d){
+            if (String(d[4]||'').toLowerCase().indexOf(low)>=0 || String(d[5]||'').toLowerCase().indexOf(low)>=0) r.push(d);
+          });
+          var h = '<div style="font-size:11px;color:var(--wb-muted);padding:4px 10px 8px">检索「'+esc(v)+'」· '+r.length+' 条命中</div>';
+          r.slice(0, 10).forEach(function(d){
+            h += '<a class="wb-res" href="lecture-'+esc(d[2])+'.html">'+esc(d[4])+'<small>'+esc(cname(d[1]))+'</small></a>';
+          });
+          p.innerHTML = h; p.style.display = 'block';
+        });
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); q.focus(); }
+          if (e.key === 'Escape') { q.value = ''; p.style.display = 'none'; }
+        });
+        document.addEventListener('click', function(e) {
+          if (e.target.closest && (e.target.closest('.wb-panel') || e.target.closest('.wb-in'))) return;
+          p.style.display = 'none';
+        });
+      }
+    })();
+    </script>
+    
+</body>
+</html>

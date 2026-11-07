@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《algebra》2026-09-21 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《algebra》2026-09-21 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#一群定义回顾基本性质对称群000307003201"
+id="toc-一群定义回顾基本性质对称群000307003201">一、群（定义回顾、基本性质、对称群）（00:03:07—00:32:01）</a>
+<ul>
+<li><a href="#群的定义回顾" id="toc-群的定义回顾">00:03:14—00:06:50 ｜
+群的定义回顾</a></li>
+<li><a href="#单位元与逆元的唯一性及幂运算记号"
+id="toc-单位元与逆元的唯一性及幂运算记号">00:06:55—00:15:49 ｜
+单位元与逆元的唯一性及幂运算记号</a></li>
+<li><a href="#加群交换群的记号约定"
+id="toc-加群交换群的记号约定">00:15:53—00:18:17 ｜
+加群（交换群）的记号约定</a></li>
+<li><a href="#常见的交换群例子"
+id="toc-常见的交换群例子">00:18:35—00:19:50 ｜ 常见的交换群例子</a></li>
+<li><a href="#对称群-s_n-的定义与-s_3-上的计算"
+id="toc-对称群-s_n-的定义与-s_3-上的计算">00:19:50—00:32:01 ｜ 对称群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>
+的定义与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+上的计算</a></li>
+</ul></li>
+<li><a href="#二环与域的定义003210011826"
+id="toc-二环与域的定义003210011826">二、环与域的定义（00:32:10—01:18:26）</a>
+<ul>
+<li><a href="#环与含幺交换环的定义及例子"
+id="toc-环与含幺交换环的定义及例子">00:32:28—00:43:05 ｜
+环与含幺交换环的定义及例子</a></li>
+<li><a href="#域的定义" id="toc-域的定义">00:43:14—00:46:55 ｜
+域的定义</a></li>
+<li><a href="#子域数域高斯域与最小数域"
+id="toc-子域数域高斯域与最小数域">00:53:09—01:05:25 ｜
+子域、数域、高斯域与最小数域</a></li>
+<li><a href="#模-n-同余类环-mathbb-z_n-与有限域"
+id="toc-模-n-同余类环-mathbb-z_n-与有限域">01:05:44—01:18:26 ｜ 模
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+同余类环
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+与有限域</a></li>
+</ul></li>
+<li><a href="#三域的特征011845013607"
+id="toc-三域的特征011845013607">三、域的特征（01:18:45—01:36:07）</a>
+<ul>
+<li><a href="#域的特征特征零与特征-p"
+id="toc-域的特征特征零与特征-p">01:19:48—01:24:02 ｜
+域的特征（特征零与特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>）</a></li>
+<li><a href="#特征-p-情形的证明"
+id="toc-特征-p-情形的证明">01:25:04—01:35:06 ｜ 特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+情形的证明</a></li>
+</ul></li>
+<li><a href="#四素数平方根与根式之和的无理性013633014826"
+id="toc-四素数平方根与根式之和的无理性013633014826">四、素数平方根与根式之和的无理性（01:36:33—01:48:26）</a>
+<ul>
+<li><a href="#素数平方根与根式之和的无理性"
+id="toc-素数平方根与根式之和的无理性">01:36:33—01:48:26 ｜
+素数平方根与根式之和的无理性</a></li>
+</ul></li>
+<li><a href="#五一元多项式函数与单位根014844023226"
+id="toc-五一元多项式函数与单位根014844023226">五、一元多项式函数与单位根（01:48:44—02:32:26）</a>
+<ul>
+<li><a href="#一元多项式函数与零点"
+id="toc-一元多项式函数与零点">01:49:55—01:56:28 ｜
+一元多项式函数与零点</a></li>
+<li><a href="#代数基本定理与特征-p-上的零函数例子"
+id="toc-代数基本定理与特征-p-上的零函数例子">01:56:32—02:04:34 ｜
+代数基本定理与特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+上的零函数例子</a></li>
+<li><a href="#韦达定理对称多项式与根式可解性"
+id="toc-韦达定理对称多项式与根式可解性">02:04:43—02:10:48 ｜
+韦达定理、对称多项式与根式可解性</a></li>
+<li><a href="#n-次单位根本原单位根与-xn-1-的分解"
+id="toc-n-次单位根本原单位根与-xn-1-的分解">02:11:31—02:26:09 ｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根、本原单位根与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^N-1</annotation></semantics></math>
+的分解</a></li>
+<li><a href="#形式多项式未定元与后续"
+id="toc-形式多项式未定元与后续">02:26:30—02:32:26 ｜
+形式多项式（未定元）与后续</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2
+id="一群定义回顾基本性质对称群000307003201">一、群（定义回顾、基本性质、对称群）（00:03:07—00:32:01）</h2>
+<h3 id="群的定义回顾">00:03:14—00:06:50 ｜ 群的定义回顾</h3>
+<p>本节课先复习群的定义，再补充基本性质，然后给出非交换群的典型例子。</p>
+<p><strong>群的定义</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+是一个非空集合，上面有一个<strong>二元运算</strong>（即一个映射
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>×</mo><mi>G</mi><mo>→</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">G\times G\to G</annotation></semantics></math>），抽象地记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>*</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a*b</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⋅</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a\cdot b</annotation></semantics></math>。若该运算满足以下三条，则称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mo>,</mo><mi>*</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(G,*)</annotation></semantics></math>
+是一个<strong>群</strong>：</p>
+<ol type="1">
+<li><strong>结合律</strong>：对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a,b,c\in G</annotation></semantics></math>，有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mi>c</mi><mo>=</mo><mi>a</mi><mo>*</mo><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>*</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">(a*b)*c=a*(b*c).</annotation></semantics></math></li>
+<li><strong>单位元</strong>：存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">e\in G</annotation></semantics></math>，使得对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a\in G</annotation></semantics></math>，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>*</mo><mi>a</mi><mo>=</mo><mi>a</mi><mo>*</mo><mi>e</mi><mo>=</mo><mi>a</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">e*a=a*e=a.</annotation></semantics></math></li>
+<li><strong>逆元</strong>：对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a\in G</annotation></semantics></math>，存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">b\in G</annotation></semantics></math>，使得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>*</mo><mi>b</mi><mo>=</mo><mi>b</mi><mo>*</mo><mi>a</mi><mo>=</mo><mi>e</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">a*b=b*a=e.</annotation></semantics></math></li>
+</ol>
+<p>二元运算本身已经保证了封闭性（乘积仍落在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+中），所以定义里只列出上述三条。若不引起歧义，也简称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+是群。</p>
+<h3 id="单位元与逆元的唯一性及幂运算记号">00:06:55—00:15:49 ｜
+单位元与逆元的唯一性及幂运算记号</h3>
+<p>定义里只说了单位元、逆元的「存在性」，没有说「唯一性」。下面先证明它们都唯一，之后才能放心地用记号。</p>
+<h4 id="证明-1000713-单位元的唯一性">证明 1（00:07:13）｜
+单位元的唯一性</h4>
+<p><strong>命题</strong>：群的单位元是唯一的。</p>
+<p><strong>思路</strong>：假设有两个单位元，利用单位元的定义推出它们相等。</p>
+<p><strong>逐步推导</strong>： 1. 设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>e</mi><mo>′</mo></msup><annotation encoding="application/x-tex">e&#39;</annotation></semantics></math>
+都是单位元，即对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a\in G</annotation></semantics></math>
+有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>*</mo><mi>a</mi><mo>=</mo><mi>a</mi><mo>*</mo><mi>e</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">e*a=a*e=a</annotation></semantics></math>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>*</mo><msup><mi>e</mi><mo>′</mo></msup><mo>=</mo><msup><mi>e</mi><mo>′</mo></msup><mo>*</mo><mi>a</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">a*e&#39;=e&#39;*a=a</annotation></semantics></math>。
+2. 考虑乘积
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>*</mo><msup><mi>e</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">e*e&#39;</annotation></semantics></math>。因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>e</mi><mo>′</mo></msup><annotation encoding="application/x-tex">e&#39;</annotation></semantics></math>
+是单位元，所以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>*</mo><msup><mi>e</mi><mo>′</mo></msup><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">e*e&#39;=e</annotation></semantics></math>；又因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>
+是单位元，所以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>*</mo><msup><mi>e</mi><mo>′</mo></msup><mo>=</mo><msup><mi>e</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">e*e&#39;=e&#39;</annotation></semantics></math>。
+3. 于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>=</mo><mi>e</mi><mo>*</mo><msup><mi>e</mi><mo>′</mo></msup><mo>=</mo><msup><mi>e</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">e=e*e&#39;=e&#39;</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：单位元唯一。以后统一记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>。</p>
+<h4 id="证明-2001013-逆元的唯一性">证明 2（00:10:13）｜
+逆元的唯一性</h4>
+<p><strong>命题</strong>：对任一群元素
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>，它的逆元是唯一的。</p>
+<p><strong>思路</strong>：假设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>,</mo><msup><mi>b</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">b,b&#39;</annotation></semantics></math>
+都是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+的逆元，从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+出发，借
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>b</mi><mo>′</mo></msup><annotation encoding="application/x-tex">b&#39;</annotation></semantics></math>
+造出连等式。</p>
+<p><strong>逐步推导</strong>： 1. 设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>,</mo><msup><mi>b</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">b,b&#39;</annotation></semantics></math>
+均满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>*</mo><mi>b</mi><mo>=</mo><mi>b</mi><mo>*</mo><mi>a</mi><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">a*b=b*a=e</annotation></semantics></math>。
+2.
+由单位元性质，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mi>b</mi><mo>*</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">b=b*e</annotation></semantics></math>。
+3. 因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>b</mi><mo>′</mo></msup><annotation encoding="application/x-tex">b&#39;</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+的逆元，有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>*</mo><msup><mi>b</mi><mo>′</mo></msup><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">a*b&#39;=e</annotation></semantics></math>，代入：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mi>b</mi><mo>*</mo><mi>e</mi><mo>=</mo><mi>b</mi><mo>*</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>*</mo><msup><mi>b</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">b=b*e=b*(a*b&#39;).</annotation></semantics></math>
+4.
+用结合律：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>*</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>*</mo><msup><mi>b</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>*</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>*</mo><msup><mi>b</mi><mo>′</mo></msup><mo>=</mo><mi>e</mi><mo>*</mo><msup><mi>b</mi><mo>′</mo></msup><mo>=</mo><msup><mi>b</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">b*(a*b&#39;)=(b*a)*b&#39;=e*b&#39;=b&#39;</annotation></semantics></math>。
+5. 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><msup><mi>b</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">b=b&#39;</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：逆元唯一，记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">a^{-1}</annotation></semantics></math>。</p>
+<p><strong>易错点（老师提醒）</strong>：一开始做这类逻辑推导<strong>不要跳步</strong>，要把每一步依据的公理写全。第一周作业也要求把全部逻辑写清楚。</p>
+<p>有了
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">a^{-1}</annotation></semantics></math>
+记号后，可以定义整数次幂：</p>
+<ul>
+<li>若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><munder><munder><mrow><mi>a</mi><mo>*</mo><mi>⋯</mi><mo>*</mo><mi>a</mi></mrow><mo accent="true">⏟</mo></munder><mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 次</mtext></mrow></mrow></munder></mrow><annotation encoding="application/x-tex">a^n=\underbrace{a*\cdots*a}_{n\text{ 次}}</annotation></semantics></math>（合法，因乘法有结合律）；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>0</mn></msup><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">a^0=e</annotation></semantics></math>；</li>
+<li>若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&lt;0</annotation></semantics></math>，定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">a^n=(a^{-1})^{-n}</annotation></semantics></math>。</li>
+</ul>
+<h4 id="练习-1001523-负整数次幂的等价形式">练习 1（00:15:23）｜
+负整数次幂的等价形式</h4>
+<p><strong>命题</strong>：证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mi>−</mi><mi>n</mi></mrow></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mi>n</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">a^{-n}=(a^n)^{-1}</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>）。</p>
+<p><strong>思路</strong>：按定义两边都是「逆元」，利用逆元唯一性比较即可。[补全：课上仅口述半句，未当场推证，仅供自学参考]</p>
+<p><strong>简要过程</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mi>−</mi><mi>n</mi></mrow></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">a^{-n}=(a^{-1})^{-n}</annotation></semantics></math>
+是把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a^{-1})</annotation></semantics></math>
+自乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>a</mi><mi>n</mi></msup><annotation encoding="application/x-tex">a^n</annotation></semantics></math>
+的逆元满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>n</mi></msup><mo>*</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mi>n</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">a^n*(a^n)^{-1}=e</annotation></semantics></math>。由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>n</mi></msup><mo>*</mo><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">(a^{-1})^n*a^n=e</annotation></semantics></math>
+可知二者互为逆元，故相等。</p>
+<h3 id="加群交换群的记号约定">00:15:53—00:18:17 ｜
+加群（交换群）的记号约定</h3>
+<p>若群运算还满足交换律
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>*</mo><mi>b</mi><mo>=</mo><mi>b</mi><mo>*</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">a*b=b*a</annotation></semantics></math>，称为<strong>交换群</strong>或<strong>阿贝尔（Abel）群</strong>。</p>
+<p><strong>记号约定</strong>：对交换群，习惯把运算写成加法，称为<strong>加群</strong>：
+- 单位元记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（零元）；
+- 逆元记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">-a</annotation></semantics></math>；
+- 元素
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+与自己做
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次加法： -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><mi>a</mi><mo>=</mo><munder><munder><mrow><mi>a</mi><mo>+</mo><mi>⋯</mi><mo>+</mo><mi>a</mi></mrow><mo accent="true">⏟</mo></munder><mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 次</mtext></mrow></mrow></munder></mrow><annotation encoding="application/x-tex">n\cdot a=\underbrace{a+\cdots+a}_{n\text{ 次}}</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n=0</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>⋅</mo><mi>a</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0\cdot a=0</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&lt;0</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><mi>a</mi><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n\cdot a=-((-n)\cdot a)</annotation></semantics></math>。</p>
+<h3 id="常见的交换群例子">00:18:35—00:19:50 ｜ 常见的交换群例子</h3>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℤ</mi><mo>,</mo><mi>+</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb Z,+)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℚ</mi><mo>,</mo><mi>+</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb Q,+)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mi>+</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb R,+)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℂ</mi><mo>,</mo><mi>+</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb C,+)</annotation></semantics></math>
+都是加群（交换群），零元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+的逆元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">-a</annotation></semantics></math>。</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℚ</mi><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb Q\setminus\{0\},\cdot)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb R\setminus\{0\},\cdot)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℂ</mi><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb C\setminus\{0\},\cdot)</annotation></semantics></math>
+在乘法下也是交换群，单位元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>。</li>
+</ul>
+<p>这些例子运算都是交换的，下面给出<strong>非交换群</strong>的例子。</p>
+<h3 id="对称群-s_n-的定义与-s_3-上的计算">00:19:50—00:32:01 ｜ 对称群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>
+的定义与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+上的计算</h3>
+<p><strong>对称群的定义</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+为集合。从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+到自身的<strong>双射</strong>（一一对应）称为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+上的一个<strong>置换</strong>。所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>→</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">X\to X</annotation></semantics></math>
+的双射构成的集合，配上<strong>映射复合</strong>作为运算，称为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+上的<strong>对称群</strong>。</p>
+<p>取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">X=\{1,2,\ldots,n\}</annotation></semantics></math>，则记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>：
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>
+的元素是所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">}</mo><mo>→</mo><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{1,\ldots,n\}\to\{1,\ldots,n\}</annotation></semantics></math>
+的双射； - 运算为映射复合
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∘</mo><mi>g</mi></mrow><annotation encoding="application/x-tex">f\circ g</annotation></semantics></math>（先作用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+再作用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>）；
+- 单位元是恒等映射
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow><annotation encoding="application/x-tex">\mathrm{id}</annotation></semantics></math>；
+- 双射都有逆映射，故每个元素可逆； -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>n</mi><mi>!</mi></mrow><annotation encoding="application/x-tex">|S_n|=n!</annotation></semantics></math>。</p>
+<p>一个置换可用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+排列表示：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1,2,\ldots,n</annotation></semantics></math>
+映到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_1,a_2,\ldots,a_n</annotation></semantics></math>，就记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><msub><mi>a</mi><mn>2</mn></msub><mi>…</mi><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_1a_2\ldots a_n</annotation></semantics></math>，意即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>↦</mo><msub><mi>a</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">i\mapsto a_i</annotation></semantics></math>。单位元是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>123</mn><mi>…</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">123\ldots n</annotation></semantics></math>。</p>
+<p><strong>基本事实</strong>：当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">n\ge 3</annotation></semantics></math>
+时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>
+不是交换群。只需对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">n=3</annotation></semantics></math>
+举出两个复合顺序不同、结果不同的置换即可。</p>
+<h4 id="例题-1002908-s_3-中两个置换复合的非交换性">例题 1（00:29:08）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+中两个置换复合的非交换性</h4>
+<p><strong>命题</strong>：在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+中取
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>记</mi><mi>为</mi><mspace width="0.222em"></mspace><mn>213</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>τ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>记</mi><mi>为</mi><mspace width="0.222em"></mspace><mn>231</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\sigma=\begin{pmatrix}1&amp;2&amp;3\\2&amp;1&amp;3\end{pmatrix}\;(记为\ 213),\qquad \tau=\begin{pmatrix}1&amp;2&amp;3\\2&amp;3&amp;1\end{pmatrix}\;(记为\ 231),</annotation></semantics></math>
+计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∘</mo><mi>τ</mi></mrow><annotation encoding="application/x-tex">\sigma\circ\tau</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>∘</mo><mi>σ</mi></mrow><annotation encoding="application/x-tex">\tau\circ\sigma</annotation></semantics></math>，说明二者不相等。</p>
+<p><strong>思路</strong>：按映射复合定义，先作用右边再作用左边，逐个跟踪
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">1,2,3</annotation></semantics></math>
+的像。</p>
+<p><strong>逐步推导</strong>： 1. 计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∘</mo><mi>τ</mi></mrow><annotation encoding="application/x-tex">\sigma\circ\tau</annotation></semantics></math>（先
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
+后
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>）：
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mover><mo>→</mo><mi>τ</mi></mover><mn>2</mn><mover><mo>→</mo><mi>σ</mi></mover><mn>1</mn></mrow><annotation encoding="application/x-tex">1\xrightarrow{\tau}2\xrightarrow{\sigma}1</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mover><mo>→</mo><mi>τ</mi></mover><mn>3</mn><mover><mo>→</mo><mi>σ</mi></mover><mn>3</mn></mrow><annotation encoding="application/x-tex">2\xrightarrow{\tau}3\xrightarrow{\sigma}3</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mover><mo>→</mo><mi>τ</mi></mover><mn>1</mn><mover><mo>→</mo><mi>σ</mi></mover><mn>2</mn></mrow><annotation encoding="application/x-tex">3\xrightarrow{\tau}1\xrightarrow{\sigma}2</annotation></semantics></math>。
+故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∘</mo><mi>τ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma\circ\tau=\begin{pmatrix}1&amp;2&amp;3\\1&amp;3&amp;2\end{pmatrix}</annotation></semantics></math>，即排列
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>132</mn><annotation encoding="application/x-tex">132</annotation></semantics></math>。
+2. 计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>∘</mo><mi>σ</mi></mrow><annotation encoding="application/x-tex">\tau\circ\sigma</annotation></semantics></math>（先
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>
+后
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>）：
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mover><mo>→</mo><mi>σ</mi></mover><mn>2</mn><mover><mo>→</mo><mi>τ</mi></mover><mn>3</mn></mrow><annotation encoding="application/x-tex">1\xrightarrow{\sigma}2\xrightarrow{\tau}3</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mover><mo>→</mo><mi>σ</mi></mover><mn>1</mn><mover><mo>→</mo><mi>τ</mi></mover><mn>2</mn></mrow><annotation encoding="application/x-tex">2\xrightarrow{\sigma}1\xrightarrow{\tau}2</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mover><mo>→</mo><mi>σ</mi></mover><mn>3</mn><mover><mo>→</mo><mi>τ</mi></mover><mn>1</mn></mrow><annotation encoding="application/x-tex">3\xrightarrow{\sigma}3\xrightarrow{\tau}1</annotation></semantics></math>。
+故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>∘</mo><mi>σ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\tau\circ\sigma=\begin{pmatrix}1&amp;2&amp;3\\3&amp;2&amp;1\end{pmatrix}</annotation></semantics></math>，即排列
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>321</mn><annotation encoding="application/x-tex">321</annotation></semantics></math>。
+3. 显然
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>132</mn><mo>≠</mo><mn>321</mn></mrow><annotation encoding="application/x-tex">132\neq 321</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∘</mo><mi>τ</mi><mo>≠</mo><mi>τ</mi><mo>∘</mo><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma\circ\tau\neq\tau\circ\sigma</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+非交换，从而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">n\ge 3</annotation></semantics></math>
+时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>
+是非交换群（非 Abel 群）。</p>
+<p><strong>意义</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>n</mi></msub><annotation encoding="application/x-tex">S_n</annotation></semantics></math>
+给出最重要的非交换群例子；之后学了矩阵，还会遇到大量矩阵群。</p>
+<hr />
+<h2
+id="二环与域的定义003210011826">二、环与域的定义（00:32:10—01:18:26）</h2>
+<p>本节课的最终目标是严格定义<strong>域</strong>，而域是一种特殊的<strong>环</strong>，所以先讲环、再讲特殊的环（即域）。</p>
+<h3 id="环与含幺交换环的定义及例子">00:32:28—00:43:05 ｜
+环与含幺交换环的定义及例子</h3>
+<p><strong>环的定义</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+是一个集合，其上有一个加法运算，构成<strong>加群</strong>（加法单位元记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>）；再假设有一个乘法二元运算。若乘法与加法满足：</p>
+<ol type="1">
+<li><strong>乘法结合律</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mi>c</mi><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(ab)c=a(bc)</annotation></semantics></math>（乘法不一定交换）；</li>
+<li><strong>分配律</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>b</mi><mo>+</mo><mi>a</mi><mi>c</mi><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mi>a</mi><mo>=</mo><mi>b</mi><mi>a</mi><mo>+</mo><mi>c</mi><mi>a</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">a(b+c)=ab+ac,\qquad (b+c)a=ba+ca,</annotation></semantics></math></li>
+</ol>
+<p>则称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mo>,</mo><mi>+</mi><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(R,+,\cdot)</annotation></semantics></math>
+是一个<strong>环</strong>。</p>
+<ul>
+<li>若乘法还交换（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>b</mi><mo>=</mo><mi>b</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">ab=ba</annotation></semantics></math>），称为<strong>交换环</strong>；</li>
+<li>若存在一个乘法单位元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>⋅</mo><mi>a</mi><mo>=</mo><mi>a</mi><mo>⋅</mo><mn>1</mn><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">1\cdot a=a\cdot 1=a</annotation></semantics></math>
+对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">a\in R</annotation></semantics></math>
+成立，称为<strong>含幺环</strong>；</li>
+<li>同时含幺且交换，称为<strong>含幺交换环</strong>。</li>
+</ul>
+<p><strong>本课程约定</strong>：讨论环时，一律假设它是<strong>含幺交换环</strong>，并且排除退化情形
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0\neq 1</annotation></semantics></math>（若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0=1</annotation></semantics></math>，则环只有一个元素
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，称为<strong>零环</strong>，被排除）。</p>
+<h4 id="例题-1004006-整数集-mathbb-z-是含幺交换环">例题 1（00:40:06）｜
+整数集
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℤ</mi><annotation encoding="application/x-tex">\mathbb Z</annotation></semantics></math>
+是含幺交换环</h4>
+<p><strong>命题</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℤ</mi><annotation encoding="application/x-tex">\mathbb Z</annotation></semantics></math>
+按通常的加法与乘法构成含幺交换环。</p>
+<p><strong>推导</strong>：加法使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℤ</mi><annotation encoding="application/x-tex">\mathbb Z</annotation></semantics></math>
+成加群（零元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>）；乘法交换、结合；分配律成立；乘法单位元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>。故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℤ</mi><annotation encoding="application/x-tex">\mathbb Z</annotation></semantics></math>
+是含幺交换环。</p>
+<h4 id="例题-2004101-偶数集-2mathbb-z-是交换环但无乘法单位元">例题
+2（00:41:01）｜ 偶数集
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">2\mathbb Z</annotation></semantics></math>
+是交换环但无乘法单位元</h4>
+<p><strong>命题</strong>：偶数集
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi mathvariant="double-struck">ℤ</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>2</mn><mi>k</mi><mo>∣</mo><mi>k</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">2\mathbb Z=\{2k\mid k\in\mathbb Z\}</annotation></semantics></math>
+在通常加法、乘法下是交换环，但它<strong>不是</strong>含幺环。</p>
+<p><strong>推导</strong>： - 加法使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">2\mathbb Z</annotation></semantics></math>
+成加群，零元仍为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>；
+- 乘法封闭、交换、结合，分配律成立，故是交换环； - 但
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>∉</mo><mn>2</mn><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">1\notin 2\mathbb Z</annotation></semantics></math>，不存在乘法单位元。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">2\mathbb Z</annotation></semantics></math>
+不是含幺环，因此不满足本课程的默认大前提（含幺交换环），一般不作为环的标准例子讨论。</p>
+<h3 id="域的定义">00:43:14—00:46:55 ｜ 域的定义</h3>
+<p><strong>域的定义</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是一个<strong>含幺交换环</strong>，若其<strong>非零元素</strong>在乘法下构成一个群，则称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是一个<strong>域</strong>。</p>
+<p>这一条件等价于两条： 1.
+<strong>对乘法封闭</strong>：两个非零元的乘积仍非零（即在域中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn><mo>⟹</mo><mi>a</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">ab=0\implies a=0</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b=0</annotation></semantics></math>）；
+2. <strong>每个非零元有乘法逆元</strong>：对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a\neq 0</annotation></semantics></math>，存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>b</mi><mo>=</mo><mi>b</mi><mi>a</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">ab=ba=1</annotation></semantics></math>。</p>
+<p>非零元素集合记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>F</mi><mo>*</mo></msup><mo>=</mo><mi>F</mi><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">F^*=F\setminus\{0\}</annotation></semantics></math>，它是乘法群。于是域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+上可以做加、减、乘、除（除以非零元）四则运算。</p>
+<p>常见例子：有理数域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math>、实数域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb R</annotation></semantics></math>、复数域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>
+都是域。</p>
+<h3 id="子域数域高斯域与最小数域">00:53:09—01:05:25 ｜
+子域、数域、高斯域与最小数域</h3>
+<p><strong>子域（直观定义）</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是域，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>⊆</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">E\subseteq F</annotation></semantics></math>
+是一个子集，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+的运算下本身也构成一个域，则称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+的<strong>子域</strong>。（此定义课堂上为便于理解，未严格展开。）</p>
+<ul>
+<li><strong>数域</strong>：复数域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>
+的子域常被称为「数域」。老师指出这个叫法并不严谨（“数域”易被误解为”由数字构成的域”），但国内教材常用，课程暂且沿用。</li>
+<li><strong>高斯域</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mrow><mi>−</mi><mn>1</mn></mrow></msqrt><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>∣</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi mathvariant="double-struck">ℚ</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\mathbb Q(\sqrt{-1})=\{a+bi\mid a,b\in\mathbb Q\}</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>
+的子域（实部、虚部均为有理数的复数）。</li>
+</ul>
+<h4 id="练习-1005733-证明-mathbb-qsqrt-dd-无平方因子是域">练习
+1（00:57:33）｜ 证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>d</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbb Q(\sqrt d)</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+无平方因子）是域</h4>
+<p><strong>命题</strong>：设整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+无平方因子（即不存在大于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+的整数其平方整除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+可为负，如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">d=-1</annotation></semantics></math>；并约定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">d\neq 1</annotation></semantics></math>）。证明
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>d</mi></msqrt><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>a</mi><mo>+</mo><mi>b</mi><msqrt><mi>d</mi></msqrt><mo>∣</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi mathvariant="double-struck">ℚ</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\mathbb Q(\sqrt d)=\{a+b\sqrt d\mid a,b\in\mathbb Q\}</annotation></semantics></math>
+按复数运算构成一个域。</p>
+<p><strong>提示</strong>：加法显然成加群；关键是验证任一非零元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><msqrt><mi>d</mi></msqrt></mrow><annotation encoding="application/x-tex">a+b\sqrt d</annotation></semantics></math>
+的逆元仍在集合内——利用共轭
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>−</mo><mi>b</mi><msqrt><mi>d</mi></msqrt></mrow><annotation encoding="application/x-tex">a-b\sqrt d</annotation></semantics></math>
+与「<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mi>d</mi><msup><mi>b</mi><mn>2</mn></msup><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2-db^2\neq 0</annotation></semantics></math>」（因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+无平方因子且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>
+不全为零）可得逆元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle displaystyle="true"><mfrac><mrow><mi>a</mi><mo>−</mo><mi>b</mi><msqrt><mi>d</mi></msqrt></mrow><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mi>d</mi><msup><mi>b</mi><mn>2</mn></msup></mrow></mfrac></mstyle><annotation encoding="application/x-tex">\dfrac{a-b\sqrt d}{a^2-db^2}</annotation></semantics></math>。[补全：课上仅布置为练习，未当场推证]</p>
+<h4 id="证明-1010205-有理数域-mathbb-q-是最小的数域">证明
+1（01:02:05）｜ 有理数域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math>
+是最小的数域</h4>
+<p><strong>命题</strong>：对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>
+的任一子域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>，都有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo>⊆</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\mathbb Q\subseteq F</annotation></semantics></math>；换言之
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math>
+是所有数域的交，是最小的数为域。</p>
+<p><strong>思路</strong>（由学生回答、老师补充）：从域的单位元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+出发，用加、减得到全体整数，再用除法得到全体有理数。</p>
+<p><strong>逐步推导</strong>： 1. 因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是域，含乘法单位元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">1\in F</annotation></semantics></math>。
+2.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+对加法、减法封闭（加群性质），故由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+反复相加可得所有正整数，再由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+与取负可得所有整数，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℤ</mi><mo>⊆</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\mathbb Z\subseteq F</annotation></semantics></math>。
+3. 对任意整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+与非零整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>，因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>∈</mo><mi>F</mi><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">b\in F\setminus\{0\}</annotation></semantics></math>
+有乘法逆元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">b^{-1}\in F</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⋅</mo><msup><mi>b</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">a\cdot b^{-1}\in F</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mi>a</mi><mi>b</mi></mfrac></mstyle><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\dfrac{a}{b}\in F</annotation></semantics></math>。
+4. 所以任意有理数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mi>a</mi><mi>b</mi></mfrac></mstyle><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\dfrac{a}{b}\in F</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo>⊆</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\mathbb Q\subseteq F</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math>
+包含于任意数域，是最小的数域。</p>
+<h3 id="模-n-同余类环-mathbb-z_n-与有限域">01:05:44—01:18:26 ｜ 模
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+同余类环
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+与有限域</h3>
+<p><strong>模
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+同余类环</strong>：对正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，记
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+为模
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+的全部同余类
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>…</mi><mo>,</mo><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{[0],[1],\ldots,[n-1]\}</annotation></semantics></math>。其上定义：
+-
+加法：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mo stretchy="false" form="prefix">[</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]+[b]=[a+b]</annotation></semantics></math>，零元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0]</annotation></semantics></math>；
+-
+乘法：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo><mo>⋅</mo><mo stretchy="false" form="prefix">[</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]\cdot[b]=[ab]</annotation></semantics></math>，单位元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1]</annotation></semantics></math>。</p>
+<p>当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n&gt;1</annotation></semantics></math>
+时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+是含幺交换环（若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n=1</annotation></semantics></math>
+则退化为零环
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0]=[1]</annotation></semantics></math>，被排除）。</p>
+<p><strong>问题</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+何时成为域？等价地，非零同余类何时都有乘法逆元？结论是：<strong>当且仅当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+为素数</strong>。</p>
+<h4 id="例题-1011022-mathbb-z_6-中-2-不可逆故-mathbb-z_6-不是域">例题
+1（01:10:22）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mn>6</mn></msub><annotation encoding="application/x-tex">\mathbb Z_6</annotation></semantics></math>
+中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2]</annotation></semantics></math>
+不可逆，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mn>6</mn></msub><annotation encoding="application/x-tex">\mathbb Z_6</annotation></semantics></math>
+不是域</h4>
+<p><strong>命题</strong>：说明合数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+不是域。</p>
+<p><strong>推导</strong>：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">n=6</annotation></semantics></math>，考虑元素
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>∈</mo><msub><mi mathvariant="double-struck">ℤ</mi><mn>6</mn></msub></mrow><annotation encoding="application/x-tex">[2]\in\mathbb Z_6</annotation></semantics></math>。有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>⋅</mo><mo stretchy="false" form="prefix">[</mo><mn>3</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>6</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">[2]\cdot[3]=[6]=[0],</annotation></semantics></math>
+而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mo stretchy="false" form="prefix">[</mo><mn>3</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2],[3]</annotation></semantics></math>
+均非零。在域中「非零元之积仍非零」，因此
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2]</annotation></semantics></math>
+不可能可逆（否则两边同乘其逆会推出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>3</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[3]=[0]</annotation></semantics></math>，矛盾）。更直接地：用任意类去乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2]</annotation></semantics></math>
+都得到偶数类，永远得不到单位元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1]</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：合数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+时存在非零零因子，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbb Z_n</annotation></semantics></math>
+不是域。</p>
+<h4 id="证明-1011554-素数-p-时-mathbb-z_p-中非零元可逆">证明
+1（01:15:54）｜ 素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+中非零元可逆</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+为素数，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+中任一非零同余类
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∤</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">p\nmid a</annotation></semantics></math>）都有乘法逆元，从而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+是域（含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+个元素的有限域）。</p>
+<p><strong>思路</strong>：利用最大公因数与 Bézout
+恒等式直接构造逆元。</p>
+<p><strong>逐步推导</strong>： 1. 取非零类
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]</annotation></semantics></math>，即整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∤</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">p\nmid a</annotation></semantics></math>。
+2. 因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+为素数，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(a,p)=1</annotation></semantics></math>，故存在整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">b,c</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>b</mi><mo>+</mo><mi>p</mi><mi>c</mi><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">ab+pc=1.</annotation></semantics></math>
+3. 在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+中取同余类：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo><mo>⋅</mo><mo stretchy="false" form="prefix">[</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>−</mo><mi>p</mi><mi>c</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">[a]\cdot[b]=[ab]=[1-pc]=[1].</annotation></semantics></math>
+4. 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[b]</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]</annotation></semantics></math>
+的乘法逆元。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+的非零元均可逆，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+是一个有限域。除上述证明外，也可用费马小定理（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn><mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">mod</mi><mo>&#8289;</mo></mrow><mspace width="0.222em"></mspace><mi>p</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">a^{p-1}\equiv1\pmod p</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><msup><mo stretchy="false" form="postfix">]</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><msup><mo stretchy="false" form="postfix">]</mo><mrow><mi>p</mi><mo>−</mo><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">[a]^{-1}=[a]^{p-2}</annotation></semantics></math>）或「乘遍非零类得双射」的论证。[补全：后两种课上仅提及思路，未完整推证]</p>
+<hr />
+<h2 id="三域的特征011845013607">三、域的特征（01:18:45—01:36:07）</h2>
+<p>数域（特征零）与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>（特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>）这两类域行为差别很大，下面用「特征」来区分。</p>
+<h3 id="域的特征特征零与特征-p">01:19:48—01:24:02 ｜
+域的特征（特征零与特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>）</h3>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是域，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0\neq1</annotation></semantics></math>。把乘法单位元记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mn>1</mn><mi>F</mi></msub><annotation encoding="application/x-tex">1_F</annotation></semantics></math>，考虑它在加法下的整数倍
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub></mrow><annotation encoding="application/x-tex">n\cdot 1_F</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mn>1</mn><mi>F</mi></msub><annotation encoding="application/x-tex">1_F</annotation></semantics></math>
+相加）。有两种可能：</p>
+<ul>
+<li><strong>情形 1（特征零）</strong>：对任意正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，都有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\cdot 1_F\neq0</annotation></semantics></math>。此时称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+为<strong>特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math></strong>
+的域。特征零的域一定包含有理数域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math>。</li>
+<li><strong>情形 2（特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>）</strong>：存在某个正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\cdot 1_F=0</annotation></semantics></math>。此时存在<strong>唯一</strong>的素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p\cdot 1_F=0</annotation></semantics></math>，称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+为<strong>特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math></strong>
+的域。特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+的域一定包含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>。</li>
+</ul>
+<p><strong>结论</strong>：一个域的特征，要么为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，要么为一个素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>。</p>
+<h3 id="特征-p-情形的证明">01:25:04—01:35:06 ｜ 特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+情形的证明</h3>
+<h4 id="练习-1012517-特征零的域包含-mathbb-q">练习 1（01:25:17）｜
+特征零的域包含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math></h4>
+<p><strong>命题</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+特征零，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo>⊆</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">\mathbb Q\subseteq F</annotation></semantics></math>。</p>
+<p><strong>思路与过程</strong>：与「<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℚ</mi><annotation encoding="application/x-tex">\mathbb Q</annotation></semantics></math>
+是最小数域」的证明完全一样——由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mn>1</mn><mi>F</mi></msub><annotation encoding="application/x-tex">1_F</annotation></semantics></math>
+经加法得全体整数，再经除法得全体有理数。[补全：课上指明「像前面证明那样做练习」，未当场重写]</p>
+<h4 id="证明-1012547-若-ncdot-1_f0-则存在唯一素数-p-使-pcdot-1_f0">证明
+1（01:25:47）｜ 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\cdot 1_F=0</annotation></semantics></math>
+则存在唯一素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p\cdot 1_F=0</annotation></semantics></math></h4>
+<p><strong>命题</strong>：设某个正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\cdot 1_F=0</annotation></semantics></math>，则存在唯一的素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p\cdot 1_F=0</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+作素因子分解，利用域中「乘积为零则至少一个因子为零」推出存在性；再用互素的整数线性组合推出唯一性。</p>
+<p><strong>逐步推导（存在性）</strong>： 1. 把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+分解为素数乘积
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mi>p</mi><mn>1</mn></msub><msub><mi>p</mi><mn>2</mn></msub><mi>⋯</mi><msub><mi>p</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">n=p_1p_2\cdots p_k</annotation></semantics></math>。
+2. 按定义展开，有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mn>1</mn></msub><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mn>2</mn></msub><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>⋯</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mi>k</mi></msub><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">n\cdot 1_F=(p_1\cdot 1_F)(p_2\cdot 1_F)\cdots(p_k\cdot 1_F).</annotation></semantics></math>
+（这里
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub></mrow><annotation encoding="application/x-tex">p_i\cdot 1_F</annotation></semantics></math>
+是把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mn>1</mn><mi>F</mi></msub><annotation encoding="application/x-tex">1_F</annotation></semantics></math>
+相加
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>i</mi></msub><annotation encoding="application/x-tex">p_i</annotation></semantics></math>
+次得到的域中元素；利用分配律可证该乘积恰等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mn>1</mn><mi>F</mi></msub><annotation encoding="application/x-tex">1_F</annotation></semantics></math>
+相加。<strong>注意</strong>：不能把整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>i</mi></msub><annotation encoding="application/x-tex">p_i</annotation></semantics></math>
+直接当成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+的元素去用交换律，必须回到「加法重复」的定义来证，否则是循环论证。） 3.
+已知
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\cdot 1_F=0</annotation></semantics></math>（等式右端为域的加法零元）。在域中，若乘积为零，则至少有一个因子为零，故存在某个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>i</mi></msub><annotation encoding="application/x-tex">p_i</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p_i\cdot 1_F=0</annotation></semantics></math>。取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><msub><mi>p</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">p=p_i</annotation></semantics></math>
+即为一个素数。</p>
+<p><strong>逐步推导（唯一性）</strong>： 1. 假设还有另一个素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>≠</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">q\neq p</annotation></semantics></math>
+也使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">q\cdot 1_F=0</annotation></semantics></math>。
+2. 因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>,</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">p,q</annotation></semantics></math>
+互素，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(p,q)=1</annotation></semantics></math>，存在整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>p</mi><mo>+</mo><mi>b</mi><mi>q</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">ap+bq=1</annotation></semantics></math>。
+3. 于是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>p</mi><mo>+</mo><mi>b</mi><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>b</mi><mo stretchy="false" form="prefix">(</mo><mi>q</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mo>⋅</mo><mn>0</mn><mo>+</mo><mi>b</mi><mo>⋅</mo><mn>0</mn><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">1_F=(ap+bq)\cdot 1_F=a(p\cdot 1_F)+b(q\cdot 1_F)=a\cdot0+b\cdot0=0.</annotation></semantics></math>
+4. 这与域的约定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0\neq1</annotation></semantics></math>
+矛盾。</p>
+<p><strong>结论</strong>：使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p\cdot 1_F=0</annotation></semantics></math>
+的素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+存在且唯一，故特征为素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>。</p>
+<p><strong>意义</strong>：很多对数域成立的结论对特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+的有限域不一定成立，后续命题需留意这一区别。</p>
+<hr />
+<h2
+id="四素数平方根与根式之和的无理性013633014826">四、素数平方根与根式之和的无理性（01:36:33—01:48:26）</h2>
+<p>作为域与整数性质的应用，课堂上现场请同学证明了若干经典的无理性结论。</p>
+<h3 id="素数平方根与根式之和的无理性">01:36:33—01:48:26 ｜
+素数平方根与根式之和的无理性</h3>
+<h4 id="例题-1014312-证明素数-p-的平方根-sqrt-p-是无理数">例题
+1（01:43:12）｜ 证明素数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+的平方根
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>p</mi></msqrt><annotation encoding="application/x-tex">\sqrt p</annotation></semantics></math>
+是无理数</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+为素数，证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mi>p</mi></msqrt><mo>∉</mo><mi mathvariant="double-struck">ℚ</mi></mrow><annotation encoding="application/x-tex">\sqrt p\notin\mathbb Q</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：反证法，配合 Euclid
+引理（素数整除乘积则整除某一因子）。</p>
+<p><strong>逐步推导</strong>： 1. 反设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mi>p</mi></msqrt><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>a</mi><mi>b</mi></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\sqrt p=\dfrac{a}{b}</annotation></semantics></math>，其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>
+为互素整数且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b\neq0</annotation></semantics></math>。
+2.
+两边平方：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">p=\dfrac{a^2}{b^2}</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">pb^2=a^2</annotation></semantics></math>。
+3. 于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∣</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">p\mid a^2</annotation></semantics></math>。由
+Euclid
+引理（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+为素数）得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∣</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">p\mid a</annotation></semantics></math>，设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mi>p</mi><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a=pa_1</annotation></semantics></math>。
+4.
+代回：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>p</mi><mn>2</mn></msup><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">pb^2=p^2a_1^2</annotation></semantics></math>，约去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><mi>p</mi><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">b^2=pa_1^2</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∣</mo><msup><mi>b</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">p\mid b^2</annotation></semantics></math>，再得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∣</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">p\mid b</annotation></semantics></math>。
+5. 这样
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+同时整除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>，与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(a,b)=1</annotation></semantics></math>
+矛盾。</p>
+<p><strong>另证（课上提及）</strong>：对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>
+作素数分解，比较两边
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+出现的次数——左边
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+出现奇数次，右边出现偶数次，矛盾。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>p</mi></msqrt><annotation encoding="application/x-tex">\sqrt p</annotation></semantics></math>
+是无理数。更一般地，对任意无平方因子的整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>d</mi></msqrt><annotation encoding="application/x-tex">\sqrt d</annotation></semantics></math>
+都是无理数。</p>
+<h4 id="例题-2014614-证明-sqrt2sqrt3-是无理数">例题 2（01:46:14）｜ 证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt></mrow><annotation encoding="application/x-tex">\sqrt2+\sqrt3</annotation></semantics></math>
+是无理数</h4>
+<p><strong>命题</strong>：证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>∉</mo><mi mathvariant="double-struck">ℚ</mi></mrow><annotation encoding="application/x-tex">\sqrt2+\sqrt3\notin\mathbb Q</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：平方后解出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>6</mn></msqrt><annotation encoding="application/x-tex">\sqrt6</annotation></semantics></math>，化为已证的结论。</p>
+<p><strong>逐步推导</strong>： 1. 记
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt></mrow><annotation encoding="application/x-tex">r=\sqrt2+\sqrt3</annotation></semantics></math>。若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>∈</mo><mi mathvariant="double-struck">ℚ</mi></mrow><annotation encoding="application/x-tex">r\in\mathbb Q</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>r</mi><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>2</mn><msqrt><mn>6</mn></msqrt><mo>=</mo><mn>5</mn><mo>+</mo><mn>2</mn><msqrt><mn>6</mn></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">r^2=(\sqrt2+\sqrt3)^2=2+3+2\sqrt6=5+2\sqrt6.</annotation></semantics></math>
+2. 于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>6</mn></msqrt><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>r</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn></mrow><mn>2</mn></mfrac></mstyle><mo>∈</mo><mi mathvariant="double-struck">ℚ</mi></mrow><annotation encoding="application/x-tex">\sqrt6=\dfrac{r^2-5}{2}\in\mathbb Q</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>6</mn></msqrt><annotation encoding="application/x-tex">\sqrt6</annotation></semantics></math>
+为有理数。 3. 但
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math>
+无平方因子，由例题 1 的推广知
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>6</mn></msqrt><annotation encoding="application/x-tex">\sqrt6</annotation></semantics></math>
+是无理数，矛盾。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt></mrow><annotation encoding="application/x-tex">\sqrt2+\sqrt3</annotation></semantics></math>
+是无理数。类比地，对任一无平方因子的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>d</mi></msqrt><annotation encoding="application/x-tex">\sqrt d</annotation></semantics></math>
+的无理性都可用同样方法证明。</p>
+<hr />
+<h2
+id="五一元多项式函数与单位根014844023226">五、一元多项式函数与单位根（01:48:44—02:32:26）</h2>
+<p>本章进入多项式理论。先讨论「作为函数的多项式」，再引出「形式多项式」。</p>
+<h3 id="一元多项式函数与零点">01:49:55—01:56:28 ｜
+一元多项式函数与零点</h3>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是域（可为数域或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+等有限域）。取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>,</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">a_0,a_1,\ldots,a_n\in F</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+为自然数），则定义函数
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>:</mo><mi>F</mi><mo>→</mo><mi>F</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>a</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mi>a</mi><mn>0</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">s:F\to F,\qquad s(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0.</annotation></semantics></math>
+这样的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+称为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+上的<strong>一元多项式函数</strong>。熟知的例子有实系数、复系数多项式。</p>
+<p>若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+中某个元素
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">s(\alpha)=0</annotation></semantics></math>，则称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+的一个<strong>零点</strong>（或<strong>根</strong>）。</p>
+<h3 id="代数基本定理与特征-p-上的零函数例子">01:56:32—02:04:34 ｜
+代数基本定理与特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+上的零函数例子</h3>
+<p><strong>代数基本定理</strong>：任意非常数的<strong>复系数</strong>多项式必有复根。反复使用此定理可知，一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次复系数多项式恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个复根（计重数），并可在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>
+上分解为一次因式之积：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mi>n</mi></msub><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">f(x)=a_n\prod_{i=1}^n(x-\alpha_i).</annotation></semantics></math>
+本定理课堂上<strong>不证明</strong>（其证明出现在复变函数课程，用分析方法）。</p>
+<p>一般域上的多项式未必有根，例如实系数一次式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x+1</annotation></semantics></math>
+在实数域中无根（但在复数域中有根
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>）。</p>
+<h4 id="例题-1020032-mathbb-z_p-上-xp-x-是恒零函数">例题 1（02:00:32）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>p</mi></msup><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x^p-x</annotation></semantics></math>
+是恒零函数</h4>
+<p><strong>命题</strong>：在有限域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+为素数）上，多项式函数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mi>p</mi></msup><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x)=x^p-x</annotation></semantics></math>
+在每一点都取值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>。</p>
+<p><strong>推导</strong>： 1. 由费马小定理，对任意整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>p</mi></msup><mo>≡</mo><mi>a</mi><mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">mod</mi><mo>&#8289;</mo></mrow><mspace width="0.222em"></mspace><mi>p</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">a^p\equiv a\pmod p</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>p</mi></msup><mo>−</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">a^p-a</annotation></semantics></math>
+被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+整除。 2. 因此在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+中，对每个元素
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]</annotation></semantics></math>
+都有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><msup><mo stretchy="false" form="postfix">]</mo><mi>p</mi></msup><mo>−</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a]^p-[a]=[0]</annotation></semantics></math>。
+3. 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+作为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><mo>→</mo><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">\mathbb Z_p\to\mathbb Z_p</annotation></semantics></math>
+的函数恒取零值——它是<strong>恒零函数</strong>。</p>
+<p><strong>意义（老师提醒）</strong>：在特征
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+的域上，形式不同的多项式（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>p</mi></msup><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x^p-x</annotation></semantics></math>
+与零多项式）可能定义出<strong>同一个函数</strong>。这与数域（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">h</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi></mrow><mspace width="0.167em"></mspace><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathrm{char}\,0</annotation></semantics></math>）的情形不同。此外，把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+看作未定元时有恒等式
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>p</mi></msup><mo>−</mo><mi>x</mi><mo>=</mo><munder><mo>∏</mo><mrow><mi>a</mi><mo>∈</mo><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub></mrow></munder><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">x^p-x=\prod_{a\in\mathbb Z_p}(x-a),</annotation></semantics></math>
+这要在多项式环中严格讨论（见下文）。</p>
+<h3 id="韦达定理对称多项式与根式可解性">02:04:43—02:10:48 ｜
+韦达定理、对称多项式与根式可解性</h3>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次多项式可分解为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><msub><mi>a</mi><mi>n</mi></msub><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">f(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_0=a_n\prod_{i=1}^n(x-\alpha_i).</annotation></semantics></math>
+则系数可用根表达（<strong>韦达定理</strong>）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>k</mi></msup><msub><mi>a</mi><mi>n</mi></msub><mspace width="0.167em"></mspace><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">a_{n-k}=(-1)^k a_n\,e_k(\alpha_1,\ldots,\alpha_n),\qquad k=1,\ldots,n,</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>k</mi></msub><annotation encoding="application/x-tex">e_k</annotation></semantics></math>
+为第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+个<strong>初等对称和</strong>（所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+个不同根之积的总和）。特别地，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>n</mi></msup><msub><mi>a</mi><mi>n</mi></msub><mspace width="0.167em"></mspace><msub><mi>α</mi><mn>1</mn></msub><msub><mi>α</mi><mn>2</mn></msub><mi>⋯</mi><msub><mi>α</mi><mi>n</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">a_0=(-1)^n a_n\,\alpha_1\alpha_2\cdots\alpha_n.</annotation></semantics></math>
+这些系数都是根的对称多项式——任意交换两个根的位置，表达式不变。</p>
+<p><strong>背景（老师提及）</strong>：群论最早的目的之一正是解决多项式求根问题：系数经过加、减、乘、除与开根号能否表达出根（<strong>根式可解</strong>）。结果是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+至
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>
+次方程都有求根公式，但<strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5</mn><annotation encoding="application/x-tex">5</annotation></semantics></math>
+次及以上没有一般的根式求根公式</strong>。</p>
+<h3 id="n-次单位根本原单位根与-xn-1-的分解">02:11:31—02:26:09 ｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根、本原单位根与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^N-1</annotation></semantics></math>
+的分解</h3>
+<p>考虑复系数多项式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f(x)=x^N-1</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+为正整数）。由代数基本定理，它在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>
+中有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个根。</p>
+<h4 id="例题-1021150-xn-1-的-n-个复根">例题 1（02:11:50）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^N-1</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个复根</h4>
+<p><strong>命题</strong>：求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x^N-1=0</annotation></semantics></math>
+的全部复根。</p>
+<p><strong>推导</strong>：利用欧拉公式与复数开方。设根为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ζ</mi><annotation encoding="application/x-tex">\zeta</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>ζ</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|\zeta|=1</annotation></semantics></math>，其辐角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>θ</mi><mo>=</mo><mn>2</mn><mi>k</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">N\theta=2k\pi</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">k\in\mathbb Z</annotation></semantics></math>）。故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个根为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ζ</mi><mi>k</mi></msub><mo>=</mo><msup><mi>e</mi><mrow><mn>2</mn><mi>π</mi><mi>i</mi><mi>k</mi><mi>/</mi><mi>N</mi></mrow></msup><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mfrac><mrow><mn>2</mn><mi>k</mi><mi>π</mi></mrow><mi>N</mi></mfrac><mo>+</mo><mi>i</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mfrac><mrow><mn>2</mn><mi>k</mi><mi>π</mi></mrow><mi>N</mi></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\zeta_k=e^{2\pi i k/N}=\cos\frac{2k\pi}{N}+i\sin\frac{2k\pi}{N},\qquad k=0,1,\ldots,N-1.</annotation></semantics></math>
+它们在复平面单位圆上把圆周
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+等分。</p>
+<h4 id="例题-2021436-n-次单位根构成乘法群">例题 2（02:14:36）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根构成乘法群</h4>
+<p><strong>命题</strong>：所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根的集合
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>N</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>ζ</mi><mn>0</mn></msub><mo>,</mo><msub><mi>ζ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>ζ</mi><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\mu_N=\{\zeta_0,\zeta_1,\ldots,\zeta_{N-1}\}</annotation></semantics></math>
+在复数乘法下构成一个群。</p>
+<p><strong>推导</strong>： - 两单位根之积仍是单位根（模仍为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，辐角相加后模
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+同余）； - 单位元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><msub><mi>ζ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">1=\zeta_0</annotation></semantics></math>；
+- 每个根
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ζ</mi><mi>k</mi></msub><annotation encoding="application/x-tex">\zeta_k</annotation></semantics></math>
+的逆元为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ζ</mi><mrow><mi>N</mi><mo>−</mo><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">\zeta_{N-k}</annotation></semantics></math>（或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><msub><mi>ζ</mi><mi>k</mi></msub><mo accent="true">¯</mo></mover><annotation encoding="application/x-tex">\overline{\zeta_k}</annotation></semantics></math>），仍属
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>N</mi></msub><annotation encoding="application/x-tex">\mu_N</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>N</mi></msub><annotation encoding="application/x-tex">\mu_N</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℂ</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\mathbb C^*</annotation></semantics></math>
+的一个有限子群（乘法群）。</p>
+<h4 id="例题-3021745-本原-n-次单位根及其个数-varphin">例题
+3（02:17:45）｜ 本原
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根及其个数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\varphi(N)</annotation></semantics></math></h4>
+<p><strong>命题</strong>：称一个单位根
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+为<strong>本原
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根</strong>，若所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根都是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+的整数次幂（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+生成整个群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>N</mi></msub><annotation encoding="application/x-tex">\mu_N</annotation></semantics></math>）。求本原
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根的个数。</p>
+<p><strong>推导</strong>： 1. 取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><msup><mi>e</mi><mrow><mn>2</mn><mi>π</mi><mi>i</mi><mi>/</mi><mi>N</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\omega=e^{2\pi i/N}</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>N</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msup><mi>ω</mi><mi>k</mi></msup><mo>∣</mo><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\mu_N=\{\omega^k\mid k=0,1,\ldots,N-1\}</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+是本原的。 2.
+一般地，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>ω</mi><mi>m</mi></msup><annotation encoding="application/x-tex">\omega^m</annotation></semantics></math>
+是本原的当且仅当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>,</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(m,N)=1</annotation></semantics></math>——
+- 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>,</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(m,N)=1</annotation></semantics></math>，则存在整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>m</mi><mo>+</mo><mi>v</mi><mi>N</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">um+vN=1</annotation></semantics></math>，从而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>ω</mi><mi>m</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>u</mi></msup><mo>=</mo><msup><mi>ω</mi><mrow><mi>u</mi><mi>m</mi></mrow></msup><mo>=</mo><msup><mi>ω</mi><mrow><mn>1</mn><mo>−</mo><mi>v</mi><mi>N</mi></mrow></msup><mo>=</mo><mi>ω</mi></mrow><annotation encoding="application/x-tex">(\omega^m)^u=\omega^{um}=\omega^{1-vN}=\omega</annotation></semantics></math>，故能生成全体；
+- 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>,</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>d</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(m,N)=d&gt;1</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>ω</mi><mi>m</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>N</mi><mi>/</mi><mi>d</mi></mrow></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">(\omega^m)^{N/d}=1</annotation></semantics></math>，阶小于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>，不能生成全体。
+3. 因此本原
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根恰为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>ω</mi><mi>m</mi></msup><annotation encoding="application/x-tex">\omega^m</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">gcd</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>,</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(m,N)=1</annotation></semantics></math>），其个数等于
+<strong>Euler 函数</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\varphi(N)</annotation></semantics></math>。</p>
+<p><strong>特例</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">N=p</annotation></semantics></math>
+为素数，则除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+以外所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+次单位根都是本原的（共
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>−</mo><mn>1</mn><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p-1=\varphi(p)</annotation></semantics></math>
+个）。[补全：关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\varphi(N)</annotation></semantics></math>
+的公式与容斥原理，课上指出第一次作业已出现，可直接使用]</p>
+<h4 id="例题-4022449-xn-1-的因式分解">例题 4（02:24:49）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^N-1</annotation></semantics></math>
+的因式分解</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+为本原
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn><mo>=</mo><munderover><mo>∏</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msup><mi>ω</mi><mi>k</mi></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">x^N-1=\prod_{k=0}^{N-1}(x-\omega^k).</annotation></semantics></math></p>
+<p><strong>推导</strong>：上式右端展开为首项系数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次多项式，其
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个根恰为全部
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+次单位根
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ω</mi><mn>0</mn></msup><mo>,</mo><msup><mi>ω</mi><mn>1</mn></msup><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>ω</mi><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\omega^0,\omega^1,\ldots,\omega^{N-1}</annotation></semantics></math>，与左端多项式同根且同首项系数，故相等。</p>
+<h3 id="形式多项式未定元与后续">02:26:30—02:32:26 ｜
+形式多项式（未定元）与后续</h3>
+<p>前面把多项式看作「代入数值的函数」。但在代数中更重要的是<strong>形式多项式</strong>：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+视为一个<strong>未定元</strong>（不固定取值、不必然属于某个定义域），它可以在域上、也可以在更一般的环上作形式运算。采取未定元的观点，就得到抽象的一元<strong>多项式环</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">F[x]</annotation></semantics></math>。</p>
+<p>课堂末尾老师回答了若干关于多项式、方程与「根」的追问，并预告：下次课正式讲授一元多项式环，以及与之相关的<strong>理想（ideal）</strong>等概念（理想将在后续环论部分系统展开）。[注：末尾问答属课后延伸，未预设正式内容]</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

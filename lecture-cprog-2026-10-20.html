@@ -1,0 +1,3738 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-10-20 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<style>
+
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+/* 基础导航条与主题变量 */
+:root {
+  --wb-bg: #ffffff;
+  --wb-surface: #f7f7f5;
+  --wb-surface2: #fbfbf9;
+  --wb-text: #1f2328;
+  --wb-muted: #6b7280;
+  --wb-border: #e3e6ec;
+  --wb-accent: #0f6e56;
+  --wb-accent2: #185fa5;
+  --wb-h-color: #1a3d7c;
+  --wb-h3-bg: #f2f6fc;
+  --wb-h3-color: #24508c;
+  --wb-card-bg: #fbfaf6;
+  --wb-card-head: #f3ecde;
+  --wb-card-border: #ece5d8;
+  --wb-seg-line: #c3d5f0;
+  --wb-ts-bg: #eef2f8;
+  --wb-ts-color: #24508c;
+  --wb-ts-border: #d3deec;
+  --wb-code-bg: #f8f9fa;
+  --wb-code-border: #e9ecef;
+  --wb-pre-bg: #f4f5f7;
+  --wb-pill-bg: #f4f3f0;
+  --wb-pill-text: #5f5a54;
+  --wb-toc-bg: #ffffff;
+  --wb-drawer-bg: #ffffff;
+  --wb-drawer-border: #e3e6ec;
+  --wb-math-bg: #fcfcfb;
+  --wb-math-border: #e6e8ee;
+}
+
+html.wb-dark, body.wb-dark {
+  --wb-bg: #181817;
+  --wb-surface: #222220;
+  --wb-surface2: #282826;
+  --wb-text: #e6e6e3;
+  --wb-muted: #9ca3af;
+  --wb-border: #383834;
+  --wb-accent: #5dcaa5;
+  --wb-accent2: #85b7eb;
+  --wb-h-color: #85b7eb;
+  --wb-h3-bg: #1e2634;
+  --wb-h3-color: #93c5fd;
+  --wb-card-bg: #201f1d;
+  --wb-card-head: #2c2822;
+  --wb-card-border: #3d3a34;
+  --wb-seg-line: #263852;
+  --wb-ts-bg: #1e2634;
+  --wb-ts-color: #93c5fd;
+  --wb-ts-border: #2c394d;
+  --wb-code-bg: #222220;
+  --wb-code-border: #333330;
+  --wb-pre-bg: #141413;
+  --wb-pill-bg: #2b2825;
+  --wb-pill-text: #d1cbc5;
+  --wb-toc-bg: #1e222a;
+  --wb-drawer-bg: #1c1c1a;
+  --wb-drawer-border: #333330;
+  --wb-math-bg: #21211f;
+  --wb-math-border: #353531;
+  background-color: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not(.wb-light) {
+    --wb-bg: #181817;
+    --wb-surface: #222220;
+    --wb-surface2: #282826;
+    --wb-text: #e6e6e3;
+    --wb-muted: #9ca3af;
+    --wb-border: #383834;
+    --wb-accent: #5dcaa5;
+    --wb-accent2: #85b7eb;
+    --wb-h-color: #85b7eb;
+    --wb-h3-bg: #1e2634;
+    --wb-h3-color: #93c5fd;
+    --wb-card-bg: #201f1d;
+    --wb-card-head: #2c2822;
+    --wb-card-border: #3d3a34;
+    --wb-seg-line: #263852;
+    --wb-ts-bg: #1e2634;
+    --wb-ts-color: #93c5fd;
+    --wb-ts-border: #2c394d;
+    --wb-code-bg: #222220;
+    --wb-code-border: #333330;
+    --wb-pre-bg: #141413;
+    --wb-pill-bg: #2b2825;
+    --wb-pill-text: #d1cbc5;
+    --wb-toc-bg: #1e222a;
+    --wb-drawer-bg: #1c1c1a;
+    --wb-drawer-border: #333330;
+  }
+}
+
+body.wb-dark h1, html.wb-dark h1 { color: var(--wb-h-color) !important; border-bottom-color: #2a4365 !important; }
+body.wb-dark h2, html.wb-dark h2 { color: var(--wb-h-color) !important; border-left-color: #2a4365 !important; }
+body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; background: var(--wb-h3-bg) !important; }
+body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
+body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
+body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
+body.wb-dark .wb-excard p > strong:first-child,
+body.wb-dark .wb-excard li > strong:first-child,
+html.wb-dark .wb-excard p > strong:first-child,
+html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
+body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
+body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
+body.wb-dark code, html.wb-dark code { background: #282825 !important; color: #f0f0ed !important; }
+body.wb-dark pre, html.wb-dark pre { background: var(--wb-pre-bg) !important; border-color: #333330 !important; color: #f0f0ed !important; }
+body.wb-dark #TOC, html.wb-dark #TOC { background: var(--wb-toc-bg) !important; border-color: #333d4d !important; }
+body.wb-dark table th, html.wb-dark table th { background: #1e2634 !important; color: #93c5fd !important; border-color: #333d4d !important; }
+body.wb-dark table td, html.wb-dark table td { border-color: #333d4d !important; }
+body.wb-dark tr:nth-child(even) td, html.wb-dark tr:nth-child(even) td { background: #1a1f29 !important; }
+body.wb-dark blockquote, html.wb-dark blockquote { background: #1a222e !important; border-left-color: #3b82f6 !important; color: #c4ccd8 !important; }
+body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark mjx-container { color: var(--wb-text) !important; }
+
+
+/* 数学公式容器增强与横向滚动 */
+.wb-math-wrap {
+  position: relative;
+  margin: 18px 0;
+  border: 1px solid var(--wb-math-border);
+  border-radius: 8px;
+  background: var(--wb-math-bg);
+  padding: 12px 16px 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wb-math-wrap:hover {
+  border-color: var(--wb-accent2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.wb-math-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+  opacity: 0.55;
+  transition: opacity .15s;
+}
+.wb-math-wrap:hover .wb-math-bar { opacity: 1; }
+.wb-math-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-muted);
+  margin-right: auto;
+  letter-spacing: .04em;
+}
+.wb-math-copy, .wb-math-zoom {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: all .15s;
+}
+.wb-math-copy:hover, .wb-math-zoom:hover {
+  background: var(--wb-surface2);
+  border-color: var(--wb-accent2);
+  color: var(--wb-accent2);
+}
+.wb-math-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  text-align: center;
+}
+.wb-math-scroll mjx-container { max-width: 100%; }
+
+/* 公式高清放大模态浮层 */
+.wb-math-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.62);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-math-modal.wb-open { display: flex; }
+.wb-math-modal-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.28);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-modal-pop .2s ease-out;
+}
+@keyframes wb-modal-pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.wb-math-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-math-modal-body {
+  padding: 34px 24px;
+  overflow: auto;
+  text-align: center;
+  font-size: 1.4em;
+  background: var(--wb-surface2);
+}
+.wb-math-modal-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 搜索结果关键词正文高亮 */
+.wb-hit-mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px #fde047;
+}
+html.wb-dark .wb-hit-mark, body.wb-dark .wb-hit-mark {
+  background: #854d0e;
+  color: #fef08a;
+  box-shadow: 0 0 0 1px #a16207;
+}
+.wb-res.active {
+  background: var(--wb-surface);
+  border-left: 3px solid var(--wb-accent2);
+  padding-left: 7px;
+}
+
+
+/* 阅读进度条 */
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #185fa5, #0f6e56);
+  z-index: 999;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+html.wb-dark .wb-read-progress, body.wb-dark .wb-read-progress {
+  background: linear-gradient(90deg, #85b7eb, #5dcaa5);
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,.15);
+  transition: transform .15s;
+  display: inline-block;
+}
+.wb-hl-color-dot:hover { transform: scale(1.22); }
+.wb-dot-yellow { background: #fef08a; }
+.wb-dot-green  { background: #bbf7d0; }
+.wb-dot-red    { background: #fecaca; }
+.wb-dot-purple { background: #e9d5ff; }
+
+.wb-hl-btn {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-hl-btn:hover { background: var(--wb-surface2); border-color: var(--wb-accent2); color: var(--wb-accent2); }
+.wb-hl-btn.wb-btn-del { color: #dc2626; border-color: #fca5a5; }
+
+/* 用户划词高亮样式 (4 色荧光笔 + 下划线) */
+.wb-user-hl {
+  border-radius: 2px;
+  padding: 1px 1px;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.wb-user-hl:hover { filter: brightness(.93); }
+.wb-user-hl-yellow { background: #fef08a; color: inherit; }
+.wb-user-hl-green  { background: #bbf7d0; color: inherit; }
+.wb-user-hl-red    { background: #fecaca; color: inherit; }
+.wb-user-hl-purple { background: #e9d5ff; color: inherit; }
+.wb-user-hl-underline {
+  background: transparent;
+  text-decoration: underline wavy #185fa5 2px;
+  text-underline-offset: 3px;
+}
+html.wb-dark .wb-user-hl-yellow, body.wb-dark .wb-user-hl-yellow { background: #714207; color: #fef08a; }
+html.wb-dark .wb-user-hl-green,  body.wb-dark .wb-user-hl-green  { background: #134e2a; color: #bbf7d0; }
+html.wb-dark .wb-user-hl-red,    body.wb-dark .wb-user-hl-red    { background: #6b1717; color: #fecaca; }
+html.wb-dark .wb-user-hl-purple, body.wb-dark .wb-user-hl-purple { background: #4a1570; color: #e9d5ff; }
+html.wb-dark .wb-user-hl-underline, body.wb-dark .wb-user-hl-underline { text-decoration-color: #85b7eb; }
+
+.wb-user-hl-has-note::after {
+  content: " 📝";
+  font-size: 10px;
+  vertical-align: super;
+  cursor: pointer;
+}
+body.wb-hl-hidden .wb-user-hl {
+  background: transparent !important;
+  text-decoration: none !important;
+}
+body.wb-hl-hidden .wb-user-hl::after { display: none !important; }
+
+/* 便签便签编辑模态浮层 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  width: 460px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-pop-in .15s ease-out;
+}
+.wb-note-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.wb-note-quote {
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-border);
+  font-size: 12.5px;
+  color: var(--wb-muted);
+  max-height: 80px;
+  overflow-y: auto;
+  font-style: italic;
+}
+.wb-note-body {
+  padding: 14px 16px;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.wb-note-textarea:focus { border-color: var(--wb-accent2); }
+.wb-note-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--wb-muted);
+}
+.wb-note-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 大纲抽屉的双 Tab 导航与批注列表 */
+.wb-drawer-nav {
+  display: flex;
+  gap: 4px;
+}
+.wb-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-tab-btn:hover { background: var(--wb-surface); color: var(--wb-text); }
+.wb-tab-btn.on { background: var(--wb-surface2); color: var(--wb-accent2); }
+.wb-notes-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.wb-note-card {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-note-card:hover {
+  border-color: var(--wb-accent2);
+  transform: translateY(-1px);
+}
+.wb-nc-quote {
+  font-size: 12px;
+  color: var(--wb-text);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  border-left: 3px solid #fde047;
+  padding-left: 8px;
+}
+.wb-nc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wb-h-color);
+  background: var(--wb-surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+.wb-nc-meta {
+  font-size: 11px;
+  color: var(--wb-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.wb-notes-tools {
+  padding: 10px 12px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* 断点续读右下角浮动提示 */
+.wb-resume-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-accent);
+  border-left: 4px solid var(--wb-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  z-index: 930;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: wb-pop-in .2s ease-out;
+}
+.wb-resume-btn {
+  background: var(--wb-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+
+/* 例题卡片攻克打卡与切题工具条 */
+.wb-excard > h4 {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-ex-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wb-mastery-btn {
+  border: 1px solid var(--wb-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  line-height: 1.3;
+  transition: all .15s;
+}
+.wb-mastery-btn:hover { border-color: var(--wb-accent); }
+.wb-mastery-btn.wb-st-todo  { background: var(--wb-surface2); color: var(--wb-muted); border-color: var(--wb-border); }
+.wb-mastery-btn.wb-st-doubt { background: #fef9c3; color: #854d0e; border-color: #fde047; font-weight: 600; }
+.wb-mastery-btn.wb-st-done  { background: #dcfce7; color: #15803d; border-color: #86efac; font-weight: 600; }
+html.wb-dark .wb-mastery-btn.wb-st-doubt { background: #713f12; color: #fef08a; border-color: #a16207; }
+html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; border-color: #16a34a; }
+
+.wb-ex-nav-btns {
+  display: inline-flex;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--wb-bg);
+}
+.wb-step-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  padding: 2px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-step-btn:hover { background: var(--wb-surface2); color: var(--wb-text); }
+.wb-step-btn:first-child { border-right: 1px solid var(--wb-border); }
+
+/* 大纲抽屉内的攻克率进度条 */
+.wb-mastery-bar {
+  padding: 10px 14px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-drawer-border);
+  font-size: 12px;
+}
+.wb-mb-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--wb-muted);
+}
+.wb-mb-text b { color: var(--wb-accent); font-weight: 600; }
+.wb-mb-track {
+  height: 6px;
+  background: var(--wb-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wb-mb-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width .25s ease;
+}
+
+/* 移动端专属底部悬浮控制台 (手机单手握持热区) */
+.wb-mobile-dock {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--wb-bg);
+  border-top: 1px solid var(--wb-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  z-index: 890;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(8px);
+}
+.wb-dock-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-text);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+.wb-dock-btn:active {
+  background: var(--wb-surface);
+  color: var(--wb-accent2);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 50px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 74px !important;
+  }
+  .wb-mobile-dock {
+    display: flex !important;
+  }
+  .wb-in {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  #wb-selftest-btn, #wb-toc-btn, .wb-font-tools, #wb-theme-btn, .wb-meta, .wb-subj, .wb-tag {
+    display: none !important;
+  }
+  .wb-crumb {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .wb-q {
+    width: 110px !important;
+    font-size: 11.5px !important;
+    padding: 4px 6px !important;
+  }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 18px !important; margin-top: 26px !important; }
+  h3 { font-size: 15px !important; padding: 6px 10px !important; }
+  .wb-excard {
+    padding: 0 12px 14px !important;
+    margin: 16px 0 !important;
+  }
+  .wb-excard > h4 {
+    margin: 0 -12px 12px !important;
+    padding: 9px 12px !important;
+    font-size: 14px !important;
+  }
+  .wb-ex-head-tools {
+    gap: 4px !important;
+    font-size: 11px !important;
+  }
+  .wb-math-modal-dialog {
+    width: 95vw !important;
+  }
+  .wb-math-modal-body {
+    padding: 20px 8px !important;
+    font-size: 1.15em !important;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* 移动端底部高亮悬浮面板 (防系统菜单与手指遮挡) */
+  .wb-hl-popover.wb-hl-mobile, .wb-hl-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 64px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 26px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.22) !important;
+    background: var(--wb-bg) !important;
+    border: 1px solid var(--wb-border) !important;
+    z-index: 1000 !important;
+    gap: 12px !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .wb-hl-color-dot {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .wb-hl-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+  /* 移动端公式溢出横向滑动提示与滚动条优化 */
+  .wb-math-wrap {
+    position: relative;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .wb-math-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  .wb-math-wrap::-webkit-scrollbar-thumb {
+    background: var(--wb-border);
+    border-radius: 2px;
+  }
+}
+
+/* 导航栏 */
+.wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
+ border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
+ font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
+.wb-in{max-width:1320px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-bar a{color:var(--wb-accent2);text-decoration:none;white-space:nowrap}
+.wb-bar a:hover{text-decoration:underline}
+.wb-bar a.wb-off{color:var(--wb-muted);pointer-events:none;text-decoration:none}
+.wb-crumb{color:var(--wb-muted);font-size:12px;flex:1;min-width:140px;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.wb-crumb b{color:var(--wb-text);font-weight:600}
+.wb-tag{font-size:11px;background:#eef4fb;color:#2f5597;border-radius:4px;padding:2px 7px;margin-left:8px}
+html.wb-dark .wb-tag, body.wb-dark .wb-tag{background:#1e293b;color:#93c5fd}
+.wb-subj{display:flex;gap:2px;margin-left:2px}
+.wb-subj a{color:var(--wb-muted);font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.wb-subj a:hover{color:var(--wb-accent2);background:var(--wb-surface)}
+.wb-subj a.wb-cur{color:#fff;background:#2f5597}
+html.wb-dark .wb-subj a.wb-cur, body.wb-dark .wb-subj a.wb-cur{background:#2563eb}
+.wb-meta{margin-left:6px;color:var(--wb-muted);font-size:11px;white-space:nowrap}
+
+/* 工具按钮 */
+.wb-tool-btn{border:1px solid var(--wb-border);background:var(--wb-surface);color:var(--wb-text);
+ border-radius:6px;padding:4px 9px;font-size:12px;cursor:pointer;white-space:nowrap;line-height:1.2;
+ display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.wb-tool-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-tool-btn.wb-btn-active{background:#e8f0fe;border-color:#185fa5;color:#185fa5;font-weight:600}
+html.wb-dark .wb-tool-btn.wb-btn-active, body.wb-dark .wb-tool-btn.wb-btn-active{background:#1e2e4a;border-color:#85b7eb;color:#85b7eb}
+.wb-font-tools{display:inline-flex;gap:1px}
+.wb-font-tools .wb-tool-btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.wb-font-tools .wb-tool-btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+
+.wb-q{border:1px solid var(--wb-border);border-radius:6px;padding:5px 9px;font-size:12px;
+ width:170px;outline:none;color:var(--wb-text);background:var(--wb-bg)}
+.wb-q:focus{border-color:var(--wb-accent2)}
+.wb-panel{position:fixed;top:46px;right:max(20px,calc((100vw - 1320px)/2));
+ width:min(520px,calc(100vw - 40px));max-height:70vh;overflow:auto;background:var(--wb-bg);
+ border:1px solid var(--wb-border);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.15);
+ padding:10px;display:none;z-index:910}
+.wb-res{display:block;padding:8px 10px;border-bottom:1px solid var(--wb-border);color:var(--wb-text);
+ font-size:12.5px;text-decoration:none}
+.wb-res:hover{background:var(--wb-surface);text-decoration:none}
+.wb-res small{display:block;color:var(--wb-muted);font-size:11px;margin-top:2px}
+
+/* 大纲抽屉 (Floating TOC Drawer) */
+.wb-toc-drawer{position:fixed;top:48px;right:0;bottom:0;width:340px;max-width:85vw;
+ background:var(--wb-drawer-bg);border-left:1px solid var(--wb-drawer-border);
+ box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:950;display:flex;flex-direction:column;
+ transform:translateX(100%);transition:transform .25s ease-in-out}
+.wb-toc-drawer.wb-open{transform:translateX(0)}
+.wb-toc-head{padding:12px 16px;border-bottom:1px solid var(--wb-drawer-border);
+ display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px}
+.wb-close-btn{border:none;background:transparent;color:var(--wb-muted);font-size:20px;
+ cursor:pointer;padding:0 4px;line-height:1}
+.wb-close-btn:hover{color:var(--wb-text)}
+.wb-toc-body{flex:1;overflow-y:auto;padding:12px 8px}
+.wb-toc-item{padding:5px 8px;margin:2px 0;border-radius:6px;cursor:pointer;font-size:12.5px;
+ color:var(--wb-muted);line-height:1.45;transition:all .15s;border-left:2px solid transparent;word-break:break-word}
+.wb-toc-item:hover{background:var(--wb-surface);color:var(--wb-text)}
+.wb-toc-item.wb-toc-active{color:var(--wb-accent2);background:var(--wb-surface);
+ font-weight:600;border-left-color:var(--wb-accent2)}
+.wb-toc-h2{font-weight:600;color:var(--wb-text);margin-top:8px}
+.wb-toc-h3{padding-left:14px;font-size:12px}
+.wb-toc-h4{padding-left:24px;font-size:11.5px;color:var(--wb-muted)}
+.wb-toc-backdrop{position:fixed;top:48px;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);
+ z-index:940;display:none;opacity:0;transition:opacity .25s}
+.wb-toc-backdrop.wb-open{display:block;opacity:1}
+
+/* 推导折叠控制 (Self-Test Mode) */
+.wb-derive-ctrl{margin:10px 0 6px}
+.wb-derive-btn{border:1px dashed var(--wb-border);background:var(--wb-surface);
+ color:var(--wb-accent2);border-radius:6px;padding:4px 10px;font-size:12px;
+ cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.wb-derive-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-derive-box.wb-hidden{display:none !important}
+
+/* 代码块增强 */
+.wb-code-wrap{margin:18px 0;border:1px solid var(--wb-code-border);border-radius:8px;
+ overflow:hidden;background:var(--wb-code-bg)}
+.wb-code-head{display:flex;align-items:center;justify-content:space-between;
+ padding:6px 12px;background:var(--wb-surface);border-bottom:1px solid var(--wb-code-border);
+ font-size:11.5px;color:var(--wb-muted)}
+.wb-code-lang{font-weight:600;font-family:ui-monospace,Consolas,monospace}
+.wb-code-copy-btn{border:1px solid var(--wb-border);background:var(--wb-bg);
+ color:var(--wb-text);border-radius:4px;padding:2px 8px;font-size:11.5px;cursor:pointer}
+.wb-code-copy-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-code-wrap pre{margin:0 !important;border:none !important;border-radius:0 !important;
+ padding:12px !important;overflow-x:auto}
+
+/* 锚点复制链接 */
+.wb-anchor{opacity:0;margin-left:6px;font-size:13px;color:var(--wb-accent2);
+ text-decoration:none;cursor:pointer;transition:opacity .15s}
+h2:hover .wb-anchor, h3:hover .wb-anchor, h4:hover .wb-anchor{opacity:.75}
+.wb-anchor:hover{opacity:1 !important}
+
+/* 落地平滑闪烁高亮 */
+@keyframes wb-flash-anim{
+ 0%{background-color:rgba(254,240,138,.85)}
+ 50%{background-color:rgba(254,240,138,.45)}
+ 100%{background-color:transparent}
+}
+.wb-flash-highlight{animation:wb-flash-anim 2.5s ease-out;border-radius:4px}
+
+/* Toast 提示浮条 */
+.wb-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+ background:#1f2328;color:#fff;padding:8px 16px;border-radius:20px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+html.wb-dark .wb-toast, body.wb-dark .wb-toast{background:#f3f4f6;color:#111827}
+.wb-toast-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 打印样式优化 */
+@media print{
+ body{padding-top:0 !important;max-width:100% !important;font-size:12pt !important;line-height:1.6 !important;color:#000 !important;background:#fff !important}
+ .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor{display:none !important}
+ .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill{break-inside:avoid !important;page-break-inside:avoid !important}
+ .wb-excard{border:1px solid #aaa !important;background:#fff !important}
+ .wb-derive-box.wb-hidden{display:block !important}
+ a{text-decoration:none !important;color:#000 !important}
+}
+body{padding-top:54px}
+@media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
+
+</style>
+<div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-cprog.html">← C 程序设计</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html" class="wb-cur">C 程</a></span><div class="wb-crumb">C 程序设计 <span>›</span> <b>2026-10-20</b><span class="wb-tag">讲义全文</span></div><span class="wb-meta">1 章 · 23 小节 · 20 例题</span><a href="lecture-cprog-2026-10-13.html">‹ 上一节</a><a href="lecture-cprog-2026-10-27.html">下一节 ›</a><a href="full/cprog-2026-10-20.html" target="_blank">纯净版 ↗</a><button class="wb-tool-btn" id="wb-selftest-btn" title="遮挡推导自测模式">🙈 自测模式</button><button class="wb-tool-btn" id="wb-toc-btn" title="查看大纲目录 (Alt+T)">📑 大纲</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜概念 / 时间戳 / 例题 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 目录大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn wb-btn-del" id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><span>📝 添加/编辑便签</span><button class="wb-close-btn" id="wb-note-close" title="关闭">×</button></div><div class="wb-note-quote" id="wb-note-quote"></div><div class="wb-note-body"><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的疑问、思考或拓展推导..."></textarea></div><div class="wb-note-footer"><button class="wb-btn-text-del" id="wb-note-del-btn" style="display:none">删除便签</button><div style="flex:1"></div><button class="wb-tool-btn" id="wb-note-save-btn">保存便签</button></div></div></div><div id="wb-resume-toast" class="wb-resume-toast"><span>上次读到 <b id="wb-resume-pct">0</b>%</span><button id="wb-resume-jump" class="wb-resume-btn">继续阅读</button><button id="wb-resume-close" class="wb-close-btn" style="color:var(--wb-muted);font-size:16px">×</button></div><div class="wb-math-modal" id="wb-math-modal"><div class="wb-math-modal-dialog"><div class="wb-math-modal-header"><span>🔍 公式高清放大</span><button class="wb-close-btn" id="wb-math-modal-close" title="关闭 (Esc)">×</button></div><div class="wb-math-modal-body" id="wb-math-modal-body"></div><div class="wb-math-modal-footer"><button class="wb-tool-btn" id="wb-math-modal-copy">📋 复制 LaTeX 源码</button></div></div></div><div style="max-width:980px;margin:14px auto 0;padding:10px 16px;background:#fff8e8;border:1px solid #e8d3a0;border-radius:8px;font:13px/1.7 -apple-system,'Microsoft YaHei',sans-serif;color:#7a5410">代码逐字符取自课件（content/cprog/_slides/ 下对应章节），不以字幕为准；课件原文留档在该目录。</div>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-10-20 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-10-20-课堂详解"
+id="toc-c-程序设计2026-10-20-课堂详解">《C 程序设计》2026-10-20
+课堂详解</a>
+<ul>
+<li><a href="#一第6章-数据类型和表达式000043022506"
+id="toc-一第6章-数据类型和表达式000043022506">一、第6章
+数据类型和表达式（00:00:43—02:25:06）</a>
+<ul>
+<li><a href="#上课第6章与期中考试说明"
+id="toc-上课第6章与期中考试说明">00:00:43—00:01:54 ｜
+上课、第6章与期中考试说明</a></li>
+<li><a href="#c-语言数据类型总览基本类型构造类型与指针类型"
+id="toc-c-语言数据类型总览基本类型构造类型与指针类型">00:01:54—00:03:27
+｜ C 语言数据类型总览：基本类型、构造类型与指针类型</a></li>
+<li><a href="#整数的二进制表示原码反码补码"
+id="toc-整数的二进制表示原码反码补码">00:03:27—00:09:00 ｜
+整数的二进制表示：原码、反码、补码</a></li>
+<li><a href="#补码的特性表示范围与整数溢出"
+id="toc-补码的特性表示范围与整数溢出">00:09:00—00:16:04 ｜
+补码的特性、表示范围与整数溢出</a></li>
+<li><a href="#平均数函数与整数溢出面试例题"
+id="toc-平均数函数与整数溢出面试例题">00:17:04—00:19:18 ｜
+平均数函数与整数溢出（面试例题）</a></li>
+<li><a href="#整数类型家族shortintlonglong-long-与无符号类型"
+id="toc-整数类型家族shortintlonglong-long-与无符号类型">00:19:18—00:25:53
+｜ 整数类型家族：short、int、long、long long 与无符号类型</a></li>
+<li><a href="#sizeof-运算符与类型转换运算符的区别"
+id="toc-sizeof-运算符与类型转换运算符的区别">00:25:22—00:28:33 ｜ sizeof
+运算符与类型转换运算符的区别</a></li>
+<li><a href="#无符号整数与整数常量的进制表示"
+id="toc-无符号整数与整数常量的进制表示">00:28:44—00:34:48 ｜
+无符号整数与整数常量的进制表示</a></li>
+<li><a href="#八进制十六进制与二进制的互相转换"
+id="toc-八进制十六进制与二进制的互相转换">00:34:48—00:38:14 ｜
+八进制、十六进制与二进制的互相转换</a></li>
+<li><a href="#整数常量的后缀" id="toc-整数常量的后缀">00:38:14—00:41:02
+｜ 整数常量的后缀</a></li>
+<li><a href="#短整数溢出截断short-n-123456789"
+id="toc-短整数溢出截断short-n-123456789">00:41:02—00:52:11 ｜
+短整数溢出截断：short n = 123456789</a></li>
+<li><a href="#有符号整数与无符号整数的赋值内存拷贝"
+id="toc-有符号整数与无符号整数的赋值内存拷贝">00:52:11—01:06:56 ｜
+有符号整数与无符号整数的赋值（内存拷贝）</a></li>
+<li><a href="#浮点数的存储小数二进制与-ieee-754-表示"
+id="toc-浮点数的存储小数二进制与-ieee-754-表示">01:07:15—01:13:39 ｜
+浮点数的存储：小数二进制与 IEEE 754 表示</a></li>
+<li><a href="#浮点数的范围精度与实数常量"
+id="toc-浮点数的范围精度与实数常量">01:13:39—01:24:49 ｜
+浮点数的范围、精度与实数常量</a></li>
+<li><a href="#字符类型ascii-码与转义字符"
+id="toc-字符类型ascii-码与转义字符">01:24:49—01:31:49 ｜ 字符类型、ASCII
+码与转义字符</a></li>
+<li><a href="#转义字符-与-及字符常量示例"
+id="toc-转义字符-与-及字符常量示例">01:31:49—01:44:56 ｜ 转义字符 与
+及字符常量示例</a></li>
+<li><a href="#整数实数字符的输入输出格式符与宽度控制"
+id="toc-整数实数字符的输入输出格式符与宽度控制">01:44:56—01:54:49 ｜
+整数、实数、字符的输入输出格式符与宽度控制</a></li>
+<li><a href="#例程6-1大小写字母转换"
+id="toc-例程6-1大小写字母转换">01:54:49—01:56:22 ｜
+例程6-1：大小写字母转换</a></li>
+<li><a href="#键盘缓冲区与标准输入流-stdin"
+id="toc-键盘缓冲区与标准输入流-stdin">01:56:26—02:01:15 ｜
+键盘缓冲区与标准输入流 stdin</a></li>
+<li><a href="#scanf-的格式字符-d-f-lf-c-n"
+id="toc-scanf-的格式字符-d-f-lf-c-n">02:01:15—02:03:57 ｜ scanf
+的格式字符 %d %f %lf %c %n</a></li>
+<li><a href="#scanf-的普通字符与读取四则运算表达式"
+id="toc-scanf-的普通字符与读取四则运算表达式">02:03:57—02:11:18 ｜ scanf
+的普通字符与读取四则运算表达式</a></li>
+<li><a href="#数据类型转换强制类型转换与自动类型转换"
+id="toc-数据类型转换强制类型转换与自动类型转换">02:11:30—02:22:04 ｜
+数据类型转换：强制类型转换与自动类型转换</a></li>
+<li><a href="#有符号与无符号混合运算例题"
+id="toc-有符号与无符号混合运算例题">02:22:04—02:25:06 ｜
+有符号与无符号混合运算例题</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-10-20-课堂详解">《C 程序设计》2026-10-20
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:31:54 ｜ 逐条字幕：1177 条 ｜ 时间段小节：23
+｜ 例题 / 证明：20</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件，不以字幕为准；课件原文留档在
+content/cprog/_slides/ 下对应章节。**</p>
+</blockquote>
+<h2 id="一第6章-数据类型和表达式000043022506">一、第6章
+数据类型和表达式（00:00:43—02:25:06）</h2>
+<section class="wb-seg"><h3 id="上课第6章与期中考试说明"><span class="wb-ts">00:00:43—00:01:54</span> ｜
+上课、第6章与期中考试说明</h3>
+<p>上课铃响后开始正式授课。本节课进入<strong>第 6 章</strong>的学习（第
+6 章讲完之后就到<strong>期中考试</strong>）。</p>
+<ul>
+<li>期中考试比较简单，在<strong>机房</strong>里进行；具体时间会再在钉钉群里发消息通知，不用着急。</li>
+<li>第 6 章内容比较多，今天可能讲不完，但尽量多讲一些。</li>
+<li>本节内容里很多是以前已经接触过的，今天再综合地讲一遍；之前重点讲过的就略过去。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="c-语言数据类型总览基本类型构造类型与指针类型"><span class="wb-ts">00:01:54—00:03:27</span>
+｜ C 语言数据类型总览：基本类型、构造类型与指针类型</h3>
+<p>先回顾 C
+语言的数据类型。我们已经学过的基本数据类型有：<strong>整型、字符型、实数（单精度
+<code>float</code>、双精度 <code>double</code>）</strong>。</p>
+<ul>
+<li><strong>构造类型</strong>：第 7 章学数组，第 9
+章学结构（<code>struct</code>）；还有<strong>联合（<code>union</code>）</strong>和<strong>枚举（<code>enum</code>）</strong>这两种，课时有限，不专门讲——只要掌握了结构，联合很容易自学；枚举也比较简单，用到时很快就掌握。</li>
+<li>此外还有<strong>指针类型</strong>、<strong>空类型（<code>void</code>）</strong>。</li>
+</ul>
+<p>C 语言的数据类型划分（依据课件第 3 页）：</p>
+<ul>
+<li>基本数据类型：整型（<code>int</code>）、字符型（<code>char</code>）、实型（浮点型：单精度
+<code>float</code>、双精度 <code>double</code>）。</li>
+<li>构造数据类型：数组、结构（<code>struct</code>）、联合（<code>union</code>）、枚举（<code>enum</code>）。</li>
+<li>指针类型。</li>
+<li>空类型（<code>void</code>）。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="整数的二进制表示原码反码补码"><span class="wb-ts">00:03:27—00:09:00</span> ｜
+整数的二进制表示：原码、反码、补码</h3>
+<p>计算机用二进制码（<code>0</code>、<code>1</code>）表示所有数据。以 16
+个 bit 的正整数为例，右起第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+位的权重为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>n</mi></msup><annotation encoding="application/x-tex">2^n</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+是
+<code>0000 0000 0000 0000</code>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+是
+<code>0000 0000 0000 0001</code>，……，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>15</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{15}-1</annotation></semantics></math>
+是 <code>0111 1111 1111 1111</code>。</p>
+<p>但整数既要表示正的、也要表示负的。和浮点数一样，<strong>最高位（最左边的
+bit）用作符号位</strong>：最高位为 <code>0</code> 表示正数，为
+<code>1</code> 表示负数。</p>
+<p>整数的表示有三种形式：</p>
+<ol type="1">
+<li><strong>原码</strong>：最高位是符号位，其余表示数值。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+的原码是
+<code>1000 0000 0000 0001</code>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math>
+是 <code>1000 0000 0000 0010</code>。正负数之间只差一个符号位。</li>
+<li><strong>反码</strong>：正数的反码与其原码相同；负数的反码是对其原码<strong>逐位取反，但符号位除外</strong>。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">-5</annotation></semantics></math>
+原码 <code>1000 0000 0000 0101</code>，反码
+<code>1111 1111 1111 1010</code>。</li>
+<li><strong>补码</strong>：正数补码 = 反码 = 原码；负数补码 = 反码 +
+1（符号位保持不变）。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+补码是
+<code>1111 1111 1111 1111</code>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math>
+补码是 <code>1111 1111 1111 1110</code>。</li>
+</ol>
+<p>老师强调：先把这些当成”变戏法”一样记住，不必追问为什么这样定义（后面学了位运算再解释）。</p>
+</section><section class="wb-seg"><h3 id="补码的特性表示范围与整数溢出"><span class="wb-ts">00:09:00—00:16:04</span> ｜
+补码的特性、表示范围与整数溢出</h3>
+<p>补码的关键特点（以 16 位为例，从上到下递增 1）：</p>
+<pre><code>0111 1111 1111 1111   2^15-1     最大正数
+...
+0000 0000 0000 0010   2
+0000 0000 0000 0001   1
+0000 0000 0000 0000   0
+1111 1111 1111 1111  -1
+1111 1111 1111 1110  -2
+...
+1000 0000 0000 0001  -(2^15-1)
+1000 0000 0000 0000  -2^15      最小负数</code></pre>
+<ul>
+<li>从上到下递增
+1，与数值关系一致、<strong>与符号无关</strong>；把正数、负数的计算统一起来了，运算时无需区分正负数。</li>
+<li>对于正整数：符号位为 0，数值部分补码 = 反码 = 原码。</li>
+<li>对于负数：符号位为 1，数值部分补码 = 反码 + 1。</li>
+</ul>
+<p><strong>表示范围</strong>（假设整数的 bit 数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>，采用补码）：</p>
+<ul>
+<li>最大正整数：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{N-1}-1</annotation></semantics></math>（二进制
+<code>0111…1111</code>）。</li>
+<li>最小负整数：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">-2^{N-1}</annotation></semantics></math>（二进制
+<code>1000…0000</code>）。</li>
+<li>被表示的整数总数：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^{N-1}-1+1+2^{N-1}=2^N</annotation></semantics></math>，没有浪费任何
+bit（因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个 bit 最多只能表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>N</mi></msup><annotation encoding="application/x-tex">2^N</annotation></semantics></math>
+个不同状态）。</li>
+</ul>
+<p>对 C 语言 32 位 <code>int</code>：最大值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn><mo>≈</mo><mn>21</mn></mrow><annotation encoding="application/x-tex">2^{31}-1\approx 21</annotation></semantics></math>
+亿 4784 万，最小值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msup><mn>2</mn><mn>31</mn></msup><mo>≈</mo><mi>−</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">-2^{31}\approx -21</annotation></semantics></math>
+亿 4784 万。</p>
+<p><strong>溢出</strong>：最大正整数再加 1，会”逢二进一”变成
+<code>1000…0000</code>，即从最大正数变成最小负数——结果完全错了。因此做整数运算时务必防止越界。</p>
+</section><section class="wb-seg"><h3 id="平均数函数与整数溢出面试例题"><span class="wb-ts">00:17:04—00:19:18</span> ｜
+平均数函数与整数溢出（面试例题）</h3>
+<p>老师提到一道面试/考题：写一个函数求两个整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+的平均值。如果直接 <code>return (a+b)/2;</code>，当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+都接近最大正整数时，<code>a+b</code>
+会先溢出变成负数，结果就错了。老师保留了更优写法（用位运算）作为悬念，提醒大家：做整数运算要小心加起来以后溢出。</p>
+<div class="wb-excard" id="wb-ex-1" data-ex-idx="1"><h4 id="例题证明-1001704-平均数函数与整数溢出陷阱">例题/证明
+1（00:17:04）｜ 平均数函数与整数溢出陷阱<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-1" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：写函数
+<code>int average(int a, int b)</code> 求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+的平均整数值。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：要求整数平均值（不是浮点）。直接
+<code>(a+b)/2</code> 在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+都接近 <code>INT_MAX</code>
+时会先发生加法溢出。当堂只报名字、未展示完整代码，下面按标准 C 补出
+<code>[补全]</code>，<strong>不是当堂讲的，仅作自学参照</strong>：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> average<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="op">(</span>a <span class="op">+</span> b<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码为整理者按标准 C
+补出（<code>[补全]</code>），当堂只口述/报名字，课件未给出此程序。</p>
+<ul>
+<li>输入：例如
+<code>a = 2147483647</code>，<code>b = 2147483647</code>。</li>
+<li>预期：平均值应为 <code>2147483647</code>。</li>
+<li>实际运行结果：<code>a + b</code> 溢出为负数，得到错误结果（并非
+<code>2147483647</code>）。</li>
+</ul>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：两个很大的正整数相加可能越过补码边界变成负数。求平均值不能简单地先加后除；稳妥做法（当堂留下悬念，未展开）是改用不会溢出的写法，如先各自右移再处理。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：以为 <code>(a+b)/2</code>
+总是安全；忽略整数加法本身就可能溢出。</p>
+</section><section class="wb-seg"><h3
+id="整数类型家族shortintlonglong-long-与无符号类型"><span class="wb-ts">00:19:18—00:25:53</span> ｜
+整数类型家族：short、int、long、long long 与无符号类型</h3>
+<p>C 语言里整数类型不止一种：</p>
+<ul>
+<li><code>short [int]</code>（短整型）：16 位，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">\pm 3</annotation></semantics></math>
+万（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mspace width="-0.167em"></mspace><msup><mn>2</mn><mn>15</mn></msup><mo>∼</mo><msup><mn>2</mn><mn>15</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-\!2^{15}\sim 2^{15}-1</annotation></semantics></math>）。</li>
+<li><code>int</code>：32 位（现代 64 位计算机上），范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">\pm 21</annotation></semantics></math>
+亿。注意 C 标准只规定 <code>int</code> 最多 32 位、最少 16
+位，但现在计算机上都是 32 位。</li>
+<li><code>long [int]</code>（长整型）：C 标准规定<strong>一定 32
+位</strong>，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">\pm 21</annotation></semantics></math>
+亿（注意：不是 64 位）。</li>
+<li><code>long long [int]</code>（大长整型）：64 位，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>900</mn></mrow><annotation encoding="application/x-tex">\pm 900</annotation></semantics></math>
+亿亿（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mspace width="-0.167em"></mspace><msup><mn>2</mn><mn>63</mn></msup><mo>∼</mo><msup><mn>2</mn><mn>63</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-\!2^{63}\sim 2^{63}-1</annotation></semantics></math>）。</li>
+<li>在 64 位计算机系统上，<code>long</code> 也是 64 位；若想明确 64
+位，应使用 <code>long long</code>。</li>
+</ul>
+<p><code>short</code>、<code>int</code>、<code>long</code>、<code>long long</code>
+都可以写成省略 <code>int</code>
+的形式（<code>short</code>、<code>long</code>、<code>long long</code>）。<code>char</code>
+也是整数类型（8 位，一个字节）。</p>
+<p><strong class="wb-pill">无符号整数</strong>：很多整数没有负值意义（如个数、长度），可用<strong>无符号整数</strong>（<code>unsigned</code>）。它没有符号位，全部
+bit 用来存正整数的原码，所以补码与原码相同。</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个 bit
+的无符号整数范围：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mspace width="0.167em"></mspace><msup><mn>2</mn><mi>N</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,\,2^N-1]</annotation></semantics></math>，共
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>N</mi></msup><annotation encoding="application/x-tex">2^N</annotation></semantics></math>
+个。</li>
+<li>每种有符号整数都有对应的无符号类型：<code>unsigned short [int]</code>、<code>unsigned [int]</code>、<code>unsigned long [int]</code>、<code>unsigned long long [int]</code>。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="sizeof-运算符与类型转换运算符的区别"><span class="wb-ts">00:25:22—00:28:33</span> ｜ sizeof
+运算符与类型转换运算符的区别</h3>
+<p>想知道一个类型占多少字节，用 <strong><code>sizeof</code>
+运算符</strong>（不是函数，写法像函数）。课件第 13 页给出：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;int 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;long 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">long</span><span class="op">));</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;long long 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">long</span> <span class="dt">long</span><span class="op">));</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 13 页</p>
+<p><code>sizeof</code> 也可作用于常量、变量，如
+<code>sizeof 4.5</code>、<code>sizeof x</code>；若 <code>x</code> 是
+<code>int</code> 则等价于 <code>sizeof(int)</code>，若是
+<code>float</code> 则等价于 <code>sizeof(float)</code>。</p>
+<p><strong class="wb-pill wb-pill-note">注意区分两种”把类型括起来”的写法</strong>：</p>
+<ul>
+<li><strong class="wb-pill">类型转换运算符</strong>：<code>(类型名)表达式</code>，如
+<code>(int)1.999</code> 得到
+<code>1</code>（把值转成该类型，只转”值”，不转变量）。</li>
+<li><strong class="wb-pill"><code>sizeof</code>
+运算符</strong>：<code>sizeof(类型名)</code> 或
+<code>sizeof 表达式</code>。</li>
+<li>二者都把类型名用括号括起来，但含义完全不同：一个是”转换值的类型”，一个是”求占用字节数”。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="无符号整数与整数常量的进制表示"><span class="wb-ts">00:28:44—00:34:48</span> ｜
+无符号整数与整数常量的进制表示</h3>
+<p>计算机内部用二进制存整数，但 <strong>C
+语言语法不支持用二进制写整型常量</strong>。C
+语言支持的整型常量写法：</p>
+<ul>
+<li><strong class="wb-pill">十进制常量</strong>：不能以 <code>0</code> 开头（数字
+<code>0</code>～<code>9</code> 组成）。</li>
+<li><strong class="wb-pill">八进制常量</strong>：以 <code>0</code> 开头，由数字
+<code>0</code>～<code>7</code> 组成；右起第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+位权重为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>8</mn><mi>k</mi></msup><annotation encoding="application/x-tex">8^k</annotation></semantics></math>。</li>
+<li><strong class="wb-pill">十六进制常量</strong>：以 <code>0x</code> 或 <code>0X</code>
+开头，由
+<code>0</code>～<code>9</code>、<code>a</code>～<code>f</code>（或
+<code>A</code>～<code>F</code>）组成；右起第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+位权重为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>16</mn><mi>k</mi></msup><annotation encoding="application/x-tex">16^k</annotation></semantics></math>。</li>
+<li>进制数值前面都可加 <code>+</code>、<code>-</code> 表示正负。</li>
+</ul>
+<p>例：<code>010</code> 是八进制，等于十进制 8；<code>10</code> 是十进制
+10；<code>-023</code> 是八进制负常量，等于十进制
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>19</mn></mrow><annotation encoding="application/x-tex">-19</annotation></semantics></math>；<code>0x16</code>
+是十六进制，等于十进制 22；<code>0x12</code> 等于十进制
+18；<code>0xFF</code> 等于十进制 255。</p>
+<p>十六进制与二进制互相转换很方便：<strong>每 4 个二进制位对应 1
+个十六进制位</strong>（如 <code>0xABCF</code> →
+<code>1010 1011 1100 1101</code>）。</p>
+</section><section class="wb-seg"><h3 id="八进制十六进制与二进制的互相转换"><span class="wb-ts">00:34:48—00:38:14</span> ｜
+八进制、十六进制与二进制的互相转换</h3>
+<ul>
+<li>十六进制 → 二进制：把每个十六进制数字展开成 4 位二进制（如
+<code>0xABCF</code>：<code>A</code>→<code>1010</code>，<code>B</code>→<code>1011</code>，<code>C</code>→<code>1100</code>，<code>F</code>→<code>1111</code>）。</li>
+<li>二进制 → 十六进制：从右往左每 4 位一组拼成十六进制数字。</li>
+<li>二进制 → 八进制：每 3 位一组；八进制 → 二进制：每个八进制数字展开成
+3 位。</li>
+<li>十进制 → 二进制/八进制/十六进制：不断除以对应基数（除 2、除 8、除
+16），比一直除 2 更快。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="整数常量的后缀"><span class="wb-ts">00:38:14—00:41:02</span> ｜ 整数常量的后缀</h3>
+<p>给整型常量加后缀表示它的类型：</p>
+<ul>
+<li>无符号：<code>U</code>/<code>u</code>（<code>unsigned</code>）。</li>
+<li>长整型：<code>L</code>/<code>l</code>（<code>long</code>）。</li>
+<li>无符号长整型：<code>UL</code>/<code>LU</code>、<code>ul</code>/<code>lu</code>（<code>unsigned long</code>）。</li>
+<li>大长整型：<code>LL</code>（<code>long long</code>）。</li>
+</ul>
+<p>例：<code>-12L</code>、<code>12u</code>、<code>034U</code>、<code>12LU</code>、<code>0X567LU</code>。</p>
+</section><section class="wb-seg"><h3 id="短整数溢出截断short-n-123456789"><span class="wb-ts">00:41:02—00:52:11</span> ｜
+短整数溢出截断：short n = 123456789</h3>
+<p>若定义 <code>short n = 123456789;</code>，<code>n</code>
+得不到真实值，而是得到
+<code>-13035</code>。原因：<code>123456789 = 0x75bcd15</code>（占 4
+个字节），而 <code>short</code> 只有 2
+个字节，超出部分被<strong>截断</strong>，只保留低位的 2 个字节
+<code>cd15</code>。<code>cd15</code> 的第一个 bit 为
+1（符号位为负），按补码还原得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>13035</mn></mrow><annotation encoding="application/x-tex">-13035</annotation></semantics></math>。</p>
+</div><div class="wb-excard" id="wb-ex-2" data-ex-idx="2"><h4
+id="例题证明-2004102-短整数溢出截断short-n-123456789-13035">例题/证明
+2（00:41:02）｜ 短整数溢出截断：short n = 123456789 → −13035<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-2" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：解释 <code>short n = 123456789;</code>
+为什么 <code>n = -13035</code>。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：常数 <code>123456789</code> 是 4
+字节（<code>0x75bcd15</code>），赋给 2 字节的 <code>short</code>
+时，<strong>保留低位的 2 个字节
+<code>cd15</code></strong>，高位字节被舍弃。</p>
+<p>下面这段程序当堂只口述了赋值与结果，课件第 20
+页给出的是分析过程（非完整可运行程序），下面按标准 C 补出一个可运行版本
+<code>[补全]</code>，<strong>不是当堂展示的代码，仅作自学参照</strong>：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   <span class="dt">short</span> n <span class="op">=</span> <span class="dv">123456789</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   printf<span class="op">(</span><span class="st">&quot;n = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码为整理者按标准 C
+补出（<code>[补全]</code>），当堂只口述结果，课件未给出此程序。</p>
+<p><strong class="wb-pill wb-pill-derive">输入</strong>：无（<code>123456789</code> 是字面常量）。</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>：</p>
+<pre><code>n = -13035</code></pre>
+<p><strong class="wb-pill wb-pill-derive">逐步推导（依据课件第 20 页）</strong>：</p>
+<ol type="1">
+<li><code>123456789 = 0x75bcd15</code>，对应 4
+个字节：<code>07 5b cd 15</code>（高位在前）。</li>
+<li><code>short</code> 只保留低 2 字节 <code>cd 15</code>，即
+<code>cd15</code>（二进制 <code>1100 1101 0001 0101</code>）。</li>
+<li>最高 bit 为 1 → 负数（补码）。数值部分：反码 =
+<code>100 1101 0001 0100</code>，原码 =
+<code>011 0010 1110 1011</code>。</li>
+<li>原码写成十进制：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><msup><mn>16</mn><mn>3</mn></msup><mo>+</mo><mn>2</mn><mo>×</mo><msup><mn>16</mn><mn>2</mn></msup><mo>+</mo><mn>14</mn><mo>×</mo><mn>16</mn><mo>+</mo><mn>11</mn><mo>=</mo><mn>13035</mn></mrow><annotation encoding="application/x-tex">3\times16^3+2\times16^2+14\times16+11 = 13035</annotation></semantics></math>，故
+<code>n = -13035</code>。</li>
+</ol>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：从长整型到短整型，规则是<strong>保留低位字节、丢弃高位超出的字节</strong>（即截断）；如果原值较大，截断后可能变负。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：以为 <code>short</code>
+会自动”缩小”为你想要的值；忘记截断是按字节、从低位保留。</p>
+</section><section class="wb-seg"><h3 id="有符号整数与无符号整数的赋值内存拷贝"><span class="wb-ts">00:52:11—01:06:56</span> ｜
+有符号整数与无符号整数的赋值（内存拷贝）</h3>
+<p><strong class="wb-pill">整数与无符号整数之间运算、赋值要特别小心</strong>。看一个例子（完整代码在课件第
+22 页，逐字符照抄）：</p>
+</div><div class="wb-excard" id="wb-ex-3" data-ex-idx="3"><h4 id="例题证明-3005447-有符号与无符号整数赋值int-m-1-n-1">例题/证明
+3（00:54:47）｜ 有符号与无符号整数赋值（int m = 1, n = −1）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-3" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：把有符号整数
+<code>m=1</code>、<code>n=-1</code> 分别赋值给无符号变量
+<code>um</code>、<code>un</code>，并用
+<code>%d</code>、<code>%u</code>、<code>%x</code> 观察输出。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 22 页）：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> m <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> um<span class="op">,</span> un<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>um <span class="op">=</span> m<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>un <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot; m = </span><span class="sc">%d</span><span class="st">,  n = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;um = </span><span class="sc">%u</span><span class="st">, un = </span><span class="sc">%u\n</span><span class="st">&quot;</span><span class="op">,</span> um<span class="op">,</span> un<span class="op">);</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot; m = 0x</span><span class="sc">%08X</span><span class="st">,  n = 0x</span><span class="sc">%08X\n</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;um = 0x</span><span class="sc">%08X</span><span class="st">, un = 0x</span><span class="sc">%08X\n</span><span class="st">&quot;</span><span class="op">,</span> um<span class="op">,</span> un<span class="op">);</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 22 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 22
+页）：</p>
+<pre><code> m = 1,  n = -1
+um = 1, un = 4294967295
+ m = 0x00000001,  n = 0xFFFFFFFF
+um = 0x00000001, un = 0xFFFFFFFF</code></pre>
+<p><strong class="wb-pill wb-pill-idea">原理讲解</strong>：</p>
+<ul>
+<li>整数类型之间的赋值，做的是<strong>内存拷贝</strong>——把右边变量（或值）的二进制
+bit
+<strong>直接复制</strong>到左边变量的内存中，不管它是有符号还是无符号、是长是短。</li>
+<li><code>n = -1</code> 在内存里是 32 个
+<code>1</code>（<code>0xFFFFFFFF</code>）。把它拷贝给
+<code>un</code>（无符号）后，<code>un</code> 里的 bit 仍是 32 个
+<code>1</code>；用 <code>%u</code>
+解释成无符号整数，就得到最大的无符号整数 <code>4294967295</code>。</li>
+<li>用 <code>%d</code> 解释这 32 个 <code>1</code>，则按有符号补码得到
+<code>-1</code>。所以<strong>同一个 bit
+模式，怎么解读就得到什么结果</strong>。</li>
+<li><code>%08X</code> 中的 <code>08</code> 表示最少 8 位、不足左侧补
+<code>0</code>；<code>X</code> 表示十六进制大写字母。</li>
+</ul>
+<p>老师点出的意义：<strong>混合使用 <code>int</code> 与
+<code>unsigned int</code>
+时要特别小心</strong>——它们在内存里可能是完全相同的
+bit，但按不同格式解读会得到天差地别的值。</p>
+<blockquote>
+<p>题外话（学习方法提醒，属于有效信息）：大学里没人盯着你学，要主动学、靠作业检验自己是否真掌握；老师借游戏与含糖饮料类比——若只”被游戏消费”或只靠糖获得短暂兴奋，长期无益；若能思考”游戏画面是怎么做出来的”，就会变成学习动力。这部分是励志与学习方法提醒，非知识点。</p>
+</blockquote>
+</section><section class="wb-seg"><h3 id="浮点数的存储小数二进制与-ieee-754-表示"><span class="wb-ts">01:07:15—01:13:39</span> ｜
+浮点数的存储：小数二进制与 IEEE 754 表示</h3>
+<p><strong class="wb-pill">十进制小数转二进制</strong>：整数部分”除以 2
+取余数”，小数部分”乘以 2 取整数”。</p>
+<p>例：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.625</mn><annotation encoding="application/x-tex">6.625</annotation></semantics></math>
+转二进制。</p>
+<ul>
+<li>整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math>：除以
+2 取余 → <code>110</code>。</li>
+<li>小数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.625</mn><annotation encoding="application/x-tex">0.625</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.625</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.25</mn></mrow><annotation encoding="application/x-tex">0.625\times2=1.25</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.25</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">0.25\times2=0.5</annotation></semantics></math>
+取整
+<code>0</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.5</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.0</mn></mrow><annotation encoding="application/x-tex">0.5\times2=1.0</annotation></semantics></math>
+取整 <code>1</code>，结束。得到 <code>0.101</code>。</li>
+<li>故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.625</mn><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>110.101</mn><msub><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">6.625 = (110.101)_2</annotation></semantics></math>。</li>
+</ul>
+<p>例：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.7</mn><annotation encoding="application/x-tex">1.7</annotation></semantics></math>
+转二进制。</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.7</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.4</mn></mrow><annotation encoding="application/x-tex">0.7\times2=1.4</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.4</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0.8</mn></mrow><annotation encoding="application/x-tex">0.4\times2=0.8</annotation></semantics></math>
+取整
+<code>0</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.8</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.6</mn></mrow><annotation encoding="application/x-tex">0.8\times2=1.6</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.6</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.2</mn></mrow><annotation encoding="application/x-tex">0.6\times2=1.2</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.2</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">0.2\times2=0.4</annotation></semantics></math>
+取整
+<code>0</code>；……一直循环，得到二进制的<strong>无限循环小数</strong>
+<code>1.10110…</code>。</li>
+</ul>
+<p>这说明：简单如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.7</mn><annotation encoding="application/x-tex">1.7</annotation></semantics></math>
+在计算机里<strong>无法精确表示</strong>（会截断）。而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.625</mn><annotation encoding="application/x-tex">6.625</annotation></semantics></math>
+没有误差。</p>
+<p><strong class="wb-pill">IEEE 浮点数表示</strong>（课件第 26 页）：一个浮点数由
+<strong>符号 S（1 bit）＋ 阶码 E ＋ 尾数 M</strong> 组成。</p>
+<ul>
+<li><code>float</code>：1 + 8 + 23 位。尾数默认隐藏一个前导
+<code>1</code>（尾数 = <code>1.M</code>，当阶码不全为 0 时），故有效位约
+7～8 位十进制。</li>
+<li><code>double</code>：1 + 11 + 52 位。尾数有效位约 15～16
+位十进制。</li>
+<li>阶码采用移码：对
+<code>float</code>，<code>E = 阶码 − 127</code>（阶码 8 位，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>∼</mo><mn>255</mn></mrow><annotation encoding="application/x-tex">0\sim255</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">min</mi></msub><mo>=</mo><mi>−</mi><mn>127</mn></mrow><annotation encoding="application/x-tex">E_{\min}=-127</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mn>128</mn></mrow><annotation encoding="application/x-tex">E_{\max}=128</annotation></semantics></math>）；对
+<code>double</code>，<code>E = 阶码 − 1023</code>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">min</mi></msub><mo>=</mo><mi>−</mi><mn>1023</mn></mrow><annotation encoding="application/x-tex">E_{\min}=-1023</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mn>1024</mn></mrow><annotation encoding="application/x-tex">E_{\max}=1024</annotation></semantics></math>）。</li>
+<li>数值 =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>×</mo><msup><mn>2</mn><mi>E</mi></msup><mo>×</mo><mn>1</mn><mi>.</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">S \times 2^{E} \times 1.M</annotation></semantics></math>（或阶码全
+0 时为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>×</mo><msup><mn>2</mn><mi>E</mi></msup><mo>×</mo><mn>0</mn><mi>.</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">S\times2^{E}\times0.M</annotation></semantics></math>）。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="浮点数的范围精度与实数常量"><span class="wb-ts">01:13:39—01:24:49</span> ｜
+浮点数的范围、精度与实数常量</h3>
+<p><strong class="wb-pill">取值范围</strong>：<code>float</code> 约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mo stretchy="false" form="prefix">[</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>38</mn></mrow></msup><mo>,</mo><mspace width="0.167em"></mspace><msup><mn>10</mn><mn>38</mn></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\pm[10^{-38},\,10^{38}]</annotation></semantics></math>；<code>double</code>
+约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mo stretchy="false" form="prefix">[</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>308</mn></mrow></msup><mo>,</mo><mspace width="0.167em"></mspace><msup><mn>10</mn><mn>308</mn></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\pm[10^{-308},\,10^{308}]</annotation></semantics></math>。</p>
+<ul>
+<li><code>float</code> 的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>
+怎么来：最大
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>128</mn></mrow><annotation encoding="application/x-tex">E=128</annotation></semantics></math>，再乘
+<code>1.…</code>≈<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>128</mn></msup><mo>≈</mo><msup><mn>10</mn><mn>38.4</mn></msup></mrow><annotation encoding="application/x-tex">2^{128}\approx 10^{38.4}</annotation></semantics></math>，故约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>。</li>
+<li><code>double</code> 的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>308</mn></msup><annotation encoding="application/x-tex">10^{308}</annotation></semantics></math>
+同理：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>1024</mn></msup><mo>≈</mo><msup><mn>10</mn><mn>307.2</mn></msup></mrow><annotation encoding="application/x-tex">2^{1024}\approx 10^{307.2}</annotation></semantics></math>，约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>308</mn></msup><annotation encoding="application/x-tex">10^{308}</annotation></semantics></math>。</li>
+</ul>
+<p><strong class="wb-pill">精度与取值范围是两个不同概念</strong>：</p>
+<ul>
+<li><code>float x = 1234567.89;</code> 虽在取值范围内，但
+<code>float</code> 只有 7 个有效数字，无法精确表达。</li>
+<li><code>float y = 1.2e55;</code>
+精度要求不高，但超出取值范围（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>），也无法精确表示。</li>
+</ul>
+<p>并非所有实数都能精确表示：<code>float</code> 最多表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>32</mn></msup><annotation encoding="application/x-tex">2^{32}</annotation></semantics></math>
+个浮点数，<code>double</code> 最多
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>64</mn></msup><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math>
+个——相对连续实数几乎是”九牛一毛”，且数值越大误差越大。</p>
+<p><strong class="wb-pill">实数常量的表示</strong>：</p>
+<ul>
+<li>普通表示：符号 + 整数部分 + 小数点 + 小数部分，如
+<code>-12345.678</code>。</li>
+<li>科学计数法：符号 + 尾数 <code>e/E</code> 指数，如
+<code>-1.2345678E5</code>；普朗克常量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.026</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>27</mn></mrow></msup></mrow><annotation encoding="application/x-tex">6.026\times10^{-27}</annotation></semantics></math>
+可写成 <code>6.026E-27</code> 或 <code>60.26E-28</code>。</li>
+<li><strong class="wb-pill">实型常量的类型都是 <code>double</code></strong>；要表示
+<code>float</code> 常量，加后缀 <code>f</code>，如
+<code>3.14f</code>、<code>5f</code>。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="字符类型ascii-码与转义字符"><span class="wb-ts">01:24:49—01:31:49</span> ｜ 字符类型、ASCII
+码与转义字符</h3>
+<p><code>char</code> 也是整数：占 1 个字节，存的是该字符的 <strong>ASCII
+码值</strong>（如 <code>'A'</code> 的 ASCII 是 65）。所以
+<code>char</code> 本质上是长度为 1
+字节的短整数，可以像整数那样做四则运算、用于 <code>switch</code>
+等。其取值范围是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>128</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>127</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-128,\,127]</annotation></semantics></math>（<code>0</code>～<code>127</code>
+可作 ASCII 字符，负的部分是负整数）。</p>
+<p><strong class="wb-pill">转义字符</strong>：C 语言把反斜杠 <code>\</code>
+定义为转义字符，用来把”正常字符”变成”特殊字符”，或把”特殊字符”变成普通字符（课件第
+34 页）：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\\</code></td>
+<td>反斜杠字符本身 <code>\</code></td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>换行符</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>横向跳格符（制表符）</td>
+</tr>
+<tr>
+<td><code>\"</code></td>
+<td>双引号字符本身 <code>"</code></td>
+</tr>
+<tr>
+<td><code>\'</code></td>
+<td>单引号字符本身 <code>'</code></td>
+</tr>
+<tr>
+<td><code>\ddd</code></td>
+<td>1～3 位八进制数作为 ASCII 码所代表的字符</td>
+</tr>
+<tr>
+<td><code>\xhh</code></td>
+<td>1～2 位十六进制数作为 ASCII 码所代表的字符</td>
+</tr>
+</tbody>
+</table>
+<p><strong class="wb-pill wb-pill-note">注意</strong>：不要把转义字符的反斜杠和 <code>printf</code>
+里的 <code>%</code> 混为一谈。<code>%</code> 是
+<code>printf</code>/<code>scanf</code> 约定的格式控制字符；在
+<code>printf</code>/<code>scanf</code> 里用 <code>%%</code>
+表示一个百分号，和用 <code>\\</code>
+表示反斜杠方法雷同；而在其他时候直接用 <code>'%'</code>
+表示百分号，不需要任何转义。</p>
+</section><section class="wb-seg"><h3 id="转义字符-与-及字符常量示例"><span class="wb-ts">01:31:49—01:44:56</span> ｜ 转义字符 与
+及字符常量示例</h3>
+<p>字符常量 <code>'A'</code> 与整数 <code>65</code>
+是同一个东西；<code>'\101'</code>（八进制 ASCII 转义）和
+<code>'\x41'</code>（十六进制 ASCII 转义）也都表示
+<code>'A'</code>。课件第 36 页给出完整示例（逐字符照抄）：</p>
+</div><div class="wb-excard" id="wb-ex-4" data-ex-idx="4"><h4 id="例题证明-4014114-字符常量与转义字符示例">例题/证明
+4（01:41:14）｜ 字符常量与转义字符示例<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-4" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：用 5 种等价方式给 <code>char</code>
+变量赋字符 <code>'A'</code>，并演示在字符串中使用 ASCII 转义。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 36 页）：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> a <span class="op">=</span> <span class="ch">&#39;A&#39;</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符常量&#39;A&#39;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> b <span class="op">=</span> <span class="dv">65</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符的ASCII 码</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> c <span class="op">=</span> <span class="bn">0101</span><span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符的8进制ASCII 码</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> d <span class="op">=</span> <span class="ch">&#39;\</span><span class="er">101</span><span class="ch">&#39;</span><span class="op">;</span> <span class="co">// 字符的8进制ASCII 码转义</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> e <span class="op">=</span> <span class="ch">&#39;</span><span class="sc">\x41</span><span class="ch">&#39;</span><span class="op">;</span> <span class="co">// 字符的16 进制ASCII 码转义</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> d<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%c</span><span class="st">, 65=</span><span class="sc">%c</span><span class="st">, </span><span class="sc">\&#39;\\</span><span class="st">101</span><span class="sc">\&#39;</span><span class="st">=</span><span class="sc">%c</span><span class="st">, 0101=</span><span class="sc">%c\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>a<span class="op">,</span> <span class="dv">65</span><span class="op">,</span> <span class="ch">&#39;\</span><span class="er">101</span><span class="ch">&#39;</span><span class="op">,</span> <span class="bn">0101</span><span class="op">);</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">// 若在字符串中使用ASCII 码，必须转义</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="er">\1</span><span class="st">01</span><span class="er">\1</span><span class="st">02</span><span class="er">\1</span><span class="st">03</span><span class="er">\1</span><span class="st">04</span><span class="er">\1</span><span class="st">05</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 36 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 36
+页）：</p>
+<pre><code>A A A A A
+a=A, 65=A, ’\101’=A, 0101=A
+ABCDE</code></pre>
+<p><strong class="wb-pill wb-pill-idea">讲解</strong>：</p>
+<ul>
+<li><code>a='A'</code>、<code>b=65</code>、<code>c=0101</code>（八进制
+65）、<code>d='\101'</code>、<code>e='\x41'</code> 五种写法都得到字符
+<code>'A'</code>，因为字符值就是 ASCII
+值（65），字符常量与整型常量在数值上等价。</li>
+<li>在<strong>字符串</strong>中使用 ASCII 码必须转义（如
+<code>"\101\102\103\104\105"</code> →
+<code>ABCDE</code>）；而在字符常量里 <code>0101</code>
+这种八进制整数形式可直接写（如 <code>c = 0101</code>）。</li>
+<li><code>printf</code> 第二行里 <code>\'\\101\'</code>
+是为了在字符串中打印出 <code>'\101'</code>
+字样而做的转义（<code>\'</code> 表示单引号，<code>\\</code>
+表示反斜杠）。</li>
+</ul>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：把字符 <code>'A'</code> 与字符串
+<code>"A"</code> 混淆（<code>'A'</code> 是单个字符，<code>"A"</code>
+是含一个字符加结束符的字符串）；在字符串里忘记对 ASCII 码做转义。</p>
+</section><section class="wb-seg"><h3 id="整数实数字符的输入输出格式符与宽度控制"><span class="wb-ts">01:44:56—01:54:49</span> ｜
+整数、实数、字符的输入输出格式符与宽度控制</h3>
+<p><code>printf</code>/<code>scanf</code>
+的格式符（<code>%+格式</code>）必须与数据类型一致，否则结果错误。</p>
+<p><strong class="wb-pill">整数格式符</strong>（课件第 38 页）：<code>int</code> 用
+<code>%d</code>（十进制）、<code>%o</code>（八进制）、<code>%x</code>（十六进制小写）/
+<code>%X</code>（大写）；<code>unsigned</code> 用
+<code>%u</code>（十进制）、<code>%o</code>、<code>%x</code>；<code>long</code>
+用
+<code>%ld</code>/<code>%lo</code>/<code>%lx</code>，<code>unsigned long</code>
+用 <code>%lu</code> 等。以下逐字符照抄课件里几个演示程序。</p>
+</div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题证明-5014723-输出整数d-o-x课件第-39-页">例题/证明
+5（01:47:23）｜ 输出整数：%d %o %x（课件第 39 页）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：观察同一个数值在不同进制格式下的输出，以及十进制/八进制/十六进制常量在
+<code>%d</code> 下的显示。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 39 页）：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, </span><span class="sc">%o</span><span class="st">, </span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">10</span><span class="op">);</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, </span><span class="sc">%d</span><span class="st">, </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="bn">010</span><span class="op">,</span> <span class="bn">0x10</span><span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, </span><span class="sc">%x</span><span class="st">, </span><span class="sc">%X\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="bn">010</span><span class="op">,</span> <span class="bn">012</span><span class="op">,</span> <span class="dv">10</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 39 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 39
+页）：</p>
+<pre><code>10, 12, a
+10, 8, 16
+8, a, A</code></pre>
+<p><strong class="wb-pill wb-pill-idea">讲解</strong>：输出八进制、十六进制时，<strong>不会</strong>自动加前导
+<code>0</code> /
+<code>0x</code>；想加就自己在格式串里写。<code>%x</code> 输出小写
+<code>a–f</code>，<code>%X</code> 输出大写 <code>A–F</code>。注意 C
+语言里写八进制常量要用 <code>0</code> 开头，但输出时不会给你加
+<code>0</code>。</p>
+</div><div class="wb-excard" id="wb-ex-6" data-ex-idx="6"><h4
+id="例题证明-6014850-输出负数时的意外uox-输出-1课件第-40-页">例题/证明
+6（01:48:50）｜ 输出负数时的意外：%u/%o/%x 输出 −1（课件第 40 页）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-6" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：观察用
+<code>%u</code>、<code>%o</code>、<code>%x</code> 输出 <code>-1</code>
+的结果。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 40 页）：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%u</span><span class="st">, </span><span class="sc">%o</span><span class="st">, </span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%u</span><span class="st">, </span><span class="sc">%o</span><span class="st">, </span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 40 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 40
+页）：</p>
+<pre><code>1
+1
+1
+4294967295
+37777777777
+f f f f f f f f</code></pre>
+<p><strong class="wb-pill">原理</strong>：<code>-1</code> 的二进制是 32 个
+<code>1</code>，<code>printf</code> 拿到这 32 个 <code>1</code> 后按
+<code>%u</code>/<code>%o</code>/<code>%x</code>
+的要求把它解释成无符号数，于是得到
+<code>4294967295</code>（<code>0xFFFFFFFF</code>）、八进制
+<code>37777777777</code>、十六进制 <code>ffffffff</code>。3
+个二进制位一组变八进制、4 个一组变十六进制（共 8 个
+<code>f</code>）。理解规则后这些结果都是可以推出来的。</p>
+</div><div class="wb-excard" id="wb-ex-7" data-ex-idx="7"><h4 id="例题证明-7015121-输入整数d-o-x课件第-41-页">例题/证明
+7（01:51:21）｜ 输入整数：%d %o %x（课件第 41 页）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-7" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：用 <code>scanf</code>
+以十进制、八进制、十六进制读入，让三个变量都得到 100。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 41 页）：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%o%x</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="op">&amp;</span>c<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 41 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入</strong>：<code>100 144 64</code><br>
+<strong>说明</strong>：<code>100</code> 是十进制 100；<code>144</code>
+是八进制，等于十进制
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>64</mn><mo>+</mo><mn>4</mn><mo>×</mo><mn>8</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">1\times64+4\times8+4=100</annotation></semantics></math>；<code>64</code>
+是十六进制，等于十进制
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn><mo>×</mo><mn>16</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">6\times16+4=100</annotation></semantics></math>。输入八进制可带可不带前导
+<code>0</code>，十六进制可带可不带前导
+<code>0x</code>；<code>scanf</code> 的 <code>%x</code> 允许你前面写
+<code>0x</code> 或不写。</p>
+</div><div class="wb-excard" id="wb-ex-8" data-ex-idx="8"><h4 id="例题证明-8015234-输出宽度与填充n-0n--n课件第-4244-页">例题/证明
+8（01:52:34）｜ 输出宽度与填充：%n %0n %-n（课件第 42～44 页）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-8" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：观察输出宽度、补零、左对齐三种格式。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 42～44 页）：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%8d%8o%8X\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">);</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%3d</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12345</span><span class="op">);</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;|</span><span class="sc">%08d</span><span class="st">|</span><span class="sc">%08o</span><span class="st">|</span><span class="sc">%08X</span><span class="st">|</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">);</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;时间 = </span><span class="sc">%02d</span><span class="st">:</span><span class="sc">%02d</span><span class="st">:</span><span class="sc">%02d</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%-8d%-8o%-8X</span><span class="st">|</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 42～44 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 42～44
+页）：</p>
+<pre><code>      47      57      2F
+12345
+|00000047|00000057|0000002F|
+时间 = 12:06:03
+47     57     2F      |</code></pre>
+<p><strong class="wb-pill wb-pill-idea">讲解</strong>：</p>
+<ul>
+<li><code>%n</code>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+为整数）设置最小输出宽度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，不足左侧补空格（右对齐）；实际宽度超过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+则按实际宽度（如 <code>%3d</code> 输出 <code>12345</code>
+不截断）。</li>
+<li><code>%0n</code>：不足左侧补 <code>0</code>（如
+<code>时间 = 12:06:03</code>）。</li>
+<li><code>%-n</code>：左对齐，不足右侧补空格（<code>%-08d</code>
+无意义）。</li>
+<li>八进制/十六进制输出默认也不带前导
+<code>0</code>/<code>0x</code>，想加就自己在格式串里写（如想输出
+<code>0X</code> 前缀就写 <code>0X%X</code>）。</li>
+</ul>
+</div><div class="wb-excard" id="wb-ex-9" data-ex-idx="9"><h4 id="例题证明-9015320-实数输入输出与宽度控制课件第-4647-页">例题/证明
+9（01:53:20）｜ 实数输入输出与宽度控制（课件第 46～47 页）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-9" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：观察实数以
+<code>%f</code>、<code>%e</code> 输出及宽度/小数位控制。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 46～47 页）：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> d <span class="op">=</span> <span class="fl">3.1415926</span><span class="op">;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f</span><span class="st">,</span><span class="sc">%e\n</span><span class="st">&quot;</span><span class="op">,</span> d<span class="op">,</span> d<span class="op">);</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%5.3f</span><span class="st">,</span><span class="sc">%5.2f</span><span class="st">,</span><span class="sc">%.2f\n</span><span class="st">&quot;</span><span class="op">,</span> d<span class="op">,</span> d<span class="op">,</span> d<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 46～47 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 46～47
+页）：</p>
+<pre><code>3.1415923 ,3.14159 e+00
+3.142 , ␣3.14 ,3.14</code></pre>
+<p><strong class="wb-pill wb-pill-idea">讲解</strong>：<code>float</code> 用
+<code>%f</code>/<code>%e</code>，<code>double</code> 输入用
+<code>%lf</code>/<code>%le</code>、输出仍用
+<code>%f</code>/<code>%e</code>。<code>%n.mf</code> 表示总宽
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>、小数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+位；省略 <code>.m</code> 时小数默认 6
+位；省略总宽时按实际宽度；<code>%-n.mf</code>
+左对齐，<code>%0n.mf</code> 补零。</p>
+</div><div class="wb-excard" id="wb-ex-10" data-ex-idx="10"><h4 id="例题证明-10015444-字符输入输出与空白字符课件第-48-页">例题/证明
+10（01:54:44）｜ 字符输入输出与空白字符（课件第 48 页）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-10" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：观察 <code>scanf("%c")</code>
+是否读入空白字符。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 48 页）：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c%c%c</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="op">&amp;</span>c<span class="op">);</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c%c%c%c</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> <span class="ch">&#39;#&#39;</span><span class="op">,</span> b<span class="op">,</span> <span class="ch">&#39;#&#39;</span><span class="op">,</span> c<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 48 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入</strong>：<code>A bc</code><回车><br>
+<strong>输出／运行结果</strong>：<code>A#␣#b</code>（中间的空格被
+<code>%c</code> 读走，证明 <code>scanf</code>/<code>getchar</code>
+读字符时会读入任何字符，包括空格、回车、制表符；而读数值时空白字符会被跳过）。<code>printf</code>/<code>putchar</code>
+输出字符时两侧不加单引号。</p>
+</section><section class="wb-seg"><h3 id="例程6-1大小写字母转换"><span class="wb-ts">01:54:49—01:56:22</span> ｜
+例程6-1：大小写字母转换</h3>
+<p>大小写转换规则：小写转大写 <code>ch - 'a' + 'A'</code>；大写转小写
+<code>ch - 'A' + 'a'</code>。课件第 49
+页给出完整例程（逐字符照抄）：</p>
+</div><div class="wb-excard" id="wb-ex-11" data-ex-idx="11"><h4 id="例题证明-11015535-例程6-1大小写字母转换">例题/证明
+11（01:55:35）｜ 例程6-1：大小写字母转换<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-11" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：从键盘循环读入字符，把小写转大写、大写转小写并输出，遇到回车结束。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 49 页）：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> ch<span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Input characters:&quot;</span><span class="op">);</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> <span class="dv">1</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c</span><span class="st">&quot;</span><span class="op">,&amp;</span>ch<span class="op">);</span> <span class="co">// ch=getchar();</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> ch<span class="op">==</span><span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span> <span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> ch <span class="op">&gt;=</span> <span class="ch">&#39;a&#39;</span> <span class="op">&amp;&amp;</span> ch <span class="op">&lt;=</span> <span class="ch">&#39;z&#39;</span> <span class="op">)</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>ch <span class="op">=</span> ch <span class="op">-</span> <span class="ch">&#39;a&#39;</span> <span class="op">+</span> <span class="ch">&#39;A&#39;</span><span class="op">;</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span><span class="op">(</span> ch<span class="op">&gt;=</span><span class="ch">&#39;A&#39;</span> <span class="op">&amp;&amp;</span> ch<span class="op">&lt;=</span><span class="ch">&#39;Z&#39;</span> <span class="op">)</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>ch <span class="op">=</span> ch <span class="op">-</span> <span class="ch">&#39;A&#39;</span> <span class="op">+</span> <span class="ch">&#39;a&#39;</span><span class="op">;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>putchar<span class="op">(</span>ch<span class="op">);</span> <span class="co">// printf(&quot;%c&quot;,ch);</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 49 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入</strong>：例如键入 <code>AbC</code><回车>。</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>：<code>aBc</code>（<code>A</code>→<code>a</code>、<code>b</code>→<code>B</code>、<code>C</code>→<code>c</code>）。</p>
+<p><strong class="wb-pill">原理</strong>：利用 ASCII 码连续的特性：先判断
+<code>ch</code>
+在小写区间还是大写区间，再减去该区间首字母加上目标区间首字母。注意
+<code>scanf("%c",&amp;ch)</code> 会读入回车，所以要用
+<code>if(ch=='\n') break;</code> 来结束循环。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：用 <code>%c</code>
+读字符时不跳过空白字符，回车也会被读入；忘记处理 <code>\n</code>
+会导致循环无法终止。</p>
+</section><section class="wb-seg"><h3 id="键盘缓冲区与标准输入流-stdin"><span class="wb-ts">01:56:26—02:01:15</span> ｜
+键盘缓冲区与标准输入流 stdin</h3>
+<p>键盘输入与 <code>scanf</code> 的关系（课件第 51～52 页）：</p>
+<ul>
+<li><strong class="wb-pill">键盘缓冲区</strong>：保存键入的字符序列。</li>
+<li><strong class="wb-pill wb-pill-derive">标准输入流 <code>stdin</code></strong>（standard input）：为
+<code>scanf</code>、<code>getchar</code>
+等提供字符流；它可以对应键盘缓冲区，也可以对应某个文件。</li>
+</ul>
+<p>流程：</p>
+<ol type="1">
+<li>用户键入字符，存入键盘缓冲区。</li>
+<li>按下回车（<code>return</code>），产生一个换行符 <code>\n</code>
+存入缓冲区。</li>
+<li>缓冲区收到 <code>\n</code> 后，把字符序列（含
+<code>\n</code>）转移到 <code>stdin</code>。</li>
+<li><code>scanf</code>/<code>getchar</code> 从 <code>stdin</code>
+<strong>最前面</strong>的字符开始读取。</li>
+<li><code>scanf</code> 成功读取数据后，把<strong>已消耗的字符从
+<code>stdin</code>
+自动删除</strong>；遇到不满足格式要求的字符则<strong>终止运行</strong>，该字符仍留在
+<code>stdin</code>。</li>
+</ol>
+<p>若 <code>stdin</code> 为空，<code>scanf</code>/<code>getchar</code>
+会停下来<strong>等待用户输入</strong>——这就是程序”卡住等你输入”的原因。</p>
+</section><section class="wb-seg"><h3 id="scanf-的格式字符-d-f-lf-c-n"><span class="wb-ts">02:01:15—02:03:57</span> ｜ scanf
+的格式字符 %d %f %lf %c %n</h3>
+<p><code>scanf</code> 的格式字符（课件第 53 页）：</p>
+<ul>
+<li><code>%d</code>：读十进制整数（<code>int</code>）。</li>
+<li><code>%f</code>：读单精度浮点数（<code>float</code>）。</li>
+<li><code>%lf</code>：读双精度浮点数（<code>double</code>）。</li>
+<li><code>%c</code>：读一个字符（<code>char</code>）；<strong>不会跳过任何空白字符</strong>（空格、回车、制表符都有效）。</li>
+<li><code>%n</code>：记录到目前为止从 <code>stdin</code>
+消耗的字符个数（含读入和跳过的）。</li>
+</ul>
+<p>例外：读取 <code>%d</code>/<code>%f</code>/<code>%lf</code>
+等数值时，会<strong>自动跳过数据前面的空白字符</strong>（空格、换行、制表符）；但
+<code>%c</code> 读字符不跳过空白。普通字符中，一个空格或 <code>\n</code>
+可匹配 0～多个连续空白字符。</p>
+</div><div class="wb-excard" id="wb-ex-12" data-ex-idx="12"><h4
+id="例题证明-12020150-scanf-练习d-的自动跳空格与遇非法字符终止">例题/证明
+12（02:01:50）｜ scanf 练习：%d 的自动跳空格与遇非法字符终止<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-12" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 55 页）：观察
+<code>scanf("%d%d", &amp;a, &amp;b);</code> 在两种输入下的行为。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 55 页）：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">=</span><span class="dv">1</span><span class="op">,</span> b<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">, b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 55 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入 1</strong>：<code>+12</code> <code>&lt;回车&gt;</code>
+<code>-34</code><br>
+<strong>输出</strong>：<code>a=12, b=-34</code>（读第二个
+<code>%d</code> 时自动跳过前面的空白字符）。</p>
+<p><strong class="wb-pill wb-pill-derive">输入 2</strong>：<code>56x78</code><br>
+<strong>输出</strong>：<code>a=56, b=2</code>（读第二个 <code>%d</code>
+碰到非法字符 <code>x</code> 立即停止，<code>b</code> 保持原值 2）。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：数值转换会自动跳过前导空白；遇到不满足格式的字符就终止，尚未读入的变量保持原值。</p>
+</div><div class="wb-excard" id="wb-ex-13" data-ex-idx="13"><h4 id="例题证明-13020526-scanf-练习f-遇非法字符-f-终止">例题/证明
+13（02:05:26）｜ scanf 练习：%f 遇非法字符 f 终止<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-13" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 56 页）：观察
+<code>scanf("%f%f", &amp;a, &amp;b);</code> 的行为。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 56 页）：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> a<span class="op">=</span><span class="dv">1</span><span class="op">,</span>b<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%.1f</span><span class="st">, b=</span><span class="sc">%.1f\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 56 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入 1</strong>：<code>1.</code> <code>&lt;回车&gt;</code>
+<code>5</code> <code>&lt;回车&gt;</code> <code>34</code><br>
+<strong>输出</strong>：<code>a=1.0, b=5.0</code>（多输了一个空格，实际变成两个数
+<code>1.</code> 和 <code>5</code>）。</p>
+<p><strong class="wb-pill wb-pill-derive">输入 2</strong>：<code>56 f</code> <code>&lt;回车&gt;</code>
+<code>78</code><br>
+<strong>输出</strong>：<code>a=56.0, b=2.0</code>（读第二个
+<code>%f</code> 碰到非法字符 <code>f</code> 停止，<code>b</code>
+保持原值 2）。</p>
+</div><div class="wb-excard" id="wb-ex-14" data-ex-idx="14"><h4 id="例题证明-14020618-scanf-练习n-消耗字符数">例题/证明
+14（02:06:18）｜ scanf 练习：%n 消耗字符数<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-14" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 57 页）：用 <code>%n</code>
+记录已消耗字符数。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 57 页）：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> na<span class="op">=</span><span class="dv">0</span><span class="op">,</span> nb<span class="op">=</span><span class="dv">0</span><span class="op">,</span> a<span class="op">=</span><span class="dv">0</span><span class="op">,</span> b<span class="op">=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">// %n获取目前为止从stdin 中消耗的字符数</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%n%d%n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>na<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="op">&amp;</span>nb<span class="op">);</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">, na=</span><span class="sc">%d</span><span class="st">, b=</span><span class="sc">%d</span><span class="st">, nb=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> na<span class="op">,</span> b<span class="op">,</span> nb<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 57 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入 1</strong>：<code>200 300</code><br>
+<strong>输出</strong>：<code>a=200, na=3, b=300, nb=7</code>（<code>%n</code>
+在对应位置记录已消耗的字符数：<code>200</code> 消耗 3 个，读完
+<code>300</code> 共消耗 7 个）。</p>
+<p><strong class="wb-pill wb-pill-derive">输入 2</strong>：<code>200 x</code><br>
+<strong>输出</strong>：<code>a=200, na=3, b=0, nb=0</code>（读
+<code>b</code> 时遇 <code>x</code> 终止，<code>b</code> 与
+<code>nb</code> 均未变）。</p>
+</div><div class="wb-excard" id="wb-ex-15" data-ex-idx="15"><h4 id="例题证明-15020820-scanf-返回值练习">例题/证明 15（02:08:20）｜
+scanf 返回值练习<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-15" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 58 页）：<code>scanf</code>
+返回<strong>正确读入的数据个数</strong>。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 58 页）：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">,</span> a<span class="op">=</span><span class="dv">0</span><span class="op">,</span> b<span class="op">=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span> <span class="co">// 返回正确读入的数据个数</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;n=</span><span class="sc">%d</span><span class="st">, a=</span><span class="sc">%d</span><span class="st">, b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> n<span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 58 页</p>
+<p><strong class="wb-pill wb-pill-derive">输入 1</strong>：<code>200 300</code> →
+<code>n=2, a=200, b=300</code>。<br> <strong>输入
+2</strong>：<code>200 x</code> → <code>n=1, a=200, b=0</code>。</p>
+</section><section class="wb-seg"><h3 id="scanf-的普通字符与读取四则运算表达式"><span class="wb-ts">02:03:57—02:11:18</span> ｜ scanf
+的普通字符与读取四则运算表达式</h3>
+<p>格式控制串中的<strong>普通字符</strong>（无 <code>%</code> 前缀）在
+<code>stdin</code> 中逐个匹配；例外：空格或 <code>\n</code>
+作为普通字符可匹配 0～多个空白字符。</p>
+</div><div class="wb-excard" id="wb-ex-16" data-ex-idx="16"><h4 id="例题证明-16020928-scanf-普通字符匹配dd">例题/证明
+16（02:09:28）｜ scanf 普通字符匹配：%d+%d<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-16" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 60 页）：格式串里写普通字符
+<code>+</code>，要求输入中也有 <code>+</code>。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 60 页）：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">+</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">，b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 60 页</p>
+<ul>
+<li>输入 <code>1+2</code> → <code>a=1, b=2</code>（<code>+</code>
+匹配成功）。</li>
+<li>输入 <code>1 + 2</code> → <code>a=1, b=0</code>（<code>+</code>
+前多了空格，匹配 <code>*</code> 失败，<code>scanf</code> 停止）。</li>
+<li>输入 <code>1+</code> <code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, b=2</code>（读 <code>b</code> 时自动跳过前面的空格）。</li>
+</ul>
+</div><div class="wb-excard" id="wb-ex-17" data-ex-idx="17"><h4 id="例题证明-17021008-scanf-空格匹配零到多个空白字符">例题/证明
+17（02:10:08）｜ scanf 空格匹配零到多个空白字符<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-17" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 61
+页）：格式串里的空格可匹配任意数量的空白字符。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 61 页）：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> * </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,&amp;</span>a<span class="op">,&amp;</span>b<span class="op">);</span><span class="co">// 使用&quot;空格&quot; 匹配空白字符</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">，b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 61 页</p>
+<ul>
+<li>输入 <code>1*</code> <code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, b=2</code>。</li>
+<li>输入 <code>1</code> <code>&lt;回车&gt;</code> <code>*</code>
+<code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, b=2</code>（空格匹配了换行符）。</li>
+</ul>
+<p><code>scanf("%d\n*\n%d", &amp;a,&amp;b);</code>
+与上面等价（<code>\n</code> 与空格匹配功能相同）。</p>
+</div><div class="wb-excard" id="wb-ex-18" data-ex-idx="18"><h4 id="例题证明-18021044-scanf-读取四则运算表达式">例题/证明
+18（02:10:44）｜ scanf 读取四则运算表达式<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-18" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 62 页）：读入”整数 运算符
+整数”形式的表达式，运算符两边允许任意多空白。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 62 页）：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="dt">char</span> ch <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,&amp;</span>ch<span class="op">,&amp;</span>b<span class="op">);</span><span class="co">// 包含普通字符&quot;空格&quot;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">，ch=</span><span class="sc">%c</span><span class="st">, b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 62 页</p>
+<ul>
+<li>输入 <code>1+</code> <code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, ch=+, b=2</code>。</li>
+<li>输入 <code>1</code> <code>&lt;回车&gt;</code> <code>+</code>
+<code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, ch=+, b=2</code>（空格匹配换行符）。</li>
+</ul>
+<p><strong class="wb-pill wb-pill-idea">要点</strong>：想读入一个非空白字符（如运算符），在
+<code>%c</code> 左右留空格即可让它跳过前面的空白。</p>
+</section><section class="wb-seg"><h3 id="数据类型转换强制类型转换与自动类型转换"><span class="wb-ts">02:11:30—02:22:04</span> ｜
+数据类型转换：强制类型转换与自动类型转换</h3>
+<p><strong class="wb-pill">强制类型转换</strong>（课件第 63～64
+页）：<code>(类型名)表达式</code>。它是<strong>单目运算符，优先级高于一切双目运算符</strong>。它把”值”转换成指定类型，得到新值——<strong>不能把变量本身变成另一种类型</strong>（变量在内存中的大小是固定的）。</p>
+</div><div class="wb-excard" id="wb-ex-19" data-ex-idx="19"><h4 id="例题证明-19021305-强制类型转换float-x-1.5-的四种输出">例题/证明
+19（02:13:05）｜ 强制类型转换：float x = 1.5 的四种输出<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-19" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 65 页）：观察以下四条
+<code>printf</code> 的输出差异。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 65 页）：</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> x <span class="op">=</span> <span class="fl">1.5</span><span class="op">;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>x <span class="op">+</span> <span class="fl">1.8</span><span class="op">);</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)(</span>x<span class="op">+</span><span class="fl">1.8</span><span class="op">));</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>x<span class="op">);</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> x<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 65 页</p>
+<p><strong class="wb-pill wb-pill-result">讲解与运行结果</strong>：</p>
+<ol type="1">
+<li><code>(int)x + 1.8</code>：<code>(int)x</code> 先把 <code>1.5</code>
+转成整数 <code>1</code>，再 <code>+1.8</code> 得 <code>2.8</code>，按
+<code>%f</code> 输出 <code>2.800000</code>。</li>
+<li><code>(int)(x+1.8)</code>：先算 <code>x+1.8 = 3.3</code>，再转
+<code>int</code> 得 <code>3</code>，按 <code>%f</code> 输出
+<code>3.000000</code>。</li>
+<li><code>(int)x</code> 得 <code>1</code>，按 <code>%d</code> 输出
+<code>1</code>。</li>
+<li><code>printf("%d", x);</code>：<strong>格式符 <code>%d</code>
+与参数类型 <code>float</code> 不一致</strong>——<code>printf</code>
+不会按 <code>%</code> 做类型转换，而是把 <code>x</code> 的 bit
+直接按整数解释，输出一个”怪怪的”无意义值。<strong>只有当 <code>%</code>
+格式与参数类型一致时输出才正确</strong>。</li>
+</ol>
+<p><strong class="wb-pill">自动类型转换</strong>（课件第 66～67
+页）：不同类型混合运算时，系统按规则先转成相同类型再运算；无论哪种转换，<strong>转的都是”值的类型”，不是变量的类型</strong>。规则要点：</p>
+<ul>
+<li>赋值运算：右边类型转成左边类型再赋给左边；右边更长会丢失精度（产生警告）。</li>
+<li>函数调用：实参隐式转成形参类型；返回值隐式转成函数返回类型。</li>
+<li>浮点运算<strong>都以双精度 <code>double</code>
+进行</strong>（<code>float</code> 操作数先转
+<code>double</code>，结果再转回
+<code>float</code>）——保证精度、提高速度。</li>
+<li><code>char</code>、<code>short</code> 参与运算先转成
+<code>int</code>。</li>
+<li><strong class="wb-pill wb-pill-result">有符号整型与无符号整型混合运算：有符号型要转成无符号型，结果也是无符号的。</strong></li>
+</ul>
+</section><section class="wb-seg"><h3 id="有符号与无符号混合运算例题"><span class="wb-ts">02:22:04—02:25:06</span> ｜
+有符号与无符号混合运算例题</h3>
+</div><div class="wb-excard" id="wb-ex-20" data-ex-idx="20"><h4
+id="例题证明-20022204-有符号与无符号混合运算int-a-10-unsigned-b-5">例题/证明
+20（02:22:04）｜ 有符号与无符号混合运算：int a = −10, unsigned b =
+5<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-20" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">题目／任务</strong>（课件第 67 页）：判断
+<code>if ((a+b) &gt; 0)</code> 是否成立并输出什么。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（逐字符取自课件 ch06.txt 第 67 页）：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">10</span><span class="op">;</span> <span class="dt">unsigned</span> b <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">((</span>a<span class="op">+</span>b<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;Hello</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> printf<span class="op">(</span><span class="st">&quot;World</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 67 页</p>
+<p><strong class="wb-pill wb-pill-result">输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 67
+页）：</p>
+<pre><code>Hello</code></pre>
+<p><strong class="wb-pill wb-pill-idea">讲解</strong>：<code>a</code>（<code>int</code>）与
+<code>b</code>（<code>unsigned</code>）运算时，<code>a</code>
+被转换成无符号整数——<code>-10</code> 的 32 个 <code>1</code>
+被解释成一个很大的无符号正整数，加上 <code>5</code>
+后仍是很大的正整数（远 &gt; 0）。所以 <code>(a+b) &gt; 0</code>
+为真，输出 <code>Hello</code>。这与数学上 <code>a+b = -5</code>
+的直觉完全相反。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：<strong>有符号整数与无符号整数混合运算时，有符号的会被转成无符号</strong>，结果也是无符号；<code>a+b</code>
+不等于 0 时一定 &gt;
+0。这也是常考题目。类似地，<code>for(i=1; i&lt;=n; i++)</code> 中若
+<code>n</code> 是无符号整数、而 <code>i</code>
+是有符号整数，比较时也易出错，要特别小心。</p>
+<p>本节课在此结束，老师预告下一讲讲<strong>表达式</strong>（运算符与优先级）。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+</section><script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      // 1. 首屏关键块优先排版：迅速渲染首屏可见的内容
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      // 2. 视口渐进排版：进入视口前后 600px 时异步按需渲染，消除 CPU 冻结
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+<script src="data/core.js"></script>
+<script>
+(function(){
+
+  /* ---------- window.WB_STORAGE: 纯前端零外部依赖 IndexedDB + LocalStorage 双模持久化引擎 ---------- */
+  window.WB_STORAGE = window.WB_STORAGE || (function() {
+    var DB_NAME = 'wb_course_notes_db';
+    var DB_VERSION = 1;
+    var STORE_NAME = 'user_annotations';
+    var db = null;
+    var mem = {};
+
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wb_') === 0) {
+          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+        }
+      }
+    } catch(e) {}
+
+    if (window.indexedDB) {
+      try {
+        var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          var d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) {
+            d.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+        req.onsuccess = function(e) {
+          db = e.target.result;
+          try {
+            var tx = db.transaction(STORE_NAME, 'readonly');
+            var st = tx.objectStore(STORE_NAME);
+            var cursorReq = st.openCursor();
+            cursorReq.onsuccess = function(evt) {
+              var cursor = evt.target.result;
+              if (cursor) {
+                if (cursor.value && cursor.value.key) {
+                  mem[cursor.value.key] = cursor.value.val;
+                }
+                cursor.continue();
+              }
+            };
+          } catch(err) {}
+        };
+      } catch(err) {}
+    }
+
+    return {
+      getItem: function(key) {
+        if (key in mem) return mem[key];
+        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+      },
+      setItem: function(key, val) {
+        var s = String(val);
+        mem[key] = s;
+        try {
+          (window.WB_STORAGE||localStorage).setItem(key, s);
+        } catch(quotaErr) {
+          console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
+        }
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.put({ key: key, val: s, time: Date.now() });
+          } catch(e) {}
+        }
+      },
+      removeItem: function(key) {
+        delete mem[key];
+        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.delete(key);
+          } catch(e) {}
+        }
+      },
+      exportAllNotes: function() {
+        var out = { export_time: new Date().toISOString(), notes: {} };
+        for (var k in mem) {
+          if (k.indexOf('wb_hl_') === 0 || k.indexOf('wb_note_') === 0 || k.indexOf('wb_scroll_') === 0) {
+            try { out.notes[k] = JSON.parse(mem[k]); } catch(e) { out.notes[k] = mem[k]; }
+          }
+        }
+        return JSON.stringify(out, null, 2);
+      }
+    };
+  })();
+
+  var q = document.getElementById('wb-q'), p = document.getElementById('wb-panel');
+  var S = window.SITE || {docs:[],courses:[],lectures:[]};
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function cname(id){var c=(S.courses||[]).filter(function(x){return x.id===id})[0];return c?c.name:id}
+
+  /* ---------- Toast 提示浮条 ---------- */
+  function showToast(msg) {
+    var t = document.getElementById('wb-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('wb-toast-show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
+  }
+
+  /* ---------- 落地平滑闪烁高亮 ---------- */
+  function flashEl(el) {
+    if (!el) return;
+    el.classList.remove('wb-flash-highlight');
+    void el.offsetWidth;
+    el.classList.add('wb-flash-highlight');
+    setTimeout(function() { el.classList.remove('wb-flash-highlight'); }, 2600);
+  }
+
+  /* ---------- 深色模式同步与切换 ---------- */
+  var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
+    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  function applyTheme(t) {
+    if (t === 'dark') {
+      document.documentElement.classList.add('wb-dark');
+      document.body.classList.add('wb-dark');
+      document.documentElement.classList.remove('wb-light');
+      document.body.classList.remove('wb-light');
+    } else {
+      document.documentElement.classList.remove('wb-dark');
+      document.body.classList.remove('wb-dark');
+      document.documentElement.classList.add('wb-light');
+      document.body.classList.add('wb-light');
+    }
+    (window.WB_STORAGE||localStorage).setItem('wb_theme', t);
+    var btn = document.getElementById('wb-theme-btn');
+    if (btn) btn.innerHTML = (t === 'dark' ? '☀️ 浅色' : '🌙 深色');
+  }
+  applyTheme(curTheme);
+  var themeBtn = document.getElementById('wb-theme-btn');
+  if (themeBtn) themeBtn.addEventListener('click', function() {
+    curTheme = (document.body.classList.contains('wb-dark') ? 'light' : 'dark');
+    applyTheme(curTheme);
+    showToast(curTheme === 'dark' ? '已切换为深色模式' : '已切换为浅色模式');
+  });
+
+  /* ---------- 字号缩放调节 ---------- */
+  var curFontScale = parseInt((window.WB_STORAGE||localStorage).getItem('wb_fontscale') || '0', 10);
+  function applyFontScale(scale) {
+    curFontScale = Math.max(-2, Math.min(4, scale));
+    (window.WB_STORAGE||localStorage).setItem('wb_fontscale', curFontScale);
+    var baseSize = 16 + curFontScale * 1.5;
+    document.body.style.fontSize = baseSize + 'px';
+  }
+  if (curFontScale !== 0) applyFontScale(curFontScale);
+  var fDec = document.getElementById('wb-font-dec'), fInc = document.getElementById('wb-font-inc');
+  if (fDec) fDec.addEventListener('click', function(){ applyFontScale(curFontScale - 1); showToast('字号已调小 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+  if (fInc) fInc.addEventListener('click', function(){ applyFontScale(curFontScale + 1); showToast('字号已调大 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+
+  /* ---------- 浮动大纲抽屉 (Floating TOC) 与 ScrollSpy ---------- */
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var tocBackdrop = document.getElementById('wb-toc-backdrop');
+  var tocBtn = document.getElementById('wb-toc-btn');
+  var tocClose = document.getElementById('wb-toc-close');
+  var tocTree = document.getElementById('wb-toc-tree');
+
+  function toggleToc(open) {
+    if (!tocDrawer) return;
+    var isOpen = (open !== undefined) ? open : !tocDrawer.classList.contains('wb-open');
+    tocDrawer.classList.toggle('wb-open', isOpen);
+    if (tocBackdrop) tocBackdrop.classList.toggle('wb-open', isOpen);
+    if (tocBtn) tocBtn.classList.toggle('wb-btn-active', isOpen);
+  }
+  if (tocBtn) tocBtn.addEventListener('click', function(){ toggleToc(); });
+  if (tocClose) tocClose.addEventListener('click', function(){ toggleToc(false); });
+  if (tocBackdrop) tocBackdrop.addEventListener('click', function(){ toggleToc(false); });
+  document.addEventListener('keydown', function(e) {
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 't') {
+      e.preventDefault();
+      toggleToc();
+    }
+    if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
+      toggleToc(false);
+    }
+  });
+
+  var tocItems = [];
+  function buildToc() {
+    if (!tocTree) return;
+    tocTree.innerHTML = '';
+    var hs = document.querySelectorAll('h2, h3, h4');
+    var autoIdx = 1;
+    hs.forEach(function(h) {
+      if (h.closest('#TOC') || h.closest('.wb-bar') || h.closest('.wb-toc-drawer')) return;
+      var tag = h.tagName.toLowerCase();
+      if (tag === 'h4' && !h.closest('.wb-excard')) return;
+      if (!h.id) h.id = 'wb-node-' + (autoIdx++);
+
+      /* 添加锚点反向链接按钮 */
+      if (!h.querySelector('.wb-anchor')) {
+        var a = document.createElement('a');
+        a.className = 'wb-anchor';
+        a.href = '#' + h.id;
+        a.title = '复制本节/例题直达链接';
+        a.textContent = ' 🔗';
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          var directUrl = location.href.split('#')[0] + '#' + h.id;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(directUrl).then(function() {
+              showToast('✓ 已复制直达链接到剪贴板');
+            });
+          }
+          history.pushState(null, '', '#' + h.id);
+          flashEl(h);
+        });
+        h.appendChild(a);
+      }
+
+      var div = document.createElement('div');
+      div.className = 'wb-toc-item wb-toc-' + tag;
+      div.textContent = h.innerText.replace(/[\s🔗#]+$/g, '').trim();
+      div.addEventListener('click', function() {
+        var rect = h.getBoundingClientRect();
+        var offsetTop = window.pageYOffset + rect.top - 64;
+        window.scrollTo({top: offsetTop, behavior: 'smooth'});
+        flashEl(h);
+        history.pushState(null, '', '#' + h.id);
+        if (window.innerWidth < 900) toggleToc(false);
+      });
+      tocTree.appendChild(div);
+      tocItems.push({el: h, nav: div});
+    });
+  }
+  buildToc();
+
+  /* ScrollSpy 高亮当前大纲小节 */
+  var spyTimer = null;
+  window.addEventListener('scroll', function() {
+    if (spyTimer || !tocItems.length) return;
+    spyTimer = setTimeout(function() {
+      spyTimer = null;
+      var scrollY = window.pageYOffset + 90;
+      var current = null;
+      for (var i = 0; i < tocItems.length; i++) {
+        if (tocItems[i].el.offsetTop <= scrollY) current = tocItems[i];
+        else break;
+      }
+      tocItems.forEach(function(it){ it.nav.classList.remove('wb-toc-active'); });
+      if (current) {
+        current.nav.classList.add('wb-toc-active');
+      }
+    }, 120);
+  });
+
+  /* ---------- 例题/证明推导 自测模式 (折叠/遮挡推导与答案) ---------- */
+  var excards = document.querySelectorAll('.wb-excard');
+  excards.forEach(function(card) {
+    var derivePill = card.querySelector('.wb-pill-derive');
+    if (!derivePill) {
+      var ps = card.querySelectorAll('p, li');
+      for (var j = 0; j < ps.length; j++) {
+        var txt = ps[j].textContent || '';
+        if (j > 0 && /推导|证明|步骤|操作|代码|演算/.test(txt)) {
+          derivePill = ps[j];
+          break;
+        }
+      }
+    }
+    if (!derivePill) return;
+
+    var topChild = derivePill;
+    while (topChild && topChild.parentElement !== card) {
+      topChild = topChild.parentElement;
+    }
+    if (!topChild || topChild.tagName.toLowerCase() === 'h4') return;
+
+    var deriveWrap = document.createElement('div');
+    deriveWrap.className = 'wb-derive-box';
+
+    var curr = topChild;
+    var toMove = [];
+    while (curr) {
+      toMove.push(curr);
+      curr = curr.nextElementSibling;
+    }
+
+    var ctrl = document.createElement('div');
+    ctrl.className = 'wb-derive-ctrl';
+    ctrl.innerHTML = '<button type="button" class="wb-derive-btn" title="折叠/展开本题推导"><span class="wb-derive-ico">▼</span> <span class="wb-derive-txt">收起推导</span></button>';
+
+    card.insertBefore(ctrl, topChild);
+    card.insertBefore(deriveWrap, topChild);
+    toMove.forEach(function(el){ deriveWrap.appendChild(el); });
+
+    var foldBtn = ctrl.querySelector('.wb-derive-btn');
+    foldBtn.addEventListener('click', function() {
+      var isHidden = deriveWrap.classList.toggle('wb-hidden');
+      this.querySelector('.wb-derive-ico').textContent = isHidden ? '▶' : '▼';
+      this.querySelector('.wb-derive-txt').textContent = isHidden ? '展开推导与答案' : '收起推导';
+    });
+  });
+
+  var selfTestBtn = document.getElementById('wb-selftest-btn');
+  var isSelfTest = (window.WB_STORAGE||localStorage).getItem('wb_selftest') === 'on';
+  function setSelfTest(on) {
+    isSelfTest = on;
+    (window.WB_STORAGE||localStorage).setItem('wb_selftest', on ? 'on' : 'off');
+    if (selfTestBtn) {
+      selfTestBtn.innerHTML = on ? '📖 退出自测' : '🙈 自测模式';
+      selfTestBtn.classList.toggle('wb-btn-active', on);
+    }
+    document.querySelectorAll('.wb-derive-box').forEach(function(box) {
+      var btn = box.previousElementSibling ? box.previousElementSibling.querySelector('.wb-derive-btn') : null;
+      if (on) {
+        box.classList.add('wb-hidden');
+        if (btn) {
+          btn.querySelector('.wb-derive-ico').textContent = '▶';
+          btn.querySelector('.wb-derive-txt').textContent = '展开推导与答案';
+        }
+      } else {
+        box.classList.remove('wb-hidden');
+        if (btn) {
+          btn.querySelector('.wb-derive-ico').textContent = '▼';
+          btn.querySelector('.wb-derive-txt').textContent = '收起推导';
+        }
+      }
+    });
+  }
+  if (selfTestBtn) {
+    selfTestBtn.addEventListener('click', function() {
+      setSelfTest(!isSelfTest);
+      showToast(isSelfTest ? '自测模式已开启：例题推导已折叠，可自主演算后核对' : '已恢复完整讲义阅读模式');
+    });
+    if (isSelfTest) setSelfTest(true);
+  }
+
+  /* ---------- 代码块一键复制 (Copy Code Button) ---------- */
+  document.querySelectorAll('pre').forEach(function(pre) {
+    if (pre.closest('.wb-code-wrap')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'wb-code-wrap';
+    pre.parentNode.insertBefore(wrap, pre);
+
+    var codeEl = pre.querySelector('code');
+    var isC = (pre.className + ' ' + (codeEl ? codeEl.className : '')).indexOf('c') >= 0;
+
+    var head = document.createElement('div');
+    head.className = 'wb-code-head';
+    head.innerHTML = '<span class="wb-code-lang">' + (isC ? 'C 程序代码' : '代码') + '</span><button class="wb-code-copy-btn" type="button" title="复制代码">📋 复制</button>';
+
+    wrap.appendChild(head);
+    wrap.appendChild(pre);
+
+    head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
+      var code = (codeEl ? codeEl.innerText : pre.innerText);
+      var btn = this;
+      var done = function() {
+        btn.innerHTML = '✓ 已复制';
+        showToast('✓ 代码已成功复制到剪贴板');
+        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+
+  /* ---------- 检索功能与跨节/本节高亮跳转 ---------- */
+  function draw(v){
+    v=(v||'').trim();
+    if(!v){p.style.display='none';p.innerHTML='';return}
+    var low=v.toLowerCase(), r=[];
+    (S.docs||[]).forEach(function(d){
+      var tm = String(d[3]||'').replace(/[—–-]/g,':');
+      if(String(d[4]||'').toLowerCase().indexOf(low)>=0 ||
+         String(d[5]||'').toLowerCase().indexOf(low)>=0 ||
+         tm.toLowerCase().indexOf(low)>=0) r.push(d);
+    });
+    var h='<div style="font-size:11px;color:var(--wb-muted);padding:4px 10px 8px">检索「'+esc(v)+
+      '」· '+r.length+' 条命中 <span style="float:right"><a href="index.html" style="color:var(--wb-accent2)">回首页全站检索 ↗</a></span></div>';
+    if(!r.length) h+='<div style="font-size:12px;color:var(--wb-muted);padding:10px">无命中，试试更短的关键词，或回首页用全站检索（含摘要倒排）。</div>';
+    r.slice(0,14).forEach(function(d){
+      var kind={sec:'小节',ex:'例题',ch:'章',lec:'节',img:'图版',pre:'速览'}[d[0]]||d[0];
+      var targetUrl = 'lecture-'+esc(d[2])+'.html';
+      if(v) targetUrl += '?q=' + encodeURIComponent(v);
+      if(d[6] && d[6].indexOf('#')>=0) targetUrl += '#' + d[6].split('#')[1];
+      h+='<a class="wb-res" href="'+targetUrl+'">'+esc(d[4])+
+         '<small>'+kind+' ｜ '+esc(cname(d[1]))+' '+esc(d[3]||'')+'</small></a>';
+    });
+    p.innerHTML=h; p.style.display='block';
+  }
+  if (q) {
+    q.addEventListener('input',function(e){draw(e.target.value)});
+    q.addEventListener('focus',function(e){if(e.target.value.trim())draw(e.target.value)});
+    document.addEventListener('keydown',function(e){
+      if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();q.focus()}
+      if(e.key==='Escape'){q.value='';p.style.display='none'}
+    });
+    document.addEventListener('click',function(e){
+      if(e.target.closest&&(e.target.closest('.wb-panel')||e.target.closest('.wb-in')))return;
+      p.style.display='none';
+    });
+  }
+
+  
+  /* ---------- 1. 断点续读 (Resume Reading) ---------- */
+  var LID = '' + (location.pathname.match(/lecture-([^.]+)\.html/)||['','default'])[1];
+  var progressBar = document.getElementById('wb-read-progress');
+  var resumeToast = document.getElementById('wb-resume-toast');
+  var resumeJump = document.getElementById('wb-resume-jump');
+  var resumeClose = document.getElementById('wb-resume-close');
+  var resumePct = document.getElementById('wb-resume-pct');
+
+  var scrollTimer = null;
+  window.addEventListener('scroll', function() {
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    var current = window.pageYOffset;
+    var pct = total > 0 ? Math.min(100, Math.max(0, Math.round((current / total) * 100))) : 0;
+    if (progressBar) progressBar.style.width = pct + '%';
+
+    if (scrollTimer) return;
+    scrollTimer = setTimeout(function() {
+      scrollTimer = null;
+      if (current > 150) {
+        (window.WB_STORAGE||localStorage).setItem('wb_scroll_' + LID, String(Math.round(current)));
+        try {
+          var titleEl = document.querySelector('h1') || document.querySelector('.wb-crumb b');
+          var courseEl = document.querySelector('.wb-crumb a') || document.querySelector('.wb-bar a:nth-child(2)');
+          var titleTxt = titleEl ? titleEl.innerText.replace(/讲义全文.*/,'').trim() : LID;
+          var courseTxt = courseEl ? courseEl.innerText.replace('← ','').trim() : '';
+          (window.WB_STORAGE||localStorage).setItem('wb_last_read', JSON.stringify({
+            lid: LID,
+            title: titleTxt,
+            courseName: courseTxt,
+            scrollY: Math.round(current),
+            progress: pct,
+            time: Date.now()
+          }));
+        } catch(e){}
+      }
+    }, 400);
+  });
+
+  // 恢复阅读位置
+  var savedScroll = parseInt((window.WB_STORAGE||localStorage).getItem('wb_scroll_' + LID) || '0', 10);
+  var isResumeParam = location.search.indexOf('resume=1') >= 0;
+  if (isResumeParam && savedScroll > 150) {
+    setTimeout(function() {
+      window.scrollTo({top: savedScroll, behavior: 'smooth'});
+      showToast('✓ 已回到上次阅读位置');
+    }, 350);
+  } else if (savedScroll > 250 && !location.hash && location.search.indexOf('q=') < 0) {
+    var totalH = document.documentElement.scrollHeight - window.innerHeight;
+    var sPct = totalH > 0 ? Math.round((savedScroll / totalH) * 100) : 0;
+    if (resumePct) resumePct.textContent = sPct;
+    if (resumeToast) {
+      resumeToast.style.display = 'flex';
+      var hideResumeTimer = setTimeout(function(){ resumeToast.style.display = 'none'; }, 7000);
+      if (resumeClose) resumeClose.onclick = function(){ clearTimeout(hideResumeTimer); resumeToast.style.display = 'none'; };
+      if (resumeJump) resumeJump.onclick = function(){
+        clearTimeout(hideResumeTimer);
+        resumeToast.style.display = 'none';
+        window.scrollTo({top: savedScroll, behavior: 'smooth'});
+        showToast('✓ 已跳转到上次阅读位置');
+      };
+    }
+  }
+
+  /* ---------- 2. 多色荧光笔与划线批注系统 (Highlighter & Notes) ---------- */
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  // 获取本节所有存储的批注
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + LID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  // 划词选区监听
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-bar') || e.target.closest('.wb-toc-drawer'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    // 忽略导航栏和目录内的选区
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('.wb-bar') || el.closest('#TOC') || el.closest('.wb-toc-drawer') || el.closest('.wb-math-bar'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    if (window.innerWidth <= 768) {
+      if (hlPopover) {
+        hlPopover.classList.add('wb-hl-mobile');
+        hlPopover.style.top = 'auto';
+        hlPopover.style.bottom = '64px';
+        hlPopover.style.left = '50%';
+        hlPopover.style.transform = 'translateX(-50%)';
+        hlPopover.style.display = 'flex';
+      }
+    } else {
+      var rect = range.getBoundingClientRect();
+      var top = window.pageYOffset + rect.top - 46;
+      var left = Math.max(10, Math.min(window.innerWidth - 220, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+      if (hlPopover) {
+        hlPopover.classList.remove('wb-hl-mobile');
+        hlPopover.style.top = top + 'px';
+        hlPopover.style.bottom = 'auto';
+        hlPopover.style.left = left + 'px';
+        hlPopover.style.transform = 'none';
+        hlPopover.style.display = 'flex';
+      }
+    }
+  }
+
+  var selDebounceTimer = null;
+  document.addEventListener('selectionchange', function() {
+    clearTimeout(selDebounceTimer);
+    selDebounceTimer = setTimeout(function() {
+      var sel = window.getSelection();
+      if (sel && !sel.isCollapsed && sel.toString().trim()) {
+        handleTextSelect();
+      } else if (hlPopover && !currentActiveHlId) {
+        hlPopover.style.display = 'none';
+      }
+    }, 180);
+  });
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e) {
+    setTimeout(function() { handleTextSelect(e); }, 80);
+  });
+
+  // 划定高亮并包裹 DOM
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  // 点击已有高亮：弹出操作选项
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 220, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  // 创建或更新高亮
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      // 切换已有高亮颜色
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+        showToast('✓ 已更新标注颜色');
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      color: color,
+      text: text,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    if (window.getSelection) window.getSelection().removeAllRanges();
+    if (hlPopover) hlPopover.style.display = 'none';
+    currentSelectionRange = null;
+    showToast(color === 'underline' ? '✓ 已添加下划线' : '✓ 已添加荧光高亮');
+  }
+
+  // 绑定颜色小圆点及下划线点击
+  document.querySelectorAll('.wb-hl-color-dot, .wb-hl-btn[data-color]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var color = this.getAttribute('data-color');
+      applyColorHighlight(color);
+    });
+  });
+
+  // 删除当前选中的高亮
+  function removeHighlightById(hlId) {
+    if (!hlId) return;
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+    if (hlPopover) hlPopover.style.display = 'none';
+    if (noteModal) noteModal.classList.remove('wb-open');
+    currentActiveHlId = null;
+    showToast('✓ 已移除该处标注');
+  }
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      removeHighlightById(currentActiveHlId);
+    });
+  }
+  if (noteDelBtn) {
+    noteDelBtn.addEventListener('click', function() {
+      removeHighlightById(currentActiveHlId);
+    });
+  }
+
+  // 添加/编辑便签模态浮层
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quoteText = '';
+      var noteVal = '';
+
+      if (currentActiveHlId) {
+        var list = getStoredHighlights();
+        var it = list.find(function(x){ return x.id === currentActiveHlId; });
+        if (it) {
+          quoteText = it.text;
+          noteVal = it.note || '';
+        }
+      } else if (currentSelectionRange) {
+        quoteText = currentSelectionRange.toString().trim();
+        // 先建立默认黄色高亮
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', '');
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          color: 'yellow',
+          text: quoteText,
+          note: '',
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        currentActiveHlId = hlId;
+      }
+
+      if (noteQuote) noteQuote.textContent = '“' + quoteText + '”';
+      if (noteInput) { noteInput.value = noteVal; setTimeout(function(){ noteInput.focus(); }, 150); }
+      if (hlPopover) hlPopover.style.display = 'none';
+      if (noteModal) noteModal.classList.add('wb-open');
+    });
+  }
+
+  if (noteClose) {
+    noteClose.addEventListener('click', function() {
+      noteModal.classList.remove('wb-open');
+    });
+  }
+  if (noteSaveBtn) {
+    noteSaveBtn.addEventListener('click', function() {
+      if (!currentActiveHlId) return;
+      var newNote = (noteInput ? noteInput.value : '').trim();
+      var list = getStoredHighlights();
+      var it = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (it) {
+        it.note = newNote;
+        saveStoredHighlights(list);
+
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          if (newNote) {
+            m.classList.add('wb-user-hl-has-note');
+            m.setAttribute('data-note', newNote);
+          } else {
+            m.classList.remove('wb-user-hl-has-note');
+            m.removeAttribute('data-note');
+          }
+        });
+        showToast(newNote ? '✓ 已保存批注便签' : '✓ 已清空便签');
+      }
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+    });
+  }
+
+  // 点击空白关闭浮层
+  document.addEventListener('click', function(e) {
+    if (hlPopover && !e.target.closest('#wb-hl-popover') && !e.target.closest('.wb-user-hl')) {
+      hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    }
+    if (noteModal && e.target === noteModal) {
+      noteModal.classList.remove('wb-open');
+    }
+  });
+
+  // 页面初次加载时恢复所有历史高亮
+  function restoreSavedHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+
+    list.forEach(function(item) {
+      var low = item.text.toLowerCase();
+      var walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode: function(node) {
+            var el = node.parentElement;
+            if (!el || el.closest('.wb-bar') || el.closest('#TOC') || el.closest('.wb-toc-drawer')) return NodeFilter.FILTER_REJECT;
+            if (node.nodeValue.toLowerCase().indexOf(low) >= 0) return NodeFilter.FILTER_ACCEPT;
+            return NodeFilter.FILTER_SKIP;
+          }
+        }
+      );
+
+      var matchedNode = walker.nextNode();
+      if (matchedNode) {
+        var idx = matchedNode.nodeValue.toLowerCase().indexOf(low);
+        var range = document.createRange();
+        range.setStart(matchedNode, idx);
+        range.setEnd(matchedNode, idx + item.text.length);
+        wrapRangeWithHl(range, item.id, item.color, item.note);
+      }
+    });
+    updateNotesDrawer();
+  }
+  setTimeout(restoreSavedHighlights, 100);
+
+  // 大纲抽屉 Tab 切换 (目录大纲 vs 本节批注)
+  var tabToc = document.getElementById('wb-tab-toc');
+  var tabNotes = document.getElementById('wb-tab-notes');
+  var tocBody = document.getElementById('wb-toc-tree');
+  var notesBody = document.getElementById('wb-notes-list');
+  var notesTools = document.getElementById('wb-notes-tools');
+  var notesNum = document.getElementById('wb-notes-num');
+
+  function switchDrawerTab(isNotes) {
+    if (tabToc) tabToc.classList.toggle('on', !isNotes);
+    if (tabNotes) tabNotes.classList.toggle('on', isNotes);
+    if (tocBody) tocBody.style.display = isNotes ? 'none' : 'block';
+    if (notesBody) notesBody.style.display = isNotes ? 'block' : 'none';
+    if (notesTools) notesTools.style.display = isNotes ? 'flex' : 'none';
+    if (isNotes) renderNotesList();
+  }
+  if (tabToc) tabToc.onclick = function(){ switchDrawerTab(false); };
+  if (tabNotes) tabNotes.onclick = function(){ switchDrawerTab(true); };
+
+  var notesBtn = document.getElementById('wb-notes-btn');
+  if (notesBtn) {
+    notesBtn.onclick = function() {
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('💡 划选讲义正文文字即可弹出 4 色荧光笔与便签工具');
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    if (notesNum) notesNum.textContent = String(list.length);
+    var barCount = document.getElementById('wb-bar-notes-count');
+    if (barCount) barCount.textContent = String(list.length);
+    if (notesBody && notesBody.style.display !== 'none') renderNotesList();
+  }
+
+  function renderNotesList() {
+    if (!notesBody) return;
+    var list = getStoredHighlights();
+    if (!list.length) {
+      notesBody.innerHTML = '<div style="font-size:12.5px;color:var(--wb-muted);padding:30px 10px;text-align:center">本节暂无划线与批注。<br><small style="margin-top:6px;display:block">用鼠标划选正文文字，即可呼出 4 色荧光笔与便签工具！</small></div>';
+      return;
+    }
+
+    var colorNames = {yellow:'🟡 核心', green:'🟢 概念', red:'🔴 易错', purple:'🟣 技巧', underline:'<u>U</u> 划线'};
+    var h = '';
+    list.forEach(function(item) {
+      var dateStr = new Date(item.time || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      h += '<div class="wb-note-card" data-aid="' + item.id + '">' +
+           '<div class="wb-nc-quote" style="border-left-color:' + (item.color==='green'?'#22c55e':(item.color==='red'?'#ef4444':(item.color==='purple'?'#a855f7':'#eab308'))) + '">“' + esc(item.text.slice(0, 65)) + (item.text.length>65?'…':'') + '”</div>' +
+           (item.note ? '<div class="wb-nc-text">📝 ' + esc(item.note) + '</div>' : '') +
+           '<div class="wb-nc-meta"><span>' + (colorNames[item.color]||'高亮') + '</span><span>' + dateStr + ' ｜ 直达 ➔</span></div>' +
+           '</div>';
+    });
+    notesBody.innerHTML = h;
+
+    notesBody.querySelectorAll('.wb-note-card').forEach(function(card) {
+      card.onclick = function() {
+        var aid = this.getAttribute('data-aid');
+        var targetEl = document.querySelector('[data-hl-id="' + aid + '"]');
+        if (targetEl) {
+          var rect = targetEl.getBoundingClientRect();
+          var offsetTop = window.pageYOffset + rect.top - 70;
+          window.scrollTo({top: offsetTop, behavior: 'smooth'});
+          flashEl(targetEl);
+          if (window.innerWidth < 900) toggleToc(false);
+        } else {
+          showToast('该标注所在段落暂时无法滚动定位');
+        }
+      };
+    });
+  }
+
+  // 清空本节批注与导出备份
+  var btnClearNotes = document.getElementById('wb-btn-clear-notes');
+  var btnExportNotes = document.getElementById('wb-btn-export-notes');
+  if (btnClearNotes) {
+    btnClearNotes.onclick = function() {
+      if (!confirm('确定要清空本节所有划线高亮与便签吗？此操作无法撤销。')) return;
+      (window.WB_STORAGE||localStorage).removeItem('wb_hl_' + LID);
+      document.querySelectorAll('.wb-user-hl').forEach(function(m) {
+        var parent = m.parentNode;
+        while (m.firstChild) parent.insertBefore(m.firstChild, m);
+        parent.removeChild(m);
+      });
+      updateNotesDrawer();
+      showToast('✓ 本节批注已全部清空');
+    };
+  }
+  if (btnExportNotes) {
+    btnExportNotes.onclick = function() {
+      var list = getStoredHighlights();
+      if (!list.length) { showToast('当前暂无批注可导出'); return; }
+      var jsonStr = JSON.stringify({lecture: LID, exportedAt: new Date().toISOString(), notes: list}, null, 2);
+      var blob = new Blob([jsonStr], {type: 'application/json'});
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '讲义批注_' + LID + '.json';
+      a.click();
+      showToast('✓ 批注已成功导出为 JSON 备份');
+    };
+  }
+
+  // 快捷键支持：按 H 键切换全站高亮可见性 (沉浸裸读 vs 标注复习)
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key.toLowerCase() === 'h' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      var isHidden = document.body.classList.toggle('wb-hl-hidden');
+      showToast(isHidden ? '👁️ 已隐藏划线标注（裸读模式）' : '🎨 已显示划线标注');
+    }
+  });
+
+  
+  /* ---------- 3. 例题穿梭步进导航 (J/K 快捷键 & 上下题) ---------- */
+  function navigateExample(direction) {
+    var cards = Array.from(document.querySelectorAll('.wb-excard'));
+    if (!cards.length) return;
+
+    var scrollY = window.pageYOffset + 120;
+    var curIdx = -1;
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].offsetTop <= scrollY) curIdx = i;
+      else break;
+    }
+
+    var targetIdx = curIdx + direction;
+    if (targetIdx < 0) targetIdx = 0;
+    if (targetIdx >= cards.length) targetIdx = cards.length - 1;
+
+    var targetCard = cards[targetIdx];
+    if (targetCard) {
+      var offsetTop = window.pageYOffset + targetCard.getBoundingClientRect().top - 70;
+      window.scrollTo({top: Math.max(0, offsetTop), behavior: 'smooth'});
+      flashEl(targetCard);
+      var exTitle = targetCard.querySelector('h4') ? targetCard.querySelector('h4').innerText.replace(/[▲▼⚪🟡🟢].*/, '').trim() : '';
+      showToast('第 ' + (targetIdx + 1) + ' / ' + cards.length + ' 题 ｜ ' + exTitle);
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'j' || e.key === 'J') {
+      navigateExample(1);
+    } else if (e.key === 'k' || e.key === 'K') {
+      navigateExample(-1);
+    }
+  });
+
+  document.querySelectorAll('.wb-step-prev').forEach(function(btn) {
+    btn.onclick = function(e){ e.stopPropagation(); navigateExample(-1); };
+  });
+  document.querySelectorAll('.wb-step-next').forEach(function(btn) {
+    btn.onclick = function(e){ e.stopPropagation(); navigateExample(1); };
+  });
+
+  /* ---------- 4. 例题攻克状态打卡 (Mastery Tracker) ---------- */
+  function getMasteryData() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_mastery_' + LID) || '{}');
+    } catch(e) { return {}; }
+  }
+  function saveMasteryData(data) {
+    (window.WB_STORAGE||localStorage).setItem('wb_mastery_' + LID, JSON.stringify(data));
+    updateMasteryUI();
+  }
+
+  var MASTERY_STATUS = [
+    { text: '⚪ 待复习', cls: 'wb-st-todo' },
+    { text: '🟡 存疑',   cls: 'wb-st-doubt' },
+    { text: '🟢 已攻克', cls: 'wb-st-done' }
+  ];
+
+  function updateMasteryUI() {
+    var data = getMasteryData();
+    var cards = document.querySelectorAll('.wb-excard');
+    var doneCount = 0;
+
+    cards.forEach(function(card) {
+      var exId = card.id;
+      var st = (data[exId] !== undefined) ? data[exId] : 0;
+      if (st === 2) doneCount++;
+
+      var btn = card.querySelector('.wb-mastery-btn');
+      if (btn) {
+        var cfg = MASTERY_STATUS[st] || MASTERY_STATUS[0];
+        btn.innerHTML = cfg.text;
+        btn.className = 'wb-mastery-btn ' + cfg.cls;
+      }
+    });
+
+    var total = cards.length;
+    var pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+    var ratioEl = document.getElementById('wb-mastery-ratio');
+    var fillEl = document.getElementById('wb-mastery-fill');
+    if (ratioEl) ratioEl.textContent = doneCount + ' / ' + total + ' (' + pct + '%)';
+    if (fillEl) fillEl.style.width = pct + '%';
+  }
+
+  document.querySelectorAll('.wb-mastery-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var exId = this.getAttribute('data-ex-id');
+      if (!exId) return;
+      var data = getMasteryData();
+      var curSt = (data[exId] !== undefined) ? data[exId] : 0;
+      var nextSt = (curSt + 1) % MASTERY_STATUS.length;
+      data[exId] = nextSt;
+      saveMasteryData(data);
+      showToast('✓ 已设为「' + MASTERY_STATUS[nextSt].text.trim() + '」');
+    });
+  });
+  updateMasteryUI();
+
+  /* ---------- 5. 移动端底部控制台事件绑定 ---------- */
+  var dockToc = document.getElementById('wb-dock-toc');
+  var dockSelfTest = document.getElementById('wb-dock-selftest');
+  var dockPrev = document.getElementById('wb-dock-prev');
+  var dockNext = document.getElementById('wb-dock-next');
+  var dockTheme = document.getElementById('wb-dock-theme');
+
+  if (dockToc) dockToc.onclick = function(){ toggleToc(); };
+  if (dockSelfTest && selfTestBtn) dockSelfTest.onclick = function(){ selfTestBtn.click(); };
+  if (dockPrev) dockPrev.onclick = function(){ navigateExample(-1); };
+  if (dockNext) dockNext.onclick = function(){ navigateExample(1); };
+  if (dockTheme && themeBtn) dockTheme.onclick = function(){ themeBtn.click(); };
+
+  /* ---------- 锚点落地平滑高亮 ---------- */
+  function checkHashTarget() {
+    if (location.hash) {
+      try {
+        var sel = decodeURIComponent(location.hash);
+        var target = document.querySelector(sel);
+        if (target) {
+          setTimeout(function() {
+            var rect = target.getBoundingClientRect();
+            var offsetTop = window.pageYOffset + rect.top - 64;
+            window.scrollTo({top: offsetTop, behavior: 'smooth'});
+            flashEl(target);
+          }, 200);
+        }
+      } catch(e){}
+    }
+  }
+
+  /* ---------- 搜索弹层键盘导航 (↑ / ↓ / Enter) ---------- */
+  var activeWbResIdx = -1;
+  function updateActiveWbRes() {
+    var items = Array.from(p.querySelectorAll(".wb-res"));
+    items.forEach(function(it, i){
+      it.classList.toggle("active", i === activeWbResIdx);
+    });
+    if (items[activeWbResIdx]) {
+      items[activeWbResIdx].scrollIntoView({block: "nearest"});
+    }
+  }
+  if (q) {
+    q.addEventListener("keydown", function(e) {
+      if (!p || p.style.display === "none") return;
+      var items = Array.from(p.querySelectorAll(".wb-res"));
+      if (!items.length) return;
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        activeWbResIdx = (activeWbResIdx + 1) % items.length;
+        updateActiveWbRes();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        activeWbResIdx = (activeWbResIdx - 1 + items.length) % items.length;
+        updateActiveWbRes();
+      } else if (e.key === "Enter") {
+        if (activeWbResIdx >= 0 && items[activeWbResIdx]) {
+          e.preventDefault();
+          items[activeWbResIdx].click();
+        }
+      }
+    });
+  }
+
+  /* ---------- 公式交互：一键复制 LaTeX 源码 & 放大镜 ---------- */
+  var mathModal = document.getElementById("wb-math-modal");
+  var mathModalBody = document.getElementById("wb-math-modal-body");
+  var mathModalClose = document.getElementById("wb-math-modal-close");
+  var mathModalCopy = document.getElementById("wb-math-modal-copy");
+  var curModalTex = "";
+
+  function copyTexString(tex) {
+    if (!tex) {
+      showToast("未检测到对应 LaTeX 源码");
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(tex).then(function() {
+        showToast("✓ 已复制 LaTeX 源码到剪贴板");
+      });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = tex;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("✓ 已复制 LaTeX 源码到剪贴板");
+    }
+  }
+
+  document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {
+    var btnCopy = wrap.querySelector(".wb-math-copy");
+    var btnZoom = wrap.querySelector(".wb-math-zoom");
+    var tex = wrap.getAttribute("data-tex") || "";
+
+    if (btnCopy) {
+      btnCopy.addEventListener("click", function(e) {
+        e.stopPropagation();
+        copyTexString(tex);
+      });
+    }
+
+    function openModal() {
+      if (!mathModal || !mathModalBody) return;
+      var scrollBox = wrap.querySelector(".wb-math-scroll");
+      if (!scrollBox) return;
+      mathModalBody.innerHTML = scrollBox.innerHTML;
+      curModalTex = tex;
+      mathModal.classList.add("wb-open");
+    }
+
+    if (btnZoom) {
+      btnZoom.addEventListener("click", function(e) {
+        e.stopPropagation();
+        openModal();
+      });
+    }
+    wrap.addEventListener("dblclick", function(e) {
+      if (e.target.tagName && e.target.tagName.toLowerCase() === "button") return;
+      openModal();
+    });
+  });
+
+  if (mathModalClose) {
+    mathModalClose.addEventListener("click", function() {
+      mathModal.classList.remove("wb-open");
+    });
+  }
+  if (mathModal) {
+    mathModal.addEventListener("click", function(e) {
+      if (e.target === mathModal) mathModal.classList.remove("wb-open");
+    });
+  }
+  if (mathModalCopy) {
+    mathModalCopy.addEventListener("click", function() {
+      copyTexString(curModalTex);
+    });
+  }
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && mathModal && mathModal.classList.contains("wb-open")) {
+      mathModal.classList.remove("wb-open");
+    }
+  });
+
+  /* ---------- 检索参数落地：正文自动精准聚焦与关键词高亮 (?q=...) ---------- */
+  function checkSearchParamHighlight() {
+    var params = new URLSearchParams(location.search);
+    var kw = (params.get("q") || "").trim();
+    if (!kw || kw.length < 1) return;
+
+    var low = kw.toLowerCase();
+    var walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(node) {
+          var el = node.parentElement;
+          if (!el) return NodeFilter.FILTER_REJECT;
+          var tag = el.tagName.toLowerCase();
+          if (tag === "script" || tag === "style" || tag === "textarea" || tag === "mark") {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (el.closest(".wb-bar") || el.closest("#TOC") || el.closest(".wb-toc-drawer") || el.closest(".wb-math-actions")) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (node.nodeValue.toLowerCase().indexOf(low) >= 0) {
+            return NodeFilter.FILTER_ACCEPT;
+          }
+          return NodeFilter.FILTER_SKIP;
+        }
+      }
+    );
+
+    var firstMatch = null;
+    var toProcess = [];
+    var cur;
+    while ((cur = walker.nextNode()) && toProcess.length < 35) {
+      toProcess.push(cur);
+    }
+
+    toProcess.forEach(function(textNode) {
+      var val = textNode.nodeValue;
+      var lval = val.toLowerCase();
+      var idx = lval.indexOf(low);
+      if (idx < 0) return;
+
+      var span = document.createElement("span");
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) {
+          span.appendChild(document.createTextNode(val.substring(last, idx)));
+        }
+        var mark = document.createElement("mark");
+        mark.className = "wb-hit-mark";
+        mark.textContent = val.substr(idx, kw.length);
+        span.appendChild(mark);
+        if (!firstMatch) firstMatch = mark;
+        last = idx + kw.length;
+        idx = lval.indexOf(low, last);
+      }
+      if (last < val.length) {
+        span.appendChild(document.createTextNode(val.substring(last)));
+      }
+      textNode.parentNode.replaceChild(span, textNode);
+    });
+
+    if (firstMatch) {
+      setTimeout(function() {
+        var rect = firstMatch.getBoundingClientRect();
+        var offsetTop = window.pageYOffset + rect.top - (window.innerHeight * 0.35);
+        window.scrollTo({top: Math.max(0, offsetTop), behavior: "smooth"});
+        flashEl(firstMatch.closest("p, li, h3, h4, .wb-excard") || firstMatch);
+        showToast("✓ 已自动定位并高亮「" + kw + "」");
+      }, 400);
+    }
+  }
+  checkSearchParamHighlight();
+
+  checkHashTarget();
+  window.addEventListener('hashchange', checkHashTarget);
+})();
+</script>
+</body>
+</html>
+</div>

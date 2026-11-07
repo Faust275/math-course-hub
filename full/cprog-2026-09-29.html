@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-09-29 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-09-29 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-09-29-课堂详解"
+id="toc-c-程序设计2026-09-29-课堂详解">《C 程序设计》2026-09-29
+课堂详解</a>
+<ul>
+<li><a href="#一循环结构导入while-语句与-forwhile-互转000432001209"
+id="toc-一循环结构导入while-语句与-forwhile-互转000432001209">一、循环结构导入：while
+语句与 for/while 互转（00:04:32—00:12:09）</a>
+<ul>
+<li><a href="#进入第四章回顾固定次数循环引入-while-循环"
+id="toc-进入第四章回顾固定次数循环引入-while-循环">00:04:32—00:06:28 ｜
+进入第四章、回顾固定次数循环、引入 while 循环</a></li>
+<li><a href="#while-语句的语法与执行流程"
+id="toc-while-语句的语法与执行流程">00:06:28—00:07:39 ｜ while
+语句的语法与执行流程</a></li>
+<li><a href="#while-与-for-的流程对比"
+id="toc-while-与-for-的流程对比">00:07:39—00:09:09 ｜ while 与 for
+的流程对比</a></li>
+<li><a href="#for-改写成-whilewhile-改写成-for"
+id="toc-for-改写成-whilewhile-改写成-for">00:09:09—00:12:09 ｜ for
+改写成 while、while 改写成 for</a></li>
+</ul></li>
+<li><a
+href="#二例-4-1-用格雷戈里公式求-π误差控制的-while-循环001222002149"
+id="toc-二例-4-1-用格雷戈里公式求-π误差控制的-while-循环001222002149">二、例
+4-1 用格雷戈里公式求 π（误差控制的 while 循环）（00:12:22—00:21:49）</a>
+<ul>
+<li><a href="#问题分析与循环体设计"
+id="toc-问题分析与循环体设计">00:12:22—00:15:00 ｜
+问题分析与循环体设计</a></li>
+<li><a href="#读取误差阈值与累加逻辑"
+id="toc-读取误差阈值与累加逻辑">00:15:00—00:17:01 ｜
+读取误差阈值与累加逻辑</a></li>
+<li><a href="#最后一项必须加入求和的易错点"
+id="toc-最后一项必须加入求和的易错点">00:17:01—00:20:13 ｜
+“最后一项”必须加入求和的易错点</a></li>
+<li><a href="#用-break-简化程序的预告"
+id="toc-用-break-简化程序的预告">00:20:13—00:21:49 ｜ 用 break
+简化程序的预告</a></li>
+</ul></li>
+<li><a
+href="#三例-4-2-学生成绩统计负数结束标志与-scanf-返回值002239003204"
+id="toc-三例-4-2-学生成绩统计负数结束标志与-scanf-返回值002239003204">三、例
+4-2 学生成绩统计：负数结束标志与 scanf 返回值（00:22:39—00:32:04）</a>
+<ul>
+<li><a href="#题目与基本-while-写法"
+id="toc-题目与基本-while-写法">00:22:39—00:25:00 ｜ 题目与基本 while
+写法</a></li>
+<li><a href="#利用-scanf-返回值改写循环条件"
+id="toc-利用-scanf-返回值改写循环条件">00:25:00—00:28:01 ｜ 利用 scanf
+返回值改写循环条件</a></li>
+<li><a href="#用-getchar-读取字符直到换行"
+id="toc-用-getchar-读取字符直到换行">00:28:01—00:30:14 ｜ 用 getchar
+读取字符直到换行</a></li>
+<li><a href="#表达式求值顺序与赋值括号"
+id="toc-表达式求值顺序与赋值括号">00:30:14—00:32:04 ｜
+表达式求值顺序与赋值括号</a></li>
+</ul></li>
+<li><a href="#四do-while-语句与例-4-3例-4-4003204004933"
+id="toc-四do-while-语句与例-4-3例-4-4003204004933">四、do-while 语句与例
+4-3、例 4-4（00:32:04—00:49:33）</a>
+<ul>
+<li><a href="#do-while-语法与三种循环"
+id="toc-do-while-语法与三种循环">00:32:04—00:33:26 ｜ do-while
+语法与三种循环</a></li>
+<li><a href="#例-4-3-计算整数的位数"
+id="toc-例-4-3-计算整数的位数">00:33:26—00:40:08 ｜ 例 4-3
+计算整数的位数</a></li>
+<li><a href="#例-4-4-逆序输出整数含负数处理"
+id="toc-例-4-4-逆序输出整数含负数处理">00:43:04—00:49:33 ｜ 例 4-4
+逆序输出整数（含负数处理）</a></li>
+</ul></li>
+<li><a href="#五break-语句与例-4-1-的-break-改写004937010032"
+id="toc-五break-语句与例-4-1-的-break-改写004937010032">五、break
+语句与例 4-1 的 break 改写（00:49:37—01:00:32）</a>
+<ul>
+<li><a href="#break-语句的作用与流程"
+id="toc-break-语句的作用与流程">00:49:37—00:52:23 ｜ break
+语句的作用与流程</a></li>
+<li><a href="#用-break-改写例-4-1"
+id="toc-用-break-改写例-4-1">00:52:53—00:57:07 ｜ 用 break 改写例
+4-1</a></li>
+<li><a href="#逻辑检查与两种写法对比"
+id="toc-逻辑检查与两种写法对比">00:57:07—01:00:32 ｜
+逻辑检查与两种写法对比</a></li>
+</ul></li>
+<li><a href="#六例-4-5-素数判定与循环出口判定010050012526"
+id="toc-六例-4-5-素数判定与循环出口判定010050012526">六、例 4-5
+素数判定与循环出口判定（01:00:50—01:25:26）</a>
+<ul>
+<li><a href="#课间点名break-小结准备进入素数判定"
+id="toc-课间点名break-小结准备进入素数判定">01:00:50—01:09:05 ｜
+课间点名、break 小结、准备进入素数判定</a></li>
+<li><a href="#素数判定真因子范围sqrt-与类型转换"
+id="toc-素数判定真因子范围sqrt-与类型转换">01:09:05—01:14:45 ｜
+素数判定：真因子范围、sqrt 与类型转换</a></li>
+<li><a href="#用-break-提前退出循环"
+id="toc-用-break-提前退出循环">01:14:45—01:18:46 ｜ 用 break
+提前退出循环</a></li>
+<li><a href="#循环结束后的出口判定"
+id="toc-循环结束后的出口判定">01:18:46—01:22:04 ｜
+循环结束后的出口判定</a></li>
+<li><a href="#保护判断依据变量不要反向判断"
+id="toc-保护判断依据变量不要反向判断">01:22:04—01:25:26 ｜
+保护判断依据变量，不要反向判断</a></li>
+</ul></li>
+<li><a href="#七例-4-6-猜数游戏随机数与循环012541013809"
+id="toc-七例-4-6-猜数游戏随机数与循环012541013809">七、例 4-6
+猜数游戏：随机数与循环（01:25:41—01:38:09）</a>
+<ul>
+<li><a href="#随机数产生srand-rand-time"
+id="toc-随机数产生srand-rand-time">01:25:41—01:30:15 ｜
+随机数产生（srand / rand / time）</a></li>
+<li><a href="#用-forwhile-控制-7-次猜测与-break"
+id="toc-用-forwhile-控制-7-次猜测与-break">01:30:15—01:36:03 ｜ 用
+for/while 控制 7 次猜测与 break</a></li>
+<li><a href="#循环出口判定与-count-自增位置"
+id="toc-循环出口判定与-count-自增位置">01:36:03—01:38:09 ｜
+循环出口判定与 count 自增位置</a></li>
+</ul></li>
+<li><a href="#八continue-语句与程序阅读练习013809015503"
+id="toc-八continue-语句与程序阅读练习013809015503">八、continue
+语句与程序阅读练习（01:38:09—01:55:03）</a>
+<ul>
+<li><a href="#continue-语句的作用与等价改写"
+id="toc-continue-语句的作用与等价改写">01:38:09—01:44:52 ｜ continue
+语句的作用与等价改写</a></li>
+<li><a href="#练习do-while-continue-程序输出分析"
+id="toc-练习do-while-continue-程序输出分析">01:44:52—01:55:03 ｜
+练习：do-while + continue 程序输出分析</a></li>
+</ul></li>
+<li><a href="#九例百位小于个位的水仙花数continue-化简015503020404"
+id="toc-九例百位小于个位的水仙花数continue-化简015503020404">九、例：百位小于个位的水仙花数（continue
+化简）（01:55:03—02:04:04）</a>
+<ul>
+<li><a href="#分析与-continue-化简"
+id="toc-分析与-continue-化简">01:55:03—01:59:16 ｜ 分析与 continue
+化简</a></li>
+<li><a href="#同一行输出与无尾随空格的处理"
+id="toc-同一行输出与无尾随空格的处理">01:59:16—02:04:04 ｜
+同一行输出与无尾随空格的处理</a></li>
+</ul></li>
+<li><a href="#十循环嵌套与例-4-7020404021100"
+id="toc-十循环嵌套与例-4-7020404021100">十、循环嵌套与例
+4-7（02:04:04—02:11:00）</a>
+<ul>
+<li><a href="#循环嵌套breakcontinue-只跳一层"
+id="toc-循环嵌套breakcontinue-只跳一层">02:04:04—02:08:31 ｜
+循环嵌套、break/continue 只跳一层</a></li>
+<li><a href="#例-4-7-计算-12100含初始化位置函数替代"
+id="toc-例-4-7-计算-12100含初始化位置函数替代">02:08:31—02:11:00 ｜ 例
+4-7 计算 1!+2!+…+100!（含初始化位置、函数替代）</a></li>
+</ul></li>
+<li><a href="#十一循环结构的选择与条件设计例-4-8-最高分021100021600"
+id="toc-十一循环结构的选择与条件设计例-4-8-最高分021100021600">十一、循环结构的选择与条件设计、例
+4-8 最高分（02:11:00—02:16:00）</a>
+<ul>
+<li><a href="#循环结构选择与条件表达式设计"
+id="toc-循环结构选择与条件表达式设计">02:11:00—02:11:57 ｜
+循环结构选择与条件表达式设计</a></li>
+<li><a href="#例-4-8-最高分问题forwhiledo-while-三种写法"
+id="toc-例-4-8-最高分问题forwhiledo-while-三种写法">02:11:57—02:16:00 ｜
+例 4-8 最高分问题（for/while/do-while 三种写法）</a></li>
+</ul></li>
+<li><a
+href="#十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933"
+id="toc-十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">十二、例
+4-9 斐波那契、例 4-10 区间素数、例 4-11 搬砖（02:16:00—02:29:33）</a>
+<ul>
+<li><a href="#例-4-9-斐波那契数列"
+id="toc-例-4-9-斐波那契数列">02:16:00—02:21:21 ｜ 例 4-9
+斐波那契数列</a></li>
+<li><a href="#例-4-10-区间-mn-内素数isprime-函数continue"
+id="toc-例-4-10-区间-mn-内素数isprime-函数continue">02:21:21—02:27:55 ｜
+例 4-10 区间 [m,n] 内素数（isprime 函数、continue）</a></li>
+<li><a href="#小结与例-4-11-搬砖问题自学"
+id="toc-小结与例-4-11-搬砖问题自学">02:27:55—02:29:33 ｜ 小结与例 4-11
+搬砖问题（自学）</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-09-29-课堂详解">《C 程序设计》2026-09-29
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:33:21 ｜ 逐条字幕：1167 条 ｜ 时间段小节：37
+｜ 例题 / 证明：13</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件，不以字幕为准；课件原文留档在
+content/cprog/_slides/ 下对应章节。**</p>
+</blockquote>
+<h2
+id="一循环结构导入while-语句与-forwhile-互转000432001209">一、循环结构导入：while
+语句与 for/while 互转（00:04:32—00:12:09）</h2>
+<h3 id="进入第四章回顾固定次数循环引入-while-循环">00:04:32—00:06:28 ｜
+进入第四章、回顾固定次数循环、引入 while 循环</h3>
+<p>上课前先用”浙大” APP
+做课间点名（雷达点名），老师强调群里签到无效，点名结果以手机为准；点名是课堂管理，不展开。</p>
+<p>正式进入<strong>第四章 循环结构</strong>。先回顾已经学过的
+<code>for</code> 循环——它是<strong>固定次数</strong>的循环：要做
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+遍一件事，就设一个计数变量（习惯用
+<code>i</code>、<code>k</code>），让它从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+走到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>：</p>
+<pre><code>for( i = 1; i &lt;= n; i++ )   /* 从 1 到 N，也可以从 0 到 N-1 */
+    ... 做第 i 次 ...</code></pre>
+<p>老师特别提醒：看循环次数时，<strong>末尾是小于号还是小于等于号一定要分清</strong>——<code>i &lt;= n</code>
+包含第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次，<code>i &lt; n</code> 不包含，差一个就错。也可以写成
+<code>i = 0; i &lt; n</code>（从 0 到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>），两者等价，关键看头尾是否包含。</p>
+<p>但今天要学的 <code>while</code>
+循环<strong>不是按次数控制</strong>的，而是按一个逻辑表达式是否为真来控制。</p>
+<h3 id="while-语句的语法与执行流程">00:06:28—00:07:39 ｜ while
+语句的语法与执行流程</h3>
+<p><code>while</code> 循环的语法：</p>
+<pre><code>while( 表达式 )
+    循环体语句;</code></pre>
+<ul>
+<li>先计算表达式的值；</li>
+<li>如果表达式的值为真（在 C 里即”不为 0”），就执行循环体语句；</li>
+<li>执行完后<strong>再回头</strong>看表达式的值有没有变；如果还不为
+0（仍为真），就继续；</li>
+<li>一旦表达式的值为假（为 0），循环结束。</li>
+</ul>
+<p>循环体可以是一句话，也可以是多句话——多句话时必须用一对大括号
+<code>{ }</code>
+括起来，使其成为一个<strong>复合语句</strong>（逻辑上的一句话）。</p>
+<p><code>while</code> 比 <code>for</code> 更”简洁”：它只有一个表达式，而
+<code>for</code> 里有三个表达式。下面把两者对照。</p>
+<h3 id="while-与-for-的流程对比">00:07:39—00:09:09 ｜ while 与 for
+的流程对比</h3>
+<p><code>for</code> 语句的语法（回顾）：</p>
+<pre><code>for( 表达式1; 表达式2; 表达式3 )
+    循环体语句;</code></pre>
+<p>执行顺序：先算表达式 1（初始化）——只做一次；再判断表达式 2
+是否成立，成立就执行循环体；然后算表达式 3；再回头判断表达式
+2……直到表达式为假停止。</p>
+<p>两者的流程图本质相似：都在”表达式为真”时执行循环体；区别是
+<code>for</code> 的循环体后面还拖了一条”尾巴”——表达式 3。可以把表达式 3
+和循环体合成一个新的循环体来看，这样 <code>for</code> 和
+<code>while</code> 就很像了：<code>for</code>
+前面多了一个初始化，后面多了一个表达式 3 的尾巴。</p>
+<h3 id="for-改写成-whilewhile-改写成-for">00:09:09—00:12:09 ｜ for
+改写成 while、while 改写成 for</h3>
+<p><strong><code>for</code> 改写成 <code>while</code></strong>：把表达式
+1 提到循环前，把表达式 3 塞进循环体末尾：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>表达式<span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> 表达式<span class="dv">2</span> <span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    循环体语句</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    表达式<span class="dv">3</span><span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>注意：<code>for</code> 的表达式 3
+也是循环的一部分，它和循环体执行的<strong>次数一样多</strong>。</p>
+<p><strong><code>while</code> 改写成
+<code>for</code></strong>：<code>for</code> 的两个表达式（表达式
+1、表达式 3）留空即可：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> <span class="op">;</span> 表达式<span class="op">;</span> <span class="op">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    循环体语句</span></code></pre></div>
+<p>如果 <code>for</code>
+的条件表达式为空，就等价于”无条件循环”（死循环），通常要和
+<code>break</code> 配合。</p>
+<p>老师提问：既然 <code>while</code> 能完成的 <code>for</code>
+也能完成，反之亦然，<strong>为什么语言还要有两个循环语句</strong>？这里不存在效率差别（和
+<code>switch</code>/<code>if-else</code> 不同，那是 <code>switch</code>
+效率高一点）。原因主要是<strong>格式与习惯</strong>：用循环变量控制次数时，<code>for</code>
+把”初值、条件、步进”三件事集中写在一行，非常整齐，特别适合计数控制；而循环条件动态变化时，<code>while</code>
+更自然。后面还会引入第三个——<code>do-while</code>。</p>
+<h2
+id="二例-4-1-用格雷戈里公式求-π误差控制的-while-循环001222002149">二、例
+4-1 用格雷戈里公式求 π（误差控制的 while
+循环）（00:12:22—00:21:49）</h2>
+<h3 id="问题分析与循环体设计">00:12:22—00:15:00 ｜
+问题分析与循环体设计</h3>
+<p>例题要求：用<strong>格雷戈里公式</strong>（莱布尼茨级数）求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>
+的近似值，精确到”<strong>最后一项的绝对值小于给定的值</strong>”（例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>）：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>4</mn><mo>×</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>+</mo><mi>⋯</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\pi = 4 \times \left( 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots \right)</annotation></semantics></math></p>
+<p>问题特点：<strong>没有直接给出循环次数</strong>。前面我们算过”前 200
+项”或”前 300
+项”的合，那是固定次数；现在改成”误差控制”——只要最后一项的绝对值小于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>
+就停。虽然理论上你能先解出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+使得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>&lt;</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\frac{1}{N} &lt; 10^{-4}</annotation></semantics></math>
+再转成固定次数，但<strong>当表达式很复杂、根本求不出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+时，就只能用条件控制</strong>。</p>
+<p>老师说这类问题的典型特征：<strong>循环条件复杂、情况动态变化、无法事先确定次数</strong>。比如走迷宫，你不知道要循环多少次才能走出迷宫（高手三步并作两步，普通人要很久）。对这种”循环条件未知”的情况，<strong>通常采用
+<code>while</code> 循环</strong>。</p>
+<p>循环体要反复做什么？——“计算求和里的每一项
+<code>item</code>，把它加到结果 <code>sum</code> 里”。如果
+<code>item &lt; 阈值</code>，就终止；否则继续。</p>
+<h3 id="读取误差阈值与累加逻辑">00:15:00—00:17:01 ｜
+读取误差阈值与累加逻辑</h3>
+<p>先读入一个误差阈值 <code>eps</code>（例如输入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0001</mn><annotation encoding="application/x-tex">0.0001</annotation></semantics></math>
+表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>，或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.00001</mn><annotation encoding="application/x-tex">0.00001</annotation></semantics></math>
+表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>5</mn></mrow></msup><annotation encoding="application/x-tex">10^{-5}</annotation></semantics></math>）。<code>item</code>
+一开始就取第一项
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>。循环条件写成
+<code>item &gt;= eps</code>：只要当前项的绝对值还大于等于阈值，就继续累加并准备下一项。</p>
+<p>项的规律：分母是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">1, 3, 5, 7, \dots</annotation></semantics></math>（每次加
+2）；符号是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mo>,</mo><mi>−</mi><mo>,</mo><mi>+</mi><mo>,</mo><mi>−</mi></mrow><annotation encoding="application/x-tex">+,-,+,-</annotation></semantics></math>
+交错，用 <code>flag</code> 表示（初值为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，每轮变号
+<code>flag = -flag</code>）。第一项 <code>item = 1</code>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">1/1</annotation></semantics></math>）。</p>
+<h3 id="最后一项必须加入求和的易错点">00:17:01—00:20:13 ｜
+“最后一项”必须加入求和的易错点</h3>
+<p>这里有个<strong>关键易错点</strong>（老师反复强调，也是考试常错点）：题目要求”<strong>直到最后一项小于给定值</strong>”，也就是说那一项虽然小于阈值，但<strong>仍然要加进
+<code>sum</code></strong>。幻灯片上的写法把”是否加入”和”是否停止”分开处理，能保证最后一项被加进去。</p>
+<p>老师原话点出的现象：很多人程序整体都对，就是”最后一项没加进去”，结果有误差。提示：若写成”先算
+<code>item</code>，若 <code>item &lt; 阈值</code> 就 <code>break</code>
+跳出、不再累加”，那一项就被漏掉了——<strong>逻辑要严密，不能留漏洞</strong>。</p>
+<p>真正写程序时，按幻灯片的结构更顺：循环里先累加当前
+<code>item</code>，再算下一项、变号；循环结束后，幻灯片还单独补了一句把”刚算出但已小于阈值的那一项”也加上（见代码注释”最后一项”）。</p>
+<h4 id="例题证明-1001222-用格雷戈里公式求-π-的近似值">例题/证明
+1（00:12:22）｜ 用格雷戈里公式求 π 的近似值</h4>
+<p><strong>题目／任务</strong>：从键盘读入误差阈值 <code>eps</code>，用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>4</mn><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>+</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\pi = 4\times(1 - \frac13 + \frac15 - \frac17 + \cdots)</annotation></semantics></math>
+计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>，直到”最后一项的绝对值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>
+<code>eps</code>“为止。</p>
+<p><strong>思路</strong>：<code>while( item &gt;= eps )</code>
+控制循环；循环体内累加 <code>flag * item</code>、分母每次加
+2、算下一项、符号变号；循环结束后把”最后（已小于阈值）的那一项”也补进
+<code>sum</code>；最后输出 <code>4 * sum</code>。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 6 页）：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> eps<span class="op">,</span> sum <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> item <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> denom <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> flag <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter eps:&quot;</span><span class="op">);</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%lf</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span> eps<span class="op">);</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 读取误差阈值</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> item <span class="op">&gt;=</span> eps <span class="op">)</span> <span class="op">{</span> <span class="co">// 循环条件，需提前初始化</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>sum <span class="op">=</span> sum <span class="op">+</span> flag <span class="op">*</span> item<span class="op">;</span> <span class="co">// 累加flag*item</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>denom <span class="op">=</span> denom <span class="op">+</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">// 更新分母</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>item <span class="op">=</span> <span class="fl">1.0</span><span class="op">/</span>denom<span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">// 计算下一个item</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>flag <span class="op">=</span> <span class="op">-</span>flag<span class="op">;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">// 变号</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>sum <span class="op">=</span> sum <span class="op">+</span> flag <span class="op">*</span> item<span class="op">;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">// 最后一项</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Pi = </span><span class="sc">%.4f\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">4</span><span class="op">*</span>sum<span class="op">);</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 6 页。</p>
+<p><strong>输入</strong>：例如 <code>0.0001</code>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>）。</p>
+<p><strong>输出／运行结果</strong>：屏幕打印 <code>Pi = 3.1414</code>
+一类的值（<code>%.4f</code> 保留 4 位小数）。</p>
+<p><strong>易错点</strong>： 1. <code>item</code>
+必须<strong>先于</strong>循环初始化为第一项
+<code>1.0</code>（<code>double</code> 类型，写 <code>1.0</code> 而非
+<code>1</code>，否则整数除法会出错）；<code>sum</code>、<code>denom</code>、<code>flag</code>
+也要提前初始化。 2. <code>scanf</code> 读 <code>double</code> 用
+<code>%lf</code>，取地址 <code>&amp;eps</code>。 3.
+“最后一项”即使小于阈值也要加进去，否则结果有误差。 4.
+<code>flag = -flag</code> 实现符号交替；<code>denom = denom + 2</code>
+让分母走
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">1,3,5,\dots</annotation></semantics></math>。</p>
+<h3 id="用-break-简化程序的预告">00:20:13—00:21:49 ｜ 用 break
+简化程序的预告</h3>
+<p>老师指出幻灯片”补最后一项”那句让同一句累加逻辑出现了两次，不够漂亮。预告：<strong>等讲到
+<code>break</code>
+语句后，可以用更简洁、更符合直觉的方式重写</strong>——算好当前项、累加、若它小于阈值就直接
+<code>break</code>，逻辑更顺、不用打补丁。这正是下一节
+<code>break</code> 的用武之地。</p>
+<h2
+id="三例-4-2-学生成绩统计负数结束标志与-scanf-返回值002239003204">三、例
+4-2 学生成绩统计：负数结束标志与 scanf 返回值（00:22:39—00:32:04）</h2>
+<h3 id="题目与基本-while-写法">00:22:39—00:25:00 ｜ 题目与基本 while
+写法</h3>
+<p>例题
+4-2：输入一批学生成绩，<strong>以负数作为结束标志</strong>，计算平均成绩并统计不及格人数。</p>
+<p>特点：不知道要输入多少个成绩（不像”输入 10 个”可以用
+<code>for (i=1; i&lt;=10; i++)</code>）。但约定成绩不会是负数（最低 0
+分），所以<strong>读到一个负数就代表输入结束</strong>。</p>
+<p>基本写法：先读第一个成绩；只要 <code>score &gt;= 0</code>
+就进入循环——把它累加进 <code>total</code>、人数 <code>num</code> 加
+1、若 <code>score &lt; 60</code> 则不及格人数 <code>count</code> 加
+1；循环体末尾再读下一个成绩。</p>
+<h4
+id="例题证明-2002239-输入一批成绩以负数结束算平均分并统计不及格人数">例题/证明
+2（00:22:39）｜ 输入一批成绩、以负数结束、算平均分并统计不及格人数</h4>
+<p><strong>题目／任务</strong>：不断读入成绩直到出现负数；输出平均成绩与不及格人数。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 11–13 页）：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> num <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 总人数</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 不及格人数</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> total <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// 成绩总和</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> score<span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">// 读入的成绩</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入成绩:&quot;</span><span class="op">);</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%lf</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>score <span class="op">);</span><span class="co">// 读第一个数据</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span> score <span class="op">&gt;=</span><span class="dv">0</span> <span class="op">)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">// &gt;= 0，视为成绩</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> total <span class="op">+</span> score<span class="op">;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>num <span class="op">++;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> score <span class="op">&lt;</span> <span class="dv">60</span> <span class="op">)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>count <span class="op">++;</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">// 统计不及格数</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%lf</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>score <span class="op">);</span> <span class="co">// 下一个成绩</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> num<span class="op">&gt;</span><span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;平均成绩: </span><span class="sc">%.2f\n</span><span class="st">&quot;</span><span class="op">,</span> total<span class="op">/</span>num<span class="op">);</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;不及格人数：</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> count<span class="op">);</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;平均成绩为0</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 11–13 页。</p>
+<p><strong>输入</strong>（每数回车或空格分隔，最后以负数结束）：</p>
+<pre><code>89 76 55 90 -1</code></pre>
+<p><strong>输出／运行结果</strong>：按格式打印平均成绩（保留两位小数）与不及格人数；若没有任何有效成绩（<code>num==0</code>，即一上来就是负数），打印”平均成绩为0”。幻灯片注明
+<code>if( num&gt;0 )</code> 的条件表达式等价于
+<code>num != 0</code>。</p>
+<p><strong>易错点</strong>： -
+进入循环前必须先读第一个成绩，否则循环条件无从判断。 -
+循环体里<strong>还要再读一次</strong>下一个成绩（<code>scanf</code>
+写了两遍）。 - <code>if( num&gt;0 )</code> 与 <code>else</code>
+处理”一个有效成绩都没有”的特殊情况。</p>
+<h3 id="利用-scanf-返回值改写循环条件">00:25:00—00:28:01 ｜ 利用 scanf
+返回值改写循环条件</h3>
+<p>老师提出：上面 <code>scanf</code>
+语句写了两遍，能不能只写一遍？关键在于 <code>scanf</code>
+的<strong>返回值</strong>。上节课讲过 <code>scanf</code>
+在成功读入时返回<strong>成功读入的数据项个数</strong>——本例只有一个
+<code>%lf</code>，成功就读到 1，读失败（或遇文件尾）返回 0。在 C
+里，<strong>非 0 即为真，0 为假</strong>，所以
+<code>scanf(...) != 0</code> 与 <code>scanf(...)</code>
+作为逻辑值完全等价。</p>
+<p>于是可以把”读成绩 + 判断是否为有效成绩”合并进 <code>while</code>
+条件：先 <code>scanf</code> 把值读进 <code>score</code>，若返回非
+0（读成功）且
+<code>score &gt;= 0</code>（是真实成绩），就进循环；否则退出。这样
+<code>scanf</code>
+只在条件里写一次。注意<strong>顺序不能颠倒</strong>：必须先读，才能判断
+<code>score &gt;= 0</code>；若把判断写在读入之前就矛盾了。</p>
+<h3 id="用-getchar-读取字符直到换行">00:28:01—00:30:14 ｜ 用 getchar
+读取字符直到换行</h3>
+<p>老师顺势引出一个类似的字符读取例子：逐个读字符，以换行符
+<code>'\n'</code>
+作为结束标志。讨论的是<strong>表达式求值顺序</strong>——<code>while</code>
+要计算 <code>ch = getchar() != '\n'</code>
+这个表达式的值，最外层是比较运算
+<code>!=</code>，里层是一个<strong>赋值表达式</strong>
+<code>ch = getchar()</code>。</p>
+<p>求值顺序：先算右边的
+<code>getchar()</code>（一次函数调用，读入一个字符），把返回值赋给
+<code>ch</code>，然后再判断 <code>ch</code> 是否不等于
+<code>'\n'</code>。一句话就完成了”读字符→存变量→判断结束”三件事，这正是
+C 语言表达式”能做很多事情”的体现。</p>
+<h3 id="表达式求值顺序与赋值括号">00:30:14—00:32:04 ｜
+表达式求值顺序与赋值括号</h3>
+<p>老师强调：为什么要把 <code>ch = getchar()</code> 用括号括起来，写成
+<code>( ch = getchar() ) != '\n'</code>（口语示意，非课件完整程序）？因为<strong>赋值
+<code>=</code> 的优先级低于比较
+<code>!=</code></strong>——若不括起来，编译器会先做
+<code>!=</code>，结果就错了（拿到的是 0 或 1
+而不是字符）。加括号强制先完成赋值，再比较。这提醒我们：写复合表达式时要清楚运算符优先级，必要时用括号明确顺序。</p>
+<p>（本例为表达式层面的讲解，课件 ch04 未给出完整 <code>getchar</code>
+字符读取程序，故此处不附整段源码，仅按课堂讲解还原表达式语义。）</p>
+<h2 id="四do-while-语句与例-4-3例-4-4003204004933">四、do-while 语句与例
+4-3、例 4-4（00:32:04—00:49:33）</h2>
+<h3 id="do-while-语法与三种循环">00:32:04—00:33:26 ｜ do-while
+语法与三种循环</h3>
+<p><code>do-while</code> 语法：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    循环体语句</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span><span class="op">(</span> 表达式<span class="op">);</span></span></code></pre></div>
+<p>特点：<strong>先执行循环体，再判断表达式</strong>。因此<strong>循环体至少被执行一次</strong>。老师提示：有的场合循环体”至少要做一次”，用
+<code>do-while</code> 最自然。由此 C
+语言共有三个循环控制语句：<code>for</code>、<code>while</code>、<code>do-while</code>——区别就在”判断时机”：
+- <code>for</code>：先判断（次数已知最合适）； -
+<code>while</code>：先判断（条件进入前已确定最合适）； -
+<code>do-while</code>：后判断（至少做一次最合适）。</p>
+<h3 id="例-4-3-计算整数的位数">00:33:26—00:40:08 ｜ 例 4-3
+计算整数的位数</h3>
+<p>例 4-3：读入一个整数，统计它的位数。如输入 <code>12345</code> 输出
+<code>5</code>，输入 <code>-99</code> 输出 <code>2</code>，输入
+<code>0</code> 输出 <code>1</code>。</p>
+<p>思路：不知道整数有几位，但可以”不断除以 10 直到为
+0”，<strong>除的次数就是位数</strong>（<code>99</code> 除 1 次得
+9、再除得 0，共 2 次→2 位；<code>122</code> 除 3 次得 0→3
+位）。这种”先做至少一次除法”的场景用 <code>do-while</code> 很合适。</p>
+<h4 id="例题证明-3003326-计算一个整数的位数">例题/证明 3（00:33:26）｜
+计算一个整数的位数</h4>
+<p><strong>题目／任务</strong>：输入整数，统计位数。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 15–16 页）：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count<span class="op">,</span> number<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入一个整数: &quot;</span><span class="op">);</span><span class="co">/* 输入提示*/</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>number <span class="op">);</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">/* 整数的位数*/</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>number <span class="op">=</span> number <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>count <span class="op">++;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span><span class="op">(</span> number <span class="op">!=</span> <span class="dv">0</span> <span class="op">);</span><span class="co">/* 还有数字吗? */</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;它有 </span><span class="sc">%d</span><span class="st"> 位数字</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> count<span class="op">);</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 15–16 页。</p>
+<p><strong>输入</strong>：<code>12345</code> →
+<strong>输出</strong>：<code>它有 5 位数字</code>。输入 <code>0</code> →
+输出 <code>它有 1 位数字</code>。</p>
+<p><strong>能否改成 <code>while</code>？</strong> 幻灯片给出对比：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> number <span class="op">!=</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>number <span class="op">=</span> number <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>count <span class="op">++;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>不能简单替换</strong>：当 <code>number = 0</code>
+时，<code>while</code>
+条件一上来就不成立，循环体一次都不执行，<code>count</code> 为 0，但
+<code>0</code> 应该是 1 位。这正是 <code>do-while</code>
+的价值——至少执行一次除法（哪怕 <code>0</code> 除完还是
+<code>0</code>，<code>count</code> 也先加到了 1）。</p>
+<p>老师还提到两种”打补丁”思路：在 <code>while</code> 版前加
+<code>if (number == 0) count = 1;</code>，或者直接写一行”取巧”代码（用
+<code>number&gt;=1 + number&gt;=10 + number&gt;=100 + number&gt;=1000</code>
+累加布尔值），但都”很难看”，不如 <code>do-while</code>
+干净。当整数可能非常大时，可改用 <code>long</code> /
+<code>long long</code> 类型（类型细节后续再讲）。</p>
+<h3 id="例-4-4-逆序输出整数含负数处理">00:43:04—00:49:33 ｜ 例 4-4
+逆序输出整数（含负数处理）</h3>
+<p>例 4-4：按逆序输出一个整数。如输入 <code>12345</code>，输出
+<code>54321</code>；最高位未知，但”先从个位开始输出”是确定的。</p>
+<p>思路：取个位数用 <code>number % 10</code>；输出后
+<code>number = number / 10</code> 去掉个位；只要
+<code>number != 0</code>（还有更高位）就继续——显然”至少输出一次个位”，用
+<code>do-while</code>。</p>
+<h4 id="例题证明-4004304-逆序输出一个整数">例题/证明 4（00:43:04）｜
+逆序输出一个整数</h4>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 18 页）：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入一个整数: &quot;</span><span class="op">);</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>number <span class="op">);</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> number<span class="op">%</span><span class="dv">10</span><span class="op">);</span><span class="co">// 输出个位</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>number <span class="op">=</span> number <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">// 去掉个位</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span><span class="op">(</span> number <span class="op">!=</span> <span class="dv">0</span> <span class="op">);</span> <span class="co">// 还有数字吗?</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 18 页。</p>
+<p><strong>运行示例</strong>（课件给出）：输入 <code>12345</code> → 输出
+<code>54321</code>；输入 <code>0</code> → 输出 <code>0</code>；输入
+<code>-123</code> → 输出
+<code>-3-2-1</code>（负数会先输出一个负号，再逐位输出绝对值的数字）。</p>
+<p><strong>易错点 / 改进</strong>： - 输入 <code>0</code>
+时程序能正常输出 <code>0</code>；但若按 <code>while</code> 改写，遇到
+<code>0</code> 会什么都不输出——和例 4-3 同理，<code>do-while</code>
+更稳。 - 负数问题：上面程序对 <code>-123</code> 输出
+<code>-3-2-1</code>，不是期望的
+<code>-321</code>。<strong>改进（老师课堂演示）</strong>：若
+<code>number &lt; 0</code>，先输出一个负号，再把 <code>number</code>
+取为 <code>-number</code>（转成正数）再走
+<code>do-while</code>。这体现写程序的常见过程——先完成主干，再补”边角”（负号这类特殊情况）。题目若不要求处理负数，则可省略该补丁。</p>
+<h2 id="五break-语句与例-4-1-的-break-改写004937010032">五、break
+语句与例 4-1 的 break 改写（00:49:37—01:00:32）</h2>
+<h3 id="break-语句的作用与流程">00:49:37—00:52:23 ｜ break
+语句的作用与流程</h3>
+<p><code>break</code> 是跳转语句： - 在 <code>switch</code> 语句段中执行
+<code>break</code>，跳出 <code>switch</code>； - 在循环体中执行
+<code>break</code>，<strong>结束本次循环、跳出整个循环</strong>。</p>
+<p><code>break</code> 一般<strong>有条件地</strong>执行（常和
+<code>if</code> 搭配）：满足条件才 <code>break</code>。在
+<code>for</code> / <code>while</code> / <code>do-while</code>
+中，若执行了
+<code>break</code>，本次循环剩余的语句不再做，整个循环也结束。老师强调：<strong>若无条件地一进来就
+<code>break</code>，循环就永远走不下去</strong>，那这个循环毫无意义。</p>
+<h3 id="用-break-改写例-4-1">00:52:53—00:57:07 ｜ 用 break 改写例
+4-1</h3>
+<p>回到例 4-1。用 <code>break</code>
+的逻辑是：用<strong>无条件循环</strong>（<code>for(;;)</code> 或
+<code>while(1)</code>）反复”计算当前项、累加、若该项绝对值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>
+阈值就
+<code>break</code>“。变量初始化照旧：<code>item = 1.0</code>、<code>denom = 1</code>、<code>flag = 1</code>、<code>sum = 0</code>。</p>
+<p>老师现场按这个思路把程序顺下来：先累加（注意 <code>flag</code>
+在累加<strong>之后</strong>再变号），再算下一项；判断若
+<code>item</code> 绝对值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>
+阈值就是”最后一项”，<code>break</code>
+终止——这样<strong>最后一项自然已经加进
+<code>sum</code></strong>，不用像幻灯片那样再补一句。读入阈值也要先加输入提示，用
+<code>%lf</code> 读 <code>double</code>。</p>
+<p>（该 <code>break</code> 改写版为课堂现场设计，课件 ch04 给出的是第 6
+页的 <code>while</code>
+版本；两者算法等价，改写版不重新附整段源码，逻辑即”累加→判阈值→break”。）</p>
+<h3 id="逻辑检查与两种写法对比">00:57:07—01:00:32 ｜
+逻辑检查与两种写法对比</h3>
+<p>写完后第一件事是点”编译”看有无语法错；随后<strong>静态检查逻辑</strong>：算当前项、累加、若小于阈值则停（严格小于、非小于等于）、否则准备下一项（分母加
+2、符号变号）。</p>
+<p>老师对比：幻灯片原版行数没少、任务一样，但”最后一项”要单独补一句、还留了个补丁，不舒服；<code>break</code>
+版思维更顺、不用打补丁、可读性更好。<strong>结论</strong>：程序设计不仅要”会做、做对”，还要”做好”——合理利用
+<code>break</code> 能简化逻辑、让思维流畅。随后课间休息并点名。</p>
+<h2 id="六例-4-5-素数判定与循环出口判定010050012526">六、例 4-5
+素数判定与循环出口判定（01:00:50—01:25:26）</h2>
+<h3 id="课间点名break-小结准备进入素数判定">01:00:50—01:09:05 ｜
+课间点名、break 小结、准备进入素数判定</h3>
+<p>课间点名（雷达点名，课堂管理略）。回到课堂后老师再次强调：<strong>合理使用
+<code>break</code>
+能简化程序逻辑、提高可读性</strong>，尽管语句数可能还多一点，但思维顺畅、不易漏。随后进入例
+4-5。</p>
+<h3 id="素数判定真因子范围sqrt-与类型转换">01:09:05—01:14:45 ｜
+素数判定：真因子范围、sqrt 与类型转换</h3>
+<p>例 4-5：输入一个正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>，判定是否为素数。</p>
+<p>素数定义：大于 1，且<strong>不存在真因子</strong>（1
+和自身叫”假因子”，不算）。判定方法：在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo>,</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2, m-1]</annotation></semantics></math>
+范围找真因子，<strong>一旦找到就必定不是素数</strong>，可立即终止循环——这正是
+<code>break</code> 的用武之地。</p>
+<p>真因子的<strong>上限可以缩小到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math></strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+能分解，两个因子中必有一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><msqrt><mi>m</mi></msqrt></mrow><annotation encoding="application/x-tex">\le \sqrt{m}</annotation></semantics></math>（要么两个相等都等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>，要么一大一小于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>；不可能两个都
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><msqrt><mi>m</mi></msqrt></mrow><annotation encoding="application/x-tex">&gt;\sqrt{m}</annotation></semantics></math>，否则乘积
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">&gt; m</annotation></semantics></math>）。所以只需测到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌊</mo><msqrt><mi>m</mi></msqrt><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor\sqrt{m}\rfloor</annotation></semantics></math>。</p>
+<p>求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>
+要调用<strong>数学库函数</strong> <code>sqrt(m)</code>（头文件
+<code>math.h</code>），其返回值是
+<code>double</code>。但我们只要整数部分，所以用<strong>类型转换运算符</strong>
+<code>(int)</code> 取整：<code>(int)sqrt(m)</code>
+会丢掉小数部分、取浮点数的整数部分（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>5</mn></msqrt><mo>≈</mo><mn>2.236</mn></mrow><annotation encoding="application/x-tex">\sqrt{5}\approx 2.236</annotation></semantics></math>
+取整得 2）。</p>
+<h3 id="用-break-提前退出循环">01:14:45—01:18:46 ｜ 用 break
+提前退出循环</h3>
+<p>循环写成 <code>for (i = 2; i &lt;= max; i++)</code>，若
+<code>m % i == 0</code>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+整除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>）就
+<code>break</code>——找到了真因子，不必再试。老师用面试作比：多个面试官依次面，中间一个不通过就无需见下一个，直接淘汰。</p>
+<p>循环结束后如何判定素数？关键看 <strong><code>i</code> 的值</strong>：
+- 若循环是<strong>正常结束</strong>（跑完
+<code>i &gt; max</code>），说明没找到真因子，<code>isPrime</code>
+保持初值 1（是素数）； - 若循环是<strong>被 <code>break</code>
+终止</strong>的，则 <code>break</code> 发生时循环条件
+<code>i &lt;= max</code> 仍成立，所以此时 <code>i &lt;= max</code>
+为真，把 <code>isPrime</code> 置 0（不是素数）。</p>
+<h4 id="例题证明-5010905-输入正整数-m判定是否为素数">例题/证明
+5（01:09:05）｜ 输入正整数 m，判定是否为素数</h4>
+<p><strong>题目／任务</strong>：读入正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>，判断其是否为素数。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 24–25 页）：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> m<span class="op">,</span> isPrime <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter a number:&quot;</span><span class="op">);</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>m<span class="op">);</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> m<span class="op">&lt;</span><span class="dv">2</span> <span class="op">)</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>isPrime <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> max <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>sqrt<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i<span class="op">&lt;=</span>max<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> m <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span> <span class="op">)</span> <span class="co">// i 整除m</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">// 找到真因子</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> i<span class="op">&lt;=</span>max <span class="op">)</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">// 循环条件仍成立</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>isPrime <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// 循环被break 终止</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> isPrime <span class="op">)</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;It is a prime number</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;It is NOT a prime number</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 24–25 页。</p>
+<p><strong>输入</strong>：<code>13</code> →
+<strong>输出</strong>：<code>It is a prime number</code>；输入
+<code>9</code> →
+<strong>输出</strong>：<code>It is NOT a prime number</code>。</p>
+<p><strong>易错点</strong>： - <code>m &lt; 2</code>
+直接不是素数（最小素数是 2）。 - <code>max = (int)sqrt(m)</code>
+用类型转换取整；<code>#include &lt;math.h&gt;</code> 不可漏。 -
+判定素数靠”循环结束后 <code>i &lt;= max</code> 是否成立”——这是判断
+<code>break</code> 出口的核心。</p>
+<h3 id="循环结束后的出口判定">01:18:46—01:22:04 ｜
+循环结束后的出口判定</h3>
+<p>老师总结”循环退出的两种出口”： 1.
+<strong>常规口</strong>：循环条件表达式不成立，自然结束； 2.
+<strong>break 口</strong>：执行了 <code>break</code> 语句提前结束。</p>
+<p>因此循环结束后，<strong>先看循环条件是否成立</strong>即可区分出口：<code>for</code>
+例里若 <code>i &lt;= max</code> 仍成立，说明是被 <code>break</code>
+终止的（找到了真因子）；否则是正常跑完（<code>isPrime</code> 仍为
+1）。</p>
+<h3 id="保护判断依据变量不要反向判断">01:22:04—01:25:26 ｜
+保护判断依据变量，不要反向判断</h3>
+<p>重要提醒：<strong>用来判断出口的变量（如
+<code>i</code>）在退出前不要被随意修改</strong>。如果在
+<code>break</code> 前偷偷把 <code>i</code> 改成 <code>max+1</code> 再
+<code>break</code>，出来后就分不清了——<strong>要保护好你的判断依据</strong>。</p>
+<p>另一点：<strong>两个出口不能反向判断</strong>。即”循环条件成立 ⇒ 被
+<code>break</code>“并不恒成立——有时常规退出时 <code>break</code>
+的条件恰好也成立，造成误判。所以<strong>必须优先看循环条件</strong>（条件不成立=常规出口；条件仍成立=被
+<code>break</code>），再看 <code>break</code> 条件。书上（教材第 78
+页附近）的写法 <code>if (a &gt; limit) ...</code> 与我们的
+<code>i &lt;= max</code> 只是正反向表述，本质一致；书上给
+<code>sqrt</code> 结果 <code>+1</code> 是担心浮点误差（如
+<code>sqrt(4)</code> 得 <code>1.9999</code> 取整成
+1），但老师实测完全平方数的 <code>sqrt</code> 无误差，无需
+<code>+1</code>。</p>
+<h2 id="七例-4-6-猜数游戏随机数与循环012541013809">七、例 4-6
+猜数游戏：随机数与循环（01:25:41—01:38:09）</h2>
+<h3 id="随机数产生srand-rand-time">01:25:41—01:30:15 ｜
+随机数产生（srand / rand / time）</h3>
+<p>例 4-6：计算机产生一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1, 100]</annotation></semantics></math>
+间的随机整数，你猜，每次反馈”猜对 / 太大 / 太小”，共 7 次机会。</p>
+<p>产生随机数：调用<strong>标准库函数</strong>（头文件
+<code>stdlib.h</code>）： - <code>time(0)</code>：返回从 <strong>1970 年
+1 月 1 日 00:00:00</strong> 到当前时刻的秒数（大整数类型
+<code>time_t</code>），作随机种子； -
+<code>srand(seed)</code>：设置随机种子（相同种子产生相同序列）； -
+<code>rand()</code>：返回一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mtext mathvariant="normal">RAND_MAX</mtext><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, \text{RAND\_MAX}]</annotation></semantics></math>
+间的随机数。</p>
+<p>老师提醒：变量未初始化时是”垃圾值”，<strong>垃圾 ≠
+随机</strong>；真正的随机很复杂，标准库给的是<strong>伪随机</strong>（由确定性的种子函数产生，看起来随机）。把当前时间作种子即可得到每次不同的序列。</p>
+<p>要得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1,100]</annotation></semantics></math>：<code>rand() % 100</code>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>99</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,99]</annotation></semantics></math>，再加
+1 即得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1,100]</annotation></semantics></math>。这里要用到取模运算——再次说明”数学要好、要会换算”。</p>
+<h3 id="用-forwhile-控制-7-次猜测与-break">01:30:15—01:36:03 ｜ 用
+for/while 控制 7 次猜测与 break</h3>
+<p>用循环控制 7 次猜测：最合适的是
+<code>for (count = 0; count &lt; 7; count++)</code>（次数已知）。每轮：读入
+<code>guess</code>、<code>count</code> 加 1、若
+<code>guess == number</code> 则
+<code>break</code>（猜中跳出）、否则输出”太大/太小”。老师现场运行演示：输入
+<code>50</code>（太大）、<code>25</code>（太大）、<code>22</code>（太小）……二分逼近，多次后猜中。</p>
+<h4 id="例题证明-6012541-猜数游戏">例题/证明 6（01:25:41）｜
+猜数游戏</h4>
+<p><strong>题目／任务</strong>：产生
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1,100]</annotation></semantics></math>
+随机数，用户最多猜 7 次，反馈结果。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 73–76 页）：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span><span class="pp"> </span><span class="co">/* 函数：srand, rand */</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;time.h&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">/* 函数：time */</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count<span class="op">,</span> number <span class="op">,</span> guess<span class="op">;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>srand<span class="op">(</span> time<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">);</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>number <span class="op">=</span> rand<span class="op">()</span> <span class="op">%</span> <span class="dv">100</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 随机数*/</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> count <span class="op">&lt;</span><span class="dv">7</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入你猜的整数：&quot;</span><span class="op">);</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>guess<span class="op">);</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>count <span class="op">++;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> guess<span class="op">==</span>number <span class="op">)</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span> <span class="co">/* 猜对了，跳出循环*/</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> guess<span class="op">&gt;</span>number <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;太大！&quot;</span><span class="op">);</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;太小！&quot;</span><span class="op">);</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> count <span class="op">&lt;</span><span class="dv">7</span> <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;猜对了，祝贺！</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;7次未猜出，遗憾:(</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 73–76 页。</p>
+<p><strong>运行示例</strong>：<code>srand(time(0))</code> 设种子 →
+<code>rand()%100+1</code> 得答案（如 15）→ 用户输入猜测，程序反馈直到 7
+次内猜中或耗尽。</p>
+<p><strong>循环出口判定</strong>：循环结束有两种情况——<code>count &lt; 7</code>
+时 <code>break</code> 出来（猜中），或 <code>count</code> 走到 7
+常规结束（没猜中）。所以结尾用 <code>if (count &lt; 7)</code>
+区分”猜中祝贺”与”7 次未猜出遗憾”。</p>
+<h3 id="循环出口判定与-count-自增位置">01:36:03—01:38:09 ｜
+循环出口判定与 count 自增位置</h3>
+<p>老师对比：<code>for</code> 比 <code>while</code>
+更合适（次数已知）。关于 <code>count++</code>
+的位置：放在读入之后、判断之前都行；若第一次就猜中，<code>count</code>
+为 0 时 <code>break</code> 跳出，结尾 <code>count &lt; 7</code> 仍成立 ⇒
+正确判定为”猜中”。<code>for</code> 的 <code>count++</code> 写在表达式 3
+也完全等效。最后补充 <code>time</code> 的准确含义（1970-01-01
+起秒数）。</p>
+<h2 id="八continue-语句与程序阅读练习013809015503">八、continue
+语句与程序阅读练习（01:38:09—01:55:03）</h2>
+<h3 id="continue-语句的作用与等价改写">01:38:09—01:44:52 ｜ continue
+语句的作用与等价改写</h3>
+<p><code>continue</code> 也是局部跳转语句：在循环体中执行
+<code>continue</code>，<strong>结束本次循环、不再执行本次循环体剩余语句，但不终止循环，而是提前进入下一次循环</strong>。</p>
+<p>老师比喻：A 跟 B 讲话，B
+说”继续”（continue），意思是”你刚才说的我懂了，别啰嗦了，说下一个”——本次剩余的话不做了，直接进入下一轮。<code>continue</code>
+和 <code>break</code> 一样，<strong>通常藏在 <code>if</code>
+里</strong>才有意义；若无条件一进来就
+<code>continue</code>，下面的语句永远执行不到。</p>
+<p><code>continue</code> <strong>不是必要语句</strong>，它可等价改写成
+<code>if-else</code>：把”满足条件就 <code>continue</code>（跳过语句段
+2）“改成”不满足条件才执行语句段 2”。但用 <code>continue</code>
+的好处是<strong>避免代码右移、减少嵌套层次</strong>——当语句段 2
+本身很复杂时，多个 <code>continue</code> 能让结构更扁平、更易读。</p>
+<p>对 <code>for</code> 循环要特别注意：<code>continue</code>
+会<strong>跳过本次剩余语句，但仍执行表达式 3（<code>i++</code>
+这类）</strong>，因为下一次迭代前必须先更新计数变量，否则会少一次。</p>
+<h3 id="练习do-while-continue-程序输出分析">01:44:52—01:55:03 ｜
+练习：do-while + continue 程序输出分析</h3>
+<p>幻灯片给出一道阅读程序题（也是随堂练习）：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> n<span class="op">==</span><span class="dv">3</span> <span class="op">)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>n<span class="op">++;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span><span class="cf">while</span><span class="op">(</span> f<span class="op">(</span>n<span class="op">)&lt;</span><span class="dv">5</span> <span class="op">);</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">(</span><span class="dt">int</span> m<span class="op">)</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%3d</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> m<span class="op">;</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="例题证明-7014452-分析-do-while-continue-程序的输出">例题/证明
+7（01:44:52）｜ 分析 do-while + continue 程序的输出</h4>
+<p><strong>题目／任务</strong>：写出上述程序的输出结果。</p>
+<p><strong>思路/逐步跟踪</strong>（老师在草稿纸上逐轮推演，强调”读程序要用纸笔一步一步写，别只在脑子里转”）：</p>
+<ul>
+<li>初始 <code>n = 0</code>；<code>do</code> 先执行：打印
+<code>0</code>（<code>%3d</code> 占 3 位），<code>f(0)</code> 返回
+0，<code>0&lt;5</code> 成立 → 进入循环体；<code>n==3</code> 否，执行
+<code>n++</code> → <code>n=1</code>；<code>while</code> 判断
+<code>f(1)&lt;5</code> 成立。</li>
+<li><code>n=1</code>：打印 <code>1</code>，<code>n++</code> →
+<code>n=2</code>；<code>f(2)&lt;5</code> 成立。</li>
+<li><code>n=2</code>：打印 <code>2</code>，<code>n++</code> →
+<code>n=3</code>；<code>f(3)&lt;5</code> 成立。</li>
+<li><code>n=3</code>：打印 <code>3</code>，<code>f(3)</code> 返回
+3；进循环体，<code>n==3</code> 成立 →
+<code>continue</code>：<strong><code>n++</code>
+被跳过</strong>，<code>n</code> 仍为 3；<code>while</code> 判断
+<code>f(3)&lt;5</code> 仍成立 → 再次循环。</li>
+<li>此后 <code>n</code> 永远卡在 3，<code>continue</code> 永远跳过
+<code>n++</code>，于是不断打印
+<code>3</code>，<strong>死循环</strong>。</li>
+</ul>
+<p><strong>输出结果</strong>（逐字符取自课件 ch04(1).txt 第 33、37
+页）：</p>
+<pre><code>  0  1  2  3  3  3  3 …（不停输出 3）</code></pre>
+<p><strong>结论 / 易错点</strong>：<code>do-while</code> 中
+<code>continue</code> 跳过
+<code>n++</code>，计数变量不再增长，导致循环条件恒真——这是一个典型的”continue
+把更新语句也跳过了”的死循环陷阱。调试/阅读程序时要在草稿纸上逐轮记录变量值。</p>
+<p>老师进一步强调<strong>程序阅读理解能力</strong>的重要性：以后读师兄的代码、读
+AI
+生成的代码，都要能静下心一步步跟；复杂程序更要靠纸笔跟踪，写越整齐越不易错。</p>
+<h2
+id="九例百位小于个位的水仙花数continue-化简015503020404">九、例：百位小于个位的水仙花数（continue
+化简）（01:55:03—02:04:04）</h2>
+<h3 id="分析与-continue-化简">01:55:03—01:59:16 ｜ 分析与 continue
+化简</h3>
+<p>寻找”百位小于个位的水仙花数”：一个三位数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xyz</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mi>z</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>y</mi><mn>3</mn></msup><mo>+</mo><msup><mi>z</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">xyz = x^3 + y^3 + z^3</annotation></semantics></math>
+且百位
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo></mrow><annotation encoding="application/x-tex">x &lt;</annotation></semantics></math>
+个位
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>。</p>
+<p>遍历范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>100</mn><mo>,</mo><mn>999</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[100, 999]</annotation></semantics></math>（<code>for (m=100; m&lt;=999; m++)</code>）。老师策略：先判断简单、便宜的条件。取百位
+<code>x = m/100</code>，个位 <code>z = m%10</code>；若
+<code>x &gt;= z</code> 直接 <code>continue</code>
+放弃（连复杂的水仙花判定都不用做）。再取十位
+<code>y = m/10%10</code>，判断
+<code>x*x*x + y*y*y + z*z*z == m</code>，不满足也
+<code>continue</code>。都满足才 <code>printf</code> 输出。</p>
+<h4 id="例题证明-8015503-寻找百位小于个位的水仙花数">例题/证明
+8（01:55:03）｜ 寻找百位小于个位的水仙花数</h4>
+<p><strong>题目／任务</strong>：在三位数中找出满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>y</mi><mn>3</mn></msup><mo>+</mo><msup><mi>z</mi><mn>3</mn></msup><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">x^3+y^3+z^3=m</annotation></semantics></math>
+且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x&lt;z</annotation></semantics></math>
+的数。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 38 页）：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> m<span class="op">,</span> x<span class="op">,</span> y<span class="op">,</span> z<span class="op">;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> m <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> m <span class="op">&lt;=</span> <span class="dv">999</span><span class="op">;</span> m<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> m<span class="op">/</span><span class="dv">100</span><span class="op">;</span> <span class="co">// 百位数字</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> m<span class="op">%</span><span class="dv">10</span><span class="op">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 个位数字</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> x<span class="op">&gt;=</span>z <span class="op">)</span> <span class="co">// 不满足要求</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="cf">continue</span><span class="op">;</span><span class="co">// 放弃</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> m<span class="op">/</span><span class="dv">10</span><span class="op">%</span><span class="dv">10</span><span class="op">;</span> <span class="co">// 十位</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> x<span class="op">*</span>x<span class="op">*</span>x <span class="op">+</span> y<span class="op">*</span>y<span class="op">*</span>y <span class="op">+</span>z<span class="op">*</span>z<span class="op">*</span>z <span class="op">!=</span> m <span class="op">)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="cf">continue</span><span class="op">;</span> <span class="co">// 不是水仙花数</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">);</span> <span class="co">// 输出结果</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 38 页。</p>
+<p><strong>运行结果</strong>（课件给出）：<code>153</code>、<code>407</code>。</p>
+<p><strong>易错点</strong>： - 百位 <code>x = m/100</code>，个位
+<code>z = m%10</code>，十位 <code>y = m/10%10</code>（先除 10 再去模
+10，不必写循环）。 - 用 <code>continue</code>
+把”不满足”的情况提前放弃，让主逻辑保持扁平、不被层层 <code>if</code>
+右移。</p>
+<h3 id="同一行输出与无尾随空格的处理">01:59:16—02:04:04 ｜
+同一行输出与无尾随空格的处理</h3>
+<p>老师追问：如果要”同一行输出、两两之间一个空格、但<strong>首尾都不要空格</strong>”怎么办？只改
+<code>printf</code> 那一句不够——需要在 <code>continue</code>
+之后、输出处加工：引入计数器
+<code>count</code>，<code>if (count &gt; 0)</code>
+才先输出一个空格（即”从第二个数开始，前面补一个空格”），输出完再
+<code>count++</code>。这样第一个数前无空格、数之间恰有一个空格、末尾无空格。</p>
+<p>若不用 <code>continue</code> 改写，就得嵌套 <code>if</code>（先
+<code>if (x&lt;z)</code> 再 <code>if (是水仙花数)</code>
+才输出），代码明显”难看、层次深”——这正是 <code>continue</code>
+的价值。</p>
+<h2 id="十循环嵌套与例-4-7020404021100">十、循环嵌套与例
+4-7（02:04:04—02:11:00）</h2>
+<h3 id="循环嵌套breakcontinue-只跳一层">02:04:04—02:08:31 ｜
+循环嵌套、break/continue 只跳一层</h3>
+<p><strong>循环嵌套</strong>（多重循环）：循环体里再套循环。可以是
+<code>for/while</code> 任意混合，层数不限。</p>
+<p>关键规则：<strong><code>break</code> 和 <code>continue</code>
+只作用于所在的那一层循环</strong>。内层 <code>break</code>
+只跳出内层，外层照常；要跳外层得在外层也写
+<code>break</code>。嵌套循环的<strong>总执行次数 =
+各层次数之积</strong>，所以写嵌套循环务必注意效率。</p>
+<h3 id="例-4-7-计算-12100含初始化位置函数替代">02:08:31—02:11:00 ｜ 例
+4-7 计算 1!+2!+…+100!（含初始化位置、函数替代）</h3>
+<p>例 4-7：求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>!</mi><mo>+</mo><mn>2</mn><mi>!</mi><mo>+</mo><mi>⋯</mi><mo>+</mo><mn>100</mn><mi>!</mi></mrow><annotation encoding="application/x-tex">1! + 2! + \cdots + 100!</annotation></semantics></math>。</p>
+<h4 id="例题证明-9020831-计算-12100">例题/证明 9（02:08:31）｜ 计算
+1!+2!+…+100!</h4>
+<p><strong>题目／任务</strong>：用二重循环累加前 100 项的阶乘和。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 45 页）：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> j<span class="op">;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> sum <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> fact<span class="op">;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">100</span><span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>fact <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 初始化阶乘的值为1</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> j <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> j <span class="op">&lt;=</span> i<span class="op">;</span> j<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>fact <span class="op">=</span> fact <span class="op">*</span> j<span class="op">;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>sum <span class="op">=</span> sum <span class="op">+</span> fact<span class="op">;</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;1!+2!+...+100!=</span><span class="sc">%e\n</span><span class="st">&quot;</span><span class="op">,</span> sum<span class="op">);</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 45 页。</p>
+<p><strong>易错点（老师重点强调）</strong>：内层阶乘的初始化
+<code>fact = 1;</code> <strong>必须放在内层 <code>for</code>
+之前、且在外层每轮都重置</strong>。若误放到外层 <code>for</code>
+之外，求第 2 个阶乘时会”在第 1
+个阶乘基础上接着乘”，导致结果连锁错误——“失之毫厘，谬以千里”。</p>
+<p><strong>函数替代</strong>：把内层阶乘换成函数调用，逻辑更清晰（逐字符取自课件
+ch04(1).txt 第 50 页）：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> factorial<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">;</span> <span class="dt">double</span> result <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">&lt;=</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> result <span class="op">*</span> i<span class="op">;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">;</span> <span class="dt">double</span> sum <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">100</span><span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>sum <span class="op">=</span> sum <span class="op">+</span> factorial<span class="op">(</span> i <span class="op">);</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;1!+2!+...+100!=</span><span class="sc">%e\n</span><span class="st">&quot;</span><span class="op">,</span> sum<span class="op">);</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>%e</code> 用科学计数法输出浮点数。</p>
+<p><strong>复杂度</strong>：上述二重循环
+<code>for(i=1..n) for(j=1..i)</code> 的总次数 =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mi>⋯</mi><mo>+</mo><mi>n</mi><mo>=</mo><mfrac><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">1+2+\cdots+n = \frac{n(n+1)}{2}</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math>
+量级。</p>
+<h2
+id="十一循环结构的选择与条件设计例-4-8-最高分021100021600">十一、循环结构的选择与条件设计、例
+4-8 最高分（02:11:00—02:16:00）</h2>
+<h3 id="循环结构选择与条件表达式设计">02:11:00—02:11:57 ｜
+循环结构选择与条件表达式设计</h3>
+<p><strong>选择策略</strong>： - 循环次数已知 → <code>for</code>； -
+循环次数不能事先确定、但进入前条件已定 → <code>while</code>； -
+循环体至少做一次 → <code>do-while</code>。</p>
+<p><strong>条件表达式设计原则</strong>：循环条件要尽量简单，把复杂的终止判断移到循环体内，用
+<code>break</code> / <code>continue</code> / <code>if</code>
+配合实现复杂流程控制。实际程序中，每次循环体执行的语句、涉及的变量值都可能不同（靠
+<code>if</code> 走不同分支、<code>continue</code>
+跳过等），不要误以为”循环体每次做的事完全一样”。</p>
+<h3 id="例-4-8-最高分问题forwhiledo-while-三种写法">02:11:57—02:16:00 ｜
+例 4-8 最高分问题（for/while/do-while 三种写法）</h3>
+<p>例
+4-8：输入一批成绩，找最高分。先读一个成绩当”当前最高分”，再不断读下一个，比当前最高分大就更新。结束方式有两种：已知人数，或用负数作结束标志。</p>
+<h4 id="例题证明-10021157-找出最高分">例题/证明 10（02:11:57）｜
+找出最高分</h4>
+<p><strong>题目／任务</strong>：输入若干成绩，输出其中的最高分。</p>
+<p><strong>写法一（已知人数，for）</strong>（逐字符取自课件 ch04(1).txt
+第 57 页）：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> mark<span class="op">,</span> max<span class="op">,</span> n<span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入成绩个数：&quot;</span><span class="op">);</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;逐个输入成绩：&quot;</span><span class="op">);</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>mark<span class="op">);</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>max <span class="op">=</span> mark<span class="op">;</span> <span class="co">// scanf(&quot;%d&quot;, &amp;max);</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>mark<span class="op">);</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> max <span class="op">&lt;</span> mark <span class="op">)</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>max <span class="op">=</span> mark<span class="op">;</span> <span class="co">/* 设为最高分*/</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;最高成绩为：</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> max<span class="op">);</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>写法二（负数结束，while）</strong>（逐字符取自课件
+ch04(1).txt 第 59 页）：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> mark<span class="op">,</span> max <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;逐个输入成绩，以负数结束：&quot;</span><span class="op">);</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>mark<span class="op">);</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span> mark <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> max <span class="op">&lt;</span> mark <span class="op">)</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>max <span class="op">=</span> mark<span class="op">;</span> <span class="co">// 更新最高分</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>mark<span class="op">);</span> <span class="co">// 读入下一个成绩</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;最高成绩 = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> max<span class="op">);</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>写法三（负数结束，do-while）</strong>（逐字符取自课件
+ch04(1).txt 第 61 页）：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> mark<span class="op">,</span> max <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;逐个输入成绩，以负数结束：&quot;</span><span class="op">);</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>mark<span class="op">);</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> mark <span class="op">&gt;</span> max <span class="op">)</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>max <span class="op">=</span> mark<span class="op">;</span> <span class="co">/* 设为最高分*/</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span><span class="op">(</span> mark <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">);</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;最高成绩为：</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> max<span class="op">);</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 57、59、61 页。</p>
+<p><strong>运行示例</strong>（课件给出）：写法二输入
+<code>2 3 5 7 -1</code> → 输出
+<code>最高成绩= 7</code>；输入分散在多行也照常。</p>
+<p><strong>易错点 / 要点</strong>： - 已知人数用
+<code>for</code>（先读第一个当 <code>max</code>，循环只跑
+<code>n-1</code> 次）；未知人数且至少读一次用 <code>do-while</code>
+最自然。 - <code>while</code> 写法里 <code>scanf</code>
+读了两遍（循环前一次、循环体末尾一次）；<code>do-while</code>
+把读入放进循环体，只写一遍，更简洁——这就是”选对循环结构”带来的差别。 -
+课后自行对照复习三种写法。</p>
+<h2
+id="十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">十二、例
+4-9 斐波那契、例 4-10 区间素数、例 4-11 搬砖（02:16:00—02:29:33）</h2>
+<h3 id="例-4-9-斐波那契数列">02:16:00—02:21:21 ｜ 例 4-9
+斐波那契数列</h3>
+<p>例 4-9：输入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>46</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n\ (1\le n\le 46)</annotation></semantics></math>，输出斐波那契数列前
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+项（1, 1, 2, 3, 5, 8, 13, …），每行 5 个。</p>
+<p>思路：前两项为 1；从第 3 项起每项等于前两项之和。用
+<code>x1</code>、<code>x2</code> 表示当前项的前两项，<code>x</code>
+表示当前项。循环 <code>i = 1..n</code>：若 <code>i==1</code> 或
+<code>i==2</code> 当前项为 1，否则
+<code>x = x1 + x2</code>；输出后维护递推：<code>x1 = x2; x2 = x</code>（为下一项做准备）。</p>
+<h4 id="例题证明-11021600-输出斐波那契数列前-n-项">例题/证明
+11（02:16:00）｜ 输出斐波那契数列前 n 项</h4>
+<p><strong>题目／任务</strong>：输出斐波那契数列前
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+项，每行 5 个。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 62、64
+页）：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">,</span> i<span class="op">,</span> x1<span class="op">,</span> x2<span class="op">,</span> x3<span class="op">;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter n:&quot;</span><span class="op">);</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> n<span class="op">&lt;</span><span class="dv">1</span> <span class="op">||</span> n<span class="op">&gt;</span><span class="dv">46</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Invalid input</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> x2 <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">&lt;=</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%10d</span><span class="st">&quot;</span><span class="op">,</span>x1<span class="op">);</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> i<span class="op">%</span><span class="dv">5</span><span class="op">==</span><span class="dv">0</span> <span class="op">)</span> <span class="co">// 换行</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>x3 <span class="op">=</span> x1 <span class="op">+</span> x2<span class="op">;</span> <span class="co">// 新项计算</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> x2<span class="op">;</span> <span class="co">// 递推公式更新</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> x3<span class="op">;</span> <span class="co">// 递推公式更新</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 62、64 页。</p>
+<p><strong>运行示例</strong>（课件给出，输入 <code>n=10</code>）：</p>
+<pre><code>         1         1         2         3         5
+         8        13        21        34        55</code></pre>
+<p><strong>要点</strong>： - <code>%10d</code> 表示占 10
+个字符宽度、<strong>右对齐</strong>；<code>if (i%5==0) printf("\n");</code>
+实现每行 5 个换行。 -
+循环体里有”为下一次循环做准备”的工作（<code>x1=x2; x2=x3</code>），这是循环程序常见的职责。
+- <code>n</code> 限制在 46 以内是避免 <code>int</code> 溢出（第 47
+项起超出 <code>int</code> 范围）。</p>
+<h3 id="例-4-10-区间-mn-内素数isprime-函数continue">02:21:21—02:27:55 ｜
+例 4-10 区间 [m,n] 内素数（isprime 函数、continue）</h3>
+<p>例 4-10：输入整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>≤</mo><mi>m</mi><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>500</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">m, n\ (1\le m\le n\le 500)</annotation></semantics></math>，输出区间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[m,n]</annotation></semantics></math>
+内的全部素数，每行 10 个。</p>
+<p>思路：遍历
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mi>m</mi><mi>.</mi><mi>.</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">k = m..n</annotation></semantics></math>，若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+是素数就输出。用 <code>continue</code>
+化简——“不是素数就跳过，剩下的是素数，直接输出”。把”是否为素数”抽成函数
+<code>isprime(k)</code>，返回 1 表示素数、0 表示非素数。</p>
+<h4 id="例题证明-12022121-求区间-mn-内的全部素数">例题/证明
+12（02:21:21）｜ 求区间 [m,n] 内的全部素数</h4>
+<p><strong>题目／任务</strong>：输出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[m,n]</annotation></semantics></math>
+内所有素数，每行 10 个。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 67–68 页）：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isprime<span class="op">(</span><span class="dt">int</span> m<span class="op">);</span> <span class="co">// 申明素数判定函数</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k<span class="op">,</span> m<span class="op">,</span> n<span class="op">;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter m and n: &quot;</span><span class="op">);</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>m<span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k<span class="op">=</span>m<span class="op">;</span> k<span class="op">&lt;=</span>n<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> <span class="op">!</span> isprime<span class="op">(</span>k<span class="op">)</span> <span class="op">)</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%5d</span><span class="st">&quot;</span><span class="op">,</span> k<span class="op">);</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>count <span class="op">++;</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> count<span class="op">%</span><span class="dv">10</span><span class="op">==</span><span class="dv">0</span> <span class="op">)</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isprime<span class="op">(</span><span class="dt">int</span> m<span class="op">)</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> k<span class="op">,</span> n <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>sqrt<span class="op">(</span>m<span class="op">);</span> <span class="co">// 真因子的上限</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span>m<span class="op">&lt;</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k<span class="op">=</span><span class="dv">2</span><span class="op">;</span> k<span class="op">&lt;=</span>n<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> m <span class="op">%</span> k <span class="op">==</span> <span class="dv">0</span> <span class="op">)</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 67–68 页。</p>
+<p><strong>运行示例</strong>（课件给出，输入
+<code>1 50</code>）：<code>2 3 5 7 11 13 17 19 23 29 31 37 41 43 47</code>。</p>
+<p><strong>要点 / 易错点</strong>： - <code>isprime</code> 用
+<code>return 0</code> / <code>return 1</code>
+<strong>提前结束函数</strong>——这和在循环里 <code>continue</code>
+类似，是”提前返回结果”。找到因子立即
+<code>return 0</code>，循环自然结束；跑完都没因子则
+<code>return 1</code>。 - 主循环里 <code>printf("%5d", k)</code> 占 5
+宽；<code>count%10==0</code> 控制每行 10 个换行。 - 老师对比教材第 89
+页的二重循环写法：用 <code>flag</code>
+变量翻来翻去、逻辑不清晰；<strong>用函数 + <code>return</code>
+设计，思路清晰、结构简单</strong>，应尽量避免无谓的多重循环。 -
+下课前有同学问”能否不开 <code>sqrt</code>、用 <code>i*i &lt;= m</code>
+替代”：可以，且<strong>更优</strong>——把 <code>i*i &lt;= m</code>
+写在循环条件里，避免每次都调用
+<code>sqrt</code>（重复计算）。这正是”减少循环次数、避免重复计算”的体现。</p>
+<h3 id="小结与例-4-11-搬砖问题自学">02:27:55—02:29:33 ｜ 小结与例 4-11
+搬砖问题（自学）</h3>
+<p>老师收束：C
+语言的流程控制语句可以<strong>和自然语言混杂</strong>表达算法（先写梗概、再逐步落成代码），这正是”高级/程序设计语言”的含义。用函数设计能让程序灵活、逻辑简单。</p>
+<p>最后提到<strong>例 4-11 搬砖问题</strong>作为自学例子（男人搬 3
+块、女人 2 块、小孩 2 人抬 1 块，45 人搬 45
+块有多少种组合），老师让大家回去看，此处附课件代码。</p>
+<h4 id="例题证明-13022755-例-4-11-搬砖问题自学">例题/证明
+13（02:27:55）｜ 例 4-11 搬砖问题（自学）</h4>
+<p><strong>题目／任务</strong>：45 人搬 45 块砖，男人每人 3 块、女人每人
+2 块、小孩每 2 人 1 块，求所有组合。</p>
+<p><strong>代码（枚举版本，逐字符取自课件 ch04(1).txt 第 70
+页）</strong>：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> child<span class="op">,</span> men<span class="op">,</span> women<span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> men <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> men <span class="op">&lt;=</span><span class="dv">45</span><span class="op">;</span> men<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> women <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> women <span class="op">&lt;=</span><span class="dv">45</span><span class="op">;</span> women<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> child <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> child <span class="op">&lt;=</span><span class="dv">45</span><span class="op">;</span> child<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> men <span class="op">+</span> women <span class="op">+</span> child <span class="op">==</span> <span class="dv">45</span> <span class="op">&amp;&amp;</span> men<span class="op">*</span><span class="dv">3</span> <span class="op">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>women<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> child<span class="op">*</span><span class="fl">0.5</span> <span class="op">==</span> <span class="dv">45</span> <span class="op">)</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;men=</span><span class="sc">%d</span><span class="st">, women=</span><span class="sc">%d</span><span class="st">, child=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> men</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="op">,</span> women<span class="op">,</span> child<span class="op">);</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>改进版本（逐字符取自课件 ch04(1).txt 第 72
+页）</strong>：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> men <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> men <span class="op">&lt;=</span><span class="dv">15</span><span class="op">;</span> men<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> women <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> women <span class="op">&lt;=</span><span class="dv">22</span><span class="op">;</span> women<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>child <span class="op">=</span> <span class="dv">45</span> <span class="op">-</span> men <span class="op">-</span> women<span class="op">;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> men<span class="op">*</span><span class="dv">3</span> <span class="op">+</span> women<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> child<span class="op">*</span><span class="fl">0.5</span> <span class="op">==</span><span class="dv">45</span> <span class="op">)</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;men = </span><span class="sc">%d</span><span class="st">, women = </span><span class="sc">%d</span><span class="st">, child = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>men<span class="op">,</span> women<span class="op">,</span> child<span class="op">);</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04(1).txt 第 70、72 页。</p>
+<p><strong>要点</strong>： - 枚举版是<strong>三重循环</strong>，总次数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46</mn><mo>×</mo><mn>46</mn><mo>×</mo><mn>46</mn><mo>≈</mo><mn>4.6</mn></mrow><annotation encoding="application/x-tex">46\times46\times46 \approx 4.6</annotation></semantics></math>
+万次，被老师称为”笨办法”。 - 改进版利用约束：男人最多
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>45</mn><mi>/</mi><mn>3</mn><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">45/3=15</annotation></semantics></math>、女人最多
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>45</mn><mi>/</mi><mn>2</mn><mo>=</mo><mn>22</mn></mrow><annotation encoding="application/x-tex">45/2=22</annotation></semantics></math>，小孩由
+<code>child = 45 - men - women</code>
+直接算出，降为<strong>二重循环</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>23</mn></mrow><annotation encoding="application/x-tex">16\times23</annotation></semantics></math>，计算量远小于原版。
+-
+老师叮嘱：<strong>谨慎使用多重循环</strong>，先搭好框架、再填细节，能减层就减层。</p>
+<p>课堂到此结束（实际略有拖堂）；点名后续等课堂管理内容略去。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

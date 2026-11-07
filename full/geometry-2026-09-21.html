@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《几何学》2026-09-21 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《几何学》2026-09-21 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#几何学2026-09-21-课堂详解"
+id="toc-几何学2026-09-21-课堂详解">《几何学》2026-09-21 课堂详解</a>
+<ul>
+<li><a href="#一标架与坐标系000010001347"
+id="toc-一标架与坐标系000010001347">一、标架与坐标系（00:00:10—00:13:47）</a>
+<ul>
+<li><a href="#回顾向量线性运算与由具体到抽象的教学思路"
+id="toc-回顾向量线性运算与由具体到抽象的教学思路">00:00:10—00:02:37 ｜
+回顾向量线性运算与”由具体到抽象”的教学思路</a></li>
+<li><a href="#标架仿射标架直角标架与右手系左手系"
+id="toc-标架仿射标架直角标架与右手系左手系">00:02:37—00:10:12 ｜
+标架：仿射标架、直角标架与右手系／左手系</a></li>
+<li><a href="#坐标系点与有序三元组的对应向量的分量与点的坐标"
+id="toc-坐标系点与有序三元组的对应向量的分量与点的坐标">00:10:12—00:13:47
+｜ 坐标系：点与有序三元组的对应、向量的分量与点的坐标</a></li>
+</ul></li>
+<li><a href="#二坐标平面坐标轴与卦限001347002123"
+id="toc-二坐标平面坐标轴与卦限001347002123">二、坐标平面、坐标轴与卦限（00:13:47—00:21:23）</a>
+<ul>
+<li><a href="#三张坐标平面三条坐标轴与八个卦限-按图还原"
+id="toc-三张坐标平面三条坐标轴与八个卦限-按图还原">00:13:47—00:15:33 ｜
+三张坐标平面、三条坐标轴与八个卦限 [按图还原]</a></li>
+<li><a href="#坐标轴与坐标平面上点的坐标特征"
+id="toc-坐标轴与坐标平面上点的坐标特征">00:15:33—00:21:23 ｜
+坐标轴与坐标平面上点的坐标特征</a></li>
+</ul></li>
+<li><a href="#三向量的坐标表示与线性运算002123002608"
+id="toc-三向量的坐标表示与线性运算002123002608">三、向量的坐标表示与线性运算（00:21:23—00:26:08）</a>
+<ul>
+<li><a href="#向量在坐标下的线性运算公式"
+id="toc-向量在坐标下的线性运算公式">00:21:23—00:26:08 ｜
+向量在坐标下的线性运算公式</a></li>
+</ul></li>
+<li><a href="#四共线与共面的坐标判别002608004509"
+id="toc-四共线与共面的坐标判别002608004509">四、共线与共面的坐标判别（00:26:08—00:45:09）</a>
+<ul>
+<li><a href="#两向量共线三点共线的坐标判别"
+id="toc-两向量共线三点共线的坐标判别">00:26:08—00:32:00 ｜
+两向量共线、三点共线的坐标判别</a></li>
+<li><a href="#三向量共面与三阶行列式"
+id="toc-三向量共面与三阶行列式">00:32:06—00:42:11 ｜
+三向量共面与三阶行列式</a></li>
+<li><a href="#四点共面的坐标判别与四阶行列式"
+id="toc-四点共面的坐标判别与四阶行列式">00:42:11—00:45:09 ｜
+四点共面的坐标判别与四阶行列式</a></li>
+</ul></li>
+<li><a href="#五定比分点公式005030005406"
+id="toc-五定比分点公式005030005406">五、定比分点公式（00:50:30—00:54:06）</a>
+<ul>
+<li><a href="#定比分点公式及其特例中点"
+id="toc-定比分点公式及其特例中点">00:50:30—00:54:06 ｜
+定比分点公式及其特例（中点）</a></li>
+</ul></li>
+<li><a href="#六向量在轴上的射影与正交标架分解005406011852"
+id="toc-六向量在轴上的射影与正交标架分解005406011852">六、向量在轴上的射影与正交标架分解（00:54:06—01:18:52）</a>
+<ul>
+<li><a href="#轴射影点与射影向量射影值代数值-按图还原"
+id="toc-轴射影点与射影向量射影值代数值-按图还原">00:54:06—01:01:55 ｜
+轴、射影点与射影向量、射影值（代数值） [按图还原]</a></li>
+<li><a href="#射影值的计算公式proj-abcos-φ"
+id="toc-射影值的计算公式proj-abcos-φ">01:01:55—01:08:39 ｜
+射影值的计算公式：proj = |AB|·cos φ</a></li>
+<li><a href="#射影的线性性与正交标架下的分解式"
+id="toc-射影的线性性与正交标架下的分解式">01:08:39—01:14:54 ｜
+射影的线性性与正交标架下的分解式</a></li>
+<li><a href="#仿射标架与正交标架下坐标射影的辨析"
+id="toc-仿射标架与正交标架下坐标射影的辨析">01:14:54—01:18:52 ｜
+仿射标架与正交标架下”坐标=射影”的辨析</a></li>
+</ul></li>
+<li><a href="#七向量的内积与长度011906013950"
+id="toc-七向量的内积与长度011906013950">七、向量的内积与长度（01:19:06—01:39:50）</a>
+<ul>
+<li><a href="#内积的定义及其投影观点"
+id="toc-内积的定义及其投影观点">01:19:06—01:24:12 ｜
+内积的定义及其投影观点</a></li>
+<li><a href="#内积的性质正交与柯西不等式"
+id="toc-内积的性质正交与柯西不等式">01:24:12—01:30:59 ｜
+内积的性质、正交与柯西不等式</a></li>
+<li><a href="#向量长度的内积表示与正交标架下的坐标公式"
+id="toc-向量长度的内积表示与正交标架下的坐标公式">01:30:59—01:36:46 ｜
+向量长度的内积表示与正交标架下的坐标公式</a></li>
+<li><a href="#内积定义的多样性与学习方法提醒"
+id="toc-内积定义的多样性与学习方法提醒">01:37:37—01:39:50 ｜
+内积定义的多样性与学习方法提醒</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="几何学2026-09-21-课堂详解">《几何学》2026-09-21 课堂详解</h1>
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-0921/fig02_vector_projection.png" alt="图 2: 向量在轴上的正射影与投影值计算" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 2: 向量在轴上的正射影与投影值计算</figcaption></figure>
+
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-0921/fig01_right_hand_octants.png" alt="图 1: 右手直角坐标系 O-xyz 与第一卦限点投影" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 1: 右手直角坐标系 O-xyz 与第一卦限点投影</figcaption></figure>
+
+<h2
+id="一标架与坐标系000010001347">一、标架与坐标系（00:00:10—00:13:47）</h2>
+<h3 id="回顾向量线性运算与由具体到抽象的教学思路">00:00:10—00:02:37 ｜
+回顾向量线性运算与”由具体到抽象”的教学思路</h3>
+<p>上节课（上周）已经介绍了向量的线性运算：先给出具体的向量，再由此定义两种运算（加法与数乘），并导出了向量的一系列性质，最终引出了向量组的线性相关、线性无关。</p>
+<p>有同学曾问：能不能一上来就直接讲抽象的”向量线性相关、线性无关”的定义？老师回答：当然可以——把定义背下来就行，有些老师、有些学校就是这么处理的。但更正常的认识过程，是从具体的东西（具体的向量、具体的几何对象）出发，再去提炼出抽象的概念。</p>
+<p>这里有一条值得记住的思路：代数学往往是从抽象走向具体，而几何学是从具体走向抽象；如果把这两条线”齐头并进”地对照着学，彼此的理解会更加深入。两种路径没有对错之分，只是切入点不同。</p>
+<h3 id="标架仿射标架直角标架与右手系左手系">00:02:37—00:10:12 ｜
+标架：仿射标架、直角标架与右手系／左手系</h3>
+<p>要在空间里把向量和点用”数”表示出来，先要引入<strong>标架</strong>（转写里的”标价”即标架）。</p>
+<p>固定空间中一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>，再取三个<strong>两两不共面</strong>的有序向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_1,\mathbf e_2,\mathbf e_3</annotation></semantics></math>，这三者构成一组基；我们把</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>O</mi><mo>;</mo><mspace width="0.222em"></mspace><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{O;\ \mathbf e_1,\mathbf e_2,\mathbf e_3\}</annotation></semantics></math></p>
+<p>称为一个<strong>仿射标架</strong>。仿射标架只要求三个向量不共面（线性无关），对它们的长度、夹角不作要求。</p>
+<p>如果进一步要求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_1,\mathbf e_2,\mathbf e_3</annotation></semantics></math>
+都是<strong>单位向量</strong>，且<strong>彼此正交</strong>（互相垂直），那么称这个标架为<strong>直角标架</strong>，也叫<strong>正交标架</strong>（转写里的”直角……正交标架”即此）。</p>
+<p>右手系与左手系：用右手的大拇指、食指、中指两两垂直地比划，若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_1,\mathbf e_2,\mathbf e_3</annotation></semantics></math>
+的指向与”拇指—食指—中指”一致，则称为<strong>右手系</strong>；反之若与左手一致，则称为<strong>左手系</strong>。也可以用右手螺旋法则判定：让四指从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\mathbf e_1</annotation></semantics></math>
+转向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\mathbf e_2</annotation></semantics></math>，若大拇指指向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\mathbf e_3</annotation></semantics></math>，就是右手系。本课程默认使用<strong>右手直角坐标系</strong>，即原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+配上基向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒊</mi><mo>,</mo><mi mathvariant="bold-italic">𝒋</mi><mo>,</mo><mi mathvariant="bold-italic">𝒌</mi></mrow><annotation encoding="application/x-tex">\mathbf i,\mathbf j,\mathbf k</annotation></semantics></math>（分别对应
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+轴方向）的右手正交标架。</p>
+<h3
+id="坐标系点与有序三元组的对应向量的分量与点的坐标">00:10:12—00:13:47 ｜
+坐标系：点与有序三元组的对应、向量的分量与点的坐标</h3>
+<p>有了标架之后，空间中的任意一个向量、任意一点都可以用”数”来刻画。</p>
+<p>取空间任一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>，它的<strong>位置向量</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>
+可以从原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+出发。由于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_1,\mathbf e_2,\mathbf e_3</annotation></semantics></math>
+不共面（线性无关），根据前面的定理，存在唯一的有序三元组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+使得</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>x</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><mi>y</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><mi>z</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{OP}=x\mathbf e_1+y\mathbf e_2+z\mathbf e_3.</annotation></semantics></math></p>
+<p>一旦把标架固定，点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+与有序三元组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+之间就建立了一一对应关系。这种”点与有序三元组之间的对应关系”就叫做<strong>坐标系</strong>（转写里的”坐标”指的就是这个对应关系，而非三元组本身）。</p>
+<ul>
+<li>若标架是<strong>仿射标架</strong>，对应的就是<strong>仿射坐标系</strong>；</li>
+<li>若标架是<strong>直角（正交）标架</strong>，对应的就是<strong>直角坐标系</strong>。</li>
+</ul>
+<p>此时： - 向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>
+在标架下分解出的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+称为该向量的<strong>分量</strong>（或分量表达式）； - 点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+对应的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+称为该点的<strong>坐标</strong>。</p>
+<p>一句话：向量在标架上有唯一的分量表达式，点在坐标系下有唯一的坐标；两者通过位置向量统一起来。把中学里
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴那条射线画出来，得到的就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mtext mathvariant="normal">-</mtext><mi>x</mi><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">O\text{-}xyz</annotation></semantics></math>
+直角坐标系——但本质上它仍是一个标架。</p>
+<h2
+id="二坐标平面坐标轴与卦限001347002123">二、坐标平面、坐标轴与卦限（00:13:47—00:21:23）</h2>
+<h3 id="三张坐标平面三条坐标轴与八个卦限-按图还原">00:13:47—00:15:33 ｜
+三张坐标平面、三条坐标轴与八个卦限 [按图还原]</h3>
+<p>[按图还原] 已知：右手直角坐标系
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mtext mathvariant="normal">-</mtext><mi>x</mi><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">O\text{-}xyz</annotation></semantics></math>，三条坐标轴分别为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴；过原点作三张两两互相垂直的平面，分别是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math>
+平面、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+平面（转写里的
+XOY、YAO、XOZ）。这三张平面与三条轴把整个三维空间划分开。得到的关系：空间被这三张坐标平面分割成
+<strong>8 个区域</strong>，称为<strong>卦限</strong>。</p>
+<p>第一卦限中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+全为正；按绕
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴的方向旋转一周，依次得到第一到第四卦限（均在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上方）；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面下方与第一卦限对应的是第五卦限，再绕
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴转一圈得到第六、第七、第八卦限。八个卦限里坐标的符号各有规律（第一卦限全正，其余可逐一推出），应当能在脑中立刻反应出”在哪个卦限、各分量正负如何”，而不必临时去想。</p>
+<h3 id="坐标轴与坐标平面上点的坐标特征">00:15:33—00:21:23 ｜
+坐标轴与坐标平面上点的坐标特征</h3>
+<h4
+id="例题证明-1001533-轴上的点坐标平面上的点与坐标原点的坐标特征">例题/证明
+1（00:15:33）｜ 轴上的点、坐标平面上的点与坐标原点的坐标特征</h4>
+<p><strong>命题</strong>：落在三条坐标轴、三张坐标平面以及原点上的点，其坐标有确定的”某些分量为零”的特征。</p>
+<p><strong>思路</strong>：点落在某条轴上，说明它的位置向量只沿该轴方向，在另外两个轴方向没有分量；点落在某张坐标平面上，说明它在垂直于该平面的那个轴方向上没有分量。</p>
+<p><strong>逐步推导</strong>（[按图还原]
+依据上面三张坐标平面、三条轴的配置）： 1.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴上的点：位置向量只在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\mathbf e_1</annotation></semantics></math>
+方向上有分量，故坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,0,0)</annotation></semantics></math>。
+2.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴上的点：坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,y,0)</annotation></semantics></math>。
+3.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴上的点：坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,z)</annotation></semantics></math>。
+4. 原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>：坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,0)</annotation></semantics></math>。
+5.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上的点：位置向量与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_1,\mathbf e_2</annotation></semantics></math>
+共面，在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\mathbf e_3</annotation></semantics></math>
+方向上分量为零，故坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,0)</annotation></semantics></math>。
+6.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math>
+平面上的点：坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,y,z)</annotation></semantics></math>。
+7.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+平面上的点：坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,0,z)</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：轴上点有两个坐标为零，坐标平面上点有一个坐标为零，原点三个坐标全为零。</p>
+<p><strong>意义与易错点</strong>：这些都是”常识性的东西”——拿到就能立刻写出来，而不是要想半天。老师强调：基础事实要能在脑子里马上出来，这是后续运算的基本功。</p>
+<h2
+id="三向量的坐标表示与线性运算002123002608">三、向量的坐标表示与线性运算（00:21:23—00:26:08）</h2>
+<h3 id="向量在坐标下的线性运算公式">00:21:23—00:26:08 ｜
+向量在坐标下的线性运算公式</h3>
+<h4 id="例题证明-2002123-两点连线向量向量加法与数乘的坐标表示">例题/证明
+2（00:21:23）｜ 两点连线向量、向量加法与数乘的坐标表示</h4>
+<p><strong>命题</strong>：在标架
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>O</mi><mo>;</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{O;\mathbf e_1,\mathbf e_2,\mathbf e_3\}</annotation></semantics></math>
+下，给出两点连线向量、向量加法、数乘的坐标（分量）表达式。</p>
+<p><strong>思路</strong>：每个向量都可唯一地写成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><mi>y</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><mi>z</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">x\mathbf e_1+y\mathbf e_2+z\mathbf e_3</annotation></semantics></math>；向量的线性运算（加、减、数乘）在标架下完全等价于各个分量的同名运算。</p>
+<p><strong>逐步推导</strong>：设
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">P_1(x_1,y_1,z_1),\quad P_2(x_2,y_2,z_2),</annotation></semantics></math>
+即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>1</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>z</mi><mn>1</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo><mspace width="2.0em"></mspace><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>2</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>z</mi><mn>2</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{OP_1}=x_1\mathbf e_1+y_1\mathbf e_2+z_1\mathbf e_3,\qquad \overrightarrow{OP_2}=x_2\mathbf e_1+y_2\mathbf e_2+z_2\mathbf e_3.</annotation></semantics></math></p>
+<ol type="1">
+<li><p>两点连线向量：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>−</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_2}=\overrightarrow{OP_2}-\overrightarrow{OP_1}
+=(x_2-x_1)\mathbf e_1+(y_2-y_1)\mathbf e_2+(z_2-z_1)\mathbf e_3,</annotation></semantics></math>
+故其分量为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_2-x_1,\ y_2-y_1,\ z_2-z_1)</annotation></semantics></math>。</p></li>
+<li><p>向量加法：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><msub><mi>a</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf a=(a_1,a_2,a_3)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><msub><mi>b</mi><mn>2</mn></msub><mo>,</mo><msub><mi>b</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf b=(b_1,b_2,b_3)</annotation></semantics></math>，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo><mspace width="2.0em"></mspace><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><msub><mi>b</mi><mn>1</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbf a=a_1\mathbf e_1+a_2\mathbf e_2+a_3\mathbf e_3,\qquad \mathbf b=b_1\mathbf e_1+b_2\mathbf e_2+b_3\mathbf e_3,</annotation></semantics></math>
+则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>3</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbf a+\mathbf b=(a_1+b_1)\mathbf e_1+(a_2+b_2)\mathbf e_2+(a_3+b_3)\mathbf e_3,</annotation></semantics></math>
+即分量相加
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>a</mi><mn>3</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a_1+b_1,\ a_2+b_2,\ a_3+b_3)</annotation></semantics></math>。</p></li>
+<li><p>数乘：对实数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>k</mi><msub><mi>a</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>k</mi><msub><mi>a</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>k</mi><msub><mi>a</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">k\mathbf a=(ka_1)\mathbf e_1+(ka_2)\mathbf e_2+(ka_3)\mathbf e_3,</annotation></semantics></math>
+即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>k</mi><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>k</mi><msub><mi>a</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(ka_1,\ ka_2,\ ka_3)</annotation></semantics></math>。</p></li>
+<li><p>一般线性组合：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>k</mi><mn>1</mn></msub><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>k</mi><mn>1</mn></msub><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>k</mi><mn>1</mn></msub><msub><mi>a</mi><mn>3</mn></msub><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><msub><mi>b</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">k_1\mathbf a+k_2\mathbf b=(k_1a_1+k_2b_1,\ k_1a_2+k_2b_2,\ k_1a_3+k_2b_3).</annotation></semantics></math></p></li>
+</ol>
+<p><strong>结论</strong>：在给定标架下，向量的线性运算完全可以用其分量（坐标）的线性运算来代替——在分量层面做代数运算即可，非常方便。</p>
+<p><strong>意义与易错点</strong>：老师提醒，这里”标架”可以是仿射标架也可以是直角标架，分量运算的公式在两种标架下都成立；不要把”分量运算”误以为只属于直角坐标系。</p>
+<h2
+id="四共线与共面的坐标判别002608004509">四、共线与共面的坐标判别（00:26:08—00:45:09）</h2>
+<h3 id="两向量共线三点共线的坐标判别">00:26:08—00:32:00 ｜
+两向量共线、三点共线的坐标判别</h3>
+<h4 id="例题证明-3002608-两向量共线的坐标判据对应分量成比例">例题/证明
+3（00:26:08）｜ 两向量共线的坐标判据：对应分量成比例</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf a=(x_1,y_1,z_1)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf b=(x_2,y_2,z_2)</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+共线（平行）的充要条件是它们的对应分量成比例：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></mfrac><mo>=</mo><mfrac><msub><mi>y</mi><mn>1</mn></msub><msub><mi>y</mi><mn>2</mn></msub></mfrac><mo>=</mo><mfrac><msub><mi>z</mi><mn>1</mn></msub><msub><mi>z</mi><mn>2</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{x_1}{x_2}=\frac{y_1}{y_2}=\frac{z_1}{z_2}</annotation></semantics></math>
+（其中分母为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+的情形按下面的约定处理）。</p>
+<p><strong>思路</strong>：两向量共线，等价于其中一个可写成另一个的数乘，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mi>k</mi><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a=k\mathbf b</annotation></semantics></math>，这又等价于两个向量线性相关。把数乘关系写成各分量等式，即得比例关系。</p>
+<p><strong>逐步推导</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mi>k</mi><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a=k\mathbf b</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mi>k</mi><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>k</mi><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mi>k</mi><msub><mi>z</mi><mn>2</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">x_1=kx_2,\quad y_1=ky_2,\quad z_1=kz_2,</annotation></semantics></math>
+于是三对分量之比相等（都等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>）。</p>
+<p><strong>零分量约定</strong>：若出现某个分量为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z_2=0</annotation></semantics></math>），则比例式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><msub><mi>z</mi><mn>1</mn></msub><msub><mi>z</mi><mn>2</mn></msub></mfrac><annotation encoding="application/x-tex">\frac{z_1}{z_2}</annotation></semantics></math>
+无意义。此时约定：要使两向量共线，必须对应的另一分量也为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（即若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z_2=0</annotation></semantics></math>
+则须
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z_1=0</annotation></semantics></math>）。换句话说，把”分子为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+时分母也为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>“视作满足比例约定的特殊情形。这是一个<strong>约定</strong>，目的是让上面的等式在出现
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+时仍能统一表述。</p>
+<p><strong>结论</strong>：两向量共线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Longleftrightarrow</annotation></semantics></math>
+对应分量成比例（含零分量的上述约定）。</p>
+<p><strong>意义与易错点</strong>：最易错的就是零分量情形——不能机械地写除法，要按”对应分量同时为零”的约定处理。</p>
+<h4 id="例题证明-4002951-三点共线的坐标判据">例题/证明 4（00:29:51）｜
+三点共线的坐标判据</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msub><mi>y</mi><mi>i</mi></msub><mo>,</mo><msub><mi>z</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_i(x_i,y_i,z_i)\ (i=1,2,3)</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub><mo>,</mo><msub><mi>P</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">P_1,P_2,P_3</annotation></semantics></math>
+三点共线的充要条件是向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{P_1P_2}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{P_1P_3}</annotation></semantics></math>
+共线。</p>
+<p><strong>思路</strong>：三点共线等价于连接它们的两个向量共线，于是直接套用例题
+3 的分量比例判据。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_2}=(x_2-x_1,\ y_2-y_1,\ z_2-z_1),</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>3</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>3</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>3</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_3}=(x_3-x_1,\ y_3-y_1,\ z_3-z_1).</annotation></semantics></math>
+两者共线当且仅当
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mrow><msub><mi>x</mi><mn>3</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mfrac><mo>=</mo><mfrac><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><mrow><msub><mi>y</mi><mn>3</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mfrac><mo>=</mo><mfrac><mrow><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><mrow><msub><mi>z</mi><mn>3</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{x_2-x_1}{x_3-x_1}=\frac{y_2-y_1}{y_3-y_1}=\frac{z_2-z_1}{z_3-z_1}</annotation></semantics></math>
+（同样适用零分量约定）。</p>
+<p><strong>结论</strong>：三点共线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Longleftrightarrow</annotation></semantics></math>
+上述三个比值相等（含零分量约定）。</p>
+<p><strong>意义与易错点</strong>：注意是”从同一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_1</annotation></semantics></math>
+出发的两个向量”共线，分母要用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_1</annotation></semantics></math>
+的坐标统一减；不要把三点的顺序和减法规律搞混。</p>
+<h3 id="三向量共面与三阶行列式">00:32:06—00:42:11 ｜
+三向量共面与三阶行列式</h3>
+<h4 id="例题证明-5003206-三向量共面的坐标判据三阶行列式为零">例题/证明
+5（00:32:06）｜ 三向量共面的坐标判据：三阶行列式为零</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf a=(x_1,y_1,z_1)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf b=(x_2,y_2,z_2)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒄</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>3</mn></msub><mo>,</mo><msub><mi>y</mi><mn>3</mn></msub><mo>,</mo><msub><mi>z</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf c=(x_3,y_3,z_3)</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi><mo>,</mo><mi mathvariant="bold-italic">𝒄</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b,\mathbf c</annotation></semantics></math>
+共面的充要条件是它们的分量构成的三阶行列式等于零：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>3</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{vmatrix}
+x_1 &amp; x_2 &amp; x_3\\
+y_1 &amp; y_2 &amp; y_3\\
+z_1 &amp; z_2 &amp; z_3
+\end{vmatrix}=0.</annotation></semantics></math></p>
+<p><strong>思路</strong>：三个向量共面，等价于它们线性相关，即存在不全为零的数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>,</mo><mi>ν</mi></mrow><annotation encoding="application/x-tex">\lambda,\mu,\nu</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><mi>μ</mi><mi mathvariant="bold-italic">𝒃</mi><mo>+</mo><mi>ν</mi><mi mathvariant="bold-italic">𝒄</mi><mo>=</mo><mn mathvariant="bold">𝟎</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda\mathbf a+\mu\mathbf b+\nu\mathbf c=\mathbf 0.</annotation></semantics></math>
+把各分量写出，就得到一个关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>,</mo><mi>ν</mi></mrow><annotation encoding="application/x-tex">\lambda,\mu,\nu</annotation></semantics></math>
+的齐次线性方程组；它有非零解的充要条件，正是其系数行列式等于零。</p>
+<p><strong>逐步推导</strong>：由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><mi>μ</mi><mi mathvariant="bold-italic">𝒃</mi><mo>+</mo><mi>ν</mi><mi mathvariant="bold-italic">𝒄</mi><mo>=</mo><mn mathvariant="bold">𝟎</mn></mrow><annotation encoding="application/x-tex">\lambda\mathbf a+\mu\mathbf b+\nu\mathbf c=\mathbf 0</annotation></semantics></math>
+得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>λ</mi><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><mi>μ</mi><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mi>ν</mi><msub><mi>x</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>λ</mi><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><mi>μ</mi><msub><mi>y</mi><mn>2</mn></msub><mo>+</mo><mi>ν</mi><msub><mi>y</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>λ</mi><msub><mi>z</mi><mn>1</mn></msub><mo>+</mo><mi>μ</mi><msub><mi>z</mi><mn>2</mn></msub><mo>+</mo><mi>ν</mi><msub><mi>z</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+\lambda x_1+\mu x_2+\nu x_3=0,\\
+\lambda y_1+\mu y_2+\nu y_3=0,\\
+\lambda z_1+\mu z_2+\nu z_3=0.
+\end{cases}</annotation></semantics></math> 这是以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>,</mo><mi>ν</mi></mrow><annotation encoding="application/x-tex">\lambda,\mu,\nu</annotation></semantics></math>
+为未知数的齐次线性方程组（常数项全为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>），它总有零解
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\lambda,\mu,\nu)=(0,0,0)</annotation></semantics></math>。我们要的是<strong>不全为零的解</strong>（非零解）。</p>
+<p>把它写成以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\lambda,\mu,\nu)</annotation></semantics></math>
+为列、系数排成表格的形式，就是<strong>矩阵</strong>；而把这个”方表”按规则算出来得到的一个数，叫做<strong>行列式</strong>。</p>
+<ul>
+<li><p>二阶行列式（先回顾）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>2</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi>y</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\begin{vmatrix}
+x_1 &amp; y_1\\
+x_2 &amp; y_2
+\end{vmatrix}
+=x_1y_2-x_2y_1</annotation></semantics></math>
+（对角相乘再相减）。</p></li>
+<li><p>三阶行列式（对角线法／萨鲁斯法则）：把上面三行三列的表，按”主对角线方向三项加、副对角线方向三项减”展开：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>3</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>y</mi><mn>2</mn></msub><msub><mi>z</mi><mn>3</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi>y</mi><mn>3</mn></msub><msub><mi>z</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub><msub><mi>y</mi><mn>1</mn></msub><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>3</mn></msub><msub><mi>y</mi><mn>2</mn></msub><msub><mi>z</mi><mn>1</mn></msub><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi>y</mi><mn>1</mn></msub><msub><mi>z</mi><mn>3</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>y</mi><mn>3</mn></msub><msub><mi>z</mi><mn>2</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{vmatrix}
+x_1 &amp; x_2 &amp; x_3\\
+y_1 &amp; y_2 &amp; y_3\\
+z_1 &amp; z_2 &amp; z_3
+\end{vmatrix}
+=x_1y_2z_3+x_2y_3z_1+x_3y_1z_2
+-x_3y_2z_1-x_2y_1z_3-x_1y_3z_2.</annotation></semantics></math></p></li>
+</ul>
+<p>齐次线性方程组有非零解
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Longleftrightarrow</annotation></semantics></math>
+系数行列式等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（这一步的严格证明属于线性代数，本次课不展开）。因此三向量共面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Longleftrightarrow</annotation></semantics></math>
+上面这个三阶行列式为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：三个向量共面的充要条件是它们分量排成的三阶行列式为零。</p>
+<p><strong>意义与易错点</strong>：注意这里排成的矩阵是”行对应
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+分量、列对应三个向量”，即三个向量作为列向量构成的行列式；不要把行、列的顺序排反。</p>
+<h3 id="四点共面的坐标判别与四阶行列式">00:42:11—00:45:09 ｜
+四点共面的坐标判别与四阶行列式</h3>
+<h4 id="例题证明-6004227-四点共面的坐标判据三阶与四阶行列式">例题/证明
+6（00:42:27）｜ 四点共面的坐标判据（三阶与四阶行列式）</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msub><mi>y</mi><mi>i</mi></msub><mo>,</mo><msub><mi>z</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_i(x_i,y_i,z_i)\ (i=1,2,3,4)</annotation></semantics></math>，则四点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub><mo>,</mo><msub><mi>P</mi><mn>3</mn></msub><mo>,</mo><msub><mi>P</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">P_1,P_2,P_3,P_4</annotation></semantics></math>
+共面的充要条件是向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>,</mo><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mo>,</mo><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>4</mn></msub></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_2},\overrightarrow{P_1P_3},\overrightarrow{P_1P_4}</annotation></semantics></math>
+共面。</p>
+<p><strong>思路</strong>：四点共面等价于从同一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_1</annotation></semantics></math>
+引出的三个向量共面，于是套用例题 5 的行列式判据。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_2}=(x_2-x_1,\ y_2-y_1,\ z_2-z_1),</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>3</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>3</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>3</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_3}=(x_3-x_1,\ y_3-y_1,\ z_3-z_1),</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>4</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>4</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>4</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>4</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P_4}=(x_4-x_1,\ y_4-y_1,\ z_4-z_1).</annotation></semantics></math>
+这三个向量共面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Longleftrightarrow</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>3</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>4</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>3</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>4</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>2</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>3</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>4</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{vmatrix}
+x_2-x_1 &amp; x_3-x_1 &amp; x_4-x_1\\
+y_2-y_1 &amp; y_3-y_1 &amp; y_4-y_1\\
+z_2-z_1 &amp; z_3-z_1 &amp; z_4-z_1
+\end{vmatrix}=0.</annotation></semantics></math></p>
+<p>利用行列式的性质，上式也等价于更便于记忆的<strong>四阶行列式</strong>形式
+[补全]（课堂只提到”可以写成一个四行的行列式”，以下显式写法是按行列式性质补出，并非当堂逐项推导，仅作自学参照）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>3</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>3</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>3</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>4</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>4</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>4</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{vmatrix}
+x_1 &amp; y_1 &amp; z_1 &amp; 1\\
+x_2 &amp; y_2 &amp; z_2 &amp; 1\\
+x_3 &amp; y_3 &amp; z_3 &amp; 1\\
+x_4 &amp; y_4 &amp; z_4 &amp; 1
+\end{vmatrix}=0.</annotation></semantics></math></p>
+<p><strong>结论</strong>：四点共面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Longleftrightarrow</annotation></semantics></math>
+上述三阶（或等价的四阶）行列式为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>。</p>
+<p><strong>意义与易错点</strong>：四点共面判据是三向量共面判据的直接应用；用四阶行列式书写时，最后那一列是”1”，不要漏写。</p>
+<h2
+id="五定比分点公式005030005406">五、定比分点公式（00:50:30—00:54:06）</h2>
+<h3 id="定比分点公式及其特例中点">00:50:30—00:54:06 ｜
+定比分点公式及其特例（中点）</h3>
+<h4 id="例题证明-7005030-定比分点公式的推导与中点特例">例题/证明
+7（00:50:30）｜ 定比分点公式的推导与中点特例</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_1(x_1,y_1,z_1)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_2(x_2,y_2,z_2)</annotation></semantics></math>。若点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+在直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">P_1P_2</annotation></semantics></math>
+上，且满足
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>λ</mi><mspace width="0.167em"></mspace><mover><mrow><mi>P</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mo>≠</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P}=\lambda\,\overrightarrow{PP_2}\quad(\lambda\neq -1),</annotation></semantics></math>
+则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的坐标为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><mi>λ</mi><msub><mi>x</mi><mn>2</mn></msub></mrow><mrow><mn>1</mn><mo>+</mo><mi>λ</mi></mrow></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mfrac><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><mi>λ</mi><msub><mi>y</mi><mn>2</mn></msub></mrow><mrow><mn>1</mn><mo>+</mo><mi>λ</mi></mrow></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mfrac><mrow><msub><mi>z</mi><mn>1</mn></msub><mo>+</mo><mi>λ</mi><msub><mi>z</mi><mn>2</mn></msub></mrow><mrow><mn>1</mn><mo>+</mo><mi>λ</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">x=\frac{x_1+\lambda x_2}{1+\lambda},\quad y=\frac{y_1+\lambda y_2}{1+\lambda},\quad z=\frac{z_1+\lambda z_2}{1+\lambda}.</annotation></semantics></math></p>
+<p><strong>思路</strong>：先用位置向量写出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的向量形式，再逐分量翻译成坐标。</p>
+<p><strong>逐步推导</strong>：由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>P</mi><mn>1</mn></msub><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>λ</mi><mover><mrow><mi>P</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{P_1P}=\lambda\overrightarrow{PP_2}</annotation></semantics></math>，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>−</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>λ</mi><mo stretchy="false" form="prefix">(</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>−</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{OP}-\overrightarrow{OP_1}=\lambda(\overrightarrow{OP_2}-\overrightarrow{OP}),</annotation></semantics></math>
+整理得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>λ</mi><mo stretchy="false" form="postfix">)</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mi>λ</mi><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">(1+\lambda)\overrightarrow{OP}=\overrightarrow{OP_1}+\lambda\overrightarrow{OP_2},</annotation></semantics></math>
+故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mfrac><mrow><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mi>λ</mi><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover></mrow><mrow><mn>1</mn><mo>+</mo><mi>λ</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{OP}=\frac{\overrightarrow{OP_1}+\lambda\overrightarrow{OP_2}}{1+\lambda}.</annotation></semantics></math>
+代入坐标：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{OP_1}=(x_1,y_1,z_1),\quad \overrightarrow{OP_2}=(x_2,y_2,z_2),</annotation></semantics></math>
+按分量相加、同除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mi>λ</mi></mrow><annotation encoding="application/x-tex">1+\lambda</annotation></semantics></math>，即得上面的三个坐标公式。</p>
+<p><strong>特例（中点）</strong>：当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda=1</annotation></semantics></math>
+时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">P_1P_2</annotation></semantics></math>
+的中点，坐标退化为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mn>2</mn></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mfrac><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>2</mn></msub></mrow><mn>2</mn></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mfrac><mrow><msub><mi>z</mi><mn>1</mn></msub><mo>+</mo><msub><mi>z</mi><mn>2</mn></msub></mrow><mn>2</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">x=\frac{x_1+x_2}{2},\quad y=\frac{y_1+y_2}{2},\quad z=\frac{z_1+z_2}{2}.</annotation></semantics></math>
+这与中学平面解析几何里的定比分点、中点公式完全一致。</p>
+<p><strong>结论</strong>：定比分点坐标公式如上；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda=1</annotation></semantics></math>
+时即为中点公式。</p>
+<p><strong>意义与易错点</strong>：老师指出，这套公式与中学平面解析几何里的定比分点公式”完全一模一样”，只是从二维推广到了三维；注意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda=-1</annotation></semantics></math>
+时分母为零，此时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+在无穷远处，公式不适用。</p>
+<h2
+id="六向量在轴上的射影与正交标架分解005406011852">六、向量在轴上的射影与正交标架分解（00:54:06—01:18:52）</h2>
+<h3 id="轴射影点与射影向量射影值代数值-按图还原">00:54:06—01:01:55 ｜
+轴、射影点与射影向量、射影值（代数值） [按图还原]</h3>
+<p>[按图还原] 已知：空间中的一条<strong>轴</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>——它是一条带有确定方向（可记为方向单位向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒆</mi><annotation encoding="application/x-tex">\mathbf e</annotation></semantics></math>）的直线。任取两点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math>；过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+作垂直于轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的平面，过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+也作垂直于轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的平面，这两张平面与轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+各有一个唯一的交点，记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>,</mo><msub><mi>B</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">A_1,B_1</annotation></semantics></math>。</p>
+<p>由此引入三个概念： -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>,</mo><msub><mi>B</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">A_1,B_1</annotation></semantics></math>
+称为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math>
+在轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上的<strong>射影点</strong>； - 向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{A_1B_1}</annotation></semantics></math>
+称为向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+在轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上的<strong>射影向量</strong>，记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S\overrightarrow{AB}</annotation></semantics></math>（或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mo stretchy="false" form="prefix">(</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S(\overrightarrow{AB})</annotation></semantics></math>）；
+- 带符号的数（有向线段
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>B</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">A_1B_1</annotation></semantics></math>
+的数量）称为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+在轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上的<strong>射影值</strong>（也叫代数值），记作相应的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S AB</annotation></semantics></math>。</p>
+<p>得到的关系： 1. 射影值是一个<strong>数</strong>：当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{A_1B_1}</annotation></semantics></math>
+与轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的方向一致时取正，相反时取负。 2. 射影值（记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>）与射影向量之间只差一个方向单位向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒆</mi><annotation encoding="application/x-tex">\mathbf e</annotation></semantics></math>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>p</mi><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒆</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S\overrightarrow{AB}=p\,\mathbf e.</annotation></semantics></math>
+3. 射影向量的长度等于射影值的绝对值：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>p</mi><mo stretchy="false" form="prefix">|</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">|\operatorname{proj}_S\overrightarrow{AB}|=|p|.</annotation></semantics></math></p>
+<p>两者”一字之差”，含义不同：一个是向量，一个是带正负号的实数。</p>
+<h3 id="射影值的计算公式proj-abcos-φ">01:01:55—01:08:39 ｜
+射影值的计算公式：proj = |AB|·cos φ</h3>
+<h4
+id="例题证明-8010204-射影值公式的推导锐角与钝角两情形-按图还原">例题/证明
+8（01:02:04）｜ 射影值公式的推导（锐角与钝角两情形） [按图还原]</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+为向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+与轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的夹角，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+在轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上的射影值为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi>A</mi><mi>B</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S AB=|\overrightarrow{AB}|\cos\varphi.</annotation></semantics></math></p>
+<p><strong>思路</strong>：通过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+作与轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+平行的直线，结合过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math>
+垂直于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的平面，构成一个直角三角形（或平行四边形），把射影长度用余弦表出；再按方向讨论正负号。</p>
+<p><strong>逐步推导</strong> [按图还原]： 1. 锐角情形：当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+与轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的夹角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+为锐角时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+方向上的射影长度等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">|\overrightarrow{AB}|\cos\varphi</annotation></semantics></math>，且方向与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+一致，故射影值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">=|\overrightarrow{AB}|\cos\varphi&gt;0</annotation></semantics></math>。
+2. 钝角情形：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+的夹角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+为钝角，则直角三角形中对应的角是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>−</mo><mi>φ</mi></mrow><annotation encoding="application/x-tex">\pi-\varphi</annotation></semantics></math>，投影长度（绝对值）为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>π</mi><mo>−</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">|\overrightarrow{AB}|\cos(\pi-\varphi)=|\overrightarrow{AB}|\,(-\cos\varphi)</annotation></semantics></math>；但此时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{A_1B_1}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+反向，射影值应取负，于是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi>A</mi><mi>B</mi><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>π</mi><mo>−</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S AB=-|\overrightarrow{AB}|\cos(\pi-\varphi)=-|\overrightarrow{AB}|(-\cos\varphi)=|\overrightarrow{AB}|\cos\varphi.</annotation></semantics></math>
+可见公式在钝角情形同样成立（右边为负）。</p>
+<p><strong>结论</strong>：无论锐角还是钝角，射影值都满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi>A</mi><mi>B</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S AB=|\overrightarrow{AB}|\cos\varphi</annotation></semantics></math>。</p>
+<p><strong>意义与易错点</strong>：关键是符号——射影值的正负号由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>A</mi><mi>B</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{AB}</annotation></semantics></math>
+与轴方向是否一致决定，而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\cos\varphi</annotation></semantics></math>
+本身已经把符号包含进去了；不要先取绝对值再另判符号，那样反而容易错。</p>
+<h3 id="射影的线性性与正交标架下的分解式">01:08:39—01:14:54 ｜
+射影的线性性与正交标架下的分解式</h3>
+<h4 id="例题证明-9010849-射影保持加法与数乘线性性">例题/证明
+9（01:08:49）｜ 射影保持加法与数乘（线性性）</h4>
+<p><strong>命题</strong>：射影（作为射影值，即实数）保持线性运算：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒃</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S(\mathbf a+\mathbf b)=\operatorname{proj}_S\mathbf a+\operatorname{proj}_S\mathbf b,</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>k</mi><mspace width="0.167em"></mspace><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒂</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S(k\mathbf a)=k\,\operatorname{proj}_S\mathbf a.</annotation></semantics></math></p>
+<p><strong>思路</strong>：在同一条轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上，三个点的射影点满足”线段相加”的关系，从而对应的射影值（实数）也相加。</p>
+<p><strong>逐步推导</strong> [按图还原]：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+在轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上的射影点分别为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>,</mo><msub><mi>B</mi><mn>1</mn></msub><mo>,</mo><msub><mi>C</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">A_1,B_1,C_1</annotation></semantics></math>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mover><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S\mathbf a=\overrightarrow{A_1B_1}</annotation></semantics></math>
+对应的射影值，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mover><mrow><msub><mi>B</mi><mn>1</mn></msub><msub><mi>C</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S\mathbf b=\overrightarrow{B_1C_1}</annotation></semantics></math>
+对应的射影值）。在直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上，有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>C</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><msub><mi>B</mi><mn>1</mn></msub><msub><mi>C</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{A_1C_1}=\overrightarrow{A_1B_1}+\overrightarrow{B_1C_1}.</annotation></semantics></math>
+由于射影值是这些有向线段的数量（实数），并且数乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+直接放大或反向该数量，于是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒂</mi><mo>+</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒃</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>k</mi><mspace width="0.167em"></mspace><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>S</mi></msub><mi mathvariant="bold-italic">𝒂</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{proj}_S(\mathbf a+\mathbf b)=\operatorname{proj}_S\mathbf a+\operatorname{proj}_S\mathbf b,\qquad \operatorname{proj}_S(k\mathbf a)=k\,\operatorname{proj}_S\mathbf a.</annotation></semantics></math></p>
+<p><strong>结论</strong>：射影映射是线性映射（射影值层面）。</p>
+<p><strong>意义与易错点</strong>：老师特意强调，很多同学学到后面会忘记”射影保持加法运算、保持数乘”这件基本事实——它是后面推导向量坐标公式的重要工具。</p>
+<h4
+id="例题证明-10011327-正交标架下-op-分解为三坐标轴上的射影之和-按图还原">例题/证明
+10（01:13:27）｜ 正交标架下 OP 分解为三坐标轴上的射影之和
+[按图还原]</h4>
+<p><strong>命题</strong>：在正交标架
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>O</mi><mo>;</mo><mi mathvariant="bold-italic">𝒊</mi><mo>,</mo><mi mathvariant="bold-italic">𝒋</mi><mo>,</mo><mi mathvariant="bold-italic">𝒌</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{O;\mathbf i,\mathbf j,\mathbf k\}</annotation></semantics></math>
+下，对任一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的位置向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>，有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{OP}=\overrightarrow{OP_1}+\overrightarrow{OP_2}+\overrightarrow{OP_3},</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP_3}</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>）轴上的射影向量，其余类推；进而点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的坐标
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+恰好等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>
+在三条坐标轴上的射影值。</p>
+<p><strong>思路</strong>：过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+作平行于坐标平面的平面，其与各坐标轴的交点就是该方向上的射影点；三条”棱”相加即为对角线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>（平行六面体三条棱）。</p>
+<p><strong>逐步推导</strong> [按图还原]： 1. 在正交标架下，过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+作与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+轴平行的平面（该平面同时垂直于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i,j</annotation></semantics></math>
+所在平面），它与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+轴交于一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>3</mn></msub><annotation encoding="application/x-tex">P_3</annotation></semantics></math>；因为是正交标架，这张平面与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+轴垂直，所以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>3</mn></msub><annotation encoding="application/x-tex">P_3</annotation></semantics></math>
+正是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+轴上的射影点，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>k</mi></msub><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP_3}=\operatorname{proj}_k\overrightarrow{OP}</annotation></semantics></math>（射影向量）。
+2. 同理得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>i</mi></msub><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP_1}=\operatorname{proj}_i\overrightarrow{OP}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mrow><mi mathvariant="normal">proj</mi><mo>&#8289;</mo></mrow><mi>j</mi></msub><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OP_2}=\operatorname{proj}_j\overrightarrow{OP}</annotation></semantics></math>。
+3. 这三段沿坐标轴方向的向量拼成平行六面体的三条棱，其和正好是从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的空间对角线：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{OP}=\overrightarrow{OP_1}+\overrightarrow{OP_2}+\overrightarrow{OP_3}.</annotation></semantics></math></p>
+<p><strong>结论</strong>：在正交标架下，点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的坐标分量就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>
+在各坐标轴上射影的射影值。</p>
+<p><strong>意义与易错点</strong>：老师特别提醒——这个结论<strong>只在正交（直角）标架下成立</strong>。若换成仿射标架，过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+作的是与轴<strong>平行</strong>的平面，得到的交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>3</mn></msub><annotation encoding="application/x-tex">P_3</annotation></semantics></math>
+不一定是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+在该轴上的<strong>垂直射影</strong>，于是”坐标分量 =
+射影值”不再成立。考虑这类问题时都要问一句”为什么”。</p>
+<h3 id="仿射标架与正交标架下坐标射影的辨析">01:14:54—01:18:52 ｜
+仿射标架与正交标架下”坐标=射影”的辨析</h3>
+<p>[按图还原] 延续上一节的图形：在正交标架里，过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+作与某轴平行的平面，因各轴互相垂直，这张平面恰与该轴垂直，故交点就是垂直射影，坐标等于射影值。</p>
+<p>但在<strong>仿射标架</strong>下，各轴不一定垂直；此时作”与轴平行的平面”得到的交点，仅仅是与该轴平行平面相交所得，<strong>并不垂直于该轴</strong>，因此它<strong>不是</strong>点在轴上的射影。所以”坐标分量
+=
+在各坐标轴上的射影值”这一漂亮结论，<strong>只在正交标架（直角坐标系）下成立，在仿射坐标系下不成立</strong>。</p>
+<p>老师强调：我们思考问题时要随时追问”这个结论依赖什么前提、为什么成立”，不要想当然地把直角坐标系下的结论搬到仿射坐标系去。</p>
+<h2
+id="七向量的内积与长度011906013950">七、向量的内积与长度（01:19:06—01:39:50）</h2>
+<h3 id="内积的定义及其投影观点">01:19:06—01:24:12 ｜
+内积的定义及其投影观点</h3>
+<h4 id="例题证明-11011928-内积的代数定义与投影表达式">例题/证明
+11（01:19:28）｜ 内积的代数定义与投影表达式</h4>
+<p><strong>命题</strong>：两个向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+的<strong>内积</strong>（转写里的”内接／内机”即内积）定义为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=|\mathbf a|\,|\mathbf b|\cos\varphi,</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+的夹角。内积的结果是一个<strong>实数</strong>（标量）。</p>
+<p><strong>思路</strong>：内积把两个向量”乘”成一个数；它可以用投影的观点重新理解——一个向量在另一个向量方向上的投影，乘以另一个向量的长度。</p>
+<p><strong>逐步推导</strong>： 1.
+基本定义：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=|\mathbf a|\,|\mathbf b|\cos\varphi</annotation></semantics></math>。
+2. 投影观点：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒃</mi><annotation encoding="application/x-tex">\mathbf b</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒂</mi><annotation encoding="application/x-tex">\mathbf a</annotation></semantics></math>
+方向上的射影值记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">|\mathbf b|\cos\varphi</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mi>⋅</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mi>⋅</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒃</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 在 </mtext><mspace width="0.333em"></mspace></mrow><mi mathvariant="bold-italic">𝒂</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 上的射影值</mtext></mrow><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=|\mathbf a|\cdot(|\mathbf b|\cos\varphi)=|\mathbf a|\cdot(\mathbf b\text{ 在 }\mathbf a\text{ 上的射影值}).</annotation></semantics></math>
+同理也可写成
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mi>⋅</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒂</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 在 </mtext><mspace width="0.333em"></mspace></mrow><mi mathvariant="bold-italic">𝒃</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 上的射影值</mtext></mrow><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=|\mathbf b|\cdot(\mathbf a\text{ 在 }\mathbf b\text{ 上的射影值}).</annotation></semantics></math>
+3. 若其中有一个是零向量（例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mn mathvariant="bold">𝟎</mn></mrow><annotation encoding="application/x-tex">\mathbf b=\mathbf 0</annotation></semantics></math>），则长度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，按定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mn mathvariant="bold">𝟎</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf 0=0</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：内积是一个实数，定义为两向量长度之积再乘夹角余弦；它等价地等于”一向量长度乘以另一向量在其上的射影值”。</p>
+<p><strong>意义与易错点</strong>：内积得到的是数不是向量；零向量与任何向量的内积都是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（因为长度为零）。</p>
+<h3 id="内积的性质正交与柯西不等式">01:24:12—01:30:59 ｜
+内积的性质、正交与柯西不等式</h3>
+<h4 id="例题证明-12012729-两向量正交的充要条件-ab-0">例题/证明
+12（01:27:29）｜ 两向量正交的充要条件 a·b = 0</h4>
+<p><strong>命题</strong>：当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+均为非零向量时，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⟂</mo><mi mathvariant="bold-italic">𝒃</mi><mspace width="1.0em"></mspace><mo>⇔</mo><mspace width="1.0em"></mspace><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf a\perp\mathbf b\quad\Longleftrightarrow\quad \mathbf a\cdot\mathbf b=0.</annotation></semantics></math>
+<strong>约定</strong>：零向量与任何向量都<strong>正交</strong>（垂直）。</p>
+<p><strong>思路</strong>：由内积定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=|\mathbf a|\,|\mathbf b|\cos\varphi</annotation></semantics></math>，当两向量都非零时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=0</annotation></semantics></math>
+等价于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\cos\varphi=0</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\varphi=\dfrac{\pi}{2}</annotation></semantics></math>。</p>
+<p><strong>逐步推导</strong>： 1.
+非零情形：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><mi>φ</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=0\ \Rightarrow\ |\mathbf a|\,|\mathbf b|\cos\varphi=0\ \Rightarrow\ \cos\varphi=0\ \Rightarrow\ \varphi=\dfrac{\pi}{2}</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⟂</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a\perp\mathbf b</annotation></semantics></math>；反之若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⟂</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a\perp\mathbf b</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\varphi=\dfrac{\pi}{2}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\cos\varphi=0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=0</annotation></semantics></math>。
+2. 含零向量：规定零向量与任何向量正交，此时内积也为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，与上述表述一致。</p>
+<p><strong>结论</strong>：两向量正交的充要条件是内积为零（按约定零向量与一切向量正交）。</p>
+<p><strong>意义与易错点</strong>：零向量的方向不确定，却同时与任何向量”平行（共线、共面）“又”正交”——这是约定，目的是让上述充要条件在含零向量时也统一成立。</p>
+<h4 id="例题证明-13013002-柯西不等式-ab-ab">例题/证明 13（01:30:02）｜
+柯西不等式 |a·b| ≤ |a||b|</h4>
+<p><strong>命题</strong>（柯西不等式）：对任意向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">|\mathbf a\cdot\mathbf b|\le |\mathbf a|\,|\mathbf b|,</annotation></semantics></math>
+且等号成立当且仅当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+共线（同向或反向）。</p>
+<p><strong>思路</strong>：由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf b=|\mathbf a|\,|\mathbf b|\cos\varphi</annotation></semantics></math>
+及
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|\cos\varphi|\le 1</annotation></semantics></math>
+直接得到。</p>
+<p><strong>逐步推导</strong>： 1. 因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn><mo>≤</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1\le\cos\varphi\le 1</annotation></semantics></math>，所以
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">|\mathbf a\cdot\mathbf b|=|\mathbf a|\,|\mathbf b|\,|\cos\varphi|\le |\mathbf a|\,|\mathbf b|.</annotation></semantics></math>
+2. 等号成立
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1</mn><mspace width="0.222em"></mspace><mo>⇔</mo><mspace width="0.222em"></mspace><mi>φ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Longleftrightarrow\ |\cos\varphi|=1\ \Longleftrightarrow\ \varphi=0</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">\varphi=\pi</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>,</mo><mi mathvariant="bold-italic">𝒃</mi></mrow><annotation encoding="application/x-tex">\mathbf a,\mathbf b</annotation></semantics></math>
+共线（同向或反向）。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|\mathbf a\cdot\mathbf b|\le |\mathbf a|\,|\mathbf b|</annotation></semantics></math>，等号当且仅当两向量共线。</p>
+<p><strong>意义与易错点</strong>：柯西不等式是应用最广的不等式之一；它从向量内积自然导出，而内积的定义方式一旦推广（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+维、无穷维），就能衍生出许多其它不等式。</p>
+<h3 id="向量长度的内积表示与正交标架下的坐标公式">01:30:59—01:36:46 ｜
+向量长度的内积表示与正交标架下的坐标公式</h3>
+<h4
+id="例题证明-14013411-由内积导出-a-aa-及正交标架下-a²-a₁²a₂²a₃²">例题/证明
+14（01:34:11）｜ 由内积导出 |a| = √(a·a) 及正交标架下 |a|² =
+a₁²+a₂²+a₃²</h4>
+<p><strong>命题</strong>：向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒂</mi><annotation encoding="application/x-tex">\mathbf a</annotation></semantics></math>
+的长度由内积给出：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msqrt><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒂</mi></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">|\mathbf a|=\sqrt{\mathbf a\cdot\mathbf a}.</annotation></semantics></math>
+在正交标架
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>O</mi><mo>;</mo><mi mathvariant="bold-italic">𝒊</mi><mo>,</mo><mi mathvariant="bold-italic">𝒋</mi><mo>,</mo><mi mathvariant="bold-italic">𝒌</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{O;\mathbf i,\mathbf j,\mathbf k\}</annotation></semantics></math>
+下，若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><msub><mi>a</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf a=(a_1,a_2,a_3)</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>3</mn><mn>2</mn></msubsup><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msqrt><mrow><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>3</mn><mn>2</mn></msubsup></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">|\mathbf a|^2=a_1^2+a_2^2+a_3^2,\qquad |\mathbf a|=\sqrt{a_1^2+a_2^2+a_3^2}.</annotation></semantics></math></p>
+<p><strong>思路</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf a=|\mathbf a|^2</annotation></semantics></math>
+直接给出长度；在正交标架下把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><mi mathvariant="bold-italic">𝒊</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi mathvariant="bold-italic">𝒋</mi><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mi mathvariant="bold-italic">𝒌</mi></mrow><annotation encoding="application/x-tex">\mathbf a=a_1\mathbf i+a_2\mathbf j+a_3\mathbf k</annotation></semantics></math>
+代入内积，利用基向量两两正交且长度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+即可化简。</p>
+<p><strong>逐步推导</strong>： 1.
+由内积定义，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mn>0</mn><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathbf a\cdot\mathbf a=|\mathbf a|\,|\mathbf a|\cos 0=|\mathbf a|^2</annotation></semantics></math>，故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msqrt><mrow><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒂</mi></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">|\mathbf a|=\sqrt{\mathbf a\cdot\mathbf a}.</annotation></semantics></math>
+2. 在正交标架下
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒊</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒊</mi><mo>=</mo><mi mathvariant="bold-italic">𝒋</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒋</mi><mo>=</mo><mi mathvariant="bold-italic">𝒌</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒌</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\mathbf i\cdot\mathbf i=\mathbf j\cdot\mathbf j=\mathbf k\cdot\mathbf k=1</annotation></semantics></math>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒊</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒋</mi><mo>=</mo><mi mathvariant="bold-italic">𝒋</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒌</mi><mo>=</mo><mi mathvariant="bold-italic">𝒌</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒊</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbf i\cdot\mathbf j=\mathbf j\cdot\mathbf k=\mathbf k\cdot\mathbf i=0</annotation></semantics></math>。于是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi mathvariant="bold-italic">𝒂</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒂</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mi mathvariant="bold-italic">𝒊</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi mathvariant="bold-italic">𝒋</mi><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mi mathvariant="bold-italic">𝒌</mi><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mi mathvariant="bold-italic">𝒊</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi mathvariant="bold-italic">𝒋</mi><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mi mathvariant="bold-italic">𝒌</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒊</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒊</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒋</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒋</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msubsup><mi>a</mi><mn>3</mn><mn>2</mn></msubsup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒌</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒌</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>1</mn></msub><msub><mi>a</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒊</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒋</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>⋯</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>3</mn><mn>2</mn></msubsup><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\mathbf a\cdot\mathbf a&amp;=(a_1\mathbf i+a_2\mathbf j+a_3\mathbf k)\cdot(a_1\mathbf i+a_2\mathbf j+a_3\mathbf k)\\
+&amp;=a_1^2(\mathbf i\cdot\mathbf i)+a_2^2(\mathbf j\cdot\mathbf j)+a_3^2(\mathbf k\cdot\mathbf k)
++2a_1a_2(\mathbf i\cdot\mathbf j)+\cdots\\
+&amp;=a_1^2+a_2^2+a_3^2.
+\end{aligned}</annotation></semantics></math> 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝒂</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>3</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">|\mathbf a|^2=a_1^2+a_2^2+a_3^2</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：向量长度由内积定义；在正交标架下长度平方等于各坐标分量平方之和。</p>
+<p><strong>意义与易错点</strong>：老师特别点出——向量的长度其实是”通过内积算出来的”，而不是先天地给定；若标架不是正交标架，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒊</mi><mo>⋅</mo><mi mathvariant="bold-italic">𝒋</mi></mrow><annotation encoding="application/x-tex">\mathbf i\cdot\mathbf j</annotation></semantics></math>
+等交叉项不为零，上式就不会这么简洁。这里要弄清定义的主次：先有内积，才有长度与夹角；不要倒过来循环论证。</p>
+<h3 id="内积定义的多样性与学习方法提醒">01:37:37—01:39:50 ｜
+内积定义的多样性与学习方法提醒</h3>
+<p>内积的定义方式其实有很多种：可以用”长度乘夹角余弦”来定义，也可以用”投影”来定义，甚至可以脱离几何直观、用一组抽象公理（或无穷维空间里的某种”乘法”）来定义。不同的定义方式衍化出不同的内积空间，也能让柯西不等式衍生出许许多多其它不等式。</p>
+<p>老师的学习方法提醒：刚入门时不必纠结”哪一种定义才是本质的”——内积可以多种方式定义，现阶段先<strong>掌握其中一种</strong>（先拿到”某一把钥匙”），以此进入体系、把内容学扎实；等学到后面，自然会明白各种定义之间的相通之处。先走进去，再回看全貌。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

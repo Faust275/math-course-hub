@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《几何学》2026-09-30 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《几何学》2026-09-30 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#几何学2026-09-30-课堂详解"
+id="toc-几何学2026-09-30-课堂详解">《几何学》2026-09-30 课堂详解</a>
+<ul>
+<li><a href="#一空间曲面与曲线的方程000323014319"
+id="toc-一空间曲面与曲线的方程000323014319">一、空间曲面与曲线的方程（00:03:23—01:43:19）</a>
+<ul>
+<li><a href="#几何图形与方程完备性与纯粹性"
+id="toc-几何图形与方程完备性与纯粹性">00:03:23—00:11:10 ｜
+几何图形与方程：完备性与纯粹性</a></li>
+<li><a href="#曲面的三类方程一般式参数式向量式"
+id="toc-曲面的三类方程一般式参数式向量式">00:11:10—00:23:17 ｜
+曲面的三类方程：一般式、参数式、向量式</a></li>
+<li><a href="#例平面与球面含参数化与一一对应"
+id="toc-例平面与球面含参数化与一一对应">00:23:17—00:37:14 ｜
+例：平面与球面（含参数化与一一对应）</a></li>
+<li><a href="#例参数方程化为一般方程马鞍面"
+id="toc-例参数方程化为一般方程马鞍面">00:37:14—00:40:33 ｜
+例：参数方程化为一般方程（马鞍面）</a></li>
+<li><a href="#曲线方程一般式两曲面交线与参数式"
+id="toc-曲线方程一般式两曲面交线与参数式">00:40:33—00:53:37 ｜
+曲线方程：一般式（两曲面交线）与参数式</a></li>
+<li><a href="#例证明圆柱面的方程"
+id="toc-例证明圆柱面的方程">00:53:37—01:05:08 ｜
+例／证明：圆柱面的方程</a></li>
+<li><a href="#例圆锥面的方程" id="toc-例圆锥面的方程">01:05:17—01:16:05
+｜ 例：圆锥面的方程</a></li>
+<li><a href="#例圆柱螺线" id="toc-例圆柱螺线">01:16:05—01:23:21 ｜
+例：圆柱螺线</a></li>
+<li><a href="#投影柱面及其求法"
+id="toc-投影柱面及其求法">01:23:34—01:37:28 ｜ 投影柱面及其求法</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="几何学2026-09-30-课堂详解">《几何学》2026-09-30 课堂详解</h1>
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-0930/fig01_sphere_coordinates.png" alt="图 1: 球面坐标系 (φ, θ) 与参数方程表示" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 1: 球面坐标系 (φ, θ) 与参数方程表示</figcaption></figure>
+
+<h2
+id="一空间曲面与曲线的方程000323014319">一、空间曲面与曲线的方程（00:03:23—01:43:19）</h2>
+<h3 id="几何图形与方程完备性与纯粹性">00:03:23—00:11:10 ｜
+几何图形与方程：完备性与纯粹性</h3>
+<p>前面几次课（一共 5
+次）把向量代数的内容介绍完了。向量代数里的加法和数乘，提供了一套工具，让我们能计算向量或线段的长度、夹角、面积等等。下面要介绍的是几何图形：几何图形怎样用代数来刻画。</p>
+<p>一个几何图形并不是把点随随便便放在一起构成的集合。所谓图形，是空间中的点满足某一种特征（性质）而聚集成的形状；点和点放在一起时还需要某种联系，这种联系就是光滑性、连续性——并不是乱七八糟的点放在一起就构成一个几何图形。我们讲的几何图形，基本上就是连续的、或者是光滑的这样一种图形。</p>
+<p>这种”特征”用什么表达？基本就是用方程，或者方程组。点和点之间满足某种特征，对应的就是某个方程或方程组。于是几何图形与方程之间建立起一种等价关系：图形上的点，和方程的解，彼此对应。</p>
+<p>要讲清这种对应关系，首先要建坐标系。在坐标系下，空间中的点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+与其坐标有序数组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+之间建立了一一对应。设整个图形用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+表示，方程用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+表达；点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+为坐标落在图形
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+上，等价于它的坐标满足这个方程。这件事包含相互关联的两层含义，是数学上严格的双重验证要求：</p>
+<ul>
+<li><strong>完备性</strong>：图形上的点，其坐标都满足方程（点在图形上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇒</mo><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math>
+坐标满足方程）。</li>
+<li><strong>纯粹性</strong>：以方程的每一个解为坐标的点，都在图形上（方程的解
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇒</mo><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math>
+点在图形上）。</li>
+</ul>
+<p>换句话说：点在曲面上就满足这个方程；反过来，以这个方程的解为坐标的点就在曲面上。要确认一个方程是某个图形的方程，必须两方面都验证。</p>
+<h3 id="曲面的三类方程一般式参数式向量式">00:11:10—00:23:17 ｜
+曲面的三类方程：一般式、参数式、向量式</h3>
+<p>曲面方程的出发点，就是刚才建立的坐标系——也就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>x</mi><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">Oxyz</annotation></semantics></math>
+坐标系，点和坐标有序数组之间的一一对应关系。在曲面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Σ</mi><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math>
+上的点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>，满足某个方程；反过来，满足该方程的点都在曲面上。</p>
+<p><strong>一般式方程（普通方程、隐式方程）</strong>：形如
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+的方程，称为曲面的<strong>一般式方程</strong>，也叫做普通方程。</p>
+<p><strong>参数方程</strong>：与一般式相对应，还存在带两个参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math>（双参数）的表达形式。在坐标系下，曲面上的点可表示为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mi>z</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">x=x(u,v),\quad y=y(u,v),\quad z=z(u,v),</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u,v)</annotation></semantics></math>
+落在某个区间（或区域）当中。这样的表达称为<strong>参数方程</strong>。</p>
+<p>一般式与参数式之间可以互换。例如从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+中选合适的参数可反解出显式；反过来消掉参数就得到一般式。这一步要依靠<strong>隐函数定理（显隐函数）</strong>：在某一点的某个邻域内，函数满足一定的可微性条件，就总可以把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+解成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">z=f(x,y)</annotation></semantics></math>。最简单的情形如取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>u</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">x=u,\ y=v</annotation></semantics></math>，再从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+中解出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">z=f(x,y)</annotation></semantics></math>，就化为显式。所以实际上就是一个”隐—显互化”的过程。</p>
+<p><strong>向量式方程</strong>：前面讲的是用坐标来表达。若改用向量，点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+对应位置向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec r=\overrightarrow{OP}</annotation></semantics></math>（记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec r</annotation></semantics></math>）；当点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+变动时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec r</annotation></semantics></math>
+随之变化，得到的关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec r</annotation></semantics></math>
+的方程称为<strong>向量方程</strong>。</p>
+<p>举例来说：到原点距离等于定长
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>0</mn></msub><annotation encoding="application/x-tex">R_0</annotation></semantics></math>
+的点的全体，向量上就是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msub><mi>R</mi><mn>0</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">|\vec r|=R_0.</annotation></semantics></math>
+这个式子在平面上就是圆的方程，在空间里就是球面的方程。向量式也写成参数形式：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><mi>x</mi><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒊</mi><mo>+</mo><mi>y</mi><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒋</mi><mo>+</mo><mi>z</mi><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒌</mi></mrow><annotation encoding="application/x-tex">\vec r=x\,\mathbf i+y\,\mathbf j+z\,\mathbf k</annotation></semantics></math>。</p>
+<p>到这里，我们介绍了方程的三类：一般式（普通方程）、参数方程、向量式（含向量参数方程）。</p>
+<h3 id="例平面与球面含参数化与一一对应">00:23:17—00:37:14 ｜
+例：平面与球面（含参数化与一一对应）</h3>
+<h4 id="例题证明-1002317-过点且平行于-xoy-平面的平面方程">例题/证明
+1（00:23:17）｜ 过点且平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面的平面方程</h4>
+<p><strong>命题</strong>：求过点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,z_0)</annotation></semantics></math>
+且平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面的平面方程。</p>
+<p><strong>思路</strong>：平面与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面平行，意味着其上所有点的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+坐标都等于该平面所过的那个常数值。</p>
+<p><strong>推导</strong>： 1. 已知该平面过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,z_0)</annotation></semantics></math>，且与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>）平行，故平面上任意点都满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><msub><mi>z</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">z=z_0</annotation></semantics></math>。
+2. 一般方程：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">f(x,y,z)=z-z_0</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>⇔</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><msub><mi>z</mi><mn>0</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">f(x,y,z)=0\quad\Longleftrightarrow\quad z=z_0.</annotation></semantics></math>
+3. 参数方程：取两个参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math>
+任意（取全体实数），写成
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>u</mi><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mi>v</mi><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><msub><mi>z</mi><mn>0</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">x=u,\quad y=v,\quad z=z_0,</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math>
+不受限制。</p>
+<p><strong>结论</strong>：该平面的普通方程为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><msub><mi>z</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">z=z_0</annotation></semantics></math>；参数方程为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>u</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>v</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><msub><mi>z</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">x=u,\ y=v,\ z=z_0</annotation></semantics></math>。普通方程与参数方程可互相转换。</p>
+<p><strong>意义与易错点</strong>：普通方程直接给出”特征即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+恒定”；参数方程里
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math>
+取任意值，正说明该平面沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+方向无限延展。</p>
+<h4
+id="例题证明-2002338-球面的参数方程及其与坐标的一一对应问题">例题/证明
+2（00:23:38）｜ 球面的参数方程及其与坐标的一一对应问题</h4>
+<p><strong>命题</strong>：建立球心在原点、半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
+的球面的参数方程，并讨论参变量与坐标之间能否一一对应。</p>
+<p><strong>[按图还原] 已知</strong>：球心在原点、半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
+的球面；取球面坐标（纬度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>、经度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>）。纬度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle><mo>≤</mo><mi>φ</mi><mo>≤</mo><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">-\dfrac{\pi}{2}\le\varphi\le\dfrac{\pi}{2}</annotation></semantics></math>；经度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>360</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">360^\circ</annotation></semantics></math>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[0,2\pi)</annotation></semantics></math>），为避免端点重复，常取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">0\le\theta&lt;2\pi</annotation></semantics></math>。图上标出点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+坐标分别落在相应线段上：位于纬度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+处的”纬度圆”半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">r\cos\varphi</annotation></semantics></math>，该圆在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上的投影构成直角三角形。</p>
+<p><strong>思路</strong>：先确定纬度圆半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">r\cos\varphi</annotation></semantics></math>；在此纬度圆上按经度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+取点，于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+都含因子
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\cos\varphi</annotation></semantics></math>，而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">z=r\sin\varphi</annotation></semantics></math>。</p>
+<p><strong>推导</strong>： 1. 纬度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+处的平行圆半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">r\cos\varphi</annotation></semantics></math>；在该圆上按经度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+定位，得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>y</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">x=r\cos\varphi\cos\theta,\qquad y=r\cos\varphi\sin\theta.</annotation></semantics></math>
+2. 高度方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">z=r\sin\varphi</annotation></semantics></math>（当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><mi>±</mi><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\varphi=\pm\dfrac{\pi}{2}</annotation></semantics></math>
+时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>±</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">z=\pm r</annotation></semantics></math>，正是两极）。</p>
+<p><strong>结论</strong>：球面参数方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>y</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>z</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo></mtd></mtr></mtable></mrow><mspace width="2.0em"></mspace><mo>−</mo><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle><mo>≤</mo><mi>φ</mi><mo>≤</mo><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle><mo>,</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>≤</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{cases}
+x=r\cos\varphi\cos\theta,\\[2pt]
+y=r\cos\varphi\sin\theta,\\[2pt]
+z=r\sin\varphi,
+\end{cases}
+\qquad -\dfrac{\pi}{2}\le\varphi\le\dfrac{\pi}{2},\ 0\le\theta&lt;2\pi.</annotation></semantics></math></p>
+<p><strong>意义与易错点</strong>：老师强调这是最重要的一例。它有一个关键特点——在北极、南极这两点（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><mi>±</mi><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\varphi=\pm\dfrac{\pi}{2}</annotation></semantics></math>），无论
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+取何值，点都落在两极，所以参变量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\varphi,\theta)</annotation></semantics></math>
+与坐标
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+在两极处<strong>不是一一对应</strong>；除去两极外才是严格的一一对应。正因为如此，球面找不到一个让参变量与点处处一一对应的单一参数化，往往需要用多个表达式拼接——这也正是后续微分几何等课程里球面成为最重要模型的缘由。[补全]
+标准的球面参数化即上式；两极处
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u,v)\to(x,y,z)</annotation></semantics></math>
+不单射，此说明非当堂逐条推演，仅作自学参照。</p>
+<h3 id="例参数方程化为一般方程马鞍面">00:37:14—00:40:33 ｜
+例：参数方程化为一般方程（马鞍面）</h3>
+<h4 id="例题证明-3003743-由参数方程消参得到马鞍面双曲抛物面">例题/证明
+3（00:37:43）｜ 由参数方程消参得到马鞍面（双曲抛物面）</h4>
+<p><strong>命题</strong>：把一组参数方程化为一般方程，并识别它是什么曲面。</p>
+<p><strong>思路</strong>：参数方程里含两个参数，通过两式相加、相减解出参数，再代入第三式消去参数，得到只含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+的一般式。</p>
+<p><strong>[按图还原] 推导</strong>（口述有漏字，按学科标准整理并标注）：老师给出的参数式可整理为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>u</mi><mo>+</mo><mi>v</mi><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mi>u</mi><mo>−</mo><mi>v</mi><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mi>u</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">x=u+v,\quad y=u-v,\quad z=uv</annotation></semantics></math>
+（也可能写作含常数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>
+的等价形式 [?]）。</p>
+<p>逐步推导： 1. 由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>u</mi><mo>+</mo><mi>v</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>u</mi><mo>−</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">x=u+v,\ y=u-v</annotation></semantics></math>
+相加、相减得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><mn>2</mn></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>v</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>y</mi></mrow><mn>2</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">u=\frac{x+y}{2},\qquad v=\frac{x-y}{2}.</annotation></semantics></math>
+2. 代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>u</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">z=uv</annotation></semantics></math>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><mn>2</mn></mfrac><mo>⋅</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>y</mi></mrow><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mn>4</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">z=\frac{x+y}{2}\cdot\frac{x-y}{2}=\frac{x^2-y^2}{4}.</annotation></semantics></math>
+3. 即一般方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><mi>z</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">x^2-y^2=4z,</annotation></semantics></math>
+或写成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=z</annotation></semantics></math>
+这类形式。</p>
+<p><strong>结论</strong>：该曲面是<strong>双曲抛物面</strong>，也就是<strong>马鞍面</strong>（saddle）。老师指出，这种”参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math>
+一般”的转化本质上就是消参过程，依靠隐函数、显函数的互化来完成。</p>
+<p><strong>意义与易错点</strong>：[补全] 标准马鞍面常写作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">z=\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}</annotation></semantics></math>；此处按课堂口述的参数式消参结果给出，非逐字板书，仅作自学参照。识别曲面类型时，要能从一个参数式快速看出它对应哪张熟悉的图形。</p>
+<h3 id="曲线方程一般式两曲面交线与参数式">00:40:33—00:53:37 ｜
+曲线方程：一般式（两曲面交线）与参数式</h3>
+<p>曲线方程有两种基本观点。</p>
+<p><strong>第一种观点：曲线是两张曲面的交线。</strong> 设曲面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Σ</mi><mn>1</mn></msub><mspace width="-0.167em"></mspace><mo>:</mo><msub><mi>F</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Sigma_1\!:F_1(x,y,z)=0</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Σ</mi><mn>2</mn></msub><mspace width="-0.167em"></mspace><mo>:</mo><msub><mi>F</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Sigma_2\!:F_2(x,y,z)=0</annotation></semantics></math>，把这两个方程联立起来：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>F</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>F</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+F_1(x,y,z)=0,\\
+F_2(x,y,z)=0,
+\end{cases}</annotation></semantics></math>
+联立所得的就是曲线的方程，这称为<strong>曲线的一般式方程</strong>（由两张曲面的普通方程联立而成）。</p>
+<p><strong>第二种观点：曲线是动点的轨迹。</strong> 随时间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+变化，点的位置
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>z</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x(t),y(t),z(t))</annotation></semantics></math>
+随之变化，当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+在区间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>
+上变动时，就描出一条曲线。这样表达出来的就是<strong>曲线的参数方程</strong>。向量式参数方程写为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒊</mi><mo>+</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒋</mi><mo>+</mo><mi>z</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="bold-italic">𝒌</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec r(t)=x(t)\,\mathbf i+y(t)\,\mathbf j+z(t)\,\mathbf k.</annotation></semantics></math>
+曲线的一般式与参数式之间同样可以互换（在满足可微性条件后，可消去或引入参数）。</p>
+<h4 id="例题证明-4004551-平面-z1-与球面的交线">例题/证明 4（00:45:51）｜
+平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">z=1</annotation></semantics></math>
+与球面的交线</h4>
+<p><strong>命题</strong>：求平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">z=1</annotation></semantics></math>
+与球面（球心在原点、半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>，方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=4</annotation></semantics></math>）的交线。</p>
+<p><strong>思路</strong>：把两曲面方程联立，消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+即得交线在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">z=1</annotation></semantics></math>
+平面上的形状。</p>
+<p><strong>推导</strong>：联立
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>z</mi><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+z=1,\\
+x^2+y^2+z^2=4,
+\end{cases}</annotation></semantics></math> 代入得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">x^2+y^2+1=4</annotation></semantics></math>，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>3</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>z</mi><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">x^2+y^2=3,\qquad z=1.</annotation></semantics></math></p>
+<p><strong>结论</strong>：交线是平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">z=1</annotation></semantics></math>
+上、以原点为中心、半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>3</mn></msqrt><annotation encoding="application/x-tex">\sqrt{3}</annotation></semantics></math>
+的一个圆。</p>
+<p><strong>意义与易错点</strong>：老师强调，同一条曲线可以是两张<strong>不同</strong>曲面的交线（比如换成别的曲面仍可能得到同一个圆）。因此描述一条曲线时必须写成两曲面联立的形式，不能简单地化简成单一方程就了事。</p>
+<h3 id="例证明圆柱面的方程">00:53:37—01:05:08 ｜
+例／证明：圆柱面的方程</h3>
+<h4 id="例题证明-5005430-圆柱面-x2y2r2-的方程">例题/证明 5（00:54:30）｜
+圆柱面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2</annotation></semantics></math>
+的方程</h4>
+<p><strong>[按图还原] 已知</strong>：在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上以原点为圆心、半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+的圆，方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2,\ z=0</annotation></semantics></math>；过该圆上每一点作平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴的直线（母线），这些平行直线全体构成的图形就是圆柱面。母线平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴。</p>
+<p><strong>命题</strong>：求该圆柱面的方程，并用双重验证证明之。</p>
+<p><strong>证明</strong>（两个方面）： 1.
+<strong>完备性</strong>（图形上的点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇒</mo><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math>
+满足方程）：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(x,y,z)</annotation></semantics></math>
+在圆柱面上。将
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴方向投影到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P&#39;(x,y,0)</annotation></semantics></math>。因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+落在过底面圆上某点的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴平行母线上，所以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>P</mi><mo>′</mo></msup><annotation encoding="application/x-tex">P&#39;</annotation></semantics></math>
+落在底面圆
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2</annotation></semantics></math>
+上，从而其坐标满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2</annotation></semantics></math>。
+2. <strong>纯粹性</strong>（方程的解
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇒</mo><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math>
+在图形上）：设坐标
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2</annotation></semantics></math>。过该点作平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴的直线，它与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面的交点为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,0)</annotation></semantics></math>；由于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2</annotation></semantics></math>，该交点落在底面圆上，故这条直线是一条母线，从而点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+在圆柱面上。</p>
+<p><strong>结论</strong>：圆柱面的方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2,</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+不受限制（任意）。</p>
+<p><strong>意义与易错点</strong>：不能只写
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>，那只表示底面那个圆周；母线沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴方向无限延伸，所以方程中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+任意。老师每次推导这类方程，第一句话都是”在曲面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Σ</mi><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math>
+上任取一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(x,y,z)</annotation></semantics></math>“，正是为了把完备性与纯粹性这两个方面都讲清楚。</p>
+<h3 id="例圆锥面的方程">01:05:17—01:16:05 ｜ 例：圆锥面的方程</h3>
+<h4 id="例题证明-6010601-圆锥面-x2y2k2z2-的方程">例题/证明
+6（01:06:01）｜ 圆锥面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>k</mi><mn>2</mn></msup><msup><mi>z</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=k^2z^2</annotation></semantics></math>
+的方程</h4>
+<p><strong>[按图还原] 已知</strong>：在平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>h</mi></mrow><annotation encoding="application/x-tex">z=h</annotation></semantics></math>
+上取一个圆（准线），其圆心在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴上；所有过原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+与该圆上点的直线（母线）全体构成圆锥面；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+称为顶点，这些过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+且与准线相交的直线称为母线。该图形可沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴上下无限延长。</p>
+<p><strong>命题</strong>：求该圆锥面的方程。</p>
+<p><strong>推导</strong>（按标准方法整理，因口述有漏字，关键处标
+[补全]，非当堂逐字板书，仅作自学参照）： 1. 设准线上一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>h</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_1(x_1,y_1,h)</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msup><mi>ρ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x_1^2+y_1^2=\rho^2</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>
+为该纬线圆半径，为常数）。 2. 取圆锥面上任一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(x,y,z)</annotation></semantics></math>，它落在某条母线上，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OP_1}</annotation></semantics></math>
+共线，存在实数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>t</mi><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mi>t</mi><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mi>t</mi><mi>h</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">x=tx_1,\quad y=ty_1,\quad z=th.</annotation></semantics></math>
+3. 由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>t</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">z=th</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>z</mi><mi>h</mi></mfrac></mstyle></mrow><annotation encoding="application/x-tex">t=\dfrac{z}{h}</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">h\neq0</annotation></semantics></math>），于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>h</mi><mi>x</mi></mrow><mi>z</mi></mfrac></mstyle><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>h</mi><mi>y</mi></mrow><mi>z</mi></mfrac></mstyle></mrow><annotation encoding="application/x-tex">x_1=\dfrac{hx}{z},\ y_1=\dfrac{hy}{z}</annotation></semantics></math>。
+4. 代入准线方程：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>h</mi><mn>2</mn></msup><msup><mi>x</mi><mn>2</mn></msup></mrow><msup><mi>z</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><mrow><msup><mi>h</mi><mn>2</mn></msup><msup><mi>y</mi><mn>2</mn></msup></mrow><msup><mi>z</mi><mn>2</mn></msup></mfrac><mo>=</mo><msup><mi>ρ</mi><mn>2</mn></msup><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mfrac><msup><mi>ρ</mi><mn>2</mn></msup><msup><mi>h</mi><mn>2</mn></msup></mfrac><msup><mi>z</mi><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{h^2x^2}{z^2}+\frac{h^2y^2}{z^2}=\rho^2
+   \quad\Longrightarrow\quad
+   x^2+y^2=\frac{\rho^2}{h^2}z^2.</annotation></semantics></math> 记
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>ρ</mi><mi>h</mi></mfrac></mstyle></mrow><annotation encoding="application/x-tex">k=\dfrac{\rho}{h}</annotation></semantics></math>，得圆锥面方程
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>k</mi><mn>2</mn></msup><msup><mi>z</mi><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">x^2+y^2=k^2z^2.</annotation></semantics></math></p>
+<p><strong>结论</strong>：顶点在原点、轴为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴的圆锥面方程为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>k</mi><mn>2</mn></msup><msup><mi>z</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=k^2z^2</annotation></semantics></math>。</p>
+<p><strong>意义与易错点</strong>：[补全] 老师口述中取相似比
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mi>z</mi><mi>/</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">t=z/h</annotation></semantics></math>，并给出等价参数式——用准线圆参数化
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>ρ</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>ρ</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mi>h</mi></mrow><annotation encoding="application/x-tex">x=\rho\cos\varphi,\ y=\rho\sin\varphi,\ z=h</annotation></semantics></math>，再整体按
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+比例缩放得到锥面参数方程；标准推导如上，仅作自学参照。圆锥面与圆柱面一样，方程中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+不单独受限；顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+处需单独留意。</p>
+<h3 id="例圆柱螺线">01:16:05—01:23:21 ｜ 例：圆柱螺线</h3>
+<h4 id="例题证明-7011646-圆柱螺线helix的参数方程">例题/证明
+7（01:16:46）｜ 圆柱螺线（helix）的参数方程</h4>
+<p><strong>[按图还原] 已知</strong>：圆柱面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2=R^2</annotation></semantics></math>；点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+在该圆柱面上，且它在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上的投影以匀角速度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+绕原点作圆周运动，同时沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴方向以匀速
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+作直线运动。这是两种运动的合成。</p>
+<p><strong>命题</strong>：求圆柱螺线的参数方程。</p>
+<p><strong>推导</strong>： 1. 设经过时间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>，投影转过的角度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\omega t</annotation></semantics></math>，故投影坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>ω</mi><mi>t</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>R</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>ω</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(R\cos\omega t,\ R\sin\omega t)</annotation></semantics></math>。
+2. 沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+方向以速度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+匀速走过的距离为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">vt</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>v</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">z=vt</annotation></semantics></math>。</p>
+<p>于是得到参数方程
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>R</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mi>R</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mi>v</mi><mi>t</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">x=R\cos(\omega t),\quad y=R\sin(\omega t),\quad z=vt,</annotation></semantics></math>
+参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">t\in\mathbb R</annotation></semantics></math>（上下无限延伸）。</p>
+<p><strong>结论</strong>：用参数方程表示圆柱螺线特别简单；它是圆柱面上的一条空间曲线（如华表上盘绕的龙即是这类图形）。</p>
+<p><strong>意义与易错点</strong>：老师借此小结已介绍的特殊图形——球面、平行于坐标平面的平面、圆柱面、圆锥面、圆柱螺线——它们的方程都应能直接写出来。</p>
+<h3 id="投影柱面及其求法">01:23:34—01:37:28 ｜ 投影柱面及其求法</h3>
+<p><strong>概念</strong>[按图还原]：给定一条空间曲线，沿平行于某坐标轴（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴）的方向把它投影到某个坐标平面（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>）上；过投影所得平面曲线上每一点、作平行于该轴的直线（母线），这些平行直线全体构成的柱面，称为该曲线在这个坐标平面上的<strong>投影柱面</strong>。</p>
+<p><strong>一般求法（定理）</strong>：设曲线由两张曲面联立
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+F(x,y,z)=0,\\
+G(x,y,z)=0,
+\end{cases}</annotation></semantics></math> 求其向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面的投影柱面：只需消去参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>，得到只含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+的方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H(x,y)=0</annotation></semantics></math>，即为投影柱面方程。推导如下：取投影柱面上一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(x,y,z)</annotation></semantics></math>，其母线与曲线交于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_1(x_1,y_1,z)</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x=x_1,\ y=y_1</annotation></semantics></math>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_1</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>G</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F=0,\ G=0</annotation></semantics></math>；从这两个方程消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>，便得只含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+的关系
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H(x,y)=0</annotation></semantics></math>。这条定理告诉我们：只要把联立的两方程消掉第三个坐标，剩下的方程就是所求投影柱面。</p>
+<h4 id="例题证明-8013109-抛物面与平面交线在-xoy-上的投影柱面">例题/证明
+8（01:31:09）｜ 抛物面与平面交线在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+上的投影柱面</h4>
+<p><strong>命题</strong>：求曲面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x^2+y^2=z</annotation></semantics></math>（旋转抛物面）与平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">z=x+2</annotation></semantics></math>
+的交线在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上的投影柱面方程。</p>
+<p><strong>思路</strong>：将交线的两方程联立，消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>。</p>
+<p><strong>推导</strong>：联立
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mi>z</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>z</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>,</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+x^2+y^2=z,\\
+z=x+2,
+\end{cases}</annotation></semantics></math> 代入消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">x^2+y^2=x+2.</annotation></semantics></math>
+配方：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">x^2-x+y^2=2
+\quad\Longrightarrow\quad
+\left(x-\frac12\right)^2+y^2=\frac94.</annotation></semantics></math></p>
+<p><strong>结论</strong>：投影柱面为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\left(x-\frac12\right)^2+y^2=\frac94,</annotation></semantics></math>
+这是一个圆柱面（母线平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴，圆心
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1/2,0)</annotation></semantics></math>、半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">3/2</annotation></semantics></math>）。</p>
+<p><strong>追问与易错点</strong>：若改问在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+平面上的投影（即消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>），则”消不掉”——因为上面这个投影柱面方程本身不含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>，它平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴，所以曲线在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+平面上没有（单一的）投影柱面，投影退化。这正是”消参消不掉”的原因：该柱面平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴，只在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面上有正常投影。</p>
+<p>老师进一步提醒：消参时务必根据图形的几何性质确定变量的取值范围，确保得到的方程呈现的是图形的<strong>全貌</strong>而不是其中一部分；极端情形下，平面本身也可以看作一种投影柱面——具体问题要具体分析。</p>
+<p>（本课内容到此；按课堂安排，后续内容在 10 月 10
+日（周三）的课继续。）</p>
+
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-0930/fig02_cylinder_and_helix.png" alt="图 2: 圆柱面方程与圆柱螺线参数曲线" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 2: 圆柱面方程与圆柱螺线参数曲线</figcaption></figure>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

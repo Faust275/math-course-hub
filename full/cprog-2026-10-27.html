@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-10-27 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-10-27 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-10-27-课堂详解"
+id="toc-c-程序设计2026-10-27-课堂详解">《C 程序设计》2026-10-27
+课堂详解</a>
+<ul>
+<li><a href="#一第6章-运算符与表达式000007022516"
+id="toc-一第6章-运算符与表达式000007022516">一、第6章
+运算符与表达式（00:00:07—02:25:16）</a>
+<ul>
+<li><a href="#表达式总览自增自减与运算符优先级"
+id="toc-表达式总览自增自减与运算符优先级">00:00:07—00:10:56 ｜
+表达式总览、自增自减与运算符优先级</a></li>
+<li><a href="#赋值表达式与复合赋值"
+id="toc-赋值表达式与复合赋值">00:10:56—00:18:55 ｜
+赋值表达式与复合赋值</a></li>
+<li><a href="#关系表达式及数学写法陷阱"
+id="toc-关系表达式及数学写法陷阱">00:18:55—00:24:44 ｜
+关系表达式及数学写法陷阱</a></li>
+<li><a href="#逻辑表达式与短路规则"
+id="toc-逻辑表达式与短路规则">00:24:44—00:34:10 ｜
+逻辑表达式与短路规则</a></li>
+<li><a href="#短路规则的程序演示与应用"
+id="toc-短路规则的程序演示与应用">00:34:10—00:50:17 ｜
+短路规则的程序演示与应用</a></li>
+<li><a href="#条件表达式三目运算符"
+id="toc-条件表达式三目运算符">00:50:17—01:00:48 ｜
+条件表达式（三目运算符）</a></li>
+<li><a href="#条件表达式的结合性与嵌套"
+id="toc-条件表达式的结合性与嵌套">01:00:48—01:09:18 ｜
+条件表达式的结合性与嵌套</a></li>
+<li><a href="#逗号表达式与字符处理"
+id="toc-逗号表达式与字符处理">01:09:18—01:27:53 ｜
+逗号表达式与字符处理</a></li>
+<li><a href="#位运算位逻辑与移位"
+id="toc-位运算位逻辑与移位">01:27:53—01:50:42 ｜
+位运算：位逻辑与移位</a></li>
+<li><a href="#位运算的运算性质与应用"
+id="toc-位运算的运算性质与应用">01:50:42—02:02:39 ｜
+位运算的运算性质与应用</a></li>
+<li><a href="#sizeof-运算符与完整优先级表"
+id="toc-sizeof-运算符与完整优先级表">02:02:39—02:10:14 ｜ sizeof
+运算符与完整优先级表</a></li>
+<li><a href="#位运算应用取第-k-位与输出二进制"
+id="toc-位运算应用取第-k-位与输出二进制">02:10:14—02:25:16 ｜
+位运算应用：取第 k 位与输出二进制</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-10-27-课堂详解">《C 程序设计》2026-10-27
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:29:31 ｜ 逐条字幕：1123 条 ｜ 时间段小节：12
+｜ 例题 / 证明：12</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件，不以字幕为准；课件原文留档在
+content/cprog/_slides/ 下对应章节。**</p>
+</blockquote>
+<h2 id="一第6章-运算符与表达式000007022516">一、第6章
+运算符与表达式（00:00:07—02:25:16）</h2>
+<h3 id="表达式总览自增自减与运算符优先级">00:00:07—00:10:56 ｜
+表达式总览、自增自减与运算符优先级</h3>
+<p>本段是本章的引入。老师先回顾已学过的表达式类型：前面四节课已经学过赋值表达式、关系表达式、逻辑表达式。今天要新增的是<strong>条件表达式、逗号表达式，还有位运算</strong>；其中条件表达式（三目）有用但不算最重要，逗号表达式（位运算）在视频压缩等场合很重要；而算术、关系、逻辑等前面四类仍然是最基础、最重要的。</p>
+<p>接着复习了算术表达式的运算符：双目算术运算符有加、减、乘、除、取余，其中取余
+<code>%</code> 只能用于整数；单目算术运算符有取相反数（负号
+<code>-</code>）、取正号 <code>+</code>，以及自增 <code>++</code>、自减
+<code>--</code>。</p>
+<h4
+id="例题证明-1000221-自增自减运算符表达式的值副作用与单目右结合">例题/证明
+1（00:02:21）｜ 自增自减运算符：表达式的值、副作用与单目右结合</h4>
+<p><strong>题目／任务</strong>：说清 <code>++x</code>、<code>x++</code>
+与 <code>--x</code>、<code>x--</code>
+的语义区别，以及它们在优先级和结合性上的特点。</p>
+<p><strong>思路</strong>（以课件 ch06 第 69—71 页的表述为准）：</p>
+<ul>
+<li>自增 <code>x++</code> 与 <code>++x</code> 的作用都是把
+<code>x</code> 的值加 1；自减 <code>x--</code> 与 <code>--x</code>
+都是减 1。</li>
+<li>区别在表达式的值：<code>x++</code>（后置）先取 <code>x</code>
+的老值作为整个表达式的值，再执行
+<code>x = x + 1</code>；<code>++x</code>（前置）先执行
+<code>x = x + 1</code>，再取 <code>x</code> 的新值作为表达式的值。</li>
+<li><code>++</code>、<code>--</code>
+要改变操作数的值，所以操作数<strong>只能是变量</strong>（或将来学到的数组元素、指针指向的元素），<code>++3</code>、<code>(i+x)--</code>
+都是非法的。</li>
+<li>优先级：<code>++</code>、<code>--</code>
+是单目运算符，优先级<strong>高于所有双目运算符</strong>。</li>
+<li>结合性：单目运算符一律<strong>从右往左</strong>结合。例如老师举例“<code>-x++</code>
+等价于 <code>-(x++)</code>”，若 <code>x=6</code>，则 <code>-x++</code>
+的值为 <code>-6</code>，之后 <code>x</code> 变成 <code>7</code>。</li>
+</ul>
+<p><strong>结论</strong>：凡是表达式都有值；自增自减必须作用于变量；单目运算符右结合，且优先级高于双目。</p>
+<p><strong>易错点</strong>：把 <code>x++</code> 与 <code>++x</code>
+的表达式值记反；把自增自减用在常量或非左值表达式上。</p>
+<p>本段还给出优先级与结合性的总体规律（课件 ch06 第 70 页）：</p>
+<ul>
+<li>圆括号 <code>()</code> 优先级最高，可改变优先级。</li>
+<li>单目运算符（如
+<code>!</code>、<code>-</code>、<code>++</code>、<code>--</code>）优先级高于双目，双目高于多目。</li>
+<li>一般规律：<strong>算术运算 &gt; 关系运算 &gt; 逻辑运算 &gt;
+赋值运算</strong>。记法是从小学到初中的学习顺序——先学加减乘除，再学比较大小，再学对错（逻辑）。</li>
+<li>同级运算符的结合性：单目运算符和赋值运算符从右往左结合；其余（占大多数）从左往右结合。</li>
+</ul>
+<h3 id="赋值表达式与复合赋值">00:10:56—00:18:55 ｜
+赋值表达式与复合赋值</h3>
+<p>本段讲赋值表达式及其求值与结合性（课件 ch06 第 73—75 页）。</p>
+<p>赋值表达式的形式是
+<code>变量 = 表达式</code>：先计算右侧表达式的值，赋给左侧变量；若类型不一致，编译器会插入一段代码做类型转换，转换不了则编译报错。赋值表达式本身也有值——就是左侧变量所拿到的值（凡表达式都有值）。</p>
+<p>复合赋值运算符有
+<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code>
+等，是缩写。老师特别强调：<code>x += 5</code> 等价于
+<code>x = x + 5</code>；但 <code>x *= x + 2</code> 等价于
+<code>x = x * (x + 2)</code>，而<strong>不是</strong>
+<code>x = x * x + 2</code>，因为右侧整个表达式要先作为一个整体计算。</p>
+<h4 id="例题证明-2001557-赋值表达式的右结合x-y-z-3-与-x-y-z-3">例题/证明
+2（00:15:57）｜ 赋值表达式的右结合：<code>x = y = z = 3</code> 与
+<code>x = y += z = 3</code></h4>
+<p><strong>题目／任务</strong>：说明为什么赋值表达式必须右结合。</p>
+<p><strong>过程</strong>（按课件 ch06 第 74 页逐条还原）：</p>
+<ol type="1">
+<li><code>x = y = z = 3;</code> 等价于
+<code>x = (y = (z = 3));</code>。若从左往右结合则无法解释，所以只能右结合：先算
+<code>z = 3</code>（值为 3），再 <code>y = 3</code>（值为 3），最后
+<code>x = 3</code>。</li>
+<li>老师又举 <code>x = y += z = 3;</code>，等价于
+<code>x = (y += (z = 3));</code>。</li>
+<li>反例：<code>x = y + z = 5;</code> 等价于
+<code>x = ((y+z) = 5);</code>，而 <code>y+z</code>
+不是可赋值的变量（左值），无法执行，所以这是错的。</li>
+</ol>
+<p><strong>结论</strong>：赋值运算符优先级极低（倒数第二），且从右往左结合；不要把右边写错成“先加再整体赋值”的形式。</p>
+<p><strong>易错点</strong>：复合赋值时漏把右侧括起来整体运算；误以为
+<code>x = y + z = 5</code> 合法。</p>
+<h3 id="关系表达式及数学写法陷阱">00:18:55—00:24:44 ｜
+关系表达式及数学写法陷阱</h3>
+<p>本段讲关系表达式（课件 ch06 第 75—77
+页）。关系运算的结果是逻辑值：成立为 1，不成立为 0。</p>
+<p>关系运算符分两级：大于、小于、大于等于、小于等于为同一级（较高）；等于
+<code>==</code>、不等于 <code>!=</code>
+为另一级（较低）。举例：<code>a &gt; b == c</code> 等价于
+<code>(a &gt; b) == c</code>；<code>d = a &gt; b</code> 等价于
+<code>d = (a &gt; b)</code>；<code>ch &gt; 'a' + 1</code> 等价于
+<code>ch &gt; ('a' + 1)</code>；<code>d = a + b &gt; c</code> 等价于
+<code>d = ((a + b) &gt; c)</code>。</p>
+<h4 id="例题证明-3002122-数学式-3-x-5-在-c-语言中的陷阱">例题/证明
+3（00:21:22）｜ 数学式 <code>3 &lt;= x &lt;= 5</code> 在 C
+语言中的陷阱</h4>
+<p><strong>题目／任务</strong>：解释为什么写
+<code>3 &lt;= x &lt;= 5</code> 在 C 里不符合数学直觉。</p>
+<p><strong>过程</strong>（课件 ch06 第 75—76 页）：</p>
+<ol type="1">
+<li><code>3 &lt;= x &lt;= 5</code> 在 C 中等价于
+<code>(3 &lt;= x) &lt;= 5</code>——因为 <code>&lt;=</code>
+同级、从左往右结合。</li>
+<li>先算 <code>3 &lt;= x</code>，结果只能是 <code>0</code> 或
+<code>1</code>；而 <code>0</code> 或 <code>1</code> 永远小于等于
+<code>5</code>，所以整个表达式永远为真（值为 1）。</li>
+<li>这与数学里“x 在 3 到 5 之间”完全不同；要在 C 里表达区间必须用
+<code>x &gt;= 3 &amp;&amp; x &lt;= 5</code>。</li>
+</ol>
+<p><strong>结论</strong>：数学上的连写不等式不能直接照搬到
+C；关系表达式结果只能是 0/1。</p>
+<p><strong>易错点</strong>：把 C
+的关系表达式当成数学连不等式；这是初学者最常犯的错误之一，老师特别提醒“希望同学们都不要犯”。</p>
+<h3 id="逻辑表达式与短路规则">00:24:44—00:34:10 ｜
+逻辑表达式与短路规则</h3>
+<p>本段讲逻辑运算（课件 ch06 第 78—84 页）。逻辑与
+<code>&amp;&amp;</code>、逻辑或 <code>||</code>、逻辑非
+<code>!</code>；逻辑值用整数表示，1 为真、0
+为假。优先级：逻辑非（单目）最高，然后是算术、关系、<code>&amp;&amp;</code>、<code>||</code>，最后是赋值；<code>&amp;&amp;</code>
+高于
+<code>||</code>，且都符合语言习惯。<code>&amp;&amp;</code>、<code>||</code>
+从左往右结合，逻辑非从右往左结合。</p>
+<p>逻辑运算有一个重要性质——<strong>短路规则</strong>：</p>
+<ul>
+<li><code>exp1 &amp;&amp; exp2</code>：先算 <code>exp1</code>，若为
+0，整个表达式已确定为 0，立即停止，<strong>不再算
+<code>exp2</code></strong>。</li>
+<li><code>exp1 || exp2</code>：先算 <code>exp1</code>，若为
+1，整个表达式已确定为 1，立即停止，<strong>不再算
+<code>exp2</code></strong>。</li>
+</ul>
+<p>老师强调：先结合的顺序和真正执行的顺序<strong>是两码事</strong>——最外层决定先算哪一侧，能提前定值的就不再算另一侧（课件
+ch06 第 83—84 页）。</p>
+<p>此处还引入一个复杂表达式求值的例子（00:29:00，老师用具体数值推导
+<code>x++ + ++x - ++x</code>
+的执行结果），说明表达式求值除了结合顺序，还涉及运行期先算左子树还是右子树的顺序问题，并由此给出忠告：<strong>尽量写简单的表达式，不要写复杂表达式</strong>。</p>
+<h3 id="短路规则的程序演示与应用">00:34:10—00:50:17 ｜
+短路规则的程序演示与应用</h3>
+<h4 id="例题证明-4003842-逻辑短路演示程序fa-fb">例题/证明
+4（00:38:42）｜ 逻辑短路演示程序（fa / fb）</h4>
+<p><strong>题目／任务</strong>：用两个会打印字符并返回 1
+的函数，直观演示 <code>&amp;&amp;</code> 与 <code>||</code>
+的短路行为。代码逐字符取自课件 ch06 第 82—83 页。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> fa<span class="op">()</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;A&quot;</span><span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> fb<span class="op">()</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;B&quot;</span><span class="op">);</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> fa<span class="op">()</span> <span class="op">&amp;&amp;</span> fb<span class="op">()</span> <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;C</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> <span class="op">!</span> fa<span class="op">()</span> <span class="op">&amp;&amp;</span> fb<span class="op">()</span> <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;C</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> fa<span class="op">()</span> <span class="op">||</span> fb<span class="op">()</span> <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;C</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> <span class="op">!</span> fa<span class="op">()</span> <span class="op">||</span> fb<span class="op">()</span> <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;C</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span></code></pre></div>
+<p><strong>输入</strong>：无。</p>
+<p><strong>输出／运行结果</strong>（课件 ch06 第 83 页给出）：</p>
+<pre><code>ABC
+A
+AC
+ABC</code></pre>
+<p>逐行解释（课堂还原）：</p>
+<ol type="1">
+<li><code>fa() &amp;&amp; fb()</code>：<code>fa()</code> 先执行，打印
+<code>A</code> 并返回 1；因左侧为真，还需算右侧 <code>fb()</code>，打印
+<code>B</code> 后条件成立，打印 <code>C</code> → <code>ABC</code>。</li>
+<li><code>!fa() &amp;&amp; fb()</code>：<code>fa()</code> 打印
+<code>A</code> 返回 1，取非得 0，左侧已假，右侧 <code>fb()</code>
+被短路，不再执行 → 只输出 <code>A</code>。</li>
+<li><code>fa() || fb()</code>：<code>fa()</code> 打印 <code>A</code>
+返回 1，左侧已真，<code>fb()</code> 被短路 → <code>AC</code>。</li>
+<li><code>!fa() || fb()</code>：<code>fa()</code> 打印 <code>A</code>
+返回 1，取非得 0，左侧为假，须算右侧 <code>fb()</code> 打印
+<code>B</code>，再打印 <code>C</code> → <code>ABC</code>。</li>
+</ol>
+<p><strong>结论</strong>：<code>&amp;&amp;</code>
+左侧为假、<code>||</code> 左侧为真时，右侧不执行；先结合 ≠ 先执行。</p>
+<p><strong>易错点</strong>：初学者常误以为“先结合的先执行”，从而猜错输出。</p>
+<h4 id="例题证明-5005010-短路规则的常见写法应用">例题/证明
+5（00:50:10）｜ 短路规则的常见写法应用</h4>
+<p><strong>题目／任务</strong>：把“判断 x 是否为零／不为零、x 与 y
+不同时为零”写成 idiomatic 的逻辑表达式（课件 ch06 第 84 页）。</p>
+<p><strong>过程</strong>：</p>
+<ul>
+<li>x 为零：<code>x == 0</code> 或 <code>!x</code>。</li>
+<li>x 不为零：<code>x != 0</code> 或 <code>x</code>（老练写法直接写
+<code>x</code>）。</li>
+<li>x 和 y
+不同时为零：<code>!(x == 0 &amp;&amp; y == 0)</code>、<code>x != 0 || y != 0</code>、或直接
+<code>x || y</code>。</li>
+</ul>
+<p><strong>结论</strong>：这些写法结果是等价的，但老师提醒：若
+<code>A</code> 里包含函数调用（如前面
+fa/fb），数学上等价的两式<strong>实际执行次数可能不同</strong>——例如把
+<code>A &amp;&amp; B</code> 改写成等价的 <code>B &amp;&amp; A</code>，当
+<code>A</code>
+是带副作用的函数时，调用次数会变。这正是程序设计比单纯记语法难的地方（老师还结合第五章学过的
+<code>static</code>
+静态变量举例：同一函数两次调用，因内部静态变量状态不同，返回值可能不一样）。</p>
+<h3 id="条件表达式三目运算符">00:50:17—01:00:48 ｜
+条件表达式（三目运算符）</h3>
+<p>本段讲条件运算符 <code>? :</code>（课件 ch06 第 86—87 页）。形式为
+<code>exp1 ? exp2 : exp3</code>：先算
+<code>exp1</code>，为真则整个表达式的值为 <code>exp2</code> 的值，否则为
+<code>exp3</code> 的值。它很像 <code>if-else</code> 语句。</p>
+<h4 id="例题证明-6005750-用条件表达式求最大值最小值与三者最大">例题/证明
+6（00:57:50）｜ 用条件表达式求最大值、最小值与三者最大</h4>
+<p><strong>题目／任务</strong>：用三目运算符写出取两数最大、两数最小、三数最大的式子（代码逐字符取自课件
+ch06 第 87 页）。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> a <span class="op">&gt;</span> b <span class="op">?</span> a <span class="op">:</span> b<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">/* 将a,b的最大值赋值给y*/</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> a <span class="op">&lt;</span> b <span class="op">?</span> a <span class="op">:</span> b<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">/* 将a,b的最小值赋值给y*/</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">/* 将a、b、c中的最大值赋值给y */</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> a <span class="op">&gt;</span> b <span class="op">?</span> <span class="op">(</span>a<span class="op">&gt;</span>c<span class="op">?</span>a<span class="op">:</span>c<span class="op">)</span> <span class="op">:</span> <span class="op">(</span>b<span class="op">&gt;</span>c<span class="op">?</span>b<span class="op">:</span>c<span class="op">);</span> <span class="co">/* 嵌套*/</span></span></code></pre></div>
+<p><strong>说明</strong>：<code>a &gt; b ? a : b</code> 即“若 a&gt;b 取
+a，否则取 b”，把 a、b 中较大者赋给 y；三数最大则在嵌套一层比较。</p>
+<p><strong>易错点</strong>：条件表达式本质是表达式而非语句；不要和
+<code>if-else</code>
+混为一谈。老师还提示：嵌套条件表达式的括号不是必须的（条件运算符本身从右往左结合），但可读性上建议加括号，不要钻这种“小花招”。</p>
+<h3 id="条件表达式的结合性与嵌套">01:00:48—01:09:18 ｜
+条件表达式的结合性与嵌套</h3>
+<p>本段进一步讲条件运算符的结合性（课件 ch06 第 87—88
+页）：条件运算符<strong>从右往左结合</strong>。以
+<code>y = a &gt; b ? a &gt; c ? a : c : b &gt; c ? b : c;</code>
+为例，正确分组为：</p>
+<pre><code>第1步 y = a &gt; b ? a &gt; c ? a : c : (b &gt; c ? b : c);
+第2步 y = a &gt; b ? (a &gt; c ? a : c) : (b &gt; c ? b : c);</code></pre>
+<p>而“从左开始结合”的下列分组是<strong>错误的</strong>：</p>
+<pre><code>y = (a &gt; b ? a : a &gt; c) ? c : b &gt; c ? b : c;</code></pre>
+<p>运算时仍按条件表达式规则（先判断最外层
+<code>a &gt; b</code>）从左到右求值。老师明确表态：不鼓励花精力在这种小技巧上，核心是会用
+<code>? :</code> 即可。</p>
+<h3 id="逗号表达式与字符处理">01:09:18—01:27:53 ｜
+逗号表达式与字符处理</h3>
+<p>本段讲逗号表达式（课件 ch06 第 90—93 页）。逗号表达式形如
+<code>expr1, expr2, …, exprN</code>，依次计算，并把最后一个子表达式
+<code>exprN</code>
+的值作为整个逗号表达式的值；逗号运算符优先级<strong>最低</strong>。老师举例：<code>int a, b, c; a=2, b=3, c=a+b;</code>（课件
+ch06 第 92 页）。</p>
+<p>逗号表达式的一个用途是在 <code>for</code>
+语句的初始化/更新表达式里一次初始化或更新多个变量（课件 ch06 第 91
+页）：</p>
+<h4 id="例题证明-7011042-用逗号表达式改写-for-循环">例题/证明
+7（01:10:42）｜ 用逗号表达式改写 for 循环</h4>
+<p><strong>题目／任务</strong>：把原本在循环外分别初始化的语句收进
+<code>for</code> 的表达式里（代码逐字符取自课件 ch06 第 91 页）。</p>
+<p>过去分开写：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sum <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>j<span class="op">&lt;</span><span class="dv">100</span><span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sum <span class="op">+=</span> j <span class="op">*</span> k<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>k <span class="op">+=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>用逗号表达式可以写成：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> sum <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>j<span class="op">&lt;</span><span class="dv">100</span><span class="op">;</span> j<span class="op">++,</span> k<span class="op">+=</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sum <span class="op">+=</span> j <span class="op">*</span> k<span class="op">;</span></span></code></pre></div>
+<p>老师也直言：他本人并不大喜欢把句子写得这么长，但作为 <code>for</code>
+初始化多个变量的手段是可用的。</p>
+<h4 id="例题证明-8011233-读入一行字符统计以空格分隔的单词个数">例题/证明
+8（01:12:33）｜ 读入一行字符，统计以空格分隔的单词个数</h4>
+<p><strong>题目／任务</strong>：读入一行字符（直到换行符为止），统计其中由空格分隔的单词个数。代码逐字符取自课件
+ch06 第 92—93 页 [例6-5]。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> cnt <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> word <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> ch<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入一行字符：&quot;</span><span class="op">);</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> <span class="op">(</span>ch <span class="op">=</span> getchar<span class="op">())</span> <span class="op">!=</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> ch<span class="op">==</span><span class="ch">&#39; &#39;</span> <span class="op">)</span> <span class="co">// 单词分隔符</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// 清除单词标志</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span><span class="op">(</span> word<span class="op">==</span><span class="dv">0</span> <span class="op">)</span> <span class="op">{</span><span class="co">// 开始新的单词</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 设置单词标志</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>cnt<span class="op">++;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">// 增加单词个数</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;单词个数=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> cnt<span class="op">);</span></span></code></pre></div>
+<p><strong>思路</strong>（课堂还原）：关键是“单词数量增加的特征”出现在“空格
++ 非空格”这一组合上。<code>word</code>
+标志有两种含义：<code>word == 0</code>
+表示前一个字符是空格（当前处于“无单词/空格状态”），<code>word == 1</code>
+表示刚进入一个新单词。为处理行首顶格没有前导空格的情况，令初值
+<code>word = 0</code>（等于假设上一次处理的是空格），这样第一个字母也能被正确计数；后续若遇非空格且
+<code>word==0</code>，就说明开始了一个新单词，<code>cnt++</code> 并把
+<code>word</code> 置 1。</p>
+<p><strong>编译运行</strong>：用 <code>gcc</code>/Dev-C++
+编译运行，输入一行（如 <code>hello world zju</code>），回车后输出
+<code>单词个数=3</code>。</p>
+<p><strong>易错点</strong>（课件 ch06 第 93 页专门提示）：不能把
+<code>while</code> 写成
+<code>while( ch = getchar() != '\n' )</code>——因为 <code>!=</code>
+优先级高于 <code>=</code>，会先算 <code>getchar() != '\n'</code>
+得到逻辑值再赋给
+<code>ch</code>，导致逻辑错误；必须加括号：<code>while( (ch = getchar()) != '\n' )</code>。</p>
+<h3 id="位运算位逻辑与移位">01:27:53—01:50:42 ｜
+位运算：位逻辑与移位</h3>
+<p>本段讲位运算（课件 ch06 第 94—103
+页）。位运算定义在整数类型（含字符类型）数据上，分两类：</p>
+<ul>
+<li>位逻辑运算：按位反 <code>~</code>、按位与 <code>&amp;</code>、按位或
+<code>|</code>、按位异或
+<code>^</code>，每一位独立进行、位与位之间互不影响。</li>
+<li>移位运算：左移 <code>&lt;&lt;</code>、右移
+<code>&gt;&gt;</code>，把每个 bit 整体向左或向右移若干位。</li>
+</ul>
+<p>课件给出 8 位整数示例（ch06 第 95 页）：</p>
+<pre><code>a = 0 0 0 0 1 0 1 1
+b = 0 1 1 0 1 1 0 1
+按位反:  ~a = 1 1 1 1 0 1 0 0
+按位与:  a &amp; b = 0 0 0 0 1 0 0 1
+按位或:  a | b = 0 1 1 0 1 1 1 1
+按位异或: a ^ b = 0 1 1 0 0 1 1 0</code></pre>
+<p>按位异或 <code>^</code> 可理解为“抛弃进位的加法”：</p>
+<pre><code>1 + 1 = 0;
+0 + 0 = 0;
+1 + 0 = 1;
+0 + 1 = 1;</code></pre>
+<p>并由此具有可结合性与可交换性（课件 ch06 第 96、101 页）。</p>
+<p>移位运算（课件 ch06 第 98 页）：左移 <code>a &lt;&lt; 1</code> 右侧补
+0；右移对于无符号数左侧补 0，对于有符号数 C
+语言未规定（多数编译器复制符号位），老师建议<strong>避免对有符号数做右移</strong>。</p>
+<p>移位的性质（对无符号整数）：左移 1 位相当于 ×2（不溢出时），右移 1
+位相当于 ÷2（课件 ch06 第 99 页）。</p>
+<p>位运算与赋值复合：<code>&amp;=</code>、<code>|=</code>、<code>^=</code>、<code>&gt;&gt;=</code>、<code>&lt;&lt;=</code>，与别的赋值运算符优先级、结合性相同（右结合，倒数第二），例如
+<code>a &amp;= b</code> 等价于 <code>a = a &amp; b</code>（课件 ch06 第
+100 页）。</p>
+<p>老师也提醒：<code>&amp;</code>、<code>|</code>、<code>^</code>
+这几个符号有三个身份——位逻辑运算、取地址（一元
+<code>&amp;</code>）、逻辑运算（双目时才是位运算）；尤其
+<code>&amp;</code> 既可按位与又可取地址，含义不同要分清。</p>
+<h3 id="位运算的运算性质与应用">01:50:42—02:02:39 ｜
+位运算的运算性质与应用</h3>
+<p>本段讲位运算的性质（课件 ch06 第 101 页），要心里过一遍：</p>
+<pre><code>~0 = 0xFFFFFFFF
+a &amp; 0 = 0;          a &amp; ~0 = a;
+a | 0 = a;          a | ~0 = ~0;
+a ^ 0 = a;          a ^ ~0 = ~a;
+a &amp; a = a;          a &amp; ~a = 0;
+a | a = a;          a | ~a = ~0;
+a ^ a = 0;          a ^ ~a = ~0;
+a ^ b ^ b = a;</code></pre>
+<p>老师点出：想让某个数与 0
+做与/或/异或而不改变它——<code>a &amp; ~0 = a</code>、<code>a | 0 = a</code>、<code>a ^ 0 = a</code>；想取反则
+<code>a ^ ~0 = ~a</code>；自己异或自己得 0；与某数异或两次又还原。</p>
+<h4
+id="例题证明-9015523-用异或运算实现整数变量交换无需临时变量">例题/证明
+9（01:55:23）｜ 用异或运算实现整数变量交换（无需临时变量）</h4>
+<p><strong>题目／任务</strong>：不用中间变量，仅用三次异或完成两个 int
+变量的交换。代码逐字符取自课件 ch06 第 101 页。</p>
+<p>标准写法（临时变量）：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">,</span> temp<span class="op">;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> temp<span class="op">;</span></span></code></pre></div>
+<p>异或写法：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> a <span class="op">^</span> b<span class="op">;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> b <span class="op">^</span> a<span class="op">;</span> <span class="co">// b 等于b ^ ( a ^ b ) 等于a</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> a <span class="op">^</span> b<span class="op">;</span> <span class="co">// a 等于( a ^ b ) ^ a 等于b</span></span></code></pre></div>
+<p>上面的代码等价于：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">^=</span> b<span class="op">;</span> b <span class="op">^=</span> a<span class="op">;</span> a <span class="op">^=</span> b<span class="op">;</span></span></code></pre></div>
+<p>也可以写在一个表达式里：<code>a ^= b ^= a ^= b</code>。</p>
+<p><strong>推导</strong>（课堂还原）：设 <code>A</code>、<code>B</code>
+为两变量原值。第一步 <code>a = a ^ b</code> 后 a 变为
+<code>A^B</code>；第二步 <code>b = b ^ a</code> 即
+<code>b = B ^ (A^B) = A</code>（异或两次还原）；第三步
+<code>a = a ^ b</code> 即 <code>(A^B) ^ A = B</code>。于是 a、b
+的值互换。老师要求课后自己推导一遍。</p>
+<h4 id="例题证明-10020019-用异或确定重复出现的整数">例题/证明
+10（02:00:19）｜ 用异或确定重复出现的整数</h4>
+<p><strong>题目／任务</strong>：有 N+1 个变量存放
+1,2,…,N，其中恰有一个整数重复了一次，如何快速找出它（课件 ch06 第 102
+页）。</p>
+<p><strong>思路</strong>：逐对比较要
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">N(N-1)/2</annotation></semantics></math>
+次；求和再与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mi>⋯</mi><mo>+</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">1+2+\cdots+N</annotation></semantics></math>
+比较需
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N+1</annotation></semantics></math>
+次加减，但 N
+很大时求和可能溢出；<strong>最保险的方法是用异或</strong>——把全部变量与
+1,2,…,N 一起异或：</p>
+<pre><code>a0 ^ a1 ^ a2 ^ ... ^ aN ^ 1 ^ 2 ^ ... ^ N</code></pre>
+<p>没重复的数出现两次相互抵消为 0，剩下的就是那个重复的数。</p>
+<h3 id="sizeof-运算符与完整优先级表">02:02:39—02:10:14 ｜ sizeof
+运算符与完整优先级表</h3>
+<p>本段讲长度运算符 <code>sizeof</code>（课件 ch06 第 103—104
+页）：计算常量、变量或数据类型所占的<strong>字节数</strong>，是单目运算符。老师强调一个关键点：<code>sizeof</code>
+<strong>在编译时执行</strong>，不在运行时。</p>
+<h4 id="例题证明-11020316-sizeof-运算符演示与编译期求值陷阱">例题/证明
+11（02:03:16）｜ sizeof 运算符演示与“编译期求值”陷阱</h4>
+<p><strong>题目／任务</strong>：验证 <code>sizeof</code>
+给出的字节数，并理解它不执行括号内的运行时副作用。代码逐字符取自课件
+ch06 第 103 页。</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;int 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;long 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">long</span><span class="op">));</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;long long 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">long</span> <span class="dt">long</span><span class="op">));</span></span></code></pre></div>
+<p>运行可得：<code>int</code> 占 4 字节、<code>long</code> 占 4 或 8
+字节（依平台）、<code>long long</code> 占 8 字节。</p>
+<p><strong>课堂补充演示</strong>（老师设
+<code>int a = 5; n = sizeof(++a);</code>，再 <code>printf</code> 输出 a
+的值）：<code>++a</code>
+这一“加一”操作<strong>不会真的执行</strong>——因为 <code>sizeof</code>
+在编译期就算好了结果（int 为 4 字节），运行时那一句只是把 4 赋给 n，a
+仍等于 5。老师特意设计这个陷阱提醒大家：<code>sizeof</code>
+是编译期运算符，括号里的表达式不产生运行时动作。</p>
+<p><strong>结论</strong>：<code>sizeof(类型或变量)</code>
+得到字节数；它是编译期求值，不要指望它在运行期改变变量。</p>
+<p><strong>易错点</strong>：误以为 <code>sizeof(++a)</code> 会让 a
+自增。</p>
+<p>接着老师给出完整运算符优先级表（课件 ch06 第 104—106
+页），从最高到最低：</p>
+<ol type="1">
+<li>初等类：<code>()</code>、<code>[]</code>、<code>-&gt;</code>、<code>.</code></li>
+<li>单目类（右→左结合）：<code>!</code>、<code>~</code>、<code>+</code>、<code>-</code>、<code>(类型名)</code>、<code>&amp;</code>、<code>++</code>、<code>--</code>、<code>sizeof</code></li>
+<li>算术乘除：<code>*</code>、<code>/</code>、<code>%</code></li>
+<li>算术加减：<code>+</code>、<code>-</code></li>
+<li>移位类：<code>&lt;&lt;</code>、<code>&gt;&gt;</code></li>
+<li>关系比较：<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code></li>
+<li>相等比较：<code>==</code>、<code>!=</code></li>
+<li>按位与：<code>&amp;</code></li>
+<li>按位异或：<code>^</code></li>
+<li>按位或：<code>|</code></li>
+<li>逻辑与：<code>&amp;&amp;</code></li>
+<li>逻辑或：<code>||</code></li>
+<li>条件运算：<code>? :</code>（右→左结合）</li>
+<li>赋值：<code>=</code>、<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code>、<code>&amp;=</code>、<code>^=</code>、<code>|=</code>、<code>&gt;&gt;=</code>、<code>&lt;&lt;=</code>（右→左结合）</li>
+<li>逗号运算符：<code>,</code></li>
+</ol>
+<p>老师还解释了位逻辑运算（第 8—10 级）为何排在逻辑运算（第 11—12
+级）之前：位运算的结果是一个“丰富的”整数，而逻辑运算结果只有真假，所以位运算优先级更高。</p>
+<h3 id="位运算应用取第-k-位与输出二进制">02:10:14—02:25:16 ｜
+位运算应用：取第 k 位与输出二进制</h3>
+<p>本段讲位运算的实际应用（课件 ch06 第 107—111 页）。给定一个整数
+<code>n</code>，要获取它的第 k 位（bit）是 0 还是 1：</p>
+<ul>
+<li>先产生<strong>掩码（mask）</strong>：<code>1 &lt;&lt; k</code>，它只有第
+k 位为 1，其余位全为 0。</li>
+<li>再做按位与：<code>n &amp; (1 &lt;&lt; k)</code>。该位为 0 则结果为
+0，该位为 1 则与出 1——相当于一个“开关”把这一位抠出来。</li>
+</ul>
+<h4 id="例题证明-12021014-输出整数的二进制位">例题/证明 12（02:10:14）｜
+输出整数的二进制位</h4>
+<p><strong>题目／任务</strong>：从高位（如第 31 位）到低位（第 0
+位）逐个输出一个整数的每一位。算法逐字符取自课件 ch06 第 107—111
+页。</p>
+<p><strong>思路</strong>：用循环
+<code>for( k = hi; k &gt;= low; k-- )</code> 产生掩码
+<code>1 &lt;&lt; k</code>，让 <code>mask</code> 与 <code>n</code> 做
+<code>&amp;</code> 运算；若结果全 0，说明该位为 0，否则为 1。</p>
+<p><strong>课堂现场演示</strong>（老师输入整数
+<code>2026</code>，并把一个实数 <code>3.14</code> 的 32 个 bit
+也打印出来）：验证单精度浮点数的存储格式——符号位为 0（正），阶码 8
+位、尾数 23 位。老师按上节课浮点表示法手算核对：3.14 = 1.57 × 2，阶码值
+= 128 − 127 = 1；尾数部分由 0.57 乘 2 取整得到
+<code>1001…</code>，与程序打印的二进制一致，说明上节课讲的内容正确。</p>
+<p><strong>关于浮点数做位运算（课堂补充说明，不作掌握要求）</strong>：位运算只能作用于整数，而
+<code>3.14</code> 是浮点数。老师演示了一种“欺骗”方法——取浮点数
+<code>x</code> 的地址，用类型转换把它变成
+<code>int *</code>（整数指针），再通过该整数指针把那 4
+个字节当作整数读出来，从而能做位运算。这属于 C
+语言能做的底层操作，但类型转换不安全，<strong>本节不作掌握要求</strong>，看懂即可。</p>
+<p><strong>结论</strong>：掩码 <code>1 &lt;&lt; k</code> 配合
+<code>&amp;</code> 可抠出任意一位；浮点数的二进制需借助指针“按位
+reinterpret”才能查看。</p>
+<p><strong>易错点</strong>：移位时把高位溢出丢弃、以为有符号右移一定补
+0（实际多数编译器补符号位）；取第 k
+位时要先移出掩码再做与运算，不能漏括号。</p>
+<p>本节到此结束，随后为课间点名与下课，无实质授课内容。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

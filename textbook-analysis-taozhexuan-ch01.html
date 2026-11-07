@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>引言 ｜ 陶哲轩实分析（第3版） · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: none !important;
+  margin: 12px 0 !important;
+  padding-left: 0 !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: none !important;
+  margin: 12px 0 !important;
+  padding-left: 0 !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html" class="on">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html">几何</a>
+    <a href="course-cprog.html">C 程</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-analysis.html">分析学Ⅰ</a> <span>›</span>
+    <a href="course-analysis.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 1 章</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header">
+    <div class="wb-book-tagline">📖 陶哲轩实分析（第3版） ｜ 陶哲轩 (Terence Tao) 著 ｜ 李馨 译</div>
+    <h1 style="font-size:24px;margin:8px 0 4px;">第 1 章 ｜ 引言</h1>
+    <div class="wb-book-meta-sub">
+      人民邮电出版社（图灵数学经典） ｜ 原书对应页码：第  页 ｜ 共 2 个小节
+    </div>
+  </div>
+
+  <div class="wb-book-intro">
+    <b>本章导读与理论脉络</b>：<br>
+    第 1 章 ｜ 引言。
+  </div>
+
+  <div class="wb-linkage"><div class="wb-lk-title">🔗 联动 · 本课程讲义与作业（均按课本顺序推进，可一键跳转）</div><div class="wb-lk-cols"><div class="wb-lk-col"><div class="wb-lk-h">🎬 课堂讲义（15 节）</div><ul class="wb-lk-list"><li><a href="lecture-analysis-0915.html">🎬 2026-09-15 第 3-5 节<span class="wb-lk-date">2026-09-15</span></a></li><li><a href="lecture-analysis-0917.html">🎬 2026-09-17<span class="wb-lk-date">2026-09-17</span></a></li><li><a href="lecture-analysis-0920.html">🎬 2026-09-20<span class="wb-lk-date">2026-09-20</span></a></li><li><a href="lecture-analysis-0922.html">🎬 2026-09-22<span class="wb-lk-date">2026-09-22</span></a></li><li><a href="lecture-analysis-0924.html">🎬 2026-09-24<span class="wb-lk-date">2026-09-24</span></a></li><li><a href="lecture-analysis-0929.html">🎬 2026-09-29<span class="wb-lk-date">2026-09-29</span></a></li><li><a href="lecture-analysis-1008.html">🎬 2026-10-08<span class="wb-lk-date">2026-10-08</span></a></li><li><a href="lecture-analysis-1013.html">🎬 2026-10-13<span class="wb-lk-date">2026-10-13</span></a></li><li><a href="lecture-analysis-1015.html">🎬 2026-10-15<span class="wb-lk-date">2026-10-15</span></a></li><li><a href="lecture-analysis-1020.html">🎬 2026-10-20<span class="wb-lk-date">2026-10-20</span></a></li><li><a href="lecture-analysis-1022.html">🎬 2026-10-22<span class="wb-lk-date">2026-10-22</span></a></li><li><a href="lecture-analysis-1027.html">🎬 2026-10-27<span class="wb-lk-date">2026-10-27</span></a></li><li><a href="lecture-analysis-1029.html">🎬 2026-10-29<span class="wb-lk-date">2026-10-29</span></a></li><li><a href="lecture-analysis-1103.html">🎬 2026-11-03<span class="wb-lk-date">2026-11-03</span></a></li><li><a href="lecture-analysis-1105.html">🎬 2026-11-05<span class="wb-lk-date">2026-11-05</span></a></li></ul></div><div class="wb-lk-col"><div class="wb-lk-h">📝 每周作业（7 次）</div><ul class="wb-lk-list"><li><a href="homework-analysis-week01.html">📝 第 1 周 ｜ 实数系公理、可数集、全序域与确界原理</a><div class="wb-lk-cov">第一、二周（9 月 15 日—22 日，覆盖实数系结构、上确界与确界存在定理）</div></li><li><a href="homework-analysis-week02.html">📝 第 2 周 ｜ 数列极限、递推序列、算术几何平均与容斥原理</a><div class="wb-lk-cov">第三、四周（9 月 22 日—29 日，覆盖数列极限定义、极限性质、单调有界定理与基础拓扑/组合原理）</div></li><li><a href="homework-analysis-week03.html">📝 第 3 周 ｜ Fibonacci 递推、Stolz 与 Toeplitz 定理、上下极限与聚点集</a><div class="wb-lk-cov">第五、六周（9 月 29 日—10 月 13 日，含国庆周，覆盖上下极限与高级极限定理）</div></li><li><a href="homework-analysis-week04.html">📝 第 4 周 ｜ Cauchy 收敛原理、递推数列迭代收敛、函数极限深入</a><div class="wb-lk-cov">第七、八周（10 月 13 日—20 日，覆盖 Cauchy 准则、Fekete 次可加引理与函数极限）</div></li><li><a href="homework-analysis-week05.html">📝 第 5 周 ｜ 函数极限计算、Cauchy 准则、间断点分类、单调函数连续性</a><div class="wb-lk-cov">第九周（10 月 20 日—27 日，覆盖函数极限、间断点、单调函数像定理）</div></li><li><a href="homework-analysis-week06.html">📝 第 6 周 ｜ 闭集套定理、实数完备性、紧集与压缩映射原理</a><div class="wb-lk-cov">第十周（10 月 27 日—11 月 2 日，覆盖实数完备性基本定理等价性、不动点理论）</div></li><li><a href="homework-analysis-week07.html">📝 第 7 周 ｜ 介值定理应用、函数一致连续性、振幅函数与上半连续性</a><div class="wb-lk-cov">第十一周（11 月 2 日—11 月 9 日，覆盖一致连续性判定、Cantor 紧致性、振幅与半连续函数）</div></li></ul></div></div></div>
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num">§1.1</span> 什么是分析</h3><p>本书将介绍高等实分析，这是关于实数、实数序列、实数级数以及实值函数的分析。虽然实分析与复分析、调和分析以及泛函分析是相关的，但与它们又是不同的。复分析是关于复数和复函数的分析；调和分析是关于调和函数（振动）的分析，比如正弦振动，并研究这些函数如何通过傅里叶变换构造其他函数；泛函分析研究的内容主要集中在函数上（以及这些函数如何构造出如向量空间这样的东西）。分析学是对这些对象进行严格研究的学科，并且着力于对这些对象做出准确的定性和定量分析。实分析是微积分学的理论基础，而微积分是我们在处理函数时所用到的计算规则的集合。</p>
+<p>在本书中，我们将对很多概念进行研究，而这些概念在学习初等微积分时会学到，比如：数字、序列、级数、极限、函数、定积分、导数等。虽然你曾经基于这些概念进行过大量的运算，但是现在我们主要研究这些概念的基本理论。我们关心如下几个问题。</p>
+<p>（1）什么是实数？是否存在最大的实数？“0”之后的“下一个”实数是多少？（即：最小的正实数是几？）是否能够对一个实数进行无限次分割？为什么有些数（比如2）有平方根，而有些数（比如-2）没有平方根？如果有无穷多个实数和无穷多个有理数，那么为什么会说实数比有理数的个数“多”？</p>
+<p>（2）如何确定实数序列的极限值？什么样的序列存在极限，什么样的序列不存在极限？如果你能够阻止一个序列趋向无穷，这是否意味着该序列最终会停止变化并且收敛？把无穷多个实数相加后得到一个有限实数的情况是否存在？把无穷多个有理数相加后得到一个非有理数的情况是否存在？如果有无穷多个数相加，那么改变这些数的排列次序，所得到的和是否保持不变？</p>
+<p>（3）什么是函数？函数是连续的、可微的、可积的、有界的分别是什么意思？能否将无限多个函数相加？对函数序列取极限会怎样？能否对无穷函数级数求微分？什么是求积分？如果一个函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 满足：当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> 时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的值为3；当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> 时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 的值为5（即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">f(0) = 3</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">f(1) = 5</annotation></semantics></math> ），那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 若取遍0到1之间的所有值， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 是否也取遍了3到5之间的所有值？为什么？</p>
+<p>如果你上过微积分课程，也许能够回答出上述问题中的几个。但是对于微积分这类课程来说，上述这类问题并不是最重要的。这类课程的重点在于教会学生如何计算，比如计算函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">x\sin (x^2)</annotation></semantics></math> 从 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> 到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> 上的积分。既然现在你对这些概念已经非常熟悉了，而且知道如何进行运算，那么我们将回归到理论知识并且尝试真正去理解这些内容是如何展开的。</p></section>
+<section class="wb-seg" id="sec_2"><h3 class="wb-sec-title"><span class="wb-sec-num">§1.2</span> 为什么要做分析</h3><p>当人们谈论分析理论的时候，自然会想到“为什么要做分析”这个问题。从哲学角度来说，认识到事物为什么起作用，能够带给人们一定的满足感。但是，讲究实际的人会认为，只需要了解事物在解决实际问题时是如何起作用的就足够了。在学习入门课程时，你曾经接受过的微积分训练，足以让你可以开始着手解决存在于物理、化学、生物、经济、计算机科学、金融、工程学或者其他学科中的问题。而且，对于链式法则、洛必达法则或者分部积分法等，即使你并不了解它们为什么会起作用，或者不知道这些法则是否有例外的情况存在，也不影响你应用它们来解决问题。然而，如果一个人在应用某些法则时并不了解它们是如何得出的，也不知道使用这些法则有哪些限制条件，那么他将陷入困境之中。我来举一些例子。这些例子将告诉我们，对于那些我们熟知的法则，如果不了解其背后潜在的分析原理而盲目地应用它们，将会导致灾难性的后果。</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例1.2.1（用零做除数）这是大家都非常熟悉的一个例子。当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c = 0</annotation></semantics></math> 时，消去律 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>c</mi><mo>=</mo><mi>b</mi><mi>c</mi><mi>Longrightarrow</mi><mi>a</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">ac = bc \Longrightarrow a = b</annotation></semantics></math> 不成立。</span><span class="tag">经典例题</span></div>
+<p>例1.2.1（用零做除数）这是大家都非常熟悉的一个例子。当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c = 0</annotation></semantics></math> 时，消去律 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>c</mi><mo>=</mo><mi>b</mi><mi>c</mi><mi>Longrightarrow</mi><mi>a</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">ac = bc \Longrightarrow a = b</annotation></semantics></math> 不成立。例如，等式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>0</mn><mo>=</mo><mn>2</mn><mo>×</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1 \times 0 = 2 \times 0</annotation></semantics></math> 是恒成立的，但是如果有人盲目地消去0，那么将会得到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">1 = 2</annotation></semantics></math> ，这显然是错误的。在这个例子中，能够明显看出错误在于用零做了除数；但是在其他情况下，错误可能更加隐蔽。</p>
+</div>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.2（发散级数）你也许见过如下无穷和形式的几何级数：</span><span class="tag">经典例题</span></div>
+<p>例 1.2.2（发散级数）你也许见过如下无穷和形式的几何级数：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>8</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mn>6</mn></mrow></mfrac><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">S = 1 + \frac {1}{2} + \frac {1}{4} + \frac {1}{8} + \frac {1}{1 6} + \dots</annotation></semantics></math></div>
+<p>你大概也见过按照下面的技巧求该级数和的方法: 令该级数和为 S, 那么将等号两端同时乘以 2 得</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>S</mi><mo>=</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>8</mn></mrow></mfrac><mo>+</mo><mo>…</mo><mo>=</mo><mn>2</mn><mo>+</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">2 S = 2 + 1 + \frac {1}{2} + \frac {1}{4} + \frac {1}{8} + \dots = 2 + S</annotation></semantics></math></div>
+<p>于是 S = 2，因此上述级数和为 2。但是，如果按照同样的方法来计算级数：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>1</mn><mn>6</mn><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">S = 1 + 2 + 4 + 8 + 1 6 + \dots</annotation></semantics></math></div>
+<p>将得到一个荒谬的结果：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>S</mi><mo>=</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>1</mn><mn>6</mn><mo>+</mo><mo>…</mo><mo>=</mo><mi>S</mi><mo>−</mo><mn>1</mn><mi>Rightarrow</mi><mi>S</mi><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2 S = 2 + 4 + 8 + 1 6 + \dots = S - 1 \Rightarrow S = - 1</annotation></semantics></math></div>
+<p>那么，按照同样的计算方法，我们得到了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>8</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>16</mn></mrow></mfrac><mo>+</mo><mo>⋯</mo><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \cdots = 2</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>8</mn><mo>+</mo><mo>⋯</mo><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1 + 2 + 4 + 8 + \cdots = -1</annotation></semantics></math> 两个结果。为什么我们认为前一个等式是成立的，而第二个等式是不成立的？另外一个类似的例子是关于下面这个级数的：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">S = 1 - 1 + 1 - 1 + 1 - 1 + \dots</annotation></semantics></math></div>
+<p>该级数可以写成如下形式：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>1</mn><mo>−</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>+</mo><mo>…</mo><mo>)</mo><mo>=</mo><mn>1</mn><mo>−</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">S = 1 - (1 - 1 + 1 - 1 + \dots) = 1 - S</annotation></semantics></math></div>
+<p>于是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">S = \frac{1}{2}</annotation></semantics></math> ；另外，我们也可以这样写：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>…</mo><mo>=</mo><mn>0</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>0</mn><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">S = (1 - 1) + (1 - 1) + (1 - 1) + \dots = 0 + 0 + 0 + \dots</annotation></semantics></math></div>
+<p>于是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">S = 0</annotation></semantics></math> ；或者，我们也可以这样写：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>1</mn><mo>+</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>…</mo><mo>=</mo><mn>1</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>0</mn><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">S = 1 + (- 1 + 1) + (- 1 + 1) + \dots = 1 + 0 + 0 + \dots</annotation></semantics></math></div>
+<p>于是 S = 1。那么上述三个结果，究竟哪一个才是正确答案呢？（答案见习题 7.2.1。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例1.2.3（发散序列）在这里，我们对之前的例子做出一些小的变动。 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 表示一个实数， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math> 表示极限：</span><span class="tag">经典例题</span></div>
+<p>例1.2.3（发散序列）在这里，我们对之前的例子做出一些小的变动。 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 表示一个实数， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math> 表示极限：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">L = \lim _ {n \rightarrow \infty} x ^ {n}</annotation></semantics></math></div>
+<p>做变量替换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi>m</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n = m + 1</annotation></semantics></math> ，我们可以得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><munder><mo>lim</mo><mrow><mi>m</mi><mo>+</mo><mn>1</mn><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><munder><mo>lim</mo><mrow><mi>m</mi><mo>+</mo><mn>1</mn><mo>→</mo><mo>∞</mo></mrow></munder><mi>x</mi><mo>×</mo><msup><mi>x</mi><mrow><mi>m</mi></mrow></msup><mo>=</mo><mi>x</mi><munder><mo>lim</mo><mrow><mi>m</mi><mo>+</mo><mn>1</mn><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>m</mi></mrow></msup></mrow><annotation encoding="application/x-tex">L = \lim _ {m + 1 \rightarrow \infty} x ^ {m + 1} = \lim _ {m + 1 \rightarrow \infty} x \times x ^ {m} = x \lim _ {m + 1 \rightarrow \infty} x ^ {m}</annotation></semantics></math></div>
+<p>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>+</mo><mn>1</mn><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">m + 1\to \infty</annotation></semantics></math> ，则有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">m\to \infty</annotation></semantics></math> ，因此：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>m</mi><mo>+</mo><mn>1</mn><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>m</mi></mrow></msup><mo>=</mo><munder><mo>lim</mo><mrow><mi>m</mi><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>m</mi></mrow></msup><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>=</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">\lim _ {m + 1 \rightarrow \infty} x ^ {m} = \lim _ {m \rightarrow \infty} x ^ {m} = \lim _ {n \rightarrow \infty} x ^ {n} = L</annotation></semantics></math></div>
+<p>于是：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>L</mi><mo>=</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">x L = L</annotation></semantics></math></div>
+<p>此时，消去 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math> 可得，对任意实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ，均有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> 。这显然是非常荒谬的。但是，由于我们已经意识到之前“用零做除数”的错误，此时可以更聪明些，并推导出要么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> ，要么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L = 0</annotation></semantics></math> 。特别地，我们似乎已经证明了这样一个结论：对任意的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x\neq 1</annotation></semantics></math> ，均有：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim _ {n \rightarrow \infty} x ^ {n} = 0</annotation></semantics></math></div>
+<p>但是，当 x 取某些特定值时，上述结论是荒谬的。比如，当 x = 2 时，我们能够推导出序列 1, 2, 4, 8, … 是收敛于 0 的；当 x = -1 时，序列 1, -1, 1, -1, … 也是收敛于 0 的。这些结论看起来非常荒谬。上述论证出现了什么样的问题呢？（答案见习题 6.3.4。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.4（函数的极限值）对于极限表达式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{x\to\infty}\sin(x)</annotation></semantics></math> ，我们做变量替换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>y</mi><mo>+</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">x=y+\pi</annotation></semantics></math> ，并且根据等式 \s</span><span class="tag">经典例题</span></div>
+<p>例 1.2.4（函数的极限值）对于极限表达式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{x\to\infty}\sin(x)</annotation></semantics></math> ，我们做变量替换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>y</mi><mo>+</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">x=y+\pi</annotation></semantics></math> ，并且根据等式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo>(</mo><mi>y</mi><mo>+</mo><mi>π</mi><mo>)</mo><mo>=</mo><mo>−</mo><mo>sin</mo><mo>(</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\sin(y+\pi)=-\sin(y)</annotation></semantics></math> 可以得到：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>y</mi><mo>+</mo><mi>π</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>y</mi><mo>+</mo><mi>π</mi><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>(</mo><mo>−</mo><mo>sin</mo><mo>(</mo><mi>y</mi><mo>)</mo><mo>)</mo><mo>=</mo><mo>−</mo><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow \infty} \sin (x) = \lim _ {y + \pi \rightarrow \infty} \sin (y + \pi) = \lim _ {y \rightarrow \infty} (- \sin (y)) = - \lim _ {y \rightarrow \infty} \sin (y)</annotation></semantics></math></div>
+<p>又因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{x\to \infty}\sin (x) = \lim_{y\to \infty}\sin (y)</annotation></semantics></math> ，所以得出：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow \infty} \sin (x) = - \lim _ {x \rightarrow \infty} \sin (x)</annotation></semantics></math></div>
+<p>因此：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim _ {x \to \infty} \sin (x) = 0</annotation></semantics></math></div>
+<p>如果我们对上式做变量替换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x = \frac{\pi}{2} + z</annotation></semantics></math> ，那么根据 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo stretchy="true">(</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mi>z</mi><mo stretchy="true">)</mo><mo>=</mo><mo>cos</mo><mo>(</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\sin \left(\frac{\pi}{2} + z\right) = \cos (z)</annotation></semantics></math> 可得：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>cos</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow \infty} \cos (x) = 0</annotation></semantics></math></div>
+<p>分别对上述两个极限求平方，然后将它们相加可得：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>∞</mo></mrow></munder><mo>(</mo><msup><mo>sin</mo><mrow><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><msup><mo>cos</mo><mrow><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mo>=</mo><msup><mn>0</mn><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mn>0</mn><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow \infty} (\sin^ {2} (x) + \cos^ {2} (x)) = 0 ^ {2} + 0 ^ {2} = 0</annotation></semantics></math></div>
+<p>另外，我们知道对任意的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mo>sin</mo><mrow><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><msup><mo>cos</mo><mrow><mn>2</mn></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sin^2 (x) + \cos^2 (x) = 1</annotation></semantics></math> 恒成立。于是，我们得到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><mn>0</mn><mi>!</mi></mrow><annotation encoding="application/x-tex">1 = 0!</annotation></semantics></math> 这里究竟存在什么样的难点呢？</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.5（交换求和次序）我们考虑有关运算的如下事实。对任意的数字矩阵，例如：</span><span class="tag">经典例题</span></div>
+<p>例 1.2.5（交换求和次序）我们考虑有关运算的如下事实。对任意的数字矩阵，例如：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>c</mi><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>5</mn></mtd><mtd><mn>6</mn></mtd></mtr><mtr><mtd><mn>7</mn></mtd><mtd><mn>8</mn></mtd><mtd><mn>9</mn></mtd></mtr></mtable><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\left( \begin{array}{c c c} 1 &amp; 2 &amp; 3 \\ 4 &amp; 5 &amp; 6 \\ 7 &amp; 8 &amp; 9 \end{array} \right)</annotation></semantics></math></div>
+<p>计算该矩阵的每一行元素之和以及每一列元素之和，然后分别把所有行的和相加、所有列的和相加。最后，你会发现上述两种运算的结果是相等的——都等于矩阵中所有元素相加的和：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>c</mi><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>5</mn></mtd><mtd><mn>6</mn></mtd></mtr><mtr><mtd><mn>7</mn></mtd><mtd><mn>8</mn></mtd><mtd><mn>9</mn></mtd></mtr><mtr><mtd><mn>1</mn><mn>2</mn></mtd><mtd><mn>1</mn><mn>5</mn></mtd><mtd><mn>1</mn><mn>8</mn></mtd></mtr></mtable><mo stretchy="true">)</mo><mo> </mo><mtable><mtr><mtd><mi>l</mi><mn>6</mn></mtd></mtr><mtr><mtd><mn>1</mn><mn>5</mn></mtd></mtr><mtr><mtd><mn>2</mn><mn>4</mn></mtd></mtr><mtr><mtd><mn>4</mn><mn>5</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left( \begin{array}{c c c} 1 &amp; 2 &amp; 3 \\ 4 &amp; 5 &amp; 6 \\ 7 &amp; 8 &amp; 9 \\ 1 2 &amp; 1 5 &amp; 1 8 \end{array} \right) \quad \begin{array}{l} 6 \\ 1 5 \\ 2 4 \\ 4 5 \end{array}</annotation></semantics></math></div>
+<p>换言之，如果你想要将一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m \times n</annotation></semantics></math> 矩阵中的所有元素相加，那么不管你是先把每一行的元素加起来，还是先把每一列的元素加起来，最后得到的结果都是一样的。（在计算机被发明出来之前，会计师和簿记员在结算账目的时候，都会采用这种方法来避免错误。）用级数的概念来描述以上事实即为：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sum_ {i = 1} ^ {m} \sum_ {j = 1} ^ {n} a _ {i j} = \sum_ {j = 1} ^ {n} \sum_ {i = 1} ^ {m} a _ {i j}</annotation></semantics></math></div>
+<p>其中， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{ij}</annotation></semantics></math> 表示矩阵的第 i 行第 j 列元素。</p>
+<p>现在，有人可能会认为上述结论应该很容易推广到无穷级数：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sum_ {i = 1} ^ {\infty} \sum_ {j = 1} ^ {\infty} a _ {i j} = \sum_ {j = 1} ^ {\infty} \sum_ {i = 1} ^ {\infty} a _ {i j}</annotation></semantics></math></div>
+<p>实际上，如果你在工作中很多地方都会用到无穷级数，那么你会发现自己经常像这样通过变换次序来求和。也就是说，在一个无穷矩阵中，行和相加的结果与列和相加的结果是一样的。然而，尽管这种说法听起来合理，但它实际上是错误的！这里给出一个反例：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>c</mi><mi>c</mi><mi>c</mi><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>…</mo></mtd></mtr><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>…</mo></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>…</mo></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>1</mn></mtd><mtd><mo>…</mo></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>…</mo></mtd></mtr><mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋱</mo></mtd></mtr></mtable><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\left( \begin{array}{c c c c c} 1 &amp; 0 &amp; 0 &amp; 0 &amp; \dots \\ - 1 &amp; 1 &amp; 0 &amp; 0 &amp; \dots \\ 0 &amp; - 1 &amp; 1 &amp; 0 &amp; \dots \\ 0 &amp; 0 &amp; - 1 &amp; 1 &amp; \dots \\ 0 &amp; 0 &amp; 0 &amp; - 1 &amp; \dots \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots \end{array} \right)</annotation></semantics></math></div>
+<p>如果你对该矩阵每一行元素求和，然后将得到的所有行和相加，那么你会得到1。但是，如果你对该矩阵每一列元素求和，然后将得到的所有列和相加，那么你会得到0！因此，这是否意味着对无穷级数求和不能采用交换次序的方法，而且任何采用交换次序方法所得到的结论都是不可信的？（答案见定理8.2.2。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例1.2.6（交换积分次序）交换积分次序与交换求和次序一样，都是数学中很常见的运算技巧。假设我们想要计算某个曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">z = f(x,y)</annotation></semantics></math> 之下的体积（此处我们</span><span class="tag">经典例题</span></div>
+<p>例1.2.6（交换积分次序）交换积分次序与交换求和次序一样，都是数学中很常见的运算技巧。假设我们想要计算某个曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">z = f(x,y)</annotation></semantics></math> 之下的体积（此处我们暂时不考虑积分上下限）。一种方法是平行于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 轴进行切割：对任意给定的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> ，我们能够计算出与之对应的一部分面积为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mtext>d</mtext><mi>x</mi></mrow><annotation encoding="application/x-tex">\int f(x,y)\mathrm{d}x</annotation></semantics></math> ，然后我们把这部分以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 为变量的面积进行积分就得到了要求的体积：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mo>∬</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mtext>d</mtext><mi>x</mi><mtext>d</mtext><mi>y</mi></mrow><annotation encoding="application/x-tex">V = \iint f (x, y) \mathrm{d} x \mathrm{d} y</annotation></semantics></math></div>
+<p>或者，对于任意给定的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ，我们也可以平行于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 轴进行切割，并且计算出与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 对应的一部分面积为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mtext>d</mtext><mi>y</mi></mrow><annotation encoding="application/x-tex">\int f(x,y)\mathrm{d}y</annotation></semantics></math> ，然后沿 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 轴对上述面积进行积分，从而得到体积为：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mo>∬</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mtext>d</mtext><mi>y</mi><mtext>d</mtext><mi>x</mi></mrow><annotation encoding="application/x-tex">V = \iint f (x, y) \mathrm{d} y \mathrm{d} x</annotation></semantics></math></div>
+<p>这似乎表明我们可以通过交换积分号来运算：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∬</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mtext>d</mtext><mi>x</mi><mtext>d</mtext><mi>y</mi><mo>=</mo><mo>∬</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mtext>d</mtext><mi>y</mi><mtext>d</mtext><mi>x</mi></mrow><annotation encoding="application/x-tex">\iint f (x, y) \mathrm{d} x \mathrm{d} y = \iint f (x, y) \mathrm{d} y \mathrm{d} x</annotation></semantics></math></div>
+<p>事实上，因为有时先对某个变量进行积分要比先对其他变量进行积分更加容易，所以人们往往采用交换积分号的方法来运算。但是，正如前文中对无穷个元素求和有时不能交换求和次序一样，交换积分号的运算有时也会存在风险。下面给出一个关于被积函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>−</mo><mi>x</mi><msup><mtext>ye</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\mathrm{e}^{-xy} - x\mathrm{ye}^{-xy}</annotation></semantics></math> 的例子。假设该积分是可以交换积分号的：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></msubsup><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mn>1</mn></mrow></msubsup><mo>(</mo><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>−</mo><mi>x</mi><mi>y</mi><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>)</mo><mtext>d</mtext><mi>y</mi><mtext>d</mtext><mi>x</mi><mo>=</mo><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mn>1</mn></mrow></msubsup><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></msubsup><mo>(</mo><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>−</mo><mi>x</mi><mi>y</mi><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>)</mo><mtext>d</mtext><mi>x</mi><mtext>d</mtext><mi>y</mi><mi>tag</mi><mn>1.1</mn></mrow><annotation encoding="application/x-tex">\int_ {0} ^ {\infty} \int_ {0} ^ {1} (\mathrm{e} ^ {- x y} - x y \mathrm{e} ^ {- x y}) \mathrm{d} y \mathrm{d} x = \int_ {0} ^ {1} \int_ {0} ^ {\infty} (\mathrm{e} ^ {- x y} - x y \mathrm{e} ^ {- x y}) \mathrm{d} x \mathrm{d} y\tag{1.1}</annotation></semantics></math></div>
+<p>因为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mn>1</mn></mrow></msubsup><mo>(</mo><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>−</mo><mi>x</mi><mi>y</mi><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>)</mo><mtext>d</mtext><mi>y</mi><mo>=</mo><mi>y</mi><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mi>Big</mi><msubsup><mo>|</mo><mrow><mi>y</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>y</mi><mo>=</mo><mn>1</mn></mrow></msubsup><mo>=</mo><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\int_ {0} ^ {1} (\mathrm{e} ^ {- x y} - x y \mathrm{e} ^ {- x y}) \mathrm{d} y = y \mathrm{e} ^ {- x y} \Big | _ {y = 0} ^ {y = 1} = \mathrm{e} ^ {- x}</annotation></semantics></math></div>
+<p>所以式(1.1)的等号左侧表达式为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></msubsup><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi></mrow></msup><mtext>d</mtext><mi>x</mi><mo>=</mo><mo>−</mo><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi></mrow></msup><mi>big</mi><msubsup><mo>|</mo><mrow><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></msubsup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\int_0^\infty \mathrm{e}^{-x}\mathrm{d}x = -\mathrm{e}^{-x}\big|_0^\infty = 1</annotation></semantics></math> 。但是，又因为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mo>∞</mo></mrow></msubsup><mo>(</mo><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>−</mo><mi>x</mi><mi>y</mi><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mo>)</mo><mtext>d</mtext><mi>x</mi><mo>=</mo><mi>x</mi><msup><mtext>e</mtext><mrow><mo>−</mo><mi>x</mi><mi>y</mi></mrow></msup><mi>Big</mi><msubsup><mo>|</mo><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>x</mi><mo>=</mo><mo>∞</mo></mrow></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\int_ {0} ^ {\infty} (\mathrm{e} ^ {- x y} - x y \mathrm{e} ^ {- x y}) \mathrm{d} x = x \mathrm{e} ^ {- x y} \Big | _ {x = 0} ^ {x = \infty} = 0</annotation></semantics></math></div>
+<p>所以式(1.1)的等号右侧表达式为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mn>0</mn></mrow><mrow><mn>1</mn></mrow></msubsup><mn>0</mn><mtext>d</mtext><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\int_0^1 0\mathrm{d}y = 0</annotation></semantics></math> 。显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1\neq 0</annotation></semantics></math> ，因此上文中的某处存在错误；然而你会发现，除了交换积分号这一步骤，上面的过程并不存在其他的错误。那么，我们如何判断什么时候可以放心地进行交换积分次序的运算呢？（定理11.50.1会给出部分答案。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.7（交换极限运算次序）我们考虑下面这个看似正确的表达式：</span><span class="tag">经典例题</span></div>
+<p>例 1.2.7（交换极限运算次序）我们考虑下面这个看似正确的表达式：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mn>0</mn></mrow></munder><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mi>tag</mi><mn>1.2</mn></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow 0} \lim _ {y \rightarrow 0} \frac {x ^ {2}}{x ^ {2} + y ^ {2}} = \lim _ {y \rightarrow 0} \lim _ {x \rightarrow 0} \frac {x ^ {2}}{x ^ {2} + y ^ {2}}\tag{1.2}</annotation></semantics></math></div>
+<p>因为我们有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mn>0</mn><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lim _ {y \to 0} \frac {x ^ {2}}{x ^ {2} + y ^ {2}} = \frac {x ^ {2}}{x ^ {2} + 0 ^ {2}} = 1</annotation></semantics></math></div>
+<p>所以式(1.2)等号左侧表达式等于1；另外，我们知道</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mn>0</mn><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mn>0</mn><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow 0} \frac {x ^ {2}}{x ^ {2} + y ^ {2}} = \frac {0 ^ {2}}{0 ^ {2} + y ^ {2}} = 0</annotation></semantics></math></div>
+<p>因此，式(1.2)等号右侧表达式等于0。由于1显然不等于0，所以这表明了交换极限运算次序是不可信的。然而，是否存在某些情况，交换极限运算次序能够成立呢？（习题11.9.9给出了部分答案。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.8（再谈交换极限运算次序）考虑如下貌似正确的表达式：</span><span class="tag">经典例题</span></div>
+<p>例 1.2.8（再谈交换极限运算次序）考虑如下貌似正确的表达式：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msup><mn>1</mn><mrow><mo>−</mo></mrow></msup></mrow></munder><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msup><mn>1</mn><mrow><mo>−</mo></mrow></msup></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow 1 ^ {-}} \lim _ {n \rightarrow \infty} x ^ {n} = \lim _ {n \rightarrow \infty} \lim _ {x \rightarrow 1 ^ {-}} x ^ {n}</annotation></semantics></math></div>
+<p>其中，记号 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><msup><mn>1</mn><mrow><mo>−</mo></mrow></msup></mrow><annotation encoding="application/x-tex">x \to 1^{-}</annotation></semantics></math> 表示 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 从1的左侧趋向于1。当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 在1的左侧时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{n \to \infty} x^n = 0</annotation></semantics></math> ，因此上面等式的左端等于0。但是对于任意给定的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> ，我们总可以得到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msup><mn>1</mn><mrow><mo>−</mo></mrow></msup></mrow></munder><msup><mi>x</mi><mrow><mi>n</mi></mrow></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lim_{x \to 1^{-}} x^n = 1</annotation></semantics></math> ，因此，上面等式右端的极限值为1。这是否意味着这种类型的极限运算次序交换都是不可信的？（答案见命题11.15.3。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例1.2.9（交换极限运算与积分运算的次序）对任意的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> ，我们有</span><span class="tag">经典例题</span></div>
+<p>例1.2.9（交换极限运算与积分运算的次序）对任意的实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> ，我们有</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mo>−</mo><mo>∞</mo></mrow><mrow><mo>∞</mo></mrow></msubsup><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mtext>d</mtext><mi>x</mi><mo>=</mo><mo>arctan</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo>)</mo><mi>Big</mi><msubsup><mo>|</mo><mrow><mi>x</mi><mo>=</mo><mo>−</mo><mo>∞</mo></mrow><mrow><mi>x</mi><mo>=</mo><mo>∞</mo></mrow></msubsup><mo>=</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>)</mo><mo>=</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">\int_ {- \infty} ^ {\infty} \frac {1}{1 + (x - y) ^ {2}} \mathrm{d} x = \arctan (x - y) \Big | _ {x = - \infty} ^ {x = \infty} = \frac {\pi}{2} - (- \frac {\pi}{2}) = \pi</annotation></semantics></math></div>
+<p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">y \to \infty</annotation></semantics></math> 时取极限，我们可以得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mo>−</mo><mo>∞</mo></mrow><mrow><mo>∞</mo></mrow></msubsup><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mtext>d</mtext><mi>x</mi><mo>=</mo><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow></munder><msubsup><mo>∫</mo><mrow><mo>−</mo><mo>∞</mo></mrow><mrow><mo>∞</mo></mrow></msubsup><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mtext>d</mtext><mi>x</mi><mo>=</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">\int_ {- \infty} ^ {\infty} \lim _ {y \to \infty} \frac {1}{1 + (x - y) ^ {2}} \mathrm{d} x = \lim _ {y \to \infty} \int_ {- \infty} ^ {\infty} \frac {1}{1 + (x - y) ^ {2}} \mathrm{d} x = \pi</annotation></semantics></math></div>
+<p>但是对于任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> ，我们有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>y</mi><mo>→</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{y \to \infty} \frac{1}{1 + (x - y)^2} = 0</annotation></semantics></math> 。因此，我们似乎可以推导出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>=</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">0 = \pi</annotation></semantics></math> 。上述论证出现了什么问题？是否应该舍弃（非常有用的）交换极限运算与积分运算次序的技巧？（定理11.18.1给出了部分答案。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例1.2.10（交换极限运算与求导运算的次序）观察可知，如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mi>&amp;</mi><mi>g</mi><mi>t</mi><mo>;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &amp;gt; 0</annotation></semantics></math> ，则有</span><span class="tag">经典例题</span></div>
+<p>例1.2.10（交换极限运算与求导运算的次序）观察可知，如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math> ，则有</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mtext>d</mtext></mrow><mrow><mtext>d</mtext><mi>x</mi></mrow></mfrac><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><msup><mi>ε</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mfrac><mrow><mn>3</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>(</mo><msup><mi>ε</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>2</mn><msup><mi>x</mi><mrow><mn>4</mn></mrow></msup></mrow><mrow><mo>(</mo><msup><mi>ε</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac {\mathrm{d}}{\mathrm{d} x} \left(\frac {x ^ {3}}{\varepsilon^ {2} + x ^ {2}}\right) = \frac {3 x ^ {2} (\varepsilon^ {2} + x ^ {2}) - 2 x ^ {4}}{(\varepsilon^ {2} + x ^ {2}) ^ {2}}</annotation></semantics></math></div>
+<p>特别地，</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mtext>d</mtext></mrow><mrow><mtext>d</mtext><mi>x</mi></mrow></mfrac><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><msup><mi>ε</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mi>Big</mi><msub><mo>|</mo><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac {\mathrm{d}}{\mathrm{d} x} \left(\frac {x ^ {3}}{\varepsilon^ {2} + x ^ {2}}\right) \Big | _ {x = 0} = 0</annotation></semantics></math></div>
+<p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon \to 0</annotation></semantics></math> 时取极限，我们期望得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mtext>d</mtext></mrow><mrow><mtext>d</mtext><mi>x</mi></mrow></mfrac><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><mn>0</mn><mo>+</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mi>Big</mi><msub><mo>|</mo><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow></msub><mo>=</mo><mn>0.</mn></mrow><annotation encoding="application/x-tex">\frac {\mathrm{d}}{\mathrm{d} x} \left(\frac {x ^ {3}}{0 + x ^ {2}}\right) \Big | _ {x = 0} = 0.</annotation></semantics></math></div>
+<p>但是该式左端为： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{d}{dx}x=1</annotation></semantics></math> 。那么，这是否表明交换极限运算与求导运算的次序总是错误的？（答案见定理11.19.1。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.11（交换求导次序）定义 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math> 为下列函数： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>:</mo><mo>=</mo><mfrac><mrow><mi>x</mi><msup><mi>y</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(x,y):=\frac{xy^{3}}{x^{2}+y^{2}}</annotation></semantics></math> 。</span><span class="tag">经典例题</span></div>
+<p>例 1.2.11（交换求导次序）定义 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math> 为下列函数： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>:</mo><mo>=</mo><mfrac><mrow><mi>x</mi><msup><mi>y</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(x,y):=\frac{xy^{3}}{x^{2}+y^{2}}</annotation></semantics></math> 。分析理论中常用的一个策略是交换两个偏导数的次序，从而我们期望得到：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mo>∂</mo><mrow><mn>2</mn></mrow></msup><mi>f</mi></mrow><mrow><mo>∂</mo><mi>x</mi><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mo>∂</mo><mrow><mn>2</mn></mrow></msup><mi>f</mi></mrow><mrow><mo>∂</mo><mi>y</mi><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\frac {\partial^ {2} f}{\partial x \partial y} (0, 0) = \frac {\partial^ {2} f}{\partial y \partial x} (0, 0)</annotation></semantics></math></div>
+<p>但是根据商的求导法则，我们得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>∂</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>3</mn><mi>x</mi><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>2</mn><mi>x</mi><msup><mi>y</mi><mrow><mn>4</mn></mrow></msup></mrow><mrow><mo>(</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac {\partial f}{\partial y} (x, y) = \frac {3 x y ^ {2}}{x ^ {2} + y ^ {2}} - \frac {2 x y ^ {4}}{(x ^ {2} + y ^ {2}) ^ {2}}</annotation></semantics></math></div>
+<p>特别地，</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>∂</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo>)</mo><mo>=</mo><mfrac><mrow><mn>0</mn></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>0</mn></mrow><mrow><msup><mi>x</mi><mrow><mn>4</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac {\partial f}{\partial y} (x, 0) = \frac {0}{x ^ {2}} - \frac {0}{x ^ {4}} = 0</annotation></semantics></math></div>
+<p>于是：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mo>∂</mo><mrow><mn>2</mn></mrow></msup><mi>f</mi></mrow><mrow><mo>∂</mo><mi>x</mi><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac {\partial^ {2} f}{\partial x \partial y} (0, 0) = 0</annotation></semantics></math></div>
+<p>另外，同样根据商的求导法则可以得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>∂</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>2</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><msup><mi>y</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><mo>(</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac {\partial f}{\partial x} (x, y) = \frac {y ^ {3}}{x ^ {2} + y ^ {2}} - \frac {2 x ^ {2} y ^ {3}}{(x ^ {2} + y ^ {2}) ^ {2}}</annotation></semantics></math></div>
+<p>进而有：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>∂</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>(</mo><mn>0</mn><mo>,</mo><mi>y</mi><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>3</mn></mrow></msup></mrow><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>0</mn></mrow><mrow><msup><mi>y</mi><mrow><mn>4</mn></mrow></msup></mrow></mfrac><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">\frac {\partial f}{\partial x} (0, y) = \frac {y ^ {3}}{y ^ {2}} - \frac {0}{y ^ {4}} = y</annotation></semantics></math></div>
+<p>因此：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mo>∂</mo><mrow><mn>2</mn></mrow></msup><mi>f</mi></mrow><mrow><mo>∂</mo><mi>y</mi><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac {\partial^ {2} f}{\partial y \partial x} (0, 0) = 1</annotation></semantics></math></div>
+<p>由于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1 \neq 0</annotation></semantics></math> ，所以我们似乎已经推出了这样一个结论：交换求导次序是不可信的。然而，是否存在某些其他情况使得交换求导次序可以成立？（定理11.37.4和习题11.37.1给出了一些回答。）</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.12（洛必达法则）我们都很熟悉简洁优美的洛必达法则：</span><span class="tag">经典例题</span></div>
+<p>例 1.2.12（洛必达法则）我们都很熟悉简洁优美的洛必达法则：</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></mfrac><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow></munder><mfrac><mrow><msup><mi>f</mi><mrow><mo>′</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><msup><mi>g</mi><mrow><mo>′</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow x _ {0}} \frac {f (x)}{g (x)} = \lim _ {x \rightarrow x _ {0}} \frac {f ^ {\prime} (x)}{g ^ {\prime} (x)}</annotation></semantics></math></div>
+<p>但是如果不正确应用该法则，仍旧会导致错误出现。例如，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>:</mo><mo>=</mo><mi>x</mi><mo>,</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>:</mo><mo>=</mo><mn>1</mn><mo>+</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x) := x, g(x) := 1 + x</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>:</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_{0} := 0</annotation></semantics></math> 时，应用洛必达法则可以得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>x</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow></mfrac><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lim _ {x \rightarrow 0} \frac {x}{1 + x} = \lim _ {x \rightarrow 0} \frac {1}{1} = 1</annotation></semantics></math></div>
+<p>但是，因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>x</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>0</mn></mrow><mrow><mn>1</mn><mo>+</mo><mn>0</mn></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{x\to 0}\frac{x}{1 + x} = \frac{0}{1 + 0} = 0</annotation></semantics></math> ，所以这个结果是不正确的。显然，只有当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x\to x_0</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">g(x)</annotation></semantics></math> 均趋向于0时，洛必达法则才适用，而上面的这个例子却没有满足该条件。但是即便当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x\to x_0</annotation></semantics></math> ， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">g(x)</annotation></semantics></math> 均趋向于0时，仍然存在出现错误结果的可能。例如，考虑如下极限：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\lim _ {x \to 0} \frac {x ^ {2} \sin (x ^ {- 4})}{x}</annotation></semantics></math></div>
+<p>因为当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x \to 0</annotation></semantics></math> 时，分子和分母都趋向于0，所以该极限似乎可以放心地使用洛必达法则，从而得到：</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mi>r</mi><mi>l</mi><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac></mtd><mtd><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>2</mn><mi>x</mi><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>4</mn><msup><mi>x</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>cos</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><mrow><mn>1</mn></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mn>2</mn><mi>x</mi><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo><mo>−</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mn>4</mn><msup><mi>x</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>cos</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} \lim _ {x \to 0} \frac {x ^ {2} \sin (x ^ {- 4})}{x} &amp; = \lim _ {x \to 0} \frac {2 x \sin (x ^ {- 4}) - 4 x ^ {- 3} \cos (x ^ {- 4})}{1} \\ &amp; = \lim _ {x \to 0} 2 x \sin (x ^ {- 4}) - \lim _ {x \to 0} 4 x ^ {- 3} \cos (x ^ {- 4}) \end{array}</annotation></semantics></math></div>
+<p>根据夹逼定理可知，第一个极限收敛于0（因为函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>x</mi><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">2x\sin (x^{-4})</annotation></semantics></math> 有上界 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>|</mo><mi>x</mi><mo>|</mo></mrow><annotation encoding="application/x-tex">2|x|</annotation></semantics></math> 和下界 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn><mo>|</mo><mi>x</mi><mo>|</mo></mrow><annotation encoding="application/x-tex">-2|x|</annotation></semantics></math> ，并且当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x\to 0</annotation></semantics></math> 时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>|</mo><mi>x</mi><mo>|</mo></mrow><annotation encoding="application/x-tex">2|x|</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn><mo>|</mo><mi>x</mi><mo>|</mo></mrow><annotation encoding="application/x-tex">-2|x|</annotation></semantics></math> 都是趋向于0的），但是第二个极限却是发散的（因为当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x\to 0</annotation></semantics></math> 时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^{-3}</annotation></semantics></math> 趋向于无穷且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">\cos (x^{-4})</annotation></semantics></math> 不趋向于0）。因此，极限 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>2</mn><mi>x</mi><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo><mo>−</mo><mn>4</mn><msup><mi>x</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>cos</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><mrow><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\lim_{x\to 0}\frac{2x\sin(x^{-4}) - 4x^{-3}\cos(x^{-4})}{1}</annotation></semantics></math> 发散。于是，有人可能会根据洛必达法则推出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\lim_{x\to 0}\frac{x^2\sin(x^{-4})}{x}</annotation></semantics></math> 也是发散的。但是我们可以聪明地把这个极限改写成 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mi>x</mi><mo>sin</mo><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{x\to 0}x\sin (x^{-4})</annotation></semantics></math> 那么根据夹逼定理，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x\to 0</annotation></semantics></math> 时，该极限是趋向于0的。这并非说明洛必达法则不可信（事实上，洛必达法则是非常严格的，见10.5节），而是告诉我们在使用它的时候需要更加小心。</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 1.2.13（极限和长度）当你学习积分以及积分与一条曲线下方面积之间关系的时候，将会有一幅图形展现在你的眼前。在这幅图形中，某条曲线下方的区域将由许多矩形来</span><span class="tag">经典例题</span></div>
+<p>例 1.2.13（极限和长度）当你学习积分以及积分与一条曲线下方面积之间关系的时候，将会有一幅图形展现在你的眼前。在这幅图形中，某条曲线下方的区域将由许多矩形来逼近，而且这部分矩形的面积由黎曼和给出。然后我们可以通过“取极限”的方式把上述黎曼和用积分代替，那么得到的这个积分值就被近似看作该曲线下方区域的实际面积。之后不久，你将学会采用类似的方法求出一条曲线的长度——用许多线段来逼近一条曲线，计算出所有线段长度之和，进而通过取极限得到该曲线的长度。</p>
+<p>然而，你现在不难想到如果没有正确地运用上述方法，也会导致荒谬的结果。考虑顶点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(0,0)</annotation></semantics></math> 、 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(1,0)</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(0,1)</annotation></semantics></math> 的直角三角形，并且假设我们希望求出该三角形斜边的长度。利用毕达哥拉斯定理，我们能够计算出斜边的长度为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><mn>2</mn></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{2}</annotation></semantics></math> 。然而，假设由于某些原因我们并不知道毕达哥拉斯定理，并且希望通过微积分的方法求出斜边的长度。那么，一种方法就是利用水平边和垂直边来逼近斜边。取定一个较大的数字 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> ，然后构造出一个“阶梯”来逼近斜边。这个“阶梯”有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 个长度相等的水平边，并且这些水平边与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 个长度相同的垂直边交替排列。显然，所有边的长度均为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>/</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">1/N</annotation></semantics></math> ，那么这个阶梯的总长度为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>N</mi><mo>/</mo><mi>N</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2N/N = 2</annotation></semantics></math> 。如果令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 趋向于无穷，那么显然该阶梯趋近于斜边。因此，在极限概念下，我们应该可以得到斜边的长度。但是，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">N \to \infty</annotation></semantics></math> 时， <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>N</mi><mo>/</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">2N/N</annotation></semantics></math> 的极限值为 2，而非 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><mn>2</mn></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{2}</annotation></semantics></math> ，所以我们得到的斜边长度是错误的。这种状况是如何发生的？</p>
+<p>本书中的分析理论将帮助你解决以上这些问题，并且会让你了解这些法则（以及其他的法则）在什么情况下是适用的，在什么情况下是不能使用的，从而把这些法则有益的应用与谬论隔离开来。所以，分析理论可以避免你犯错，并且有助于你在更广泛的领域中应用这些法则。此外，在你不断深入学习分析理论的同时会培养一种“分析的思维方式”。当涉及数学中一些新的法则或者处理某些标准法则无法应用的情况时，这种思维方式将对你有所帮助。例如，如果函数是复值的而不是实值的，将会发生什么样的情况？假如你现在处理的是一个球体而不是平面，情况会如何？如果你面对的函数是不连续的，而是类似于矩形波和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi></mrow><annotation encoding="application/x-tex">\delta</annotation></semantics></math> 函数之类的函数，那应该是什么样的情况？若你处理的函数、积分上下限或者求和上下限偶尔成为无穷的，情况将如何？你将会感知到为什么某个数学法则（如链式法则）能够起作用，如何把该法则应用到其他新的情况中，该法则的使用有哪些限制条件（如果存在限制条件的话）；这会让你更加自信地、准确地使用已经学到的数学知识。</p>
+</div></section>
+  </div>
+
+  <div class="wb-book-nav"><span class="wb-nav-btn disabled">‹ 已是第一章</span><a class="wb-nav-btn hub" href="course-analysis.html?tab=textbook">📚 返回教材库</a><a class="wb-nav-btn next" href="textbook-analysis-taozhexuan-ch02.html">下一章：从头开始: 自然数 ›</a></div>
+</main>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-analysis-taozhexuan-ch01.html" class="cur">第 1 章 ｜ 引言</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch02.html">第 2 章 ｜ 从头开始: 自然数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch03.html">第 3 章 ｜ 集合论</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch04.html">第 4 章 ｜ 整数和有理数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch05.html">第 5 章 ｜ 实数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch06.html">第 6 章 ｜ 序列的极限</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch07.html">第 7 章 ｜ 级数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch08.html">第 8 章 ｜ 无限集</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch09.html">第 9 章 ｜ R上的连续函数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch10.html">第 10 章 ｜ 函数的微分</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch11.html">第 11 章 ｜ 黎曼积分</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch12.html">第 12 章 ｜ 度量空间</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch13.html">第 13 章 ｜ 度量空间上的连续函数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch14.html">第 14 章 ｜ 一致收敛</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch15.html">第 15 章 ｜ 幂级数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch16.html">第 16 章 ｜ 傅里叶级数</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch17.html">第 17 章 ｜ 多元微分学</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch18.html">第 18 章 ｜ 勒贝格测度</a></li>
+<li><a href="textbook-analysis-taozhexuan-ch19.html">第 19 章 ｜ 勒贝格积分</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_analysis-taozhexuan_ch01",
+  book_id: "analysis-taozhexuan",
+  ch_id: "ch01",
+  title: "引言"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+</body>
+</html>

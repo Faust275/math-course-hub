@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《geometry》2026-10-19 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《geometry》2026-10-19 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#一柱面000333002806"
+id="toc-一柱面000333002806">一、柱面（00:03:33—00:28:06）</a>
+<ul>
+<li><a href="#柱面的定义与参数方程"
+id="toc-柱面的定义与参数方程">00:03:33—00:09:11 ｜
+柱面的定义与参数方程</a></li>
+<li><a href="#准线为两曲面交线时的一般方程"
+id="toc-准线为两曲面交线时的一般方程">00:09:19—00:13:30 ｜
+准线为两曲面交线时的一般方程</a></li>
+<li><a href="#特例一准线在坐标平面母线平行坐标轴"
+id="toc-特例一准线在坐标平面母线平行坐标轴">00:13:54—00:17:29 ｜
+特例一：准线在坐标平面、母线平行坐标轴</a></li>
+<li><a href="#二次曲线生成的柱面椭双曲抛物柱面"
+id="toc-二次曲线生成的柱面椭双曲抛物柱面">00:17:32—00:20:01 ｜
+二次曲线生成的柱面（椭/双曲/抛物柱面）</a></li>
+<li><a href="#特例二圆柱面到定直线距离为定长的点的轨迹"
+id="toc-特例二圆柱面到定直线距离为定长的点的轨迹">00:20:07—00:24:54 ｜
+特例二：圆柱面——到定直线距离为定长的点的轨迹</a></li>
+<li><a href="#圆柱面的方程向量叉乘形式"
+id="toc-圆柱面的方程向量叉乘形式">00:25:06—00:28:06 ｜
+圆柱面的方程（向量叉乘形式）</a></li>
+</ul></li>
+<li><a href="#二柱面例题002817003601"
+id="toc-二柱面例题002817003601">二、柱面例题（00:28:17—00:36:01）</a>
+<ul>
+<li><a href="#例题准线为单位球面被过原点平面所截大圆方向-111"
+id="toc-例题准线为单位球面被过原点平面所截大圆方向-111">00:28:17—00:36:01
+｜ 例题：准线为单位球面被过原点平面所截大圆、方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,1,1)</annotation></semantics></math></a></li>
+</ul></li>
+<li><a href="#三锥面003607012412"
+id="toc-三锥面003607012412">三、锥面（00:36:07—01:24:12）</a>
+<ul>
+<li><a href="#锥面的定义与顶点唯一性"
+id="toc-锥面的定义与顶点唯一性">00:36:07—00:40:14 ｜
+锥面的定义与顶点唯一性</a></li>
+<li><a href="#锥面的一般方程" id="toc-锥面的一般方程">00:40:29—00:48:12
+｜ 锥面的一般方程</a></li>
+<li><a href="#特例一圆锥面及其方程"
+id="toc-特例一圆锥面及其方程">00:53:39—01:03:11 ｜
+特例一：圆锥面及其方程</a></li>
+<li><a href="#特例二顶点在原点的锥面与齐次方程"
+id="toc-特例二顶点在原点的锥面与齐次方程">01:03:28—01:13:18 ｜
+特例二：顶点在原点的锥面与齐次方程</a></li>
+<li><a href="#齐次函数与齐次方程的定义"
+id="toc-齐次函数与齐次方程的定义">01:13:34—01:15:58 ｜
+齐次函数与齐次方程的定义</a></li>
+<li><a href="#定理n-次齐次方程表示以原点为顶点的锥面"
+id="toc-定理n-次齐次方程表示以原点为顶点的锥面">01:16:27—01:22:13 ｜
+定理：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次方程表示以原点为顶点的锥面</a></li>
+<li><a href="#平移情形与虚锥说明"
+id="toc-平移情形与虚锥说明">01:22:13—01:24:12 ｜
+平移情形与虚锥说明</a></li>
+</ul></li>
+<li><a href="#四例题由三条母线确定的圆柱面012450014009"
+id="toc-四例题由三条母线确定的圆柱面012450014009">四、例题：由三条母线确定的圆柱面（01:24:50—01:40:09）</a>
+<ul>
+<li><a href="#例题三条平行直线-l_1l_2l_3-为母线的圆柱面"
+id="toc-例题三条平行直线-l_1l_2l_3-为母线的圆柱面">01:24:50—01:40:09 ｜
+例题：三条平行直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>,</mo><msub><mi>L</mi><mn>2</mn></msub><mo>,</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1,L_2,L_3</annotation></semantics></math>
+为母线的圆柱面</a></li>
+</ul></li>
+<li><a href="#五课程事务014023014356"
+id="toc-五课程事务014023014356">五、课程事务（01:40:23—01:43:56）</a>
+<ul>
+<li><a href="#下节课安排与小测试锥面定义答疑"
+id="toc-下节课安排与小测试锥面定义答疑">01:40:23—01:43:56 ｜
+下节课安排与小测试、锥面定义答疑</a></li>
+</ul></li>
+</ul>
+</nav>
+<blockquote>
+<p>《几何学》2026-10-19 课堂讲义 ｜ 时长 01:43:56 ｜ 字幕 899 条</p>
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-1019/fig02_cone_generation.png" alt="图 2: 锥面的生成：过定点 M0 且与准线相交的直线全体" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 2: 锥面的生成：过定点 M0 且与准线相交的直线全体</figcaption></figure>
+
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-1019/fig01_cylinder_generation.png" alt="图 1: 柱面的生成：平行于固定方向 A 的母线族沿准线移动" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 1: 柱面的生成：平行于固定方向 A 的母线族沿准线移动</figcaption></figure>
+
+<p><code>[补全]</code>
+为整理者按标准学科知识补齐、非当堂所讲；<code>[?]</code>
+为转写存疑；<code>[按图还原]</code>
+为黑板图形文字化描述，图上未出现点线不编造。</p>
+</blockquote>
+<h2 id="一柱面000333002806">一、柱面（00:03:33—00:28:06）</h2>
+<h3 id="柱面的定义与参数方程">00:03:33—00:09:11 ｜
+柱面的定义与参数方程</h3>
+<p>柱面（字幕中记为”桌面”）由一条<strong>准线</strong>（字幕记为”准确/准线”）与一条固定的<strong>方向</strong>共同生成：取一条空间曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>（准线），给定一个非零方向向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>；所有与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+平行、且与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+相交的直线（称为<strong>母线</strong>，字幕记为”子母线/整线”）的全体，就构成一张柱面
+[按图还原：已知准线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>（一条曲线）与方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>；作过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+上每一点、且与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+平行的直线，这些直线的全体即柱面]。</p>
+<p>若准线用参数方程给出
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>u</mi><mo>∈</mo><mi>D</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\vec r=\vec r(u),\qquad u\in D,</annotation></semantics></math>
+方向为固定向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>。在柱面上任取一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>，其位置向量为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec r</annotation></semantics></math>；过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+的母线与准线交于一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>，位置向量记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>=</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r_1=\vec r(u)</annotation></semantics></math>（字幕记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mi>E</mi></msub><annotation encoding="application/x-tex">r_E</annotation></semantics></math>）。因为母线方向平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>，故存在实数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>+</mo><mi>t</mi><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>t</mi><mover><mi>A</mi><mo accent="true">→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec r=\vec r_1+t\vec A=\vec r(u)+t\vec A.\tag{1}</annotation></semantics></math>
+这是柱面的<strong>向量式参数方程</strong>，含两个参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>（沿准线）与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>（沿母线）；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">u\in D</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">t\in\mathbb R</annotation></semantics></math>（母线上下都无限延伸）。</p>
+<p>写成分量形式。设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r(u)=(f(u),g(u),h(u))</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><msub><mi>a</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(a_1,a_2,a_3)</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>t</mi><mspace width="0.167em"></mspace><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>y</mi><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>t</mi><mspace width="0.167em"></mspace><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>z</mi><mo>=</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>t</mi><mspace width="0.167em"></mspace><msub><mi>a</mi><mn>3</mn></msub><mo>,</mo></mtd></mtr></mtable></mrow><mspace width="2.0em"></mspace><mi>u</mi><mo>∈</mo><mi>D</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{cases}
+x=f(u)+t\,a_1,\\[2pt]
+y=g(u)+t\,a_2,\\[2pt]
+z=h(u)+t\,a_3,
+\end{cases}\qquad u\in D,\ t\in\mathbb R.\tag{2}</annotation></semantics></math></p>
+<h3 id="准线为两曲面交线时的一般方程">00:09:19—00:13:30 ｜
+准线为两曲面交线时的一般方程</h3>
+<p>若准线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+不是用参数方程给出，而是两张曲面的交线，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F(x,y,z)=0,\qquad G(x,y,z)=0,</annotation></semantics></math>
+方向仍为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>l</mi><mo>,</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(l,m,n)</annotation></semantics></math>。求柱面方程的”一般式消去法”如下。</p>
+<p>在柱面上任取动点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M(x,y,z)</annotation></semantics></math>，其母线与准线交于半动点（参数点）<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,z_1)</annotation></semantics></math>。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>
+满足
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">F(x_1,y_1,z_1)=0,\qquad G(x_1,y_1,z_1)=0.\tag{3}</annotation></semantics></math>
+母线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><msub><mi>M</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">MM_1</annotation></semantics></math>
+的方向为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x-x_1,\ y-y_1,\ z-z_1)</annotation></semantics></math>，与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+平行，故其对称式方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mi>l</mi></mfrac><mo>=</mo><mfrac><mrow><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><mi>m</mi></mfrac><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><mi>n</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x-x_1}{l}=\frac{y-y_1}{m}=\frac{z-z_1}{n}.\tag{4}</annotation></semantics></math>
+（约定：若某分母为零，则对应分子也为零，例如分母为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+时得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x=x_1</annotation></semantics></math>。）式
+(3) 两个方程加式 (4) 化作的两个方程，共 <strong>4
+个独立方程</strong>；未知量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>
+只有 3 个，从中消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>，即得关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+的 1 个方程，这就是所求柱面方程。</p>
+<p>老师提醒：参数式看上去简单；一旦准线以一般式（两曲面交线）给出，具体解往往写不出来，因为这涉及到解方程。</p>
+<h3 id="特例一准线在坐标平面母线平行坐标轴">00:13:54—00:17:29 ｜
+特例一：准线在坐标平面、母线平行坐标轴</h3>
+<p><strong>特例</strong>：准线取在某一坐标平面（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mi>O</mi><mi>Y</mi></mrow><annotation encoding="application/x-tex">XOY</annotation></semantics></math>
+平面，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>）上的一条曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,0)=0</annotation></semantics></math>，母线方向取坐标轴方向，例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(0,0,1)</annotation></semantics></math>（沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴）。</p>
+<p>仍用消去法。设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M(x,y,z)</annotation></semantics></math>
+在柱面上，母线与准线交于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,0)</annotation></semantics></math>。则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F(x_1,y_1,0)=0,</annotation></semantics></math>
+且母线对称式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mn>0</mn></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><mn>0</mn></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi><mo>−</mo><mn>0</mn></mrow><mn>1</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{x-x_1}{0}=\dfrac{y-y_1}{0}=\dfrac{z-0}{1}</annotation></semantics></math>，由分母为零的约定得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x=x_1,\ y=y_1</annotation></semantics></math>。把它代回准线方程即得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">F(x,y,0)=0.\tag{5}</annotation></semantics></math>
+也就是说，空间里一个只含两个变量的方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y)=0</annotation></semantics></math>，代表一张<strong>母线平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴</strong>的柱面 [按图还原：已知
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mi>O</mi><mi>Y</mi></mrow><annotation encoding="application/x-tex">XOY</annotation></semantics></math>
+平面上曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y)=0</annotation></semantics></math>，作所有平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴的直线过该曲线上每点，全体即柱面；母线方向就是缺少的那个变量所对应的坐标轴方向]。</p>
+<h3 id="二次曲线生成的柱面椭双曲抛物柱面">00:17:32—00:20:01 ｜
+二次曲线生成的柱面（椭/双曲/抛物柱面）</h3>
+<p>平面二次曲线照搬成空间方程，便得到对应的柱面： - 椭圆
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1</annotation></semantics></math>
+→ <strong>椭圆柱面</strong>； - 双曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1</annotation></semantics></math>
+→ <strong>双曲柱面</strong>（字幕记为”双曲柱面”）； - 抛物线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">y^2=2px</annotation></semantics></math>
+→ <strong>抛物柱面</strong>。</p>
+<p>要点：平面上看是二次曲线，放到空间就是”沿第三轴方向拉伸”得到的柱面，母线方向即该坐标轴方向。老师强调”坐标平面上的曲线
++ 沿坐标轴方向的母线”这套生成方式的重要性。</p>
+<h3 id="特例二圆柱面到定直线距离为定长的点的轨迹">00:20:07—00:24:54 ｜
+特例二：圆柱面——到定直线距离为定长的点的轨迹</h3>
+<p>圆柱面（字幕”圆桌面”）是柱面的特例：准线是一个<strong>圆</strong>，但此圆不一定放在坐标平面上，而是位于某张平面上；该平面有圆心
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>、半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>（字幕”半句”即半径），其法向方向正是母线方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>。因此圆所在平面与母线方向垂直
+[按图还原：已知一张平面、平面上画一个圆，圆心
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>、半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>；过圆心作垂直于该平面的直线，即轴；沿此方向平移该圆，扫出圆柱面]。</p>
+<p>关键性质：圆柱面的方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+一定垂直于准线所在的平面；否则切出来不是圆柱（比如斜着切是一张椭圆柱面而非圆柱）。圆柱面也可等价地看成<strong>到一条定直线（轴）的距离等于定长（半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>）的全体点的集合</strong>。</p>
+<h3 id="圆柱面的方程向量叉乘形式">00:25:06—00:28:06 ｜
+圆柱面的方程（向量叉乘形式）</h3>
+<p>设轴为过点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>（位置向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><annotation encoding="application/x-tex">\vec r_0</annotation></semantics></math>）且方向为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+的直线，即轴方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>t</mi><mover><mi>A</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec r=\vec r_0+t\vec A</annotation></semantics></math>；圆柱半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>。对柱面上一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>（位置向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec r</annotation></semantics></math>），它到轴的距离等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>。点到直线的距离用”平行四边形面积”计算：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">d=\frac{|(\vec r-\vec r_0)\times\vec A|}{|\vec A|}.</annotation></semantics></math></p>
+<p>令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">d=R</annotation></semantics></math>，得圆柱面方程
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>=</mo><mi>R</mi><mo>,</mo><mspace width="2.0em"></mspace><mtext mathvariant="normal">或平方后</mtext><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><msup><mi>R</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{|(\vec r-\vec r_0)\times\vec A|}{|\vec A|}=R,\qquad\text{或平方后}\qquad |(\vec r-\vec r_0)\times\vec A|^2=R^2|\vec A|^2.\tag{6}</annotation></semantics></math></p>
+<p>这是除前面两种求法之外的又一种标准求法。</p>
+<h2 id="二柱面例题002817003601">二、柱面例题（00:28:17—00:36:01）</h2>
+<h3
+id="例题准线为单位球面被过原点平面所截大圆方向-111">00:28:17—00:36:01 ｜
+例题：准线为单位球面被过原点平面所截大圆、方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,1,1)</annotation></semantics></math></h3>
+<h4 id="例题证明-1002842-求圆柱面方程两种方法">例题/证明 1（00:28:42）｜
+求圆柱面方程（两种方法）</h4>
+<p><strong>命题</strong>：准线为单位球面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=1</annotation></semantics></math>
+与平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x+y+z=0</annotation></semantics></math>
+的交线（一张平面切球面，截出的是一个圆；平面过原点，故截出的是半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+的<strong>大圆</strong>），母线方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>（与平面的法向一致，故该柱面确为圆柱面）。求该圆柱面方程。</p>
+<p><strong>思路</strong>：方法一用一般式消去法；方法二利用圆柱面”到轴距离为定长”的向量方程（6），更简洁。</p>
+<p><strong>方法一（消去法）逐步推导</strong>： 1. 设柱面上动点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M(x,y,z)</annotation></semantics></math>，其母线与准线交于点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,z_1)</annotation></semantics></math>。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>
+满足
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">x_1^2+y_1^2+z_1^2=1,\qquad x_1+y_1+z_1=0.</annotation></semantics></math>
+2. 母线方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>，对称式方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mn>1</mn></mfrac><mo>=</mo><mfrac><mrow><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><mn>1</mn></mfrac><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><mn>1</mn></mfrac><mo>=</mo><mi>t</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x-x_1}{1}=\frac{y-y_1}{1}=\frac{z-z_1}{1}=t,</annotation></semantics></math>
+故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>y</mi><mo>−</mo><mi>t</mi><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mi>z</mi><mo>−</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">x_1=x-t,\ y_1=y-t,\ z_1=z-t</annotation></semantics></math>。
+3. 代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_1+y_1+z_1=0</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>−</mo><mn>3</mn><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x+y+z-3t=0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi></mrow><mn>3</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">t=\dfrac{x+y+z}{3}</annotation></semantics></math>。
+4. 于是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mi>z</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>y</mi><mo>−</mo><mi>x</mi><mo>−</mo><mi>z</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>z</mi><mo>−</mo><mi>x</mi><mo>−</mo><mi>y</mi></mrow><mn>3</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">x_1=\frac{2x-y-z}{3},\quad y_1=\frac{2y-x-z}{3},\quad z_1=\frac{2z-x-y}{3}.</annotation></semantics></math>
+5. 再代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x_1^2+y_1^2+z_1^2=1</annotation></semantics></math>，展开整理（此处计算较繁，老师未完全展开，化简结果见下）[补全]
+可得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>3</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">(y-z)^2+(z-x)^2+(x-y)^2=3.\tag{7}</annotation></semantics></math></p>
+<p><strong>方法二（距离公式）逐步推导</strong>： 1. 平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x+y+z=0</annotation></semantics></math>
+过原点，故大圆圆心即原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec r_0=\vec 0</annotation></semantics></math>，轴为过原点、方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>
+的直线，半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">R=1</annotation></semantics></math>。
+2. 由 (6)：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>=</mo><mn>1</mn><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mn>3</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{|\vec r\times\vec A|}{|\vec A|}=1\quad\Longrightarrow\quad |\vec r\times\vec A|^2=|\vec A|^2=3.</annotation></semantics></math>
+3.
+计算叉乘：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>−</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r\times\vec A=(x,y,z)\times(1,1,1)=(y-z,\ z-x,\ x-y)</annotation></semantics></math>。
+4. 故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>3</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">(y-z)^2+(z-x)^2+(x-y)^2=3.\tag{7}</annotation></semantics></math>
+（等价地
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mi>y</mi><mo>−</mo><mi>x</mi><mi>z</mi><mo>−</mo><mi>y</mi><mi>z</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>3</mn><mn>2</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2-xy-xz-yz=\dfrac32</annotation></semantics></math>。）</p>
+<p><strong>结论</strong>：该圆柱面方程为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">(y-z)^2+(z-x)^2+(x-y)^2=3</annotation></semantics></math>。两种方法结果一致。</p>
+<p><strong>易错点</strong>：方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>
+必须与平面法向一致，柱面才是圆柱面；否则只是一般柱面。方法一消去过程较繁，方法二（认出”准线是大圆、轴过原点且垂直于其平面”）更直接。</p>
+<h2 id="三锥面003607012412">三、锥面（00:36:07—01:24:12）</h2>
+<h3 id="锥面的定义与顶点唯一性">00:36:07—00:40:14 ｜
+锥面的定义与顶点唯一性</h3>
+<p>锥面（字幕”罪名”）由<strong>一个定点</strong>（顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>）与一条<strong>定曲线</strong>（准线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>）生成：所有过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+且与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+相交的直线（<strong>母线</strong>）的全体，构成锥面 [按图还原：已知定点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+与一条曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>；过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+作直线，要求每条直线与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+相交，这些直线的全体即锥面；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+为顶点，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+为准线，每条过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+交
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+的直线为母线]。</p>
+<p>顶点唯一性：除<strong>平面</strong>这种特例外，锥面的顶点唯一。平面既是柱面、也是锥面——平面上任一点都可作为顶点（从平面上一点向某条准线”射线”射出，可覆盖全平面）；除平面外，顶点唯一。</p>
+<h3 id="锥面的一般方程">00:40:29—00:48:12 ｜ 锥面的一般方程</h3>
+<p><strong>情形一（准线参数式）</strong>：准线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r=\vec r(u)=(f(u),g(u),h(u))</annotation></semantics></math>，顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>（位置向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><annotation encoding="application/x-tex">\vec r_0</annotation></semantics></math>）。锥面上点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>，其母线与准线交于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo>=</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1=\vec r(u)</annotation></semantics></math>。由于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+在射线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>0</mn></msub><msub><mi>M</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">M_0M_1</annotation></semantics></math>
+上，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>t</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec r=\vec r_0+t\bigl(\vec r(u)-\vec r_0\bigr),\qquad t\in\mathbb R.\tag{8}</annotation></semantics></math>
+（单叶锥取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>
+得半锥，双叶锥取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">t\in\mathbb R</annotation></semantics></math>。）</p>
+<p><strong>情形二（准线为两曲面交线）</strong>：准线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0,\ G(x,y,z)=0</annotation></semantics></math>，顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_0(x_0,y_0,z_0)</annotation></semantics></math>。动点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M(x,y,z)</annotation></semantics></math>
+的母线交准线于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,z_1)</annotation></semantics></math>，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="1.0em"></mspace><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F(x_1,y_1,z_1)=0,\quad G(x_1,y_1,z_1)=0,</annotation></semantics></math>
+且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>,</mo><msub><mi>M</mi><mn>1</mn></msub><mo>,</mo><msub><mi>M</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">M,M_1,M_0</annotation></semantics></math>
+共线，故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><mrow><msub><mi>z</mi><mn>0</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x-x_1}{x_0-x_1}=\frac{y-y_1}{y_0-y_1}=\frac{z-z_1}{z_0-z_1}.\tag{9}</annotation></semantics></math>
+连同前面两式共 4 个方程，消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>
+即得锥面方程。</p>
+<p>（00:48:15—00:53:39 为课间休息，无实质内容，略过。）</p>
+<h3 id="特例一圆锥面及其方程">00:53:39—01:03:11 ｜
+特例一：圆锥面及其方程</h3>
+<p>圆锥面（字幕”圆砖面”）：准线是一个圆，圆心记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>；过圆心且垂直于圆所在平面的直线称为<strong>轴</strong>；在轴上任取一点作为<strong>顶点</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>。母线与轴之间的夹角固定，称为<strong>半顶角</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>（字幕”半丁者”）。确定圆锥面只需三个因素：<strong>顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>、半顶角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>、轴方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math></strong>；准线画大画小都不影响锥面形状
+[按图还原：已知圆（圆心
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>、所在平面）、过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
+垂直于平面的轴、轴上一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+为顶点；由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+向圆周上各点连线，每条连线与轴夹角均为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>]。</p>
+<p>取锥面上一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>，向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><msub><mi>M</mi><mn>0</mn></msub><mi>M</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\overrightarrow{M_0M}=\vec r-\vec r_0</annotation></semantics></math>
+与轴方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+的夹角等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>，由内积得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mover><mi>A</mi><mo accent="true">→</mo></mover></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>α</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{(\vec r-\vec r_0)\cdot\vec A}{|\vec r-\vec r_0|\,|\vec A|}=\cos\alpha.</annotation></semantics></math>
+为避免方向（钝角时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">cos</mi><annotation encoding="application/x-tex">\cos</annotation></semantics></math>
+取负）带来的符号问题，两边平方：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><msup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>α</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\bigl((\vec r-\vec r_0)\cdot\vec A\bigr)^2=|\vec r-\vec r_0|^2\,|\vec A|^2\cos^2\alpha.\tag{10}</annotation></semantics></math>
+（亦可写作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mi>±</mi><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">(\vec r-\vec r_0)\cdot\vec A=\pm|\vec r-\vec r_0|\,|\vec A|\cos\alpha</annotation></semantics></math>。）</p>
+<h4
+id="例题证明-2010047-圆锥面例题顶点-210半顶角-pi6轴-perp-平面-xy-z10">例题/证明
+2（01:00:47）｜ 圆锥面例题：顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(2,1,0)</annotation></semantics></math>、半顶角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mi>/</mi><mn>6</mn></mrow><annotation encoding="application/x-tex">\pi/6</annotation></semantics></math>、轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⟂</mo><annotation encoding="application/x-tex">\perp</annotation></semantics></math>
+平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x+y-z+1=0</annotation></semantics></math></h4>
+<p><strong>命题</strong>：求顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_0=(2,1,0)</annotation></semantics></math>、半顶角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mi>π</mi><mi>/</mi><mn>6</mn></mrow><annotation encoding="application/x-tex">\alpha=\pi/6</annotation></semantics></math>、轴垂直于平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x+y-z+1=0</annotation></semantics></math>
+的圆锥面方程。</p>
+<p><strong>思路</strong>：轴垂直于给定平面，故轴方向即该平面法向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,-1)</annotation></semantics></math>；直接套用
+(10)。</p>
+<p><strong>逐步推导</strong>： 1.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r_0=(2,1,0)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,-1)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msqrt><mn>3</mn></msqrt></mrow><annotation encoding="application/x-tex">|\vec A|=\sqrt3</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>α</mi><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\cos\alpha=\cos\frac\pi6=\frac{\sqrt3}{2}</annotation></semantics></math>。
+2.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r-\vec r_0=(x-2,\ y-1,\ z)</annotation></semantics></math>，故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>z</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>−</mo><mn>3</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">(\vec r-\vec r_0)\cdot\vec A=(x-2)+(y-1)-z=x+y-z-3.</annotation></semantics></math>
+3.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|\vec r-\vec r_0|^2=(x-2)^2+(y-1)^2+z^2</annotation></semantics></math>。
+4. 代入 (10)：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>−</mo><mn>3</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>⋅</mo><mn>3</mn><mo>⋅</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">(x+y-z-3)^2=|\vec r-\vec r_0|^2\cdot 3\cdot\frac34=\frac94\bigl[(x-2)^2+(y-1)^2+z^2\bigr].</annotation></semantics></math></p>
+<p><strong>结论</strong>：所求圆锥面方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>−</mo><mn>3</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">(x+y-z-3)^2=\frac94\Bigl[(x-2)^2+(y-1)^2+z^2\Bigr].</annotation></semantics></math></p>
+<p><strong>易错点</strong>：轴方向取平面法向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,1,-1)</annotation></semantics></math>
+而非
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,1,1)</annotation></semantics></math>；夹角公式用内积，平方是为消除母线在轴两侧（半锥两叶）的符号。</p>
+<h3 id="特例二顶点在原点的锥面与齐次方程">01:03:28—01:13:18 ｜
+特例二：顶点在原点的锥面与齐次方程</h3>
+<p>设顶点在原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>，准线取在平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mi>O</mi><mi>Y</mi></mrow><annotation encoding="application/x-tex">XOY</annotation></semantics></math>
+平面、高度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+的一张平面上的一条曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y)=0</annotation></semantics></math>（即准线是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">F(x,y)=0,\ z=H</annotation></semantics></math>）。</p>
+<p><strong>[按图还原] 已知</strong>：顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>、平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+上曲线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y)=0</annotation></semantics></math>；作法：从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+向曲线上每点连线（母线），连成的图形即锥面；连哪条线：对曲线上点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>H</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,H)</annotation></semantics></math>，连直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><msub><mi>M</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">OM_1</annotation></semantics></math>。</p>
+<p>设锥面上动点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M(x,y,z)</annotation></semantics></math>，其所在母线交准线于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>H</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,H)</annotation></semantics></math>。因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>,</mo><mi>M</mi><mo>,</mo><msub><mi>M</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">O,M,M_1</annotation></semantics></math>
+共线，存在比例因子
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>t</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>H</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mi>x</mi><mo>=</mo><mi>t</mi><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>t</mi><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mi>t</mi><mi>H</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">(x,y,z)=t(x_1,y_1,H)\quad\Longrightarrow\quad x=tx_1,\ y=ty_1,\ z=tH.</annotation></semantics></math>
+故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mi>z</mi><mi>H</mi></mfrac></mstyle></mrow><annotation encoding="application/x-tex">t=\dfrac{z}{H}</annotation></semantics></math>，从而
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mfrac><mi>H</mi><mi>z</mi></mfrac><mi>x</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mfrac><mi>H</mi><mi>z</mi></mfrac><mi>y</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">x_1=\frac{H}{z}x,\qquad y_1=\frac{H}{z}y.</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>
+在准线上满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x_1,y_1)=0</annotation></semantics></math>，代入得锥面方程
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>H</mi><mi>x</mi></mrow><mi>z</mi></mfrac><mo>,</mo><mfrac><mrow><mi>H</mi><mi>y</mi></mrow><mi>z</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">F\!\left(\frac{Hx}{z},\frac{Hy}{z}\right)=0.\tag{11}</annotation></semantics></math></p>
+<p>若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(x,y)</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次多项式（例如二次
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>B</mi><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>C</mi><mi>x</mi><mi>y</mi><mo>+</mo><mn>2</mn><mi>D</mi><mi>x</mi><mo>+</mo><mn>2</mn><mi>E</mi><mi>y</mi><mo>+</mo><msub><mi>F</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">F(x,y)=Ax^2+By^2+2Cxy+2Dx+2Ey+F_0</annotation></semantics></math>），将
+(11) 两边同乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mi>n</mi></msup><annotation encoding="application/x-tex">z^n</annotation></semantics></math>，得到关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+的
+<strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次方程</strong>。例如二次情形：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msup><mi>H</mi><mn>2</mn></msup><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>B</mi><msup><mi>H</mi><mn>2</mn></msup><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>C</mi><msup><mi>H</mi><mn>2</mn></msup><mi>x</mi><mi>y</mi><mo>+</mo><mn>2</mn><mi>D</mi><mi>H</mi><mi>x</mi><mi>z</mi><mo>+</mo><mn>2</mn><mi>E</mi><mi>H</mi><mi>y</mi><mi>z</mi><mo>+</mo><msub><mi>F</mi><mn>0</mn></msub><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">AH^2x^2+BH^2y^2+2CH^2xy+2DHxz+2EHyz+F_0z^2=0,</annotation></semantics></math>
+每一项次数都是 2，是齐次二次方程。</p>
+<h3 id="齐次函数与齐次方程的定义">01:13:34—01:15:58 ｜
+齐次函数与齐次方程的定义</h3>
+<p>给定非负整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，函数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(x,y,z)</annotation></semantics></math>
+称为
+<strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次函数</strong>，是指对任何实数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mi>x</mi><mo>,</mo><mi>t</mi><mi>y</mi><mo>,</mo><mi>t</mi><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>t</mi><mi>n</mi></msup><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">F(tx,ty,tz)=t^nF(x,y,z).</annotation></semantics></math>
+若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次函数，则称
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+为
+<strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次方程</strong>。</p>
+<h3 id="定理n-次齐次方程表示以原点为顶点的锥面">01:16:27—01:22:13 ｜
+定理：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次方程表示以原点为顶点的锥面</h3>
+<h4 id="证明-3011627-证明齐次方程-fxyz0-是以原点为顶点的锥面">证明
+3（01:16:27）｜ 证明：齐次方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+是以原点为顶点的锥面</h4>
+<p><strong>命题</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(x,y,z)</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次函数，则方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+表示一张以原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+为顶点的锥面。</p>
+<p><strong>思路</strong>：证两点——(1) 原点在图形上；(2)
+图形上任一点的”从原点出发的整条射线”都落在图形上。满足这两点即说明图形是以原点为顶点的锥面。</p>
+<p><strong>逐步推导</strong>： 1.
+<strong>原点在图形上</strong>：由齐次性
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>⋅</mo><mn>0</mn><mo>,</mo><mi>t</mi><mo>⋅</mo><mn>0</mn><mo>,</mo><mi>t</mi><mo>⋅</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>t</mi><mi>n</mi></msup><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(0,0,0)=F(t\cdot0,t\cdot0,t\cdot0)=t^nF(0,0,0)</annotation></semantics></math>，取任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t\neq0</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(0,0,0)=0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+满足方程。 2. <strong>射线全在图形上</strong>：任取图形上一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,z_1)</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x_1,y_1,z_1)=0</annotation></semantics></math>。对射线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><msub><mi>M</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">OM_1</annotation></semantics></math>
+上任一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>t</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M(x,y,z)=t(x_1,y_1,z_1)</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>
+为比例因子），由齐次性
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mi>t</mi><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>t</mi><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>t</mi><mi>n</mi></msup><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>t</mi><mi>n</mi></msup><mo>⋅</mo><mn>0</mn><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F(x,y,z)=F(tx_1,ty_1,tz_1)=t^nF(x_1,y_1,z_1)=t^n\cdot0=0,</annotation></semantics></math>
+故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+也在图形上。 3.
+因此过原点、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>
+的整条射线都落在图形上，该图形正是一张以原点为顶点的锥面。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x,y,z)=0</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇒</mo><annotation encoding="application/x-tex">\Longrightarrow</annotation></semantics></math>
+它代表以原点为顶点的锥面。</p>
+<p><strong>易错点 /
+老师提醒</strong>：结论反过来也成立——顶点在原点的锥面对应的方程必是齐次方程（老师鼓励”大胆反问”：任一齐次方程是否都是顶点在原点的锥面？答案是肯定的）。注意若图形在实空间”虚化”（如下例），仍按齐次方程理解。</p>
+<h3 id="平移情形与虚锥说明">01:22:13—01:24:12 ｜ 平移情形与虚锥说明</h3>
+<p>上述结论可平移：若方程是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x-x_0,\ y-y_0,\ z-z_0)</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次齐次式，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F(x-x_0,y-y_0,z-z_0)=0</annotation></semantics></math>，则它表示以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,z_0)</annotation></semantics></math>
+为顶点的锥面（作坐标平移即可）。</p>
+<p>老师补充一个<strong>反例/特例</strong>：方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=0</annotation></semantics></math>
+是二次齐次方程，但实空间中只有原点满足它，本质上是”虚”的图形（退化为一个点）。这说明齐次方程在实空间里可能只表示虚图形，但结论（形式上是顶点在原点的锥面）仍然成立。</p>
+<h2
+id="四例题由三条母线确定的圆柱面012450014009">四、例题：由三条母线确定的圆柱面（01:24:50—01:40:09）</h2>
+<h3 id="例题三条平行直线-l_1l_2l_3-为母线的圆柱面">01:24:50—01:40:09 ｜
+例题：三条平行直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>,</mo><msub><mi>L</mi><mn>2</mn></msub><mo>,</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1,L_2,L_3</annotation></semantics></math>
+为母线的圆柱面</h3>
+<h4 id="例题证明-4012530-求由三条母线确定的圆柱面外接圆法">例题/证明
+4（01:25:30）｜ 求由三条母线确定的圆柱面（外接圆法）</h4>
+<p><strong>命题</strong>：已知三条母线
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>=</mo><mi>y</mi><mo>=</mo><mi>z</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>L</mi><mn>2</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>y</mi><mo>=</mo><mi>z</mi><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>L</mi><mn>3</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mi>y</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>z</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">L_1:\ x=y=z,\qquad L_2:\ x+1=y=z-1,\qquad L_3:\ x-1=y+1=z,</annotation></semantics></math>
+求以这三条直线为母线（且方向相同）的圆柱面方程。[按图还原：空间中有三条互相平行的直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>,</mo><msub><mi>L</mi><mn>2</mn></msub><mo>,</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1,L_2,L_3</annotation></semantics></math>；作一张垂直于它们方向、且与三条线都相交的平面，三线在该平面上截出三个点；以这三个点为顶点作三角形，其外接圆即为准线，圆心为轴上一点，半径即圆柱半径]</p>
+<p><strong>思路</strong>：三条直线方向均为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,1,1)</annotation></semantics></math>，故可作为同一张圆柱面的母线（只要它们不共面）。取三线各一点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>,</mo><msub><mi>M</mi><mn>2</mn></msub><mo>,</mo><msub><mi>M</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">O,M_2,M_3</annotation></semantics></math>，验证它们与方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>
+垂直，于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>△</mi><mi>O</mi><msub><mi>M</mi><mn>2</mn></msub><msub><mi>M</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\triangle OM_2M_3</annotation></semantics></math>
+所在平面垂直于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>；该三角形的外接圆即为准线，外接圆心
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+在轴上，外接半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+即圆柱半径。最后用点到轴距离公式写出方程。</p>
+<p><strong>逐步推导</strong>： 1. <strong>三点坐标</strong>： -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mn>1</mn></msub><annotation encoding="application/x-tex">L_1</annotation></semantics></math>
+过原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O=(0,0,0)</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>y</mi><mo>=</mo><mi>z</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">L_2:\ x+1=y=z-1</annotation></semantics></math>，取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y=0</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x=-1,\ z=1</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_2=(-1,0,1)</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>3</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mi>y</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">L_3:\ x-1=y+1=z</annotation></semantics></math>，取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">x=1,\ y=-1</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>3</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_3=(1,-1,0)</annotation></semantics></math>。
+方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>。
+2.
+<strong>垂直性</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>M</mi><mn>2</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{OM_2}=(-1,0,1)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>M</mi><mn>3</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{OM_3}=(1,-1,0)</annotation></semantics></math>，均满足与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+内积为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">-1+0+1=0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>0</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1-1+0=0</annotation></semantics></math>），故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>△</mi><mi>O</mi><msub><mi>M</mi><mn>2</mn></msub><msub><mi>M</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\triangle OM_2M_3</annotation></semantics></math>
+所在平面以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec A</annotation></semantics></math>
+为法向，即垂直于轴线方向。 3. <strong>外接圆心
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math></strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mn>1</mn></msub><mo>,</mo><msub><mi>p</mi><mn>2</mn></msub><mo>,</mo><msub><mi>p</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P=(p_1,p_2,p_3)</annotation></semantics></math>，在平面内故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mn>1</mn></msub><mo>+</mo><msub><mi>p</mi><mn>2</mn></msub><mo>+</mo><msub><mi>p</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p_1+p_2+p_3=0</annotation></semantics></math>；由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>P</mi><mo>−</mo><mi>O</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>P</mi><mo>−</mo><msub><mi>M</mi><mn>2</mn></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>P</mi><mo>−</mo><msub><mi>M</mi><mn>3</mn></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|P-O|^2=|P-M_2|^2=|P-M_3|^2</annotation></semantics></math>
+解得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">P=(0,-1,1).</annotation></semantics></math>
+（老师最终给出的圆心坐标即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,-1,1)</annotation></semantics></math>。）
+4.
+<strong>半径</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>P</mi><mo>−</mo><mi>O</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msqrt><mrow><msup><mn>0</mn><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt></mrow><annotation encoding="application/x-tex">R=|P-O|=\sqrt{0^2+(-1)^2+1^2}=\sqrt2</annotation></semantics></math>。
+5. <strong>轴与方程</strong>：轴为过点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P=(0,-1,1)</annotation></semantics></math>、方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(1,1,1)</annotation></semantics></math>
+的直线；圆柱面即到该轴距离等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>2</mn></msqrt><annotation encoding="application/x-tex">\sqrt2</annotation></semantics></math>
+的点的轨迹：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mi>P</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{|(\vec r-\vec r_P)\times\vec A|}{|\vec A|}=\sqrt2,</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mi>P</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r_P=(0,-1,1)</annotation></semantics></math>。写成平方形式：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mi>P</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mn>2</mn><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>=</mo><mn>6</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\bigl|(\vec r-\vec r_P)\times\vec A\bigr|^2=2\,|\vec A|^2=6.</annotation></semantics></math>
+展开（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>r</mi><mo accent="true">→</mo></mover><mi>P</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>+</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec r-\vec r_P=(x,\ y+1,\ z-1)</annotation></semantics></math>）得
+[补全，按课堂所得轴、半径与方向直接代距离公式]
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>+</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>6</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">(y-z+2)^2+(z-x-1)^2+(x-y-1)^2=6.</annotation></semantics></math></p>
+<p><strong>结论</strong>：所求圆柱面方程为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>+</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>6</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">(y-z+2)^2+(z-x-1)^2+(x-y-1)^2=6,</annotation></semantics></math>
+其轴过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P=(0,-1,1)</annotation></semantics></math>、方向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,1,1)</annotation></semantics></math>，半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>2</mn></msqrt><annotation encoding="application/x-tex">\sqrt2</annotation></semantics></math>。</p>
+<p><strong>易错点 /
+老师扩展</strong>：三条平行直线只要不共面，就唯一确定一张圆柱面（本题给的点恰使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>△</mi><mi>O</mi><msub><mi>M</mi><mn>2</mn></msub><msub><mi>M</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\triangle OM_2M_3</annotation></semantics></math>
+的法向与母线方向一致，计算很顺）。若把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>3</mn></msub><annotation encoding="application/x-tex">M_3</annotation></semantics></math>
+换成别的点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>M</mi><mn>3</mn><mo>′</mo></msubsup><annotation encoding="application/x-tex">M_3&#39;</annotation></semantics></math>，三角形法向未必平行于母线方向，就必须去找”过原点、且同时与三直线相交并垂直于母线方向”的那个三角形，计算会难很多——这说明选点技巧的重要性。</p>
+<h2 id="五课程事务014023014356">五、课程事务（01:40:23—01:43:56）</h2>
+<h3 id="下节课安排与小测试锥面定义答疑">01:40:23—01:43:56 ｜
+下节课安排与小测试、锥面定义答疑</h3>
+<ul>
+<li><strong>下次课时间与考试</strong>：因部分同学下午第二节课要拍照，下次课调整到该时段的第一节课（2:15—3:30），并安排一次约
+50 分钟的小测试；测试范围从本书开头一直覆盖到锥面部分。</li>
+<li><strong>课后答疑澄清</strong>：有同学追问锥面定义——若一点在锥面上，则”从顶点出发经过该点的整条射线”是否都落在锥面上？老师确认：是的，这正是锥面的特征（对应齐次方程必为锥面的结论）；不满足此条件的就不是锥面。亦即：要求整条直线（整条射线）都在图形上，才是以该点为顶点的锥面。</li>
+</ul>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

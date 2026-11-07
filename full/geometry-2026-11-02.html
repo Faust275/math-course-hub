@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>几何学（2026 秋）· 坐标变换与正交矩阵（2026-11-02）</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">几何学（2026 秋）·
+坐标变换与正交矩阵（2026-11-02）</h1>
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-1102/fig01_coordinate_transformation.png" alt="图 1: 空间直角坐标变换：原点平移与正交旋转 X = CX* + X0" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 1: 空间直角坐标变换：原点平移与正交旋转 X = CX* + X0</figcaption></figure>
+
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#几何学2026-秋-坐标变换与正交矩阵2026-11-02"
+id="toc-几何学2026-秋-坐标变换与正交矩阵2026-11-02">几何学（2026 秋）·
+坐标变换与正交矩阵（2026-11-02）</a>
+<ul>
+<li><a href="#一曲面方程与选取合适坐标系000330000534"
+id="toc-一曲面方程与选取合适坐标系000330000534">一、曲面方程与选取合适坐标系（00:03:30—00:05:34）</a>
+<ul>
+<li><a href="#椭球面方程与选取合适坐标系"
+id="toc-椭球面方程与选取合适坐标系">00:03:30—00:05:34 ｜
+椭球面方程与选取合适坐标系</a></li>
+</ul></li>
+<li><a href="#二坐标变换与正交矩阵000534002955"
+id="toc-二坐标变换与正交矩阵000534002955">二、坐标变换与正交矩阵（00:05:34—00:29:55）</a>
+<ul>
+<li><a href="#同一点在新旧坐标系下的坐标表示"
+id="toc-同一点在新旧坐标系下的坐标表示">00:05:34—00:08:05 ｜
+同一点在新旧坐标系下的坐标表示</a></li>
+<li><a href="#新旧基向量关系与正交矩阵的得出"
+id="toc-新旧基向量关系与正交矩阵的得出">00:08:05—00:18:42 ｜
+新旧基向量关系与正交矩阵的得出</a></li>
+<li><a href="#正交矩阵的性质过渡矩阵方向性与行列式"
+id="toc-正交矩阵的性质过渡矩阵方向性与行列式">00:18:42—00:25:35 ｜
+正交矩阵的性质、过渡矩阵方向性与行列式</a></li>
+<li><a href="#点的坐标变换与向量的变换公式"
+id="toc-点的坐标变换与向量的变换公式">00:25:35—00:29:55 ｜
+点的坐标变换与向量的变换公式</a></li>
+</ul></li>
+<li><a href="#三变换的特例与约化为平面002955004854"
+id="toc-三变换的特例与约化为平面002955004854">三、变换的特例与约化为平面（00:29:55—00:48:54）</a>
+<ul>
+<li><a href="#两种基本特例平移与保原点旋转反射"
+id="toc-两种基本特例平移与保原点旋转反射">00:29:55—00:32:03 ｜
+两种基本特例：平移与保原点旋转/反射</a></li>
+<li><a href="#保-z-轴不变时约化为平面变换"
+id="toc-保-z-轴不变时约化为平面变换">00:32:12—00:48:54 ｜ 保
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴不变时约化为平面变换</a></li>
+</ul></li>
+<li><a href="#四平面坐标旋转反射公式及其几何推导应用004854012448"
+id="toc-四平面坐标旋转反射公式及其几何推导应用004854012448">四、平面坐标旋转/反射公式及其几何推导、应用（00:48:54—01:24:48）</a>
+<ul>
+<li><a href="#平面坐标旋转反射公式及其几何推导"
+id="toc-平面坐标旋转反射公式及其几何推导">00:48:54—01:02:47 ｜
+平面坐标旋转/反射公式及其几何推导</a></li>
+<li><a href="#应用椭圆抛物面被过原点的平面截出圆"
+id="toc-应用椭圆抛物面被过原点的平面截出圆">01:02:47—01:24:48 ｜
+应用：椭圆抛物面被过原点的平面截出圆</a></li>
+</ul></li>
+<li><a href="#五正交矩阵的欧拉角分解012454014317"
+id="toc-五正交矩阵的欧拉角分解012454014317">五、正交矩阵的欧拉角分解（01:24:54—01:43:17）</a>
+<ul>
+<li><a href="#正交矩阵的欧拉角分解三次保轴旋转"
+id="toc-正交矩阵的欧拉角分解三次保轴旋转">01:24:54—01:43:17 ｜
+正交矩阵的欧拉角分解（三次保轴旋转）</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="几何学2026-秋-坐标变换与正交矩阵2026-11-02">几何学（2026 秋）·
+坐标变换与正交矩阵（2026-11-02）</h1>
+<h2
+id="一曲面方程与选取合适坐标系000330000534">一、曲面方程与选取合适坐标系（00:03:30—00:05:34）</h2>
+<h3 id="椭球面方程与选取合适坐标系">00:03:30—00:05:34 ｜
+椭球面方程与选取合适坐标系</h3>
+<p>本节课先介绍几种特殊的曲面，其中方程非常漂亮，例如椭球面（口语「土球面」）。它的标准方程是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}+\frac{z^2}{C^2}=1,</annotation></semantics></math></p>
+<p>中心在原点。老师强调：只有在选到合适的直角坐标系、把原点放在椭球中心时，才能把方程写成上面的形式；如果把中心移到别处、或者换一个坐标系，方程立刻不再是这个样子。</p>
+<p>由此引出一个贯穿全课的主题：<strong>怎样选择合适的坐标系很重要</strong>。后面几次课都会围绕「选择好的坐标系」展开。当坐标系变化时，同一个几何对象的点的坐标会随之改变，于是首先要研究坐标变换。</p>
+<blockquote>
+<p><code>[按图还原]</code>
+本节图形（椭球面、各坐标系、辅助线）依赖黑板原图；讲义中文字化描述只写课上出现的点、轴、线，图上没有的点线一律不编造。</p>
+</blockquote>
+<h2
+id="二坐标变换与正交矩阵000534002955">二、坐标变换与正交矩阵（00:05:34—00:29:55）</h2>
+<h3 id="同一点在新旧坐标系下的坐标表示">00:05:34—00:08:05 ｜
+同一点在新旧坐标系下的坐标表示</h3>
+<p>考虑同一个点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>。在旧坐标系
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>;</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">O;\mathbf e_1,\mathbf e_2,\mathbf e_3</annotation></semantics></math>
+下它的坐标是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>；在新坐标系
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>O</mi><mo>*</mo></msup><mo>;</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">O^*;\mathbf e_1^*,\mathbf e_2^*,\mathbf e_3^*</annotation></semantics></math>
+下它的坐标是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo>,</mo><msup><mi>z</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x^*,y^*,z^*)</annotation></semantics></math>。点的几何位置不变，变的只是坐标系。</p>
+<p>新坐标系的原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>O</mi><mo>*</mo></msup><annotation encoding="application/x-tex">O^*</annotation></semantics></math>
+在旧系下的坐标记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,z_0)</annotation></semantics></math>，即向量</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msup><mi>O</mi><mo>*</mo></msup></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>x</mi><mn>0</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>0</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>z</mi><mn>0</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{OO^*}=x_0\mathbf e_1+y_0\mathbf e_2+z_0\mathbf e_3.</annotation></semantics></math></p>
+<p>新基向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">\mathbf e_1^*,\mathbf e_2^*,\mathbf e_3^*</annotation></semantics></math>
+都是单位正交向量组，它们都可以用旧基表示出来。</p>
+<h3 id="新旧基向量关系与正交矩阵的得出">00:08:05—00:18:42 ｜
+新旧基向量关系与正交矩阵的得出</h3>
+<h4 id="证明-1000805-由新基正交归一导出-amathsf-tai">证明
+1（00:08:05）｜ 由新基正交归一导出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A=I</annotation></semantics></math></h4>
+<p><strong>命题</strong>：设新基向量在旧系下的坐标排成矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>（第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi mathvariant="bold-italic">𝒆</mi><mi>j</mi><mo>*</mo></msubsup><annotation encoding="application/x-tex">\mathbf e_j^*</annotation></semantics></math>
+的坐标），则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A=I</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+是正交矩阵。</p>
+<p><strong>思路</strong>：利用新基的正交归一性
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mi>i</mi><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mi>j</mi><mo>*</mo></msubsup><mo>=</mo><msub><mi>δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbf e_i^*\cdot\mathbf e_j^*=\delta_{ij}</annotation></semantics></math>，写出
+6 个等式，它们正好对应矩阵乘法
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A</annotation></semantics></math>
+的 9 个元。</p>
+<p><strong>逐步推导</strong>：把新基写成旧基的线性组合（系数按列排）：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>a</mi><mn>31</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>22</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>a</mi><mn>32</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>23</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><msub><mi>a</mi><mn>33</mn></msub><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\mathbf e_1^* &amp;= a_{11}\mathbf e_1+a_{21}\mathbf e_2+a_{31}\mathbf e_3,\\
+\mathbf e_2^* &amp;= a_{12}\mathbf e_1+a_{22}\mathbf e_2+a_{32}\mathbf e_3,\\
+\mathbf e_3^* &amp;= a_{13}\mathbf e_1+a_{23}\mathbf e_2+a_{33}\mathbf e_3.
+\end{aligned}</annotation></semantics></math></p>
+<p>于是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}
+a_{11}&amp;a_{12}&amp;a_{13}\\
+a_{21}&amp;a_{22}&amp;a_{23}\\
+a_{31}&amp;a_{32}&amp;a_{33}
+\end{pmatrix},</annotation></semantics></math></p>
+<p>其中第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi mathvariant="bold-italic">𝒆</mi><mi>j</mi><mo>*</mo></msubsup><annotation encoding="application/x-tex">\mathbf e_j^*</annotation></semantics></math>
+在旧系下的坐标。因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">\mathbf e_1^*,\mathbf e_2^*,\mathbf e_3^*</annotation></semantics></math>
+是单位正交组，有：</p>
+<ol type="1">
+<li>各向量长度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mi>a</mi><mn>11</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>21</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>31</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mi>a</mi><mn>12</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>22</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>32</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mi>a</mi><mn>13</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>23</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>33</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\mathbf e_1^*\cdot\mathbf e_1^* &amp;= a_{11}^2+a_{21}^2+a_{31}^2=1,\\
+\mathbf e_2^*\cdot\mathbf e_2^* &amp;= a_{12}^2+a_{22}^2+a_{32}^2=1,\\
+\mathbf e_3^*\cdot\mathbf e_3^* &amp;= a_{13}^2+a_{23}^2+a_{33}^2=1.
+\end{aligned}</annotation></semantics></math></li>
+<li>两两正交：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>12</mn></msub><mo>+</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>22</mn></msub><mo>+</mo><msub><mi>a</mi><mn>31</mn></msub><msub><mi>a</mi><mn>32</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>13</mn></msub><mo>+</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>23</mn></msub><mo>+</mo><msub><mi>a</mi><mn>31</mn></msub><msub><mi>a</mi><mn>33</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>13</mn></msub><mo>+</mo><msub><mi>a</mi><mn>22</mn></msub><msub><mi>a</mi><mn>23</mn></msub><mo>+</mo><msub><mi>a</mi><mn>32</mn></msub><msub><mi>a</mi><mn>33</mn></msub><mo>=</mo><mn>0</mn><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\mathbf e_1^*\cdot\mathbf e_2^* &amp;= a_{11}a_{12}+a_{21}a_{22}+a_{31}a_{32}=0,\\
+\mathbf e_1^*\cdot\mathbf e_3^* &amp;= a_{11}a_{13}+a_{21}a_{23}+a_{31}a_{33}=0,\\
+\mathbf e_2^*\cdot\mathbf e_3^* &amp;= a_{12}a_{13}+a_{22}a_{23}+a_{32}a_{33}=0.
+\end{aligned}</annotation></semantics></math></li>
+</ol>
+<p>这 6 个等式合并起来，正是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A=I</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mi>i</mi><mo>*</mo></msubsup><mo>⋅</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mi>j</mi><mo>*</mo></msubsup><mo>=</mo><msub><mi>δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(A^{\mathsf T}A)_{ij}=\mathbf e_i^*\cdot\mathbf e_j^*=\delta_{ij}</annotation></semantics></math>）。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A=I</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+是正交矩阵。它的 9 个元素受 6 个独立约束，因此<strong>自由度只有 3
+个</strong>。</p>
+<p><strong>易错点</strong>：矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+的「列」是新基在旧系下的坐标，方向不能弄反（否则会变成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup></mrow><annotation encoding="application/x-tex">AA^{\mathsf T}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A</annotation></semantics></math>
+混淆）；正交矩阵满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mo>=</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">A^{\mathsf T}=A^{-1}</annotation></semantics></math>，转置即逆，这是它最好的性质之一。</p>
+<h3 id="正交矩阵的性质过渡矩阵方向性与行列式">00:18:42—00:25:35 ｜
+正交矩阵的性质、过渡矩阵方向性与行列式</h3>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+在这里称为从新坐标系到旧坐标系的<strong>过渡矩阵</strong>，它有方向性：是从新系到旧系，不要写反，写反了公式就取错方向。</p>
+<h4 id="证明-2002125-证-detapm1">证明 2（00:21:25）｜ 证
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>±</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det(A)=\pm1</annotation></semantics></math></h4>
+<p><strong>命题</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+为正交矩阵，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\det(A)=1</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det(A)=-1</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：对等式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^{\mathsf T}A=I</annotation></semantics></math>
+两边取行列式，利用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\det(A^{\mathsf T})=\det(A)</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\det(I)=1</annotation></semantics></math>。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\det(A^{\mathsf T}A)=\det(I)=1.</annotation></semantics></math>
+而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\det(A^{\mathsf T}A)=\det(A^{\mathsf T})\det(A)=\det(A)\cdot\det(A)=\det(A)^2</annotation></semantics></math>，故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>1</mn><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>±</mi><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\det(A)^2=1\quad\Longrightarrow\quad \det(A)=\pm1.</annotation></semantics></math></p>
+<p><strong>结论</strong>：正交矩阵的行列式只能是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">+1</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>。[按图还原]
+在几何里这两种有明确意义：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=+1</annotation></semantics></math>
+保向（旋转），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=-1</annotation></semantics></math>
+反向（含反射）。老师提醒「什么情况下等于正一、什么情况下等于负一」稍后会专门讲。</p>
+<p><strong>易错点</strong>：不要把过渡矩阵的方向弄反；正交矩阵可逆的充要条件是它的转置等于它的逆，而正交矩阵转置即逆，不用重新计算。</p>
+<h3 id="点的坐标变换与向量的变换公式">00:25:35—00:29:55 ｜
+点的坐标变换与向量的变换公式</h3>
+<p>由向量分解
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>M</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>x</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>+</mo><mi>y</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>+</mo><mi>z</mi><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo>=</mo><msup><mi>x</mi><mo>*</mo></msup><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>+</mo><msup><mi>y</mi><mo>*</mo></msup><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>+</mo><msup><mi>z</mi><mo>*</mo></msup><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">\overrightarrow{OM}=x\mathbf e_1+y\mathbf e_2+z\mathbf e_3=x^*\mathbf e_1^*+y^*\mathbf e_2^*+z^*\mathbf e_3^*</annotation></semantics></math>，以及
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>M</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msup><mi>O</mi><mo>*</mo></msup></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><msup><mi>O</mi><mo>*</mo></msup><mi>M</mi></mrow><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OM}=\overrightarrow{OO^*}+\overrightarrow{O^*M}</annotation></semantics></math>，可得</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>z</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>A</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>x</mi><mo>*</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>y</mi><mo>*</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>z</mi><mo>*</mo></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>0</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>0</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>z</mi><mn>0</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x\\y\\z\end{pmatrix}
+= A\begin{pmatrix}x^*\\y^*\\z^*\end{pmatrix}
++\begin{pmatrix}x_0\\y_0\\z_0\end{pmatrix},</annotation></semantics></math></p>
+<p>即点的位置坐标变换公式为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>A</mi><msup><mi>X</mi><mo>*</mo></msup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">X=AX^*+X_0</annotation></semantics></math>（此处
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="sans-serif">𝖳</mi></msup></mrow><annotation encoding="application/x-tex">X=(x,y,z)^{\mathsf T}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mo>*</mo></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo>,</mo><msup><mi>z</mi><mo>*</mo></msup><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="sans-serif">𝖳</mi></msup></mrow><annotation encoding="application/x-tex">X^*=(x^*,y^*,z^*)^{\mathsf T}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="sans-serif">𝖳</mi></msup></mrow><annotation encoding="application/x-tex">X_0=(x_0,y_0,z_0)^{\mathsf T}</annotation></semantics></math>）。这是「老坐标
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>·新坐标
++ 原点平移」。</p>
+<h4 id="证明-3002740-向量增量变换公式-delta-xadelta-x">证明
+3（00:27:40）｜ 向量（增量）变换公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>X</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">Δ</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\Delta X=A\,\Delta X^*</annotation></semantics></math></h4>
+<p><strong>命题</strong>：对两个不同的点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>,</mo><msub><mi>M</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">M,M_1</annotation></semantics></math>，它们的坐标差（即向量）满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>X</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">Δ</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\Delta X=A\,\Delta X^*</annotation></semantics></math>，不含平移项。</p>
+<p><strong>思路</strong>：把两点的变换公式相减，平移项抵消。</p>
+<p><strong>逐步推导</strong>：对点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>
+有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>1</mn></msub><mo>=</mo><mi>A</mi><msubsup><mi>X</mi><mn>1</mn><mo>*</mo></msubsup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">X_1=AX_1^*+X_0</annotation></semantics></math>，对点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>A</mi><msup><mi>X</mi><mo>*</mo></msup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">X=AX^*+X_0</annotation></semantics></math>。两式相减：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>1</mn></msub><mo>−</mo><mi>X</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msubsup><mi>X</mi><mn>1</mn><mo>*</mo></msubsup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msup><mi>X</mi><mo>*</mo></msup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>X</mi><mn>1</mn><mo>*</mo></msubsup><mo>−</mo><msup><mi>X</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">X_1-X=(AX_1^*+X_0)-(AX^*+X_0)=A(X_1^*-X^*).</annotation></semantics></math></p>
+<p>即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>X</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">Δ</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\Delta X=A\,\Delta X^*</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：点的变换带平移
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>0</mn></msub><annotation encoding="application/x-tex">X_0</annotation></semantics></math>，而<strong>向量（坐标增量）的变换不带平移</strong>，直接是正交矩阵作用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>X</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">Δ</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\Delta X=A\,\Delta X^*</annotation></semantics></math>。前者是「点的坐标变换」，后者是「向量的变换（分量变换公式）」。</p>
+<p><strong>易错点</strong>：向量只与「差」有关，与原点选在哪儿无关；把点公式里的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>0</mn></msub><annotation encoding="application/x-tex">X_0</annotation></semantics></math>
+错用到向量上是常见错误。</p>
+<h2
+id="三变换的特例与约化为平面002955004854">三、变换的特例与约化为平面（00:29:55—00:48:54）</h2>
+<h3 id="两种基本特例平移与保原点旋转反射">00:29:55—00:32:03 ｜
+两种基本特例：平移与保原点旋转/反射</h3>
+<h4 id="构造-1003012-特例一ai-时退化为平移">构造 1（00:30:12）｜
+特例一：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A=I</annotation></semantics></math>
+时退化为平移</h4>
+<p>当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+是单位矩阵时，坐标变换公式变成</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>I</mi><msup><mi>X</mi><mo>*</mo></msup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub><mo>=</mo><msup><mi>X</mi><mo>*</mo></msup><mo>+</mo><msub><mi>X</mi><mn>0</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">X=IX^*+X_0=X^*+X_0,</annotation></semantics></math></p>
+<p>即新、老坐标之间只差一个原点偏移
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,z_0)</annotation></semantics></math>。这正是<strong>平移</strong>（坐标系的平移）。</p>
+<h4 id="构造-2003123-特例二x_00-时退化为保原点的旋转反射">构造
+2（00:31:23）｜
+特例二：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X_0=0</annotation></semantics></math>
+时退化为保原点的旋转/反射</h4>
+<p>当新原点与旧原点重合，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="sans-serif">𝖳</mi></msup></mrow><annotation encoding="application/x-tex">X_0=(0,0,0)^{\mathsf T}</annotation></semantics></math>
+时，公式变成</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>A</mi><msup><mi>X</mi><mo>*</mo></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">X=AX^*,</annotation></semantics></math></p>
+<p>这是一个<strong>保持原点不动的旋转或反射</strong>。把构造 1 与构造 2
+合起来，一般情形可以先做一个平移、再做一次保原点的旋转（或反射）。</p>
+<h3 id="保-z-轴不变时约化为平面变换">00:32:12—00:48:54 ｜ 保
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴不变时约化为平面变换</h3>
+<h4
+id="构造-3003229-约化取-o-在-xoy-面mathbf-e_3mathbf-e_3得到-22-正交矩阵-c">构造
+3（00:32:29）｜ 约化：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>O</mi><mo>*</mo></msup><annotation encoding="application/x-tex">O^*</annotation></semantics></math>
+在 XOY
+面、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup><mo>=</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_3^*=\mathbf e_3</annotation></semantics></math>，得到
+2×2 正交矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math></h4>
+<p>[按图还原] 已知：新原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>O</mi><mo>*</mo></msup><annotation encoding="application/x-tex">O^*</annotation></semantics></math>
+落在旧 XOY 平面上（即它的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>），并且新
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>*</mo></msup><annotation encoding="application/x-tex">z^*</annotation></semantics></math>
+轴与旧
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴重合，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup><mo>=</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf e_3^*=\mathbf e_3</annotation></semantics></math>。在这样的配置下，变换只影响
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+两个分量，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+分量不变。把一般公式按此特殊化：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}
+a_{11}&amp;a_{12}&amp;0\\
+a_{21}&amp;a_{22}&amp;0\\
+0&amp;0&amp;1
+\end{pmatrix},
+\qquad
+C=\begin{pmatrix}a_{11}&amp;a_{12}\\a_{21}&amp;a_{22}\end{pmatrix}.</annotation></semantics></math></p>
+<p>由于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+正交，左上角块
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+也满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>C</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">C^{\mathsf T}C=I</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+是一个 <strong>2×2 正交矩阵</strong>。空间的变换被约化到平面：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>C</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>x</mi><mo>*</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>y</mi><mo>*</mo></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>0</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>0</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>z</mi><mo>=</mo><msup><mi>z</mi><mo>*</mo></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x\\y\end{pmatrix}
+= C\begin{pmatrix}x^*\\y^*\end{pmatrix}
++\begin{pmatrix}x_0\\y_0\end{pmatrix},
+\qquad z=z^*.</annotation></semantics></math></p>
+<p>老师提醒：先看「保住一个轴」的情形，是后面把三维问题拆成平面问题的关键。</p>
+<h4 id="证明-4003847-平面正交矩阵只有旋转与反射两种形式">证明
+4（00:38:47）｜ 平面正交矩阵只有旋转与反射两种形式</h4>
+<p><strong>命题</strong>：满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>C</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">C^{\mathsf T}C=I</annotation></semantics></math>
+的 2×2 实矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+只有两类。</p>
+<p><strong>思路</strong>：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>C</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">C^{\mathsf T}C=I</annotation></semantics></math>
+的 4 个元、2
+个约束条件全部写出，推导出各元之间「绝对值相等」的关系，再按符号组合分类。</p>
+<p><strong>逐步推导</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">C=\begin{pmatrix}a_{11}&amp;a_{12}\\a_{21}&amp;a_{22}\end{pmatrix}</annotation></semantics></math>，由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mi>C</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">C^{\mathsf T}C=I</annotation></semantics></math>
+得</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msubsup><mi>a</mi><mn>11</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>21</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msubsup><mi>a</mi><mn>12</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>22</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>12</mn></msub><mo>+</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>22</mn></msub><mo>=</mo><mn>0</mn><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+a_{11}^2+a_{21}^2=1,\\
+a_{12}^2+a_{22}^2=1,\\
+a_{11}a_{12}+a_{21}a_{22}=0.
+\end{cases}</annotation></semantics></math></p>
+<p>再利用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><msup><mi>C</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">C C^{\mathsf T}=I</annotation></semantics></math>
+给出另一组关系（由正交性
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mo>=</mo><msup><mi>C</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">C^{\mathsf T}=C^{-1}</annotation></semantics></math>
+推得），比较可得</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>a</mi><mn>12</mn></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>a</mi><mn>21</mn></msub><mo stretchy="false" form="prefix">|</mo><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">|</mo><msub><mi>a</mi><mn>11</mn></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>a</mi><mn>22</mn></msub><mo stretchy="false" form="prefix">|</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">|a_{12}|=|a_{21}|,\qquad |a_{11}|=|a_{22}|.</annotation></semantics></math></p>
+<p>结合交叉项为零，符号只有两种组合：</p>
+<ul>
+<li>第一类（行列式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">+1</annotation></semantics></math>，旋转）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">C=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\ \sin\theta&amp;\cos\theta\end{pmatrix}.</annotation></semantics></math></li>
+<li>第二类（行列式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>，反射）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">C=\begin{pmatrix}\cos\theta&amp;\sin\theta\\ \sin\theta&amp;-\cos\theta\end{pmatrix}.</annotation></semantics></math></li>
+</ul>
+<p><strong>结论</strong>：平面上的正交矩阵只有这两种形式，分别对应<strong>旋转</strong>（保向）与<strong>反射</strong>（反向）。[补全]
+该分类与行列式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>C</mi><mo>=</mo><mi>±</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det C=\pm1</annotation></semantics></math>
+完全对应；此标准结论非逐字板书，仅作自学参照。</p>
+<p><strong>易错点</strong>：两类仅差一个符号的选择；判定是旋转还是反射，看行列式是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">+1</annotation></semantics></math>
+还是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>，不要混淆。</p>
+<h2
+id="四平面坐标旋转反射公式及其几何推导应用004854012448">四、平面坐标旋转/反射公式及其几何推导、应用（00:48:54—01:24:48）</h2>
+<h3 id="平面坐标旋转反射公式及其几何推导">00:48:54—01:02:47 ｜
+平面坐标旋转/反射公式及其几何推导</h3>
+<h4 id="证明-5005335-平面旋转公式det1的几何推导">证明 5（00:53:35）｜
+平面旋转公式（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=+1</annotation></semantics></math>）的几何推导</h4>
+<p><strong>命题</strong>：原点不动、两坐标轴绕原点转过角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+时，同一点新旧坐标满足</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>*</mo></msup><mo>+</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>+</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>y</mi><mo>=</mo><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>*</mo></msup><mo>+</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>+</mo><msub><mi>y</mi><mn>0</mn></msub><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+x=\cos\theta\,x^*+\sin\theta\,y^*+x_0,\\[2pt]
+y=-\sin\theta\,x^*+\cos\theta\,y^*+y_0.
+\end{cases}</annotation></semantics></math></p>
+<p>[按图还原] 已知：旧坐标轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+与原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+不变；新坐标轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*,y^*</annotation></semantics></math>
+由旧轴绕
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>
+旋转角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+得到；同一动点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+在旧系坐标
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math>、新系坐标
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x^*,y^*)</annotation></semantics></math>
+均已画出，图上不另添点线。</p>
+<p><strong>思路</strong>：把向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><mi>M</mi></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OM}</annotation></semantics></math>
+的长度记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>，分别用旧系辐角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+与新系辐角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>θ</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\theta^*</annotation></semantics></math>
+表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x^*,y^*)</annotation></semantics></math>，再用两角和公式把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>,</mo><msup><mi>θ</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\theta,\theta^*</annotation></semantics></math>
+联系起来。</p>
+<p><strong>逐步推导</strong>： 1. 设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mrow><mi>O</mi><mi>M</mi></mrow><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">|\overrightarrow{OM}|=r</annotation></semantics></math>。在旧系中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>α</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">x=r\cos\alpha,\ y=r\sin\alpha</annotation></semantics></math>；在新系中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>,</mo><mspace width="0.222em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*=r\cos\theta^*,\ y^*=r\sin\theta^*</annotation></semantics></math>。
+2. 新
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mo>*</mo></msup><annotation encoding="application/x-tex">x^*</annotation></semantics></math>
+轴相对旧
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴转过角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>，于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mi>θ</mi><mo>+</mo><msup><mi>θ</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\alpha=\theta+\theta^*</annotation></semantics></math>（正的旋转方向约定见易错点）[补全：此辐角关系按老师口述整理；符号随正方向约定而定]。
+3. 代入两角和公式：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo>+</mo><msup><mi>θ</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>−</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>y</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo>+</mo><msup><mi>θ</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>+</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+   x&amp;=r\cos(\theta+\theta^*)=r(\cos\theta\cos\theta^*-\sin\theta\sin\theta^*),\\
+   y&amp;=r\sin(\theta+\theta^*)=r(\sin\theta\cos\theta^*+\cos\theta\sin\theta^*).
+   \end{aligned}</annotation></semantics></math> 4. 用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>,</mo><mspace width="0.222em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><msup><mi>θ</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*=r\cos\theta^*,\ y^*=r\sin\theta^*</annotation></semantics></math>
+代回，即得老师写在黑板上的旋转公式
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>*</mo></msup><mo>+</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>+</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><mspace width="2.0em"></mspace><mi>y</mi><mo>=</mo><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>*</mo></msup><mo>+</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>+</mo><msub><mi>y</mi><mn>0</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">x=\cos\theta\,x^*+\sin\theta\,y^*+x_0,\qquad
+   y=-\sin\theta\,x^*+\cos\theta\,y^*+y_0.</annotation></semantics></math></p>
+<p><strong>结论</strong>：上式即平面坐标轴的旋转公式；当原点也平移到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0)</annotation></semantics></math>
+时再加上平移项。</p>
+<p><strong>易错点</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\sin\theta</annotation></semantics></math>
+项的符号取决于旋转正向的约定（顺/逆时针），黑板上的写法对应一种具体约定；换一种约定符号会整体变号，但仍是同一类正交矩阵。检查方法是看
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=+1</annotation></semantics></math>
+保向。</p>
+<h4 id="证明-6005927-反射情形det-1的由来">证明 6（00:59:27）｜
+反射情形（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=-1</annotation></semantics></math>）的由来</h4>
+<p><strong>命题</strong>：第二类平面正交矩阵对应「先对某一坐标轴作一次反射，再作一次旋转」。</p>
+<p><strong>思路</strong>：在旋转公式的基础上，令某一坐标取负号（即对一根轴作反射），即可得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=-1</annotation></semantics></math>
+的形式。</p>
+<p><strong>逐步推导</strong>： 1. 老师设对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴作反射，即令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>*</mo></msup><mo>=</mo><mi>−</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">y^*=-y</annotation></semantics></math>（相应地调整符号），代入旋转公式。
+2. 经过一次符号替换后再整理，得到第二类公式：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>*</mo></msup><mo>+</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>+</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>y</mi><mo>=</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>*</mo></msup><mo>−</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><msup><mi>y</mi><mo>*</mo></msup><mo>+</mo><msub><mi>y</mi><mn>0</mn></msub><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+   x=\cos\theta\,x^*+\sin\theta\,y^*+x_0,\\[2pt]
+   y=\sin\theta\,x^*-\cos\theta\,y^*+y_0.
+   \end{cases}</annotation></semantics></math> 其矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">C=\begin{pmatrix}\cos\theta&amp;\sin\theta\\ \sin\theta&amp;-\cos\theta\end{pmatrix}</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>C</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det C=-1</annotation></semantics></math>。
+3.
+几何上这正是「对一根坐标轴做一次反射，再做一次旋转」得到的关系——只要对某一个坐标轴做一次反射，就转化为前面的旋转情形。</p>
+<p><strong>结论</strong>：第二类（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\det=-1</annotation></semantics></math>）平面正交变换
+= 一次反射 + 一次旋转；它的行列式为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>，是因为多做了一次反射。</p>
+<p><strong>易错点</strong>：两类只差一个坐标的符号；判定依据是行列式而非「看起来像不像旋转」。</p>
+<h3 id="应用椭圆抛物面被过原点的平面截出圆">01:02:47—01:24:48 ｜
+应用：椭圆抛物面被过原点的平面截出圆</h3>
+<h4 id="例题-1010257-求椭圆抛物面被过原点的平面截出圆的平面">例题
+1（01:02:57）｜ 求椭圆抛物面被过原点的平面截出圆的平面</h4>
+<p><strong>命题</strong>：已知椭圆抛物面（口语「土圆泡面」）</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>2</mn><mi>z</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}=2z,\qquad A&lt;B,</annotation></semantics></math></p>
+<p>问：能否找到一个<strong>过原点</strong>的平面，使得它与该曲面的交线是一个圆？若能，这样的平面有几个？</p>
+<p>[按图还原] 已知：曲面方程如上，所取平面过原点（齐次平面）；新
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>*</mo></msup><annotation encoding="application/x-tex">z^*</annotation></semantics></math>
+轴取为平面的法向，于是该平面在新系中就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mo>*</mo></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z^*=0</annotation></semantics></math>。图示依赖黑板原图，不另编造点线。</p>
+<p><strong>思路</strong>：用坐标变换把平面化为新系的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mo>*</mo></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z^*=0</annotation></semantics></math>
+坐标面；交线在新系的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x^*,y^*)</annotation></semantics></math>
+平面上是一条二次曲线。它是圆，当且仅当二次型中 <strong>没有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><msup><mi>y</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*y^*</annotation></semantics></math>
+交叉项</strong>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mrow><mi>*</mi><mn>2</mn></mrow></msup><annotation encoding="application/x-tex">x^{*2}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mrow><mi>*</mi><mn>2</mn></mrow></msup><annotation encoding="application/x-tex">y^{*2}</annotation></semantics></math>
+的<strong>系数相等</strong>。于是问题转化为：选一组合适的新坐标（即选平面的法向），使变换后的方程满足上述两个条件。</p>
+<p><strong>逐步推导</strong>： 1.
+<strong>平面必须过原点且不能是竖直平面</strong>：过原点的平面是齐次方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>x</mi><mo>+</mo><mi>q</mi><mi>y</mi><mo>+</mo><mi>r</mi><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">px+qy+rz=0</annotation></semantics></math>。若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r=0</annotation></semantics></math>，平面为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>x</mi><mo>+</mo><mi>q</mi><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">px+qy=0</annotation></semantics></math>，代入曲面得到的是抛物线，不可能是圆，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r\neq0</annotation></semantics></math>。不妨除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>，把平面写作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mi>x</mi><mo>+</mo><mi>q</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">z=-(p x+q y)</annotation></semantics></math>（老师口述中曾把常数项说成「等于一」，但过原点的齐次平面应为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">=0</annotation></semantics></math>，此处按几何正确性修正
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>?</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex"></annotation></semantics></math>）。
+2. <strong>选新坐标</strong>：取新
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>*</mo></msup><annotation encoding="application/x-tex">z^*</annotation></semantics></math>
+轴沿平面法向
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒏</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf n=(p,q,1)</annotation></semantics></math>，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup><mo>=</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><msqrt><mrow><msup><mi>p</mi><mn>2</mn></msup><mo>+</mo><msup><mi>q</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></msqrt></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf e_3^*=\frac{(p,q,1)}{\sqrt{p^2+q^2+1}}.</annotation></semantics></math>
+这样该平面在新系中就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mo>*</mo></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z^*=0</annotation></semantics></math>。
+3. <strong>取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">\mathbf e_1^*,\mathbf e_2^*</annotation></semantics></math>
+与新轴正交、构成右手系</strong>：例如取与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(p,q,1)</annotation></semantics></math>
+正交的向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>∝</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf e_1^*\propto(-1,0,p)</annotation></semantics></math>（点积
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>p</mi><mo>+</mo><mn>0</mn><mo>+</mo><mi>p</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">-p+0+p=0</annotation></semantics></math>），再令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>=</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup><mo>×</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">\mathbf e_2^*=\mathbf e_3^*\times\mathbf e_1^*</annotation></semantics></math>
+保证右手系
+[按图还原：用叉乘得到第三轴，避免左手系]。把三列归一化后拼成正交矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>，变换取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>A</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">X=AX^*</annotation></semantics></math>（原点保持不动）。
+4. <strong>代入原方程</strong>：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo>,</mo><msup><mi>z</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*,y^*,z^*</annotation></semantics></math>
+表示后代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>2</mn><mi>z</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}=2z</annotation></semantics></math>；在截平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mo>*</mo></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z^*=0</annotation></semantics></math>
+上考察，得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x^*,y^*)</annotation></semantics></math>
+平面上的方程。 5. <strong>圆条件</strong>：令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><msup><mi>y</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*y^*</annotation></semantics></math>
+交叉项系数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mrow><mi>*</mi><mn>2</mn></mrow></msup><annotation encoding="application/x-tex">x^{*2}</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mrow><mi>*</mi><mn>2</mn></mrow></msup><annotation encoding="application/x-tex">y^{*2}</annotation></semantics></math>
+的系数相等。由交叉项为零可推出平面参数的一个关系；再令两二次项系数相等，得到关于平面参数的方程。
+6.
+<strong>解的个数</strong>：该方程给出<strong>两个对称的解</strong>（两平面互为镜像），即存在<strong>两张</strong>过原点、把曲面截成圆的平面
+[补全：由于字幕中系数匹配的具体代数被擦改、转写混乱，最终平面的精确法向按标准结论补全，非逐字板书，仅作自学参照]。</p>
+<p><strong>结论</strong>：存在过原点、使交线为圆的平面，且恰有<strong>两张</strong>这样的平面（对称分布）。判断「截出的是圆」的核心方法，是把问题转到合适的新坐标系，使平面变为坐标面，再检查二次曲线是否「无交叉项
++ 两平方项系数相等」——这正是中学里判别圆的方法。</p>
+<p><strong>易错点 / 老师提醒</strong>： -
+不要以为「过原点、倾斜切一刀」随便都能切出圆；竖直平面（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r=0</annotation></semantics></math>）切出的是抛物线。
+- 这类题的两种做法：① 如上用坐标变换，转到坐标面后用「无交叉项 +
+系数相等」判别；②
+也可走「球面与平面的交」的思路。坐标变换写法虽繁琐（矩阵、代入、化简都占地方），但思想非常单纯。</p>
+<h2
+id="五正交矩阵的欧拉角分解012454014317">五、正交矩阵的欧拉角分解（01:24:54—01:43:17）</h2>
+<h3 id="正交矩阵的欧拉角分解三次保轴旋转">01:24:54—01:43:17 ｜
+正交矩阵的欧拉角分解（三次保轴旋转）</h3>
+<h4
+id="构造-4012609-用三次保一轴不变的旋转分解一般正交矩阵与欧拉角">构造
+4（01:26:09）｜ 用三次保一轴不变的旋转分解一般正交矩阵与欧拉角</h4>
+<p><strong>命题</strong>：一般的三维正交矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>（9
+个元素、6 个约束、3
+个自由度），可以拆成<strong>三次旋转的乘积</strong>，每次旋转都保持某一条坐标轴不变；这三个旋转角就是欧拉角。</p>
+<p>[按图还原] 已知：旧坐标轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>；新坐标轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo>,</mo><msup><mi>z</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*,y^*,z^*</annotation></semantics></math>；记两平面交线为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>（辅助线），保证
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mo>*</mo></msup><annotation encoding="application/x-tex">y^*</annotation></semantics></math>
+所在的 XOY 面、X<em>Y</em> 面都不过这条交线。图上只取老师画出的轴与交线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>，不另添点线。</p>
+<p><strong>思路</strong>：3 个自由度恰好对应 3
+个旋转角。构造时每次只让一条轴不动、另两条轴在该轴垂直的平面内旋转，逐步把旧标架转到新标架。</p>
+<p><strong>逐步推导</strong>（三次保轴旋转）： 1. <strong>第一次（保
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴）</strong>：绕旧
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴转角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>，把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+转到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+方向（新临时轴记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>，其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">z_1=z</annotation></semantics></math>）。对应矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>z</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">R_z(\varphi)=\begin{pmatrix}
+   \cos\varphi&amp;-\sin\varphi&amp;0\\
+   \sin\varphi&amp;\cos\varphi&amp;0\\
+   0&amp;0&amp;1
+   \end{pmatrix}.</annotation></semantics></math> 2.
+<strong>第二次（保新
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>1</mn></msub><annotation encoding="application/x-tex">x_1</annotation></semantics></math>
+轴）</strong>：绕
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>1</mn></msub><annotation encoding="application/x-tex">x_1</annotation></semantics></math>
+轴转角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>，把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">y_1,z_1</annotation></semantics></math>
+转到合适位置（记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>,</mo><msub><mi>z</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x_2,y_2,z_2</annotation></semantics></math>，其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_2=x_1</annotation></semantics></math>）。对应矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">R_x(\theta)=\begin{pmatrix}
+   1&amp;0&amp;0\\
+   0&amp;\cos\theta&amp;-\sin\theta\\
+   0&amp;\sin\theta&amp;\cos\theta
+   \end{pmatrix}.</annotation></semantics></math> 3.
+<strong>第三次（保最终
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>*</mo></msup><annotation encoding="application/x-tex">z^*</annotation></semantics></math>
+轴）</strong>：绕最终
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>*</mo></msup><annotation encoding="application/x-tex">z^*</annotation></semantics></math>
+轴转角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ψ</mi><annotation encoding="application/x-tex">\psi</annotation></semantics></math>，把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x_2,y_2</annotation></semantics></math>
+转到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">x^*,y^*</annotation></semantics></math>。对应矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>z</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>ψ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>ψ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>ψ</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>ψ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>ψ</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">R_z(\psi)=\begin{pmatrix}
+   \cos\psi&amp;-\sin\psi&amp;0\\
+   \sin\psi&amp;\cos\psi&amp;0\\
+   0&amp;0&amp;1
+   \end{pmatrix}.</annotation></semantics></math></p>
+<p>把三步相乘即得原正交矩阵（顺序依「先做什么、后做什么」连乘）：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>R</mi><mi>z</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>ψ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>R</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>R</mi><mi>z</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">[</mo><mi>补</mi><mi>全</mi><mi>：</mi><mi>此</mi><mi>处</mi><mi>乘</mi><mi>积</mi><mi>次</mi><mi>序</mi><mi>按</mi><mi>老</mi><mi>师</mi><mi>所</mi><mi>述</mi><mi>的</mi><mi>「</mi><mi>先</mi><mi>保</mi><mi>z</mi><mi>、</mi><mi>再</mi><mi>保</mi><msub><mi>x</mi><mn>1</mn></msub><mi>、</mi><mi>最</mi><mi>后</mi><mi>保</mi><msup><mi>z</mi><mo>*</mo></msup><mi>」</mi><mi>给</mi><mi>出</mi><mi>；</mi><mi>把</mi><mi>三</mi><mi>个</mi><mi>公</mi><mi>式</mi><mi>代</mi><mi>入</mi><mi>相</mi><mi>乘</mi><mi>即</mi><mi>可</mi><mi>得</mi><mi>显</mi><mi>式</mi><mi>矩</mi><mi>阵</mi><mi>，</mi><mi>老</mi><mi>师</mi><mi>未</mi><mi>把</mi><mi>乘</mi><mi>积</mi><mi>完</mi><mi>全</mi><mi>展</mi><mi>开</mi><mi>写</mi><mi>出</mi><mi>，</mi><mi>仅</mi><mi>作</mi><mi>自</mi><mi>学</mi><mi>参</mi><mi>照</mi><mo stretchy="false" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">A=R_z(\psi)\,R_x(\theta)\,R_z(\varphi)\quad [补全：此处乘积次序按老师所述的「先保 z、再保 x_1、最后保 z^*」给出；把三个公式代入相乘即可得显式矩阵，老师未把乘积完全展开写出，仅作自学参照].</annotation></semantics></math></p>
+<p><strong>结论</strong>：任意三维正交矩阵都可分解为三次「保一轴不变」的旋转之积，三个旋转角
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\varphi,\theta,\psi</annotation></semantics></math>
+就是<strong>欧拉角</strong>；这正是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+只有 3 个自由度这一事实的几何实现。</p>
+<p><strong>易错点 / 老师提醒</strong>： -
+三次旋转「每次都保持某一条坐标轴不变」，让另外两个轴在该轴垂直的平面内转；三次分别把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>1</mn></msub><annotation encoding="application/x-tex">x_1</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>*</mo></msup><annotation encoding="application/x-tex">z^*</annotation></semantics></math>
+稳住即可。 -
+过渡矩阵有方向性，乘积顺序不能乱写；方向写反，整个矩阵就反了。 -
+本节讲到这里收尾：坐标变换、正交矩阵、平面约化、旋转/反射公式与欧拉角，构成后续用代数处理几何问题的基本工具。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

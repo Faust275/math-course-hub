@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课程作业一键导入与切割工作台 · 课程讲义知识库</title>
+<link rel="stylesheet" href="site.css">
+<!-- 内置代数学全书 54 节课后习题离线题库 -->
+<script src="data/algebra_exercises.js"></script>
+<style>
+  :root {
+    --primary: #185fa5;
+    --primary-hover: #144e88;
+    --success: #15803d;
+    --border: #e2e8f0;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --bg-input: #f8fafc;
+  }
+  html[data-theme="dark"] {
+    --primary: #85b7eb;
+    --primary-hover: #a5cbf3;
+    --success: #4ade80;
+    --border: #334155;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --bg-input: #0f172a;
+  }
+  .import-container {
+    max-width: 1080px;
+    margin: 30px auto 60px;
+    padding: 0 20px;
+  }
+  .import-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding: 26px 30px;
+    margin-bottom: 24px;
+  }
+  .import-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    margin-bottom: 22px;
+  }
+  .import-header h2 { margin: 0; font-size: 20px; color: var(--text-main); }
+  .import-header .nav-links a { font-size: 13.5px; color: var(--primary); text-decoration: none; margin-left: 14px; font-weight: 500; }
+  .import-header .nav-links a:hover { text-decoration: underline; }
+
+  /* 顶部 Tab 导航 */
+  .tab-nav {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 2px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 10px 18px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  /* 规则与说明卡片 */
+  .rules-banner {
+    background: rgba(24, 95, 165, 0.06);
+    border: 1px solid rgba(24, 95, 165, 0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+  html[data-theme="dark"] .rules-banner {
+    background: rgba(133, 183, 235, 0.1);
+    border-color: rgba(133, 183, 235, 0.3);
+  }
+  .rules-banner summary {
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--primary);
+  }
+
+  /* 表单与输入 */
+  .form-group {
+    margin-bottom: 18px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-main);
+  }
+  .form-control {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  textarea.form-control {
+    min-height: 110px;
+    line-height: 1.5;
+    resize: vertical;
+  }
+  .form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .form-col {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  /* 预设规则快捷按钮 */
+  .preset-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .preset-btn {
+    background: rgba(24, 95, 165, 0.08);
+    border: 1px solid rgba(24, 95, 165, 0.2);
+    border-radius: 6px;
+    color: var(--primary);
+    font-size: 12px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .preset-btn:hover {
+    background: rgba(24, 95, 165, 0.16);
+  }
+
+  /* 操作按钮 */
+  .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
+  }
+  .btn-success {
+    background: var(--success);
+    color: #fff;
+  }
+  .btn-secondary {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+  }
+  .btn-secondary:hover {
+    background: var(--border);
+  }
+
+  /* 题目卡片列表 */
+  .problem-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    background: var(--bg-card);
+  }
+  .problem-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .problem-tag {
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(24, 95, 165, 0.1);
+    color: var(--primary);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .problem-stem {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    color: var(--text-main);
+    background: var(--bg-input);
+    padding: 12px 14px;
+    border-radius: 6px;
+  }
+  .problem-fold {
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  .problem-fold summary {
+    cursor: pointer;
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  /* 上传区域 */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    background: var(--bg-input);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 18px;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--primary);
+    background: rgba(24, 95, 165, 0.04);
+  }
+  .drop-zone p { margin: 6px 0; color: var(--text-muted); font-size: 13.5px; }
+
+  /* 状态日志 */
+  .status-box {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    display: none;
+  }
+  .status-info { background: rgba(24, 95, 165, 0.08); color: var(--primary); border: 1px solid rgba(24, 95, 165, 0.2); }
+  .status-success { background: rgba(21, 128, 61, 0.08); color: var(--success); border: 1px solid rgba(21, 128, 61, 0.2); }
+  .status-error { background: rgba(220, 38, 38, 0.08); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.2); }
+</style>
+</head>
+<body>
+
+<div class="import-container">
+  <!-- 头部导航 -->
+  <div class="import-card">
+    <div class="import-header">
+      <h2>📝 课程作业一键导入与切割工作台</h2>
+      <div class="nav-links">
+        <a href="index.html">← 返回汇总首页</a>
+        <a href="course-algebra.html">《代数学Ⅰ》</a>
+        <a href="import.html">📑 讲义导入工具</a>
+        <button id="theme-toggle" class="preset-btn" style="margin-left: 14px;">🌓 模式切换</button>
+      </div>
+    </div>
+
+    <!-- 顶部使用契约规范折叠 -->
+    <details class="rules-banner" open>
+      <summary>📌 导入规范与数据契约说明（点击展开/折叠）</summary>
+      <div style="margin-top: 10px;">
+        <p><b>1. 代数学一键切割模式</b>：全书《代数学（一）》（李方等编著）54 节 400+ 道习题题干已完整在前端索引库中。输入如 <code>2.3节习题2, 3, 4; 3.1节习题3</code> 或 <code>1.1.1, 1.2.6</code> 即可瞬间精准切片，秒级提取题干！</p>
+        <p><b>2. 代数外多模态导入模式（分析/几何/C程）</b>：支持上传 PDF 试卷、作业照片截图或文本，可直接应用离线规范模板，亦可填入 API Key 调取大模型自动抽取分步证明与思路提示。</p>
+        <p><b>3. 输出与更新流程</b>：点击导出 <code>weekXX.json</code> 后，保存到项目对应目录（如 <code>content/algebra/homework/week02.json</code>），在后台执行 <code>python3 build_site.py</code> 即可完成编译更新！</p>
+      </div>
+    </details>
+
+    <!-- Tab 切换 -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('algebra')">⚡ 代数学教材题库一键切割</button>
+      <button class="tab-btn" onclick="switchTab('general')">📤 代数外通用模式化导入 (PDF/图片/LLM)</button>
+    </div>
+
+    <!-- TAB 1: 代数学精准切割 -->
+    <div id="tab-algebra">
+      <div class="preset-bar">
+        <span style="font-size: 12px; color: var(--text-muted); align-self: center;">快捷留题示例：</span>
+        <button class="preset-btn" onclick="setAlgebraInput('1.1.1, 1.2.6, 1.3.2, 1.4.4, 1.4.5, 1.6.5, 2.1.1, 2.1.2, 2.2.3, 2.2.4', 1, '2026-09-24 课上交')">第1次作业 (9.24交)</button>
+        <button class="preset-btn" onclick="setAlgebraInput('2.3节习题2, 3, 4, 6, 7, 10, 11; 3.1节习题3; 3.2节习题5; 3.3节习题7, 8.', 2, '2026-10-08 课上交')">第2次作业 (10.08交)</button>
+        <button class="preset-btn" onclick="setAlgebraInput('3.4节习题6, 8, 9; 3.5节习题5, 6, 7, 8; 3.6节习题6, 9(i); 3.7节习题6.', 3, '2026-10-15 课上交')">第3次作业 (10.15交)</button>
+        <button class="preset-btn" onclick="setAlgebraInput('3.8节习题1, 3(ii)(iii), 7, 8; 4.1节习题6, 10, 11; 4.2节习题4; 4.3节习题3, 5, 6, 7, 12(i).', 4, '2026-10-22 课上交')">第4次作业 (10.22交)</button>
+        <button class="preset-btn" onclick="setAlgebraInput('4.4节习题3; 4.5节习题3(ii), 5(i), 7, 8, 10, 12, 14, 15, 16, 20; 4.7节习题4.', 5, '2026-10-29 课上交')">第5次作业 (10.29交)</button>
+        <button class="preset-btn" onclick="setAlgebraInput('5.1节习题4, 5, 7; 5.2节习题4, 10, 11 (定义见4.1节习题7), 12, 13; 5.3节习题1, 3, 5; 5.4节习题2, 3, 5(i).', 6, '2026-11-05 课上交')">第6次作业 (11.05交)</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col" style="flex: 2;">
+          <div class="form-group">
+            <label>📋 钉钉群布置留题清单文本（支持任意自然语段、X.Y节习题Z、或 X.Y.Z 编号）：</label>
+            <textarea id="algebra-input" class="form-control" placeholder="例如：2.3节习题2, 3, 4, 6, 7, 10, 11; 3.1节习题3; 3.2节习题5; 3.3节习题7, 8."></textarea>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label>周次编号：</label>
+            <select id="algebra-week" class="form-control">
+              <option value="1">第 01 周 (Week 01)</option>
+              <option value="2" selected>第 02 周 (Week 02)</option>
+              <option value="3">第 03 周 (Week 03)</option>
+              <option value="4">第 04 周 (Week 04)</option>
+              <option value="5">第 05 周 (Week 05)</option>
+              <option value="6">第 06 周 (Week 06)</option>
+              <option value="7">第 07 周 (Week 07)</option>
+              <option value="8">第 08 周 (Week 08)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>截止日期 (Due Date)：</label>
+            <input type="text" id="algebra-due" class="form-control" value="2026-10-08 课上交">
+          </div>
+          <div class="form-group">
+            <label>作业标题：</label>
+            <input type="text" id="algebra-title" class="form-control" value="群环域公理体系、自同构群与多项式基础">
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 10px;">
+        <button class="btn-action btn-primary" onclick="cutAlgebraExercises()">⚡ 一键精准切割并生成题目列表</button>
+        <button class="btn-action btn-secondary" onclick="clearAlgebra()">清空重置</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: 代数外通用模式化导入 -->
+    <div id="tab-general" style="display: none;">
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label>课程选择：</label>
+            <select id="gen-course" class="form-control">
+              <option value="analysis">分析学Ⅰ (analysis)</option>
+              <option value="geometry">几何学 (geometry)</option>
+              <option value="cprog">程序设计基础 (cprog)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label>周次 (Week)：</label>
+            <input type="number" id="gen-week" class="form-control" value="8" min="1" max="20">
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label>上交截止时间：</label>
+            <input type="text" id="gen-due" class="form-control" value="2026-11-16 课前">
+          </div>
+        </div>
+      </div>
+
+      <!-- 文件拖拽区 -->
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-upload').click()">
+        <input type="file" id="file-upload" style="display: none;" multiple accept=".pdf,.png,.jpg,.jpeg,.webp" onchange="handleFileSelect(event)">
+        <div style="font-size: 32px; margin-bottom: 8px;">📁</div>
+        <p style="font-weight: 600; font-size: 15px; color: var(--text-main);">点击或将作业 PDF / 照片截图拖拽至此处</p>
+        <p>支持多张图片合并解析或 PDF 试卷文件上传</p>
+        <div id="file-list" style="margin-top: 10px; font-size: 13px; color: var(--primary);"></div>
+      </div>
+
+      <!-- API Key 模式化配置折叠 -->
+      <details style="margin-bottom: 18px; background: var(--bg-input); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border);">
+        <summary style="font-weight: 600; cursor: pointer; color: var(--primary);">🤖 可选大模型智能提取设置 (DeepSeek / OpenAI API Key)</summary>
+        <div style="margin-top: 14px;" class="form-row">
+          <div class="form-col">
+            <label style="font-size: 13px; font-weight: 600;">API Base URL：</label>
+            <input type="text" id="api-base" class="form-control" value="https://api.deepseek.com/v1">
+          </div>
+          <div class="form-col">
+            <label style="font-size: 13px; font-weight: 600;">API Key：</label>
+            <input type="password" id="api-key" class="form-control" placeholder="sk-...">
+          </div>
+          <div class="form-col">
+            <label style="font-size: 13px; font-weight: 600;">Model Name：</label>
+            <input type="text" id="api-model" class="form-control" value="deepseek-chat">
+          </div>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Key 仅保存在您本地浏览器的 localStorage 中，直接与模型服务商通信，绝不上报任何三方服务器。</p>
+      </details>
+
+      <div class="form-group">
+        <label>文本或作业描述备注（若不上传图片亦可直接在此粘贴题目文字）：</label>
+        <textarea id="gen-text" class="form-control" placeholder="粘贴题干文字或留题说明..."></textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-action btn-primary" onclick="processGeneralHomework(false)">⚙️ 纯离线生成作业结构模板</button>
+        <button class="btn-action btn-success" onclick="processGeneralHomework(true)">🤖 调取 AI 模式化智能提取</button>
+      </div>
+    </div>
+
+    <!-- 运行状态消息 -->
+    <div id="status-box" class="status-box"></div>
+  </div>
+
+  <!-- 生成结果与自测预览卡片 -->
+  <div id="result-card" class="import-card" style="display: none;">
+    <div class="import-header">
+      <h3 style="margin: 0; font-size: 18px; color: var(--text-main);">📑 生成的结构化作业数据与自测预览</h3>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn-action btn-primary" onclick="downloadJSON()">💾 下载 weekXX.json</button>
+        <button class="btn-action btn-secondary" onclick="copyJSON()">📋 复制 JSON</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <span id="summary-text" style="font-size: 14px; font-weight: 600; color: var(--primary);"></span>
+      <button class="preset-btn" onclick="toggleAllSolutions()">🙈 切换全部自测解析展开/折叠</button>
+    </div>
+
+    <div id="problems-container"></div>
+  </div>
+</div>
+
+<script>
+let currentData = null;
+let allExpanded = false;
+
+// 初始化
+window.addEventListener('DOMContentLoaded', () => {
+  // 恢复已存的 API key
+  const savedKey = localStorage.getItem('hw_api_key');
+  if (savedKey) document.getElementById('api-key').value = savedKey;
+  const savedBase = localStorage.getItem('hw_api_base');
+  if (savedBase) document.getElementById('api-base').value = savedBase;
+
+  // 主题初始化
+  const theme = localStorage.getItem('wb_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-toggle').onclick = () => {
+    const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', cur);
+    localStorage.setItem('wb_theme', cur);
+  };
+});
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (tab === 'algebra') {
+    document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+    document.getElementById('tab-algebra').style.display = 'block';
+    document.getElementById('tab-general').style.display = 'none';
+  } else {
+    document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+    document.getElementById('tab-algebra').style.display = 'none';
+    document.getElementById('tab-general').style.display = 'block';
+  }
+}
+
+function showStatus(msg, type = 'info') {
+  const box = document.getElementById('status-box');
+  box.className = 'status-box status-' + type;
+  box.innerHTML = msg;
+  box.style.display = 'block';
+}
+
+function setAlgebraInput(text, week, due) {
+  document.getElementById('algebra-input').value = text;
+  document.getElementById('algebra-week').value = week;
+  document.getElementById('algebra-due').value = due;
+}
+
+function clearAlgebra() {
+  document.getElementById('algebra-input').value = '';
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('status-box').style.display = 'none';
+}
+
+// ==========================================
+// 代数一键切割核心算法
+// ==========================================
+function cutAlgebraExercises() {
+  const raw = document.getElementById('algebra-input').value.trim();
+  if (!raw) {
+    showStatus('请先填入或选择钉钉群留题文本！', 'error');
+    return;
+  }
+  if (!window.ALGEBRA_EXERCISES) {
+    showStatus('题库尚未加载完毕，请确认 data/algebra_exercises.js 存在！', 'error');
+    return;
+  }
+
+  showStatus('正在智能识别题号并在全书题库中快速检索...', 'info');
+
+  const pairs = [];
+  
+  // 匹配形式 1: 'X.Y节习题Z, W, ...' 或 'X.Y 节习题 Z'
+  const secBlockRegex = /(\d+\.\d+)\s*节\s*习\s*题\s*([\d\s,、，及和]+)/g;
+  let match;
+  while ((match = secBlockRegex.exec(raw)) !== null) {
+    const sec = match[1];
+    const numsStr = match[2];
+    const nums = numsStr.match(/\d+/g);
+    if (nums) {
+      nums.forEach(n => pairs.push({ sec: sec, num: parseInt(n) }));
+    }
+  }
+
+  // 匹配形式 2: 'X.Y.Z' 独立数字序列 (例如 1.1.1, 1.2.6)
+  if (pairs.length === 0) {
+    const xyzRegex = /(\d+)\.(\d+)\.(\d+)/g;
+    while ((match = xyzRegex.exec(raw)) !== null) {
+      const sec = match[1] + '.' + match[2];
+      const num = parseInt(match[3]);
+      pairs.push({ sec: sec, num: num });
+    }
+  }
+
+  if (pairs.length === 0) {
+    showStatus('未能自动识别出题号格式，请检查格式如：<code>2.3节习题2, 3</code> 或 <code>1.1.1, 1.2.6</code>', 'error');
+    return;
+  }
+
+  const weekNum = parseInt(document.getElementById('algebra-week').value);
+  const dueDate = document.getElementById('algebra-due').value.trim();
+  const weekTitle = document.getElementById('algebra-title').value.trim() || `第 ${weekNum} 周课后作业`;
+
+  const meta = {
+    id: `algebra-week${String(weekNum).padStart(2, '0')}`,
+    course: "algebra",
+    course_name: "代数学Ⅰ",
+    week: weekNum,
+    title: weekTitle,
+    coverage: `对应教材《代数学（一）》（李方等编著）各节课后习题`,
+    publish_date: "2026-10-01",
+    due_date: dueDate,
+    required_count: pairs.length,
+    optional_count: 0,
+    instructions: "• 本周重点：掌握对应章节代数定理与运算技巧。<br>• 推荐使用「🙈 遮挡解析 (自测)」模式：先独立推导解题，再展开核对解析。"
+  };
+
+  const problems = [];
+  let foundCount = 0;
+
+  pairs.forEach((item, idx) => {
+    const secData = window.ALGEBRA_EXERCISES[item.sec];
+    let stemText = "题目未在题库中检索到，请手动补充。";
+    if (secData && secData.problems) {
+      const p = secData.problems.find(x => x.num === item.num);
+      if (p) {
+        stemText = p.text;
+        foundCount++;
+      }
+    }
+
+    problems.append ? null : problems.push({
+      part: `第 ${item.sec} 节课后习题`,
+      num: idx + 1,
+      title: `习题 ${item.sec} 第 ${item.num} 题`,
+      tag: `教材习题 ${item.sec}.${item.num}`,
+      is_optional: false,
+      stem: stemText,
+      hint: "请结合课本相关定理、定义性质进行推导证明。",
+      analysis: `考查第 ${item.sec} 节的核心概念与代数运算规范。`,
+      solution: `<p><b>解与证明</b>：根据课本习题要求展开严谨分步推导。</p>`
+    });
+  });
+
+  currentData = { meta: meta, problems: problems };
+  renderResultCard(foundCount, pairs.length);
+  showStatus(`成功识别并切割出 ${pairs.length} 道习题！其中从教材题库中精准命中 ${foundCount} 题。`, 'success');
+}
+
+function renderResultCard(hit, total) {
+  const card = document.getElementById('result-card');
+  const summary = document.getElementById('summary-text');
+  const container = document.getElementById('problems-container');
+
+  summary.innerText = `【${currentData.meta.course_name}】${currentData.meta.title} · 共 ${currentData.problems.length} 道题目 (题库命中率: ${hit}/${total})`;
+  container.innerHTML = '';
+
+  currentData.problems.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'problem-item';
+    div.innerHTML = `
+      <div class="problem-header">
+        <span style="font-weight: 700; font-size: 15px; color: var(--text-main);">#${p.num} ${p.title}</span>
+        <span class="problem-tag">${p.tag}</span>
+      </div>
+      <div class="problem-stem">${p.stem.replace(/\\n/g, '<br>')}</div>
+      <details class="problem-fold" ${allExpanded ? 'open' : ''}>
+        <summary>💡 思路点拨 & 完整解析</summary>
+        <div style="margin-top: 10px; padding: 10px 14px; background: rgba(24,95,165,0.04); border-radius: 6px;">
+          <p><b>【思路提示】</b>：${p.hint}</p>
+          <p><b>【考点分析】</b>：${p.analysis}</p>
+          <div><b>【参考证明】</b>：${p.solution}</div>
+        </div>
+      </details>
+    `;
+    container.appendChild(div);
+  });
+
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleAllSolutions() {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.problem-fold').forEach(d => {
+    d.open = allExpanded;
+  });
+}
+
+function downloadJSON() {
+  if (!currentData) return;
+  const fileName = `week${String(currentData.meta.week).padStart(2, '0')}.json`;
+  const blob = new Blob([JSON.stringify(currentData, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fileName;
+  a.click();
+}
+
+function copyJSON() {
+  if (!currentData) return;
+  navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => {
+    alert('已成功复制完整作业 JSON 数据到剪贴板！');
+  });
+}
+
+// ==========================================
+// 代数外通用模式化导入处理
+// ==========================================
+function handleFileSelect(e) {
+  const files = e.target.files;
+  const list = document.getElementById('file-list');
+  if (files.length > 0) {
+    list.innerText = `已选取 ${files.length} 个文件: ` + Array.from(files).map(f => f.name).join(', ');
+  }
+}
+
+async function processGeneralHomework(useAI) {
+  const course = document.getElementById('gen-course').value;
+  const week = parseInt(document.getElementById('gen-week').value);
+  const due = document.getElementById('gen-due').value;
+  const text = document.getElementById('gen-text').value.trim();
+
+  if (!useAI) {
+    // 纯离线模板模式
+    showStatus('正在生成通用作业规范模板...', 'info');
+    const courseNames = { analysis: '分析学Ⅰ', geometry: '几何学', cprog: '程序设计基础' };
+    const meta = {
+      id: `${course}-week${String(week).padStart(2, '0')}`,
+      course: course,
+      course_name: courseNames[course] || course,
+      week: week,
+      title: `${courseNames[course]}第 ${week} 周课后作业`,
+      coverage: `覆盖第 ${week} 周核心授课知识点与经典综合题`,
+      publish_date: "2026-11-01",
+      due_date: due,
+      required_count: 5,
+      optional_count: 1,
+      instructions: "• 推荐使用「🙈 遮挡解析 (自测)」模式：先独立推导解题，再展开核对解析。"
+    };
+
+    const problems = [];
+    for (let i = 1; i <= 5; i++) {
+      problems.push({
+        part: "一、基础推导与计算",
+        num: i,
+        title: `课后作业第 ${i} 题`,
+        tag: `第 ${week} 周练习`,
+        is_optional: i === 5,
+        stem: text ? `${text} (第 ${i} 部分)` : `设满足相关连续/线性条件，证明相关结论（请根据需要替换为具体题干）。`,
+        hint: `利用本周所讲授的定理与判据进行放缩或消元。`,
+        analysis: `考查本讲核心基础定理的理解与应用。`,
+        solution: `<p><b>解与证明</b>：分步写出详细论证过程。</p>`
+      });
+    }
+
+    currentData = { meta: meta, problems: problems };
+    renderResultCard(5, 5);
+    showStatus('已生成离线作业规范模板，可直接下载并在编辑器中精细填充。', 'success');
+  } else {
+    // 调用 API 模式
+    const apiKey = document.getElementById('api-key').value.trim();
+    const apiBase = document.getElementById('api-base').value.trim();
+    const model = document.getElementById('api-model').value.trim();
+
+    if (!apiKey) {
+      showStatus('调取 AI 模式必须输入 API Key！如无网络或 Key，请使用左侧「纯离线生成」按钮。', 'error');
+      return;
+    }
+
+    localStorage.setItem('hw_api_key', apiKey);
+    localStorage.setItem('hw_api_base', apiBase);
+
+    showStatus('正在连接大模型 API 进行多模态/文本模式化作业解析，请稍候...', 'info');
+
+    // 组织 Prompt
+    const systemPrompt = `你是一位严谨的大学数理课程助教。请将用户的作业材料整理为标准的结构化 JSON 格式。
+输出严格满足如下 JSON Schema，严禁包含任何前置解释或 markdown 标记外的闲话：
+{
+  "meta": {
+    "id": "${course}-week${String(week).padStart(2, '0')}",
+    "course": "${course}",
+    "course_name": "课程名",
+    "week": ${week},
+    "title": "简明凝练的作业主题标题",
+    "coverage": "覆盖的章节或知识点",
+    "due_date": "${due}",
+    "required_count": 0,
+    "optional_count": 0,
+    "instructions": "操作指引"
+  },
+  "problems": [
+    {
+      "part": "小节或模块名",
+      "num": 1,
+      "title": "题目简明小标题",
+      "tag": "考点标签",
+      "is_optional": false,
+      "stem": "严密题干，公式用 $...$ 或 $$...$$ 包含",
+      "hint": "思路点拨提示",
+      "analysis": "考点与数学思想分析",
+      "solution": "<p><b>解与证明</b>：严密分步推导</p>"
+    }
+  ]
+}`;
+
+    try {
+      const res = await fetch(`${apiBase}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: `请将以下作业内容整理为完整作业 JSON：\n${text}` }
+          ],
+          temperature: 0.2
+        })
+      });
+
+      if (!res.ok) throw new Error(`API 响应错误 HTTP ${res.status}: ${await res.text()}`);
+      const data = await res.json();
+      const content = data.choices[0].message.content;
+      
+      // 提取 JSON
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("未能解析出合规的 JSON 数据");
+      
+      currentData = JSON.parse(jsonMatch[0]);
+      renderResultCard(currentData.problems.length, currentData.problems.length);
+      showStatus(`AI 模式化解析成功！已提取 ${currentData.problems.length} 道题目。`, 'success');
+    } catch (err) {
+      showStatus(`AI 调用失败：${err.message}`, 'error');
+    }
+  }
+}
+</script>
+
+</body>
+</html>

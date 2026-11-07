@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《algebra》2026-10-29 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《algebra》2026-10-29 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#一基的等价刻画与坐标000015001945"
+id="toc-一基的等价刻画与坐标000015001945">一、基的等价刻画与坐标（00:00:15—00:19:45）</a>
+<ul>
+<li><a href="#基的等价刻画n-维空间中判定一组基的三种说法"
+id="toc-基的等价刻画n-维空间中判定一组基的三种说法">00:00:15—00:08:11 ｜
+基的等价刻画（N 维空间中判定一组基的三种说法）</a></li>
+<li><a href="#同一向量在不同基下的坐标"
+id="toc-同一向量在不同基下的坐标">00:17:09—00:19:45 ｜
+同一向量在不同基下的坐标</a></li>
+</ul></li>
+<li><a href="#二过渡矩阵及其可逆性001945003703"
+id="toc-二过渡矩阵及其可逆性001945003703">二、过渡矩阵及其可逆性（00:19:45—00:37:03）</a>
+<ul>
+<li><a href="#过渡矩阵的定义" id="toc-过渡矩阵的定义">00:19:45—00:28:48
+｜ 过渡矩阵的定义</a></li>
+<li><a href="#过渡矩阵必可逆且互逆"
+id="toc-过渡矩阵必可逆且互逆">00:28:48—00:37:03 ｜
+过渡矩阵必可逆，且互逆</a></li>
+</ul></li>
+<li><a href="#三多项式空间的拉格朗日基与范德蒙德003710010415"
+id="toc-三多项式空间的拉格朗日基与范德蒙德003710010415">三、多项式空间的拉格朗日基与范德蒙德（00:37:10—01:04:15）</a>
+<ul>
+<li><a href="#拉格朗日插值多项式构成-fx_n-的一组基"
+id="toc-拉格朗日插值多项式构成-fx_n-的一组基">00:37:10—00:46:07 ｜
+拉格朗日插值多项式构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基</a></li>
+<li><a href="#取-n-次单位根为插值点时的过渡矩阵"
+id="toc-取-n-次单位根为插值点时的过渡矩阵">00:55:05—01:04:15 ｜ 取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次单位根为插值点时的过渡矩阵</a></li>
+</ul></li>
+<li><a href="#四标准基下的过渡矩阵一般线性群与坐标变换公式010415013739"
+id="toc-四标准基下的过渡矩阵一般线性群与坐标变换公式010415013739">四、标准基下的过渡矩阵、一般线性群与坐标变换公式（01:04:15—01:37:39）</a>
+<ul>
+<li><a href="#标准基情形过渡矩阵即基向量拼成的可逆阵"
+id="toc-标准基情形过渡矩阵即基向量拼成的可逆阵">01:04:15—01:15:42 ｜
+标准基情形：过渡矩阵即基向量拼成的可逆阵</a></li>
+<li><a href="#坐标变换公式与一个数值例子"
+id="toc-坐标变换公式与一个数值例子">01:16:11—01:37:39 ｜
+坐标变换公式与一个数值例子</a></li>
+</ul></li>
+<li><a
+href="#五维数公式-dimv_1v_2dim-v_1dim-v_2-dimv_1cap-v_2013739020713"
+id="toc-五维数公式-dimv_1v_2dim-v_1dim-v_2-dimv_1cap-v_2013739020713">五、维数公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2-\dim(V_1\cap V_2)</annotation></semantics></math>（01:37:39—02:07:13）</a>
+<ul>
+<li><a href="#动机例子与定理陈述"
+id="toc-动机例子与定理陈述">01:37:39—01:46:56 ｜
+动机、例子与定理陈述</a></li>
+<li><a href="#维数公式的证明基的扩充法"
+id="toc-维数公式的证明基的扩充法">01:46:56—02:07:13 ｜
+维数公式的证明（基的扩充法）</a></li>
+</ul></li>
+<li><a href="#六子空间的直和020713022119"
+id="toc-六子空间的直和020713022119">六、子空间的直和（02:07:13—02:21:19）</a>
+<ul>
+<li><a href="#直和的定义与有限维等价条件"
+id="toc-直和的定义与有限维等价条件">02:07:13—02:13:58 ｜
+直和的定义与有限维等价条件</a></li>
+<li><a href="#奇函数与偶函数空间是直和"
+id="toc-奇函数与偶函数空间是直和">02:15:26—02:21:19 ｜
+奇函数与偶函数空间是直和</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2
+id="一基的等价刻画与坐标000015001945">一、基的等价刻画与坐标（00:00:15—00:19:45）</h2>
+<h3 id="基的等价刻画n-维空间中判定一组基的三种说法">00:00:15—00:08:11 ｜
+基的等价刻画（N 维空间中判定一组基的三种说法）</h3>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维向量空间。前面引进过基的一般定义：一组向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基，当且仅当它同时满足两条——(1) 线性无关，(2) 张成整个空间（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>=</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">\operatorname{span}\{\alpha_1,\ldots,\alpha_N\}=V</annotation></semantics></math>）。本小节证明：在已知
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维的前提下，其实只要满足下面两条中的<strong>任意一条</strong>，就足以推出它是基。</p>
+<h4
+id="证明-1000112-线性无关且恰有-n-个元或张成空间且恰有-n-个元都推出是一组基">证明
+1（00:01:12）｜ “线性无关且恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个元”或”张成空间且恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个元”都推出是一组基</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维空间，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量。证明 - (A) 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+线性无关，则它是一组基； - (B) 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+张成整个空间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>，则它是一组基。</p>
+<p><strong>思路</strong>：用前面已证的核心结论——“两个等价的线性无关向量组所含向量个数相等”，以及”极大线性无关组”的概念。</p>
+<p><strong>逐步推导</strong>： 1. 先证 (B)（张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⟹</mo><annotation encoding="application/x-tex">\implies</annotation></semantics></math>
+基）：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_1,\ldots,\alpha_N\}</annotation></semantics></math>
+张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>。在它里面取一个极大线性无关组，记其元素个数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>。因为极大线性无关组仍可张成整个空间（极大性保证：若还有向量不被它线性表出，就能再添进去，与”极大”矛盾），所以该极大线性无关组也是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基。由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维，这组基恰含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">r=N</annotation></semantics></math>。于是这
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+本身就线性无关，且已张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>，从而是一组基。
+2. 再证 (A)（线性无关
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⟹</mo><annotation encoding="application/x-tex">\implies</annotation></semantics></math>
+基）：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_1,\ldots,\alpha_N\}</annotation></semantics></math>
+线性无关。取它的一个极大线性无关组（它自己已经是极大的），则它张成的子空间是某个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维空间的子空间。因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+中任意极大线性无关组都恰含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量（由核心结论：两个等价的线性无关向量组元素个数相等，而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基就是含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量的极大线性无关组），所以这组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个线性无关的向量已经”撑满”
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>，即张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>，故是一组基。
+3. 等价地，也可以对 (A) 这样想：把线性无关组逐步扩充成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基；由于扩充得到的基只能是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量，而起点已经有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个线性无关向量，扩充不会添加任何新向量，故它本身就是基。</p>
+<p><strong>结论</strong>：在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维空间中，判定一组基的三种等价说法为 - 线性无关 <strong>且</strong>
+张成空间； - 线性无关 <strong>且</strong> 恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量； - 张成空间 <strong>且</strong> 恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量。</p>
+<p><strong>易错点（老师点出）</strong>：这三条等价性依赖于”已知空间是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维”。若不知道维数，仅”线性无关的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量”并不保证是基（可能张不成整个空间）。</p>
+<h4
+id="推论-1000821-若一组基可由另一组-n-个向量线性表出则后者也是基">推论
+1（00:08:21）｜ 若一组基可由另一组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量线性表出，则后者也是基</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基。若有另一组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>，使得每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+都能被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>
+线性表出，证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+也是一组基。</p>
+<p><strong>思路</strong>：利用线性表出的传递性。</p>
+<p><strong>逐步推导</strong>： 1. 已知每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+线性表出；又已知
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+张成整个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>（它是基）。
+2.
+线性表出具有传递性：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+张成的任何向量，都可用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+表示，而每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+又可用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+表示，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+中任一向量都可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+线性表出。即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>=</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">\operatorname{span}\{\beta_1,\ldots,\beta_N\}=V</annotation></semantics></math>。
+3.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量且张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维空间，由上面的 (B) 即知它是基。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+也是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基。</p>
+<h4 id="例题-1001123-多项式空间-fx_n-的非单项式基">例题 1（00:11:23）｜
+多项式空间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的非单项式基</h4>
+<p><strong>命题／任务</strong>：考虑一元多项式环中次数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\le n-1</annotation></semantics></math>
+的多项式构成的子空间（记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_{n}</annotation></semantics></math>，是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+维空间）。已知标准基是单项式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1,x,\ldots,x^{n-1}</annotation></semantics></math>。另外取一组多项式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>0</mn></msub><mo>,</mo><msub><mi>f</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">f_0,f_1,\ldots,f_{n-1}</annotation></semantics></math>，其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">deg</mi><mo>&#8289;</mo></mrow><msub><mi>f</mi><mi>i</mi></msub><mo>=</mo><mi>i</mi></mrow><annotation encoding="application/x-tex">\deg f_i=i</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i=0,\ldots,n-1</annotation></semantics></math>）。问：这组多项式是否构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基？</p>
+<p><strong>思路</strong>：由推论 1，只需说明标准基的每个单项式都能被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">f_0,\ldots,f_{n-1}</annotation></semantics></math>
+线性表出（于是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+张成空间且恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个）。</p>
+<p><strong>逐步推导</strong>： 1.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>0</mn></msub><annotation encoding="application/x-tex">f_0</annotation></semantics></math>
+是零次多项式（非零常数），故张出常数项。 2.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>1</mn></msub><annotation encoding="application/x-tex">f_1</annotation></semantics></math>
+是一次多项式，其首项系数非零，于是可用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>0</mn></msub><mo>,</mo><msub><mi>f</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">f_0,f_1</annotation></semantics></math>
+配出一次项（简单的”配方”）。 3. 归纳地，对每个次数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>，可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">f_0,\ldots,f_k</annotation></semantics></math>
+配出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mi>k</mi></msup><annotation encoding="application/x-tex">x^k</annotation></semantics></math>；从而所有单项式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1,x,\ldots,x^{n-1}</annotation></semantics></math>
+都能被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_i\}</annotation></semantics></math>
+线性表出。 4. 因此
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_i\}</annotation></semantics></math>
+张成整个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>，又恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个向量，故是一组基。</p>
+<p><strong>结论</strong>：只要
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">deg</mi><mo>&#8289;</mo></mrow><msub><mi>f</mi><mi>i</mi></msub><mo>=</mo><mi>i</mi></mrow><annotation encoding="application/x-tex">\deg f_i=i</annotation></semantics></math>，这组按次数”错层”的多项式就构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基。</p>
+<p><strong>易错点</strong>：本例说明基不唯一；标准单项式基只是最”自然”的一个选择，为不同目的可换用别的基。</p>
+<h4 id="练习-1001504-证明拉格朗日型多项式构成-fx_n-的基">练习
+1（00:15:04）｜ 证明拉格朗日型多项式构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的基</h4>
+<p><strong>命题／任务</strong>：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个互不相同的数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">a_1,\ldots,a_n\in F</annotation></semantics></math>。构造
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+次多项式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">f_1,\ldots,f_n</annotation></semantics></math>，其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+以除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math>
+以外的所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>j</mi></msub><annotation encoding="application/x-tex">a_j</annotation></semantics></math>
+为零点（即”漏掉
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math>
+的那一项”）。证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_1,\ldots,f_n\}</annotation></semantics></math>
+构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基。</p>
+<p><strong>思路</strong>：两种途径——证明线性无关，或证明张成整个空间。老师留作练习，提示两种都”需要一次递推或一次归纳”才能完成。</p>
+<p><strong>逐步推导（补全，非当堂完整写出）</strong>：见第三小节例题 1
+的两种严格证法（线性无关证法与张成证法），此处先记住结论：这
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个多项式确实是一组基。</p>
+<hr />
+<h3 id="同一向量在不同基下的坐标">00:17:09—00:19:45 ｜
+同一向量在不同基下的坐标</h3>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的一组基。对任意向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">\xi\in V</annotation></semantics></math>，可唯一地写成
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo>=</mo><msub><mi>c</mi><mn>1</mn></msub><msub><mi>α</mi><mn>1</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>c</mi><mi>N</mi></msub><msub><mi>α</mi><mi>N</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\xi=c_1\alpha_1+\cdots+c_N\alpha_N,</annotation></semantics></math>
+其中系数唯一（基的线性无关性保证唯一性）。我们定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ξ</mi><annotation encoding="application/x-tex">\xi</annotation></semantics></math>
+在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+下的<strong>坐标</strong>就是这组系数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>c</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>c</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(c_1,\ldots,c_N)</annotation></semantics></math>。</p>
+<p>注意：同一向量在不同基下的坐标一般不同。于是自然产生一个问题——如何在两个不同基之间比较同一个向量的坐标？这就要引入<strong>过渡矩阵</strong>与坐标变换公式。</p>
+<hr />
+<h2
+id="二过渡矩阵及其可逆性001945003703">二、过渡矩阵及其可逆性（00:19:45—00:37:03）</h2>
+<h3 id="过渡矩阵的定义">00:19:45—00:28:48 ｜ 过渡矩阵的定义</h3>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>
+是一组基，另一组基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>。与”用矩阵记录向量组的线性表出”一致，每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+可唯一地由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+线性表出：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)=(\alpha_1,\ldots,\alpha_N)\,M_{\alpha\beta},</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+是一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">N\times N</annotation></semantics></math>
+矩阵，叫做<strong>从基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+到基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的过渡矩阵</strong>。</p>
+<h4 id="证明-1002402-过渡矩阵的列就是-beta_j-在-alpha-下的坐标">证明
+1（00:24:02）｜ 过渡矩阵的列就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+下的坐标</h4>
+<p><strong>命题／任务</strong>：说明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列恰为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+下的坐标向量。</p>
+<p><strong>思路</strong>：按矩阵乘法的列视角展开。</p>
+<p><strong>逐步推导</strong>： 1. 把等式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)=(\alpha_1,\ldots,\alpha_N)M_{\alpha\beta}</annotation></semantics></math>
+按列看：左边第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+个”分量”是向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>，右边是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>
+以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列为系数做线性组合。 2. 由基下表出的唯一性，这个系数列就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+下的坐标。 3. 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个列向量依次就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>
+在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+下的坐标向量拼接而成。</p>
+<p><strong>结论</strong>：直接写出每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>-坐标，按列排成矩阵，即得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>。</p>
+<h3 id="过渡矩阵必可逆且互逆">00:28:48—00:37:03 ｜
+过渡矩阵必可逆，且互逆</h3>
+<p>直观上，换基相当于做一次坐标变换，应当是可逆的。下面严格证明。</p>
+<h4 id="证明-2002914-m_alphabetam_betaalphai故过渡矩阵可逆">证明
+2（00:29:14）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}\,M_{\beta\alpha}=I</annotation></semantics></math>，故过渡矩阵可逆</h4>
+<p><strong>命题／任务</strong>：证明从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的过渡矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+与从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+的过渡矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><annotation encoding="application/x-tex">M_{\beta\alpha}</annotation></semantics></math>
+互逆，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><mo>=</mo><mi>I</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>=</mo><mi>I</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}\,M_{\beta\alpha}=I,\qquad M_{\beta\alpha}\,M_{\alpha\beta}=I.</annotation></semantics></math></p>
+<p><strong>思路</strong>：利用基在自身下表出得到单位矩阵，再把过渡关系串接起来。</p>
+<p><strong>逐步推导</strong>： 1. 由定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)=(\alpha_1,\ldots,\alpha_N)M_{\alpha\beta}</annotation></semantics></math>。
+2. 交换两套基的位置，同理有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\alpha_1,\ldots,\alpha_N)=(\beta_1,\ldots,\beta_N)M_{\beta\alpha}</annotation></semantics></math>。
+3. 把第 2 式代入第 1 式（形式化的矩阵乘法，注意矩阵乘法满足结合律）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)=\bigl((\beta_1,\ldots,\beta_N)M_{\beta\alpha}\bigr)M_{\alpha\beta}=(\beta_1,\ldots,\beta_N)(M_{\beta\alpha}M_{\alpha\beta}).</annotation></semantics></math>
+4.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+是一组基、线性无关，因此用它自身做线性表出是唯一的：上式左端就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)I</annotation></semantics></math>，故必有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">M_{\beta\alpha}M_{\alpha\beta}=I</annotation></semantics></math>。
+5. 同理，把第 1 式代入第 2 式可得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}M_{\beta\alpha}=I</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+可逆，且其逆正是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><annotation encoding="application/x-tex">M_{\beta\alpha}</annotation></semantics></math>。</p>
+<p><strong>易错点（老师点出）</strong>：写证明时不要跳步。虽然”对称地同理”看起来显然，但严格来说需要把两边各算一次（先得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">M_{\beta\alpha}M_{\alpha\beta}=I</annotation></semantics></math>，再得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><msub><mi>M</mi><mrow><mi>β</mi><mi>α</mi></mrow></msub><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}M_{\beta\alpha}=I</annotation></semantics></math>）才能称为互逆。以后会证明”若两个方阵乘积为单位阵，则自动可逆且另一方向乘积也为单位阵”，但当下还没有这个结果，所以两个方向都要验证。</p>
+<hr />
+<h2
+id="三多项式空间的拉格朗日基与范德蒙德003710010415">三、多项式空间的拉格朗日基与范德蒙德（00:37:10—01:04:15）</h2>
+<h3 id="拉格朗日插值多项式构成-fx_n-的一组基">00:37:10—00:46:07 ｜
+拉格朗日插值多项式构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基</h3>
+<h4 id="例题-1003733-拉格朗日基的构造与判定">例题 1（00:37:33）｜
+拉格朗日基的构造与判定</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+是域，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">a_1,\ldots,a_n\in F</annotation></semantics></math>
+互不相同。对每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">i=1,\ldots,n</annotation></semantics></math>，构造多项式
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>≠</mo><mi>i</mi></mrow></munder><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>j</mi></msub></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">f_i(x)=\prod_{j\ne i}\frac{x-a_j}{a_i-a_j},</annotation></semantics></math>
+（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+次多项式，以所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>j</mi></msub><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mo>≠</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a_j\ (j\ne i)</annotation></semantics></math>
+为零点，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f_i(a_i)=1</annotation></semantics></math>。）断言：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_1,\ldots,f_n\}</annotation></semantics></math>
+构成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基。</p>
+<p><strong>思路</strong>：用两种方式证明——(一) 证线性无关；(二)
+证张成整个空间。</p>
+<p><strong>逐步推导（证法一：线性无关）</strong>： 1. 设存在系数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>c</mi><mi>n</mi></msub><mo>∈</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">c_1,\ldots,c_n\in F</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>c</mi><mi>i</mi></msub><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sum_{i=1}^n c_i f_i(x)\equiv 0</annotation></semantics></math>（零多项式）。
+2. 对每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">k=1,\ldots,n</annotation></semantics></math>，代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mi>a</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x=a_k</annotation></semantics></math>：由于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>≠</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">j\ne k</annotation></semantics></math>
+时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f_j(a_k)=0</annotation></semantics></math>，而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f_k(a_k)=1</annotation></semantics></math>，得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>k</mi></msub><mo>⋅</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_k\cdot 1=0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_k=0</annotation></semantics></math>。
+3. 每个系数都为零，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_i\}</annotation></semantics></math>
+线性无关。</p>
+<p><strong>逐步推导（证法二：张成）</strong>： 1. 任取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">g(x)\in F[x]_n</annotation></semantics></math>（次数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">&lt;n</annotation></semantics></math>）。考虑拉格朗日插值公式
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>g</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">g(x)=\sum_{i=1}^n g(a_i)\,f_i(x).</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_1,\ldots,a_n</annotation></semantics></math>
+处两边取值相同（右端第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+项在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mi>a</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x=a_k</annotation></semantics></math>
+处只留下
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>f</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g(a_k)f_k(a_k)=g(a_k)</annotation></semantics></math>）。
+2. 两端都是次数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">&lt;n</annotation></semantics></math>
+的多项式，且在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个互异点处取值相同，因此这两个多项式恒等（关键事实：一个次数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">&lt;n</annotation></semantics></math>
+的多项式若有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个零点，则必为零多项式；于是两端之差是零多项式）。 3. 故任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g(x)</annotation></semantics></math>
+都能被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_i\}</annotation></semantics></math>
+线性表出，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_i\}</annotation></semantics></math>
+张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>。又恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个向量，所以是一组基。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>f</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{f_1,\ldots,f_n\}</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><msub><mo stretchy="false" form="postfix">]</mo><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">F[x]_n</annotation></semantics></math>
+的一组基，称为<strong>拉格朗日基</strong>。</p>
+<p><strong>意义</strong>：这套基来自”插值”的思想；其后在数值分析与代数中反复出现。</p>
+<h3 id="取-n-次单位根为插值点时的过渡矩阵">00:55:05—01:04:15 ｜ 取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次单位根为插值点时的过渡矩阵</h3>
+<h4 id="例题-2005511-单项式基到拉格朗日基的过渡矩阵单位根情形">例题
+2（00:55:11）｜ 单项式基到拉格朗日基的过渡矩阵（单位根情形）</h4>
+<p><strong>命题／任务</strong>：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">F=\mathbb C</annotation></semantics></math>，插值点取为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次单位根
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_1,\ldots,a_n</annotation></semantics></math>（满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mi>i</mi><mi>n</mi></msubsup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a_i^n=1</annotation></semantics></math>）。计算从单项式基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1,x,\ldots,x^{n-1}</annotation></semantics></math>
+到拉格朗日基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">f_1,\ldots,f_n</annotation></semantics></math>
+的过渡矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：把每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f_i(x)</annotation></semantics></math>
+写成单项式的线性组合，系数就是过渡矩阵的列。</p>
+<p><strong>逐步推导</strong>： 1. 由构造
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mo>∏</mo><mrow><mi>k</mi><mo>≠</mo><mi>i</mi></mrow></msub><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub></mrow><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">f_i(x)=\prod_{k\ne i}\frac{x-a_k}{a_i-a_k}</annotation></semantics></math>。补上漏掉的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x-a_i)</annotation></semantics></math>
+项并除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x-a_i)</annotation></semantics></math>，可写成
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><munderover><mo>∏</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><munder><mo>∏</mo><mrow><mi>k</mi><mo>≠</mo><mi>i</mi></mrow></munder><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>⋅</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">f_i(x)=\frac{\prod_{k=1}^n(x-a_k)}{\prod_{k\ne i}(a_i-a_k)}\cdot\frac{1}{x-a_i}.</annotation></semantics></math>
+2. 分子
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∏</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\prod_{k=1}^n(x-a_k)=x^n-1</annotation></semantics></math>（因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>k</mi></msub><annotation encoding="application/x-tex">a_k</annotation></semantics></math>
+恰为全部
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+次单位根）。于是
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><munder><mo>∏</mo><mrow><mi>k</mi><mo>≠</mo><mi>i</mi></mrow></munder><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">f_i(x)=\frac{x^n-1}{(x-a_i)\prod_{k\ne i}(a_i-a_k)}.</annotation></semantics></math>
+3. 利用单位根性质
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∏</mo><mrow><mi>k</mi><mo>≠</mo><mi>i</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>n</mi><mspace width="0.167em"></mspace><msubsup><mi>a</mi><mi>i</mi><mrow><mspace width="0.167em"></mspace><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\prod_{k\ne i}(a_i-a_k)=n\,a_i^{\,n-2}</annotation></semantics></math>（由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∏</mo><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>n</mi><msubsup><mi>a</mi><mi>i</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">\prod_{k}(a_i-a_k)=n a_i^{n-1}</annotation></semantics></math>
+除去因子
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a_i-a_i)</annotation></semantics></math>
+的极限式得到），并把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msup><mi>x</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><mrow><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub></mrow></mfrac><annotation encoding="application/x-tex">\frac{x^n-1}{x-a_i}</annotation></semantics></math>
+作除法展开：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>x</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><mrow><mi>x</mi><mo>−</mo><msub><mi>a</mi><mi>i</mi></msub></mrow></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><msub><mi>a</mi><mi>i</mi></msub><mi>x</mi><mo>+</mo><msubsup><mi>a</mi><mi>i</mi><mn>2</mn></msubsup><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>⋯</mi><mo>+</mo><msubsup><mi>a</mi><mi>i</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msubsup><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>+</mo><msup><mi>x</mi><mi>n</mi></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^n-1}{x-a_i}=1+a_i x+a_i^2 x^2+\cdots+a_i^{n-2}x^{n-1}+x^n.</annotation></semantics></math>
+4. 因此
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mi>x</mi><mo>+</mo><msubsup><mi>a</mi><mi>i</mi><mn>2</mn></msubsup><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>⋯</mi><mo>+</mo><msubsup><mi>a</mi><mi>i</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mo>+</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msubsup><mi>a</mi><mi>i</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>/</mi><mi>n</mi><mo>⋅</mo><mtext mathvariant="normal">(常数项调整)</mtext><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mo>+</mo><msup><mi>x</mi><mi>n</mi></msup><mo>⋅</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">f_i(x)=\frac{1}{n}\bigl(a_i x+a_i^2 x^2+\cdots+a_i^{n-1}x^{n-1}\bigr)+\bigl(1-a_i^{n-1}/n\cdot\text{(常数项调整)}\bigr)+x^n\cdot\frac{1}{n}.</annotation></semantics></math>
+更直接地，按单项式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1,x,\ldots,x^{n-1}</annotation></semantics></math>
+整理后： - 常数项为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mi>k</mi></msup><annotation encoding="application/x-tex">x^k</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">k=1,\ldots,n-2</annotation></semantics></math>）的系数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mi>i</mi><mrow><mspace width="0.167em"></mspace><mi>k</mi></mrow></msubsup><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">a_i^{\,k}/n</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">x^{n-1}</annotation></semantics></math>
+的系数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mi>i</mi><mrow><mspace width="0.167em"></mspace><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">a_i^{\,n-1}/n</annotation></semantics></math>；
+- 最高项
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mi>n</mi></msup><annotation encoding="application/x-tex">x^n</annotation></semantics></math>
+系数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">1/n</annotation></semantics></math>
+不出现在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1,\ldots,x^{n-1}</annotation></semantics></math>
+中，展开后常数项实际为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>（代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0</annotation></semantics></math>
+验证
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f_i(0)=0</annotation></semantics></math>）。
+5. 故过渡矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+列（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+的单项式坐标）依次为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>a</mi><mi>i</mi></msub><mi>/</mi><mi>n</mi><mo>,</mo><mspace width="0.222em"></mspace><msubsup><mi>a</mi><mi>i</mi><mn>2</mn></msubsup><mi>/</mi><mi>n</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>…</mi><mo>,</mo><mspace width="0.222em"></mspace><msubsup><mi>a</mi><mi>i</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>/</mi><mi>n</mi><mo>,</mo><mspace width="0.222em"></mspace><mn>1</mn><msup><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mi mathvariant="normal">T</mi></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\bigl(0,\ a_i/n,\ a_i^2/n,\ \ldots,\ a_i^{n-1}/n,\ 1\bigr)^{\mathrm T}.</annotation></semantics></math>
+即每列都是等比数列型：从第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+行起为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mi>i</mi><mi>k</mi></msubsup><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">a_i^k/n</annotation></semantics></math>，最后一行是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：过渡矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>1</mn></msub><mi>/</mi><mi>n</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>2</mn></msub><mi>/</mi><mi>n</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mi>n</mi></msub><mi>/</mi><mi>n</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mi>/</mi><mi>n</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mi>/</mi><mi>n</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mi>n</mi><mn>2</mn></msubsup><mi>/</mi><mi>n</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>/</mi><mi>n</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>/</mi><mi>n</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mi>n</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>/</mi><mi>n</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">M=\begin{pmatrix}
+0 &amp; 0 &amp; \cdots &amp; 0\\
+a_1/n &amp; a_2/n &amp; \cdots &amp; a_n/n\\
+a_1^2/n &amp; a_2^2/n &amp; \cdots &amp; a_n^2/n\\
+\vdots &amp; \vdots &amp; &amp; \vdots\\
+a_1^{n-1}/n &amp; a_2^{n-1}/n &amp; \cdots &amp; a_n^{n-1}/n\\
+1 &amp; 1 &amp; \cdots &amp; 1
+\end{pmatrix}.</annotation></semantics></math></p>
+<p><strong>易错点／意义</strong>：由过渡矩阵的一般理论，这个矩阵必然可逆。但直接证明它可逆并不容易——它本质上是<strong>范德蒙德（Vandermonde）行列式</strong>的一个经典例子：对互不相同的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">a_1,\ldots,a_n</annotation></semantics></math>，对应的范德蒙德行列式非零，从而矩阵可逆。完整的范德蒙德行列式计算属于后面”行列式”一章的内容，这里先认出它的来源即可
+<code>[补全]</code>（当堂未推导范德蒙德行列式公式，仅指出该矩阵可逆且是范德蒙德型的例子）。</p>
+<hr />
+<h2
+id="四标准基下的过渡矩阵一般线性群与坐标变换公式010415013739">四、标准基下的过渡矩阵、一般线性群与坐标变换公式（01:04:15—01:37:39）</h2>
+<h3 id="标准基情形过渡矩阵即基向量拼成的可逆阵">01:04:15—01:15:42 ｜
+标准基情形：过渡矩阵即基向量拼成的可逆阵</h3>
+<h4
+id="证明-1010420-从标准基到任意基-beta-的过渡矩阵就是-beta_1ldotsbeta_n-本身">证明
+1（01:04:20）｜ 从标准基到任意基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的过渡矩阵就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)</annotation></semantics></math>
+本身</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>e</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha=e_1,\ldots,e_N</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维空间的标准基（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>i</mi></msub><annotation encoding="application/x-tex">e_i</annotation></semantics></math>
+在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个位置为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>、其余为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>）。证明从标准基到任意基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>
+的过渡矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+就是把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>
+当作列向量并排得到的矩阵，并由此说明：可逆矩阵的列向量自动构成一组基。</p>
+<p><strong>思路</strong>：利用”向量在标准基下的坐标就是它自己”。</p>
+<p><strong>逐步推导</strong>： 1.
+由过渡矩阵定义，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+在标准基下的坐标。 2. 一个列向量在标准基下的坐标向量就是它自身（例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>j</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>b</mi><mrow><mi>N</mi><mi>j</mi></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">T</mi></msup></mrow><annotation encoding="application/x-tex">\beta_j=(b_{1j},\ldots,b_{Nj})^{\mathrm T}</annotation></semantics></math>
+的坐标就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>b</mi><mrow><mi>N</mi><mi>j</mi></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">T</mi></msup></mrow><annotation encoding="application/x-tex">(b_{1j},\ldots,b_{Nj})^{\mathrm T}</annotation></semantics></math>）。
+3. 所以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列就是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+本身，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}=(\beta_1,\ldots,\beta_N)</annotation></semantics></math>
+把所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+向量并排而成。 4. 反之，若给定一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+阶可逆矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>，把它的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个列向量记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_N</annotation></semantics></math>。因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+可逆，等式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)=(\alpha_1,\ldots,\alpha_N)A</annotation></semantics></math>
+两边右乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">A^{-1}</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(\alpha_1,\ldots,\alpha_N)=(\beta_1,\ldots,\beta_N)A^{-1}</annotation></semantics></math>，说明标准基可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+线性表出；一组基若能由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+线性表出，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+必张成整个空间，又恰有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个向量，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_j\}</annotation></semantics></math>
+是一组基。</p>
+<p><strong>结论</strong>：标准基到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的过渡矩阵 = 把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的列向量并排；可逆矩阵的列向量组自动是一组基。</p>
+<p><strong>意义</strong>：这就建立了从<strong>一般线性群</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(F)</annotation></semantics></math>（所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+阶可逆矩阵在矩阵乘法下构成的群）到”<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的所有有序基的集合”的一个双射——给一个可逆阵，取其
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+列即得一组基；给一组有序基，把它写在标准基下即得一个可逆阵。</p>
+<h4 id="例题-1011223-有限域上一般线性群的元素个数">例题 1（01:12:23）｜
+有限域上一般线性群的元素个数</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+为素数，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+元有限域。求有限域上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+阶可逆矩阵群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(\mathbb Z_p)</annotation></semantics></math>
+的元素个数。</p>
+<p><strong>思路</strong>：利用上面的双射——元素个数 =
+“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>
+上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+维空间中所有有序基的个数”。</p>
+<p><strong>逐步推导</strong>： 1. 第一个基向量可任取非零向量，共
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">p^N-1</annotation></semantics></math>
+种。 2. 第二个基向量只要不在第一个向量张成的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+维子空间中即可，该子空间有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+个向量，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">p^N-p</annotation></semantics></math>
+种。 3. 第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+个基向量不能落在前
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k-1</annotation></semantics></math>
+个向量张成的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k-1)</annotation></semantics></math>
+维子空间中，该子空间有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">p^{k-1}</annotation></semantics></math>
+个向量，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><msup><mi>p</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">p^N-p^{k-1}</annotation></semantics></math>
+种。 4. 乘起来即得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><msup><mi>p</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo><mi>⋯</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>N</mi></msup><mo>−</mo><msup><mi>p</mi><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">|\mathrm{GL}_n(\mathbb Z_p)|=(p^N-1)(p^N-p)(p^N-p^2)\cdots(p^N-p^{N-1}).</annotation></semantics></math></p>
+<p><strong>结论</strong>：上式即有限域上一般线性群的元素个数。</p>
+<h3 id="坐标变换公式与一个数值例子">01:16:11—01:37:39 ｜
+坐标变换公式与一个数值例子</h3>
+<h4 id="证明-1011626-坐标变换公式">证明 1（01:16:26）｜
+坐标变换公式</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>,</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha,\beta</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的两组基，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">M_{\alpha\beta}</annotation></semantics></math>
+是从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的过渡矩阵。若向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+下的坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>β</mi></msub><annotation encoding="application/x-tex">y_\beta</annotation></semantics></math>，在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+下的坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>α</mi></msub><annotation encoding="application/x-tex">x_\alpha</annotation></semantics></math>，证明
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>α</mi></msub><mo>=</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>y</mi><mi>β</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">x_\alpha=M_{\alpha\beta}\,y_\beta.</annotation></semantics></math></p>
+<p><strong>思路</strong>：用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+的两种基下表出，再由基下表出的唯一性令其相等。</p>
+<p><strong>逐步推导</strong>： 1.
+由坐标定义，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>y</mi><mi>β</mi></msub></mrow><annotation encoding="application/x-tex">v=(\beta_1,\ldots,\beta_N)\,y_\beta</annotation></semantics></math>。
+2.
+又由过渡矩阵定义，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_N)=(\alpha_1,\ldots,\alpha_N)M_{\alpha\beta}</annotation></semantics></math>。代入得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>y</mi><mi>β</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">v=(\alpha_1,\ldots,\alpha_N)M_{\alpha\beta}\,y_\beta.</annotation></semantics></math>
+3.
+另一方面，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>x</mi><mi>α</mi></msub></mrow><annotation encoding="application/x-tex">v=(\alpha_1,\ldots,\alpha_N)\,x_\alpha</annotation></semantics></math>。
+4. 因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+是基，坐标唯一，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>α</mi></msub><mo>=</mo><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>y</mi><mi>β</mi></msub></mrow><annotation encoding="application/x-tex">x_\alpha=M_{\alpha\beta}\,y_\beta</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：换基时坐标的关系由过渡矩阵左乘给出。该公式后续会反复使用。</p>
+<h4 id="例题-1012053-二阶矩阵空间中的坐标变换书上的例子">例题
+1（01:20:53）｜ 二阶矩阵空间中的坐标变换（书上的例子）</h4>
+<p><strong>命题／任务</strong>：在二阶矩阵空间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_2(F)</annotation></semantics></math>（按通常加法与数乘是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>
+维空间）中，先取标准基（各位置单独为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>、其余为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+的四个矩阵，按固定顺序排列），再取另一组基
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>β</mi><mn>2</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>β</mi><mn>3</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>β</mi><mn>4</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mtext mathvariant="normal">.</mtext></mrow><annotation encoding="application/x-tex">\beta_1=\begin{pmatrix}1&amp;0\\0&amp;0\end{pmatrix},\quad
+\beta_2=\begin{pmatrix}1&amp;1\\0&amp;0\end{pmatrix},\quad
+\beta_3=\begin{pmatrix}0&amp;1\\0&amp;2\end{pmatrix},\quad
+\beta_4=\begin{pmatrix}0&amp;0\\0&amp;1\end{pmatrix}\.</annotation></semantics></math>
+承认
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\beta_i\}</annotation></semantics></math>
+是一组基（事实：四个向量线性无关）。对任意矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}</annotation></semantics></math>，写出它在标准基下的坐标，并求出它在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+下的坐标，再验证坐标变换公式。</p>
+<p><strong>思路</strong>：先写出标准基坐标；再解线性方程组求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+坐标；最后用过渡矩阵验证公式。</p>
+<p><strong>逐步推导</strong>： 1.
+标准基坐标就是矩阵四个分量按排列顺序写出：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo>,</mo><mi>d</mi><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">T</mi></msup></mrow><annotation encoding="application/x-tex">(a,b,c,d)^{\mathrm T}</annotation></semantics></math>。
+2. 设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>β</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi>β</mi><mn>2</mn></msub><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub><msub><mi>β</mi><mn>3</mn></msub><mo>+</mo><msub><mi>x</mi><mn>4</mn></msub><msub><mi>β</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}=x_1\beta_1+x_2\beta_2+x_3\beta_3+x_4\beta_4</annotation></semantics></math>。比较矩阵各位置：
+-
+左上角：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x_1+x_2=a</annotation></semantics></math>；
+-
+右上角：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">x_2+x_3=b</annotation></semantics></math>；
+-
+左下角：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">x_4=c</annotation></semantics></math>；
+-
+右下角：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">2x_3+x_4=d</annotation></semantics></math>。
+3. 逐位解得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x_1=a</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mi>b</mi><mo>−</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x_2=b-a</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>3</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>d</mi><mo>−</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">x_3=(d-c)/2</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">x_4=c</annotation></semantics></math>。即在基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+下的坐标为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>β</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>b</mi><mo>−</mo><mi>a</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">(</mo><mi>d</mi><mo>−</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">y_\beta=\begin{pmatrix}a\\ b-a\\ c\\ (d-c)/2\end{pmatrix}.</annotation></semantics></math>
+4. 过渡矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>3</mn></msub><mo>,</mo><msub><mi>β</mi><mn>4</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}=(\beta_1,\beta_2,\beta_3,\beta_4)</annotation></semantics></math>（把四个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+矩阵按标准基展开后并排），验证
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>y</mi><mi>β</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo>,</mo><mi>d</mi><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">T</mi></msup><mo>=</mo><msub><mi>x</mi><mi>α</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}\,y_\beta=(a,b,c,d)^{\mathrm T}=x_\alpha,</annotation></semantics></math>
+与坐标变换公式一致
+<code>[补全]</code>（当堂未完整写出数值乘积，留作检验：过渡矩阵乘以上述
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>β</mi></msub><annotation encoding="application/x-tex">y_\beta</annotation></semantics></math>
+应得标准基坐标）。</p>
+<p><strong>易错点</strong>：这类计算本质是解一个线性方程组；更系统的解法（矩阵消元法）留到后面专门一章。本例只是演示公式，并非一般方法。</p>
+<h4 id="练习-1013122-自行完成上述坐标验证">练习 1（01:31:22）｜
+自行完成上述坐标验证</h4>
+<p><strong>命题／任务</strong>：对上面给出的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+基与任意矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}</annotation></semantics></math>，完整计算并验证
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>y</mi><mi>β</mi></msub><mo>=</mo><msub><mi>x</mi><mi>α</mi></msub></mrow><annotation encoding="application/x-tex">M_{\alpha\beta}\,y_\beta=x_\alpha</annotation></semantics></math>。</p>
+<p><strong>说明</strong>：老师要求学生在草稿纸上自行算一遍，作为对坐标变换公式的练习（当堂未公布完整数值乘积）。</p>
+<p><strong>课程通知（01:37:22）</strong>：期中考试时间定在下下周四，内容覆盖到第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5</mn><annotation encoding="application/x-tex">5</annotation></semantics></math>
+章（到第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5.5</mn><annotation encoding="application/x-tex">5.5</annotation></semantics></math>
+节即可），试题确定后会在群里发通知。</p>
+<hr />
+<h2
+id="五维数公式-dimv_1v_2dim-v_1dim-v_2-dimv_1cap-v_2013739020713">五、维数公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2-\dim(V_1\cap V_2)</annotation></semantics></math>（01:37:39—02:07:13）</h2>
+<h3 id="动机例子与定理陈述">01:37:39—01:46:56 ｜
+动机、例子与定理陈述</h3>
+<p>类比有限集合的容斥：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>A</mi><mo stretchy="false" form="prefix">|</mo><mi>+</mi><mo stretchy="false" form="prefix">|</mo><mi>B</mi><mo stretchy="false" form="prefix">|</mo><mi>−</mi><mo stretchy="false" form="prefix">|</mo><mi>A</mi><mo>∩</mo><mi>B</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|A\cup B|=|A|+|B|-|A\cap B|</annotation></semantics></math>。现在要”数的不是集合元素个数，而是向量空间的维数”，会得到非常类似的公式。</p>
+<h4 id="例题-1014100-三维空间中子空间和的维数两个直观例子">例题
+1（01:41:00）｜ 三维空间中子空间和的维数（两个直观例子）</h4>
+<p><strong>命题／任务</strong>：在三维空间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+中，考察子空间和的维数。</p>
+<p><strong>思路</strong>：用具体几何例子看公式为什么带”减交”。</p>
+<p><strong>逐步推导</strong>： 1. 例一：取一张过原点的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_1</annotation></semantics></math>（二维）与一条不过原点落在该平面内的直线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>2</mn></msub><annotation encoding="application/x-tex">V_2</annotation></semantics></math>（一维）。此时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>，而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">V_1+V_2=V</annotation></semantics></math>（整个三维空间）。故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>3</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=3=2+1-0</annotation></semantics></math>。
+2. 例二：取两张不同的过原点平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>（各二维）。它们的和仍是整个三维空间，但它们的交是一条过原点的直线（一维）。故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>3</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=3=2+2-1</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：两个子空间维数之和直接相加会”重复计算交的部分”，必须减去交的维数，这与集合容斥完全类似。</p>
+<h4 id="证明-1014547-维数公式定理">证明 1（01:45:47）｜
+维数公式定理</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的有限维子空间，则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2-\dim(V_1\cap V_2).</annotation></semantics></math></p>
+<p><strong>思路</strong>：对有限维空间处理即可（无限维下”维数”无通常意义）。</p>
+<p><strong>逐步推导</strong>：见下一小节的标准证明。</p>
+<h3 id="维数公式的证明基的扩充法">01:46:56—02:07:13 ｜
+维数公式的证明（基的扩充法）</h3>
+<h4 id="证明-2015000-用先取交的基再分别扩充证明维数公式">证明
+2（01:50:00）｜ 用”先取交的基、再分别扩充”证明维数公式</h4>
+<p><strong>命题／任务</strong>：严格证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2-\dim(V_1\cap V_2)</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：这是极标准的”取基 + 扩充”操作。设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">\dim(V_1\cap V_2)=m</annotation></semantics></math>，先取交的一组基，再分别扩充成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>
+的基，然后证明这些向量合起来恰是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1+V_2</annotation></semantics></math>
+的一组基。</p>
+<p><strong>逐步推导</strong>： 1. 设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">\dim(V_1\cap V_2)=m</annotation></semantics></math>，取它的一组基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>。
+2. 把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+扩充成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_1</annotation></semantics></math>
+的一组基：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo>,</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m,\beta_1,\ldots,\beta_{r}</annotation></semantics></math>（其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>−</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">r=\dim V_1-m</annotation></semantics></math>）。
+3. 把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i\}</annotation></semantics></math>
+扩充成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>2</mn></msub><annotation encoding="application/x-tex">V_2</annotation></semantics></math>
+的一组基：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo>,</mo><msub><mi>γ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>γ</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m,\gamma_1,\ldots,\gamma_{s}</annotation></semantics></math>（其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">s=\dim V_2-m</annotation></semantics></math>）。
+4. 合并这些向量得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>+</mo><mi>r</mi><mo>+</mo><mi>s</mi><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">m+r+s=\dim V_1+\dim V_2-\dim(V_1\cap V_2)</annotation></semantics></math>
+个向量。只需证它们线性无关且张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1+V_2</annotation></semantics></math>。
+5. 张成：显然这组向量既能张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_1</annotation></semantics></math>
+又能张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>2</mn></msub><annotation encoding="application/x-tex">V_2</annotation></semantics></math>，故张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1+V_2</annotation></semantics></math>。
+6. 线性无关：设存在系数使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msub><mi>b</mi><mi>j</mi></msub><msub><mi>β</mi><mi>j</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>s</mi></munderover><msub><mi>c</mi><mi>k</mi></msub><msub><mi>γ</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\sum_{i=1}^m a_i\alpha_i+\sum_{j=1}^r b_j\beta_j+\sum_{k=1}^s c_k\gamma_k=0.</annotation></semantics></math>
+移项得分两组：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msub><mi>b</mi><mi>j</mi></msub><msub><mi>β</mi><mi>j</mi></msub><mo>=</mo><mi>−</mi><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>s</mi></munderover><msub><mi>c</mi><mi>k</mi></msub><msub><mi>γ</mi><mi>k</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\sum_{i=1}^m a_i\alpha_i+\sum_{j=1}^r b_j\beta_j=-\sum_{k=1}^s c_k\gamma_k.</annotation></semantics></math>
+左端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo><msub><mi>V</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\in V_1</annotation></semantics></math>，右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\in V_2</annotation></semantics></math>，故两端都落在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1\cap V_2</annotation></semantics></math>
+中。而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1\cap V_2</annotation></semantics></math>
+由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+张成，所以存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">d_1,\ldots,d_m</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>s</mi></munderover><msub><mi>c</mi><mi>k</mi></msub><msub><mi>γ</mi><mi>k</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msub><mi>d</mi><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">-\sum_{k=1}^s c_k\gamma_k=\sum_{i=1}^m d_i\alpha_i,</annotation></semantics></math>
+即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup><msub><mi>d</mi><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>s</mi></msubsup><msub><mi>c</mi><mi>k</mi></msub><msub><mi>γ</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sum_{i=1}^m d_i\alpha_i+\sum_{k=1}^s c_k\gamma_k=0</annotation></semantics></math>。但
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo>,</mo><msub><mi>γ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i,\gamma_k\}</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>2</mn></msub><annotation encoding="application/x-tex">V_2</annotation></semantics></math>
+的一组基，线性无关，故所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">d_i=0</annotation></semantics></math>
+且所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_k=0</annotation></semantics></math>。
+7. 代回原式，只剩
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><msub><mi>a</mi><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><mo>∑</mo><msub><mi>b</mi><mi>j</mi></msub><msub><mi>β</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sum a_i\alpha_i+\sum b_j\beta_j=0</annotation></semantics></math>；而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo>,</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_i,\beta_j\}</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_1</annotation></semantics></math>
+的一组基，线性无关，故所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><msub><mi>b</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_i=0,b_j=0</annotation></semantics></math>。
+8. 全部系数为零，故合并后的向量组线性无关。 9. 它含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\dim V_1+\dim V_2-\dim(V_1\cap V_2)</annotation></semantics></math>
+个向量且是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1+V_2</annotation></semantics></math>
+的一组基，故维数公式成立。</p>
+<p><strong>结论</strong>：对任意两个有限维子空间，维数公式成立。</p>
+<p><strong>易错点（老师点出）</strong>：证明虽”显然”，但每一步都要写全——明确说清”这组向量张成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1+V_2</annotation></semantics></math>“以及”为什么线性无关”，不要因为看起来显然就跳步。</p>
+<h4 id="例题-2014713-推论维数和等于维数之和当且仅当交为零">例题
+2（01:47:13）｜ 推论：维数和等于维数之和当且仅当交为零</h4>
+<p><strong>命题／任务</strong>：由维数公式推出：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2</annotation></semantics></math>
+的充要条件是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：直接代入公式。</p>
+<p><strong>逐步推导</strong>： 1. 由公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>−</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2-\dim(V_1\cap V_2)</annotation></semantics></math>。
+2. 要使等号右边等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\dim V_1+\dim V_2</annotation></semantics></math>，必须
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dim(V_1\cap V_2)=0</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>。
+3. 反之若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>，则公式化为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\dim(V_1+V_2)=\dim V_1+\dim V_2</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：两子空间维数之和”无抵消”当且仅当它们的交只有零向量。这正是下节”直和”的契机。</p>
+<hr />
+<h2
+id="六子空间的直和020713022119">六、子空间的直和（02:07:13—02:21:19）</h2>
+<h3 id="直和的定义与有限维等价条件">02:07:13—02:13:58 ｜
+直和的定义与有限维等价条件</h3>
+<h4 id="证明-1020811-直和的定义">证明 1（02:08:11）｜ 直和的定义</h4>
+<p><strong>命题／任务</strong>：定义两个子空间的直和，并说明在有限维下它等价于维数公式取”无抵消”形式。</p>
+<p><strong>思路</strong>：用”交为零”作为定义；有限维时与维数公式挂钩。</p>
+<p><strong>逐步推导</strong>： 1. 设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+的子空间。若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>，则称和空间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1+V_2</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>1</mn></msub><annotation encoding="application/x-tex">V_1</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mn>2</mn></msub><annotation encoding="application/x-tex">V_2</annotation></semantics></math>
+的<strong>直和</strong>，记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1\oplus V_2</annotation></semantics></math>（加号外带一个圈）。
+2. 该定义不要求空间有限维，可在任意向量空间中定义。 3. 当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>
+有限维时，由上一节的推论，直和等价于
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><msub><mi>V</mi><mn>2</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\dim(V_1\oplus V_2)=\dim V_1+\dim V_2,</annotation></semantics></math>
+即维数公式中的交的维数项为零。</p>
+<p><strong>结论</strong>：直和是”交只有零向量”时的特殊和；有限维下直接表现为维数可相加。</p>
+<h4 id="例题-1021309-有限维空间的直和分解按基向量拆开">例题
+1（02:13:09）｜ 有限维空间的直和分解（按基向量拆开）</h4>
+<p><strong>命题／任务</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+有基
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_N</annotation></semantics></math>，证明
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>α</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">⟩</mo><mo>⊕</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">⟩</mo><mo>⊕</mo><mi>⋯</mi><mo>⊕</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">V=\langle\alpha_1\rangle\oplus\langle\alpha_2\rangle\oplus\cdots\oplus\langle\alpha_N\rangle,</annotation></semantics></math>
+其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\langle\alpha_i\rangle</annotation></semantics></math>
+表示由单个向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+张成的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+维子空间。</p>
+<p><strong>思路</strong>：各
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+维子空间两两交于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0\}</annotation></semantics></math>（因基向量线性无关），其和即为全空间。</p>
+<p><strong>逐步推导</strong>： 1. 每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\langle\alpha_i\rangle</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+维子空间。 2. 基向量线性无关，故不同
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\langle\alpha_i\rangle</annotation></semantics></math>
+的交只有零向量，从而任意两个的交为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0\}</annotation></semantics></math>。
+3. 它们的和包含全部基向量，故等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>；由直和定义即为直和。</p>
+<p><strong>结论</strong>：任何有限维空间都可按一组基分解成若干
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+维子空间的直和。</p>
+<h3 id="奇函数与偶函数空间是直和">02:15:26—02:21:19 ｜
+奇函数与偶函数空间是直和</h3>
+<h4 id="练习-1021547-函数空间分解为奇部与偶部直和">练习 1（02:15:47）｜
+函数空间分解为奇部与偶部（直和）</h4>
+<p><strong>命题／任务</strong>：考虑定义在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-1,1]</annotation></semantics></math>
+上取值于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb R</annotation></semantics></math>
+的函数构成的空间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>。令
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>f</mi><mo>∈</mo><mi>V</mi><mo>∣</mo><mi>f</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 是奇函数</mtext></mrow><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1=\{f\in V\mid f\text{ 是奇函数}\}</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(-x)=-f(x)</annotation></semantics></math>）；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>f</mi><mo>∈</mo><mi>V</mi><mo>∣</mo><mi>f</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 是偶函数</mtext></mrow><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_2=\{f\in V\mid f\text{ 是偶函数}\}</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(-x)=f(x)</annotation></semantics></math>）。</p>
+<p>说明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>
+是子空间，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>；并证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msub><mi>V</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V=V_1\oplus V_2</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：先验证子空间与交为零，再用标准分解式给出每个函数的奇、偶部分。</p>
+<p><strong>逐步推导</strong>： 1.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>
+对线性组合封闭（奇函数/偶函数的线性组合仍分别为奇/偶），故都是子空间。
+2. 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+既奇又偶，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(-x)=f(x)=-f(x)</annotation></semantics></math>，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f(x)=0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>∩</mo><msub><mi>V</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V_1\cap V_2=\{0\}</annotation></semantics></math>。
+3. 对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">f\in V</annotation></semantics></math>，令
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mtext mathvariant="normal">even</mtext></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>f</mi><mtext mathvariant="normal">odd</mtext></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">f_{\text{even}}(x)=\frac{f(x)+f(-x)}{2},\qquad f_{\text{odd}}(x)=\frac{f(x)-f(-x)}{2}.</annotation></semantics></math>
+易验证
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mtext mathvariant="normal">even</mtext></msub><annotation encoding="application/x-tex">f_{\text{even}}</annotation></semantics></math>
+偶、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mtext mathvariant="normal">odd</mtext></msub><annotation encoding="application/x-tex">f_{\text{odd}}</annotation></semantics></math>
+奇，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><msub><mi>f</mi><mtext mathvariant="normal">even</mtext></msub><mo>+</mo><msub><mi>f</mi><mtext mathvariant="normal">odd</mtext></msub></mrow><annotation encoding="application/x-tex">f=f_{\text{even}}+f_{\text{odd}}</annotation></semantics></math>。
+4. 由交为零与分解存在，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msub><mi>V</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V=V_1\oplus V_2</annotation></semantics></math>，且此分解唯一（直和保证唯一性）。</p>
+<p><strong>结论</strong>：函数空间可唯一分解为奇部与偶部之和，是直和的典型例子。</p>
+<p><strong>说明</strong>：本例老师要求作为练习自行补全证明（当堂只指出”交为零、且任一函数可写成奇+偶”的构造，未完整写出证明过程）。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

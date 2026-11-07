@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>代数学Ⅰ · 第 01 周作业（集合与映射、二元运算、等价关系与整除复数基础）</title>
+  <style>
+  
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+/* 基础导航条与主题变量 */
+:root {
+  --wb-bg: #ffffff;
+  --wb-surface: #f7f7f5;
+  --wb-surface2: #fbfbf9;
+  --wb-text: #1f2328;
+  --wb-muted: #6b7280;
+  --wb-border: #e3e6ec;
+  --wb-accent: #0f6e56;
+  --wb-accent2: #185fa5;
+  --wb-h-color: #1a3d7c;
+  --wb-h3-bg: #f2f6fc;
+  --wb-h3-color: #24508c;
+  --wb-card-bg: #fbfaf6;
+  --wb-card-head: #f3ecde;
+  --wb-card-border: #ece5d8;
+  --wb-seg-line: #c3d5f0;
+  --wb-ts-bg: #eef2f8;
+  --wb-ts-color: #24508c;
+  --wb-ts-border: #d3deec;
+  --wb-code-bg: #f8f9fa;
+  --wb-code-border: #e9ecef;
+  --wb-pre-bg: #f4f5f7;
+  --wb-pill-bg: #f4f3f0;
+  --wb-pill-text: #5f5a54;
+  --wb-toc-bg: #ffffff;
+  --wb-drawer-bg: #ffffff;
+  --wb-drawer-border: #e3e6ec;
+  --wb-math-bg: #fcfcfb;
+  --wb-math-border: #e6e8ee;
+}
+
+html.wb-dark, body.wb-dark {
+  --wb-bg: #181817;
+  --wb-surface: #222220;
+  --wb-surface2: #282826;
+  --wb-text: #e6e6e3;
+  --wb-muted: #9ca3af;
+  --wb-border: #383834;
+  --wb-accent: #5dcaa5;
+  --wb-accent2: #85b7eb;
+  --wb-h-color: #85b7eb;
+  --wb-h3-bg: #1e2634;
+  --wb-h3-color: #93c5fd;
+  --wb-card-bg: #201f1d;
+  --wb-card-head: #2c2822;
+  --wb-card-border: #3d3a34;
+  --wb-seg-line: #263852;
+  --wb-ts-bg: #1e2634;
+  --wb-ts-color: #93c5fd;
+  --wb-ts-border: #2c394d;
+  --wb-code-bg: #222220;
+  --wb-code-border: #333330;
+  --wb-pre-bg: #141413;
+  --wb-pill-bg: #2b2825;
+  --wb-pill-text: #d1cbc5;
+  --wb-toc-bg: #1e222a;
+  --wb-drawer-bg: #1c1c1a;
+  --wb-drawer-border: #333330;
+  --wb-math-bg: #21211f;
+  --wb-math-border: #353531;
+  background-color: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not(.wb-light) {
+    --wb-bg: #181817;
+    --wb-surface: #222220;
+    --wb-surface2: #282826;
+    --wb-text: #e6e6e3;
+    --wb-muted: #9ca3af;
+    --wb-border: #383834;
+    --wb-accent: #5dcaa5;
+    --wb-accent2: #85b7eb;
+    --wb-h-color: #85b7eb;
+    --wb-h3-bg: #1e2634;
+    --wb-h3-color: #93c5fd;
+    --wb-card-bg: #201f1d;
+    --wb-card-head: #2c2822;
+    --wb-card-border: #3d3a34;
+    --wb-seg-line: #263852;
+    --wb-ts-bg: #1e2634;
+    --wb-ts-color: #93c5fd;
+    --wb-ts-border: #2c394d;
+    --wb-code-bg: #222220;
+    --wb-code-border: #333330;
+    --wb-pre-bg: #141413;
+    --wb-pill-bg: #2b2825;
+    --wb-pill-text: #d1cbc5;
+    --wb-toc-bg: #1e222a;
+    --wb-drawer-bg: #1c1c1a;
+    --wb-drawer-border: #333330;
+  }
+}
+
+body.wb-dark h1, html.wb-dark h1 { color: var(--wb-h-color) !important; border-bottom-color: #2a4365 !important; }
+body.wb-dark h2, html.wb-dark h2 { color: var(--wb-h-color) !important; border-left-color: #2a4365 !important; }
+body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; background: var(--wb-h3-bg) !important; }
+body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
+body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
+body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
+body.wb-dark .wb-excard p > strong:first-child,
+body.wb-dark .wb-excard li > strong:first-child,
+html.wb-dark .wb-excard p > strong:first-child,
+html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
+body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
+body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
+body.wb-dark code, html.wb-dark code { background: #282825 !important; color: #f0f0ed !important; }
+body.wb-dark pre, html.wb-dark pre { background: var(--wb-pre-bg) !important; border-color: #333330 !important; color: #f0f0ed !important; }
+body.wb-dark #TOC, html.wb-dark #TOC { background: var(--wb-toc-bg) !important; border-color: #333d4d !important; }
+body.wb-dark table th, html.wb-dark table th { background: #1e2634 !important; color: #93c5fd !important; border-color: #333d4d !important; }
+body.wb-dark table td, html.wb-dark table td { border-color: #333d4d !important; }
+body.wb-dark tr:nth-child(even) td, html.wb-dark tr:nth-child(even) td { background: #1a1f29 !important; }
+body.wb-dark blockquote, html.wb-dark blockquote { background: #1a222e !important; border-left-color: #3b82f6 !important; color: #c4ccd8 !important; }
+body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark mjx-container { color: var(--wb-text) !important; }
+
+
+/* 数学公式容器增强与横向滚动 */
+.wb-math-wrap {
+  position: relative;
+  margin: 18px 0;
+  border: 1px solid var(--wb-math-border);
+  border-radius: 8px;
+  background: var(--wb-math-bg);
+  padding: 12px 16px 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wb-math-wrap:hover {
+  border-color: var(--wb-accent2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.wb-math-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+  opacity: 0.55;
+  transition: opacity .15s;
+}
+.wb-math-wrap:hover .wb-math-bar { opacity: 1; }
+.wb-math-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-muted);
+  margin-right: auto;
+  letter-spacing: .04em;
+}
+.wb-math-copy, .wb-math-zoom {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: all .15s;
+}
+.wb-math-copy:hover, .wb-math-zoom:hover {
+  background: var(--wb-surface2);
+  border-color: var(--wb-accent2);
+  color: var(--wb-accent2);
+}
+.wb-math-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  text-align: center;
+}
+.wb-math-scroll mjx-container { max-width: 100%; }
+
+/* 公式高清放大模态浮层 */
+.wb-math-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.62);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-math-modal.wb-open { display: flex; }
+.wb-math-modal-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.28);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-modal-pop .2s ease-out;
+}
+@keyframes wb-modal-pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.wb-math-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-math-modal-body {
+  padding: 34px 24px;
+  overflow: auto;
+  text-align: center;
+  font-size: 1.4em;
+  background: var(--wb-surface2);
+}
+.wb-math-modal-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 搜索结果关键词正文高亮 */
+.wb-hit-mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px #fde047;
+}
+html.wb-dark .wb-hit-mark, body.wb-dark .wb-hit-mark {
+  background: #854d0e;
+  color: #fef08a;
+  box-shadow: 0 0 0 1px #a16207;
+}
+.wb-res.active {
+  background: var(--wb-surface);
+  border-left: 3px solid var(--wb-accent2);
+  padding-left: 7px;
+}
+
+
+/* 阅读进度条 */
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #185fa5, #0f6e56);
+  z-index: 999;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+html.wb-dark .wb-read-progress, body.wb-dark .wb-read-progress {
+  background: linear-gradient(90deg, #85b7eb, #5dcaa5);
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,.15);
+  transition: transform .15s;
+  display: inline-block;
+}
+.wb-hl-color-dot:hover { transform: scale(1.22); }
+.wb-dot-yellow { background: #fef08a; }
+.wb-dot-green  { background: #bbf7d0; }
+.wb-dot-red    { background: #fecaca; }
+.wb-dot-purple { background: #e9d5ff; }
+
+.wb-hl-btn {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-hl-btn:hover { background: var(--wb-surface2); border-color: var(--wb-accent2); color: var(--wb-accent2); }
+.wb-hl-btn.wb-btn-del { color: #dc2626; border-color: #fca5a5; }
+
+/* 用户划词高亮样式 (4 色荧光笔 + 下划线) */
+.wb-user-hl {
+  border-radius: 2px;
+  padding: 1px 1px;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.wb-user-hl:hover { filter: brightness(.93); }
+.wb-user-hl-yellow { background: #fef08a; color: inherit; }
+.wb-user-hl-green  { background: #bbf7d0; color: inherit; }
+.wb-user-hl-red    { background: #fecaca; color: inherit; }
+.wb-user-hl-purple { background: #e9d5ff; color: inherit; }
+.wb-user-hl-underline {
+  background: transparent;
+  text-decoration: underline wavy #185fa5 2px;
+  text-underline-offset: 3px;
+}
+html.wb-dark .wb-user-hl-yellow, body.wb-dark .wb-user-hl-yellow { background: #714207; color: #fef08a; }
+html.wb-dark .wb-user-hl-green,  body.wb-dark .wb-user-hl-green  { background: #134e2a; color: #bbf7d0; }
+html.wb-dark .wb-user-hl-red,    body.wb-dark .wb-user-hl-red    { background: #6b1717; color: #fecaca; }
+html.wb-dark .wb-user-hl-purple, body.wb-dark .wb-user-hl-purple { background: #4a1570; color: #e9d5ff; }
+html.wb-dark .wb-user-hl-underline, body.wb-dark .wb-user-hl-underline { text-decoration-color: #85b7eb; }
+
+.wb-user-hl-has-note::after {
+  content: " 📝";
+  font-size: 10px;
+  vertical-align: super;
+  cursor: pointer;
+}
+body.wb-hl-hidden .wb-user-hl {
+  background: transparent !important;
+  text-decoration: none !important;
+}
+body.wb-hl-hidden .wb-user-hl::after { display: none !important; }
+
+/* 便签便签编辑模态浮层 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  width: 460px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-pop-in .15s ease-out;
+}
+.wb-note-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.wb-note-quote {
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-border);
+  font-size: 12.5px;
+  color: var(--wb-muted);
+  max-height: 80px;
+  overflow-y: auto;
+  font-style: italic;
+}
+.wb-note-body {
+  padding: 14px 16px;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.wb-note-textarea:focus { border-color: var(--wb-accent2); }
+.wb-note-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--wb-muted);
+}
+.wb-note-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 大纲抽屉的双 Tab 导航与批注列表 */
+.wb-drawer-nav {
+  display: flex;
+  gap: 4px;
+}
+.wb-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-tab-btn:hover { background: var(--wb-surface); color: var(--wb-text); }
+.wb-tab-btn.on { background: var(--wb-surface2); color: var(--wb-accent2); }
+.wb-notes-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.wb-note-card {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-note-card:hover {
+  border-color: var(--wb-accent2);
+  transform: translateY(-1px);
+}
+.wb-nc-quote {
+  font-size: 12px;
+  color: var(--wb-text);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  border-left: 3px solid #fde047;
+  padding-left: 8px;
+}
+.wb-nc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wb-h-color);
+  background: var(--wb-surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+.wb-nc-meta {
+  font-size: 11px;
+  color: var(--wb-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.wb-notes-tools {
+  padding: 10px 12px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* 断点续读右下角浮动提示 */
+.wb-resume-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-accent);
+  border-left: 4px solid var(--wb-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  z-index: 930;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: wb-pop-in .2s ease-out;
+}
+.wb-resume-btn {
+  background: var(--wb-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+
+/* 例题卡片攻克打卡与切题工具条 */
+.wb-excard > h4 {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-ex-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wb-mastery-btn {
+  border: 1px solid var(--wb-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  line-height: 1.3;
+  transition: all .15s;
+}
+.wb-mastery-btn:hover { border-color: var(--wb-accent); }
+.wb-mastery-btn.wb-st-todo  { background: var(--wb-surface2); color: var(--wb-muted); border-color: var(--wb-border); }
+.wb-mastery-btn.wb-st-doubt { background: #fef9c3; color: #854d0e; border-color: #fde047; font-weight: 600; }
+.wb-mastery-btn.wb-st-done  { background: #dcfce7; color: #15803d; border-color: #86efac; font-weight: 600; }
+html.wb-dark .wb-mastery-btn.wb-st-doubt { background: #713f12; color: #fef08a; border-color: #a16207; }
+html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; border-color: #16a34a; }
+
+.wb-ex-nav-btns {
+  display: inline-flex;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--wb-bg);
+}
+.wb-step-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  padding: 2px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-step-btn:hover { background: var(--wb-surface2); color: var(--wb-text); }
+.wb-step-btn:first-child { border-right: 1px solid var(--wb-border); }
+
+/* 大纲抽屉内的攻克率进度条 */
+.wb-mastery-bar {
+  padding: 10px 14px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-drawer-border);
+  font-size: 12px;
+}
+.wb-mb-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--wb-muted);
+}
+.wb-mb-text b { color: var(--wb-accent); font-weight: 600; }
+.wb-mb-track {
+  height: 6px;
+  background: var(--wb-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wb-mb-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width .25s ease;
+}
+
+/* 移动端专属底部悬浮控制台 (手机单手握持热区) */
+.wb-mobile-dock {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--wb-bg);
+  border-top: 1px solid var(--wb-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  z-index: 890;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(8px);
+}
+.wb-dock-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-text);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+.wb-dock-btn:active {
+  background: var(--wb-surface);
+  color: var(--wb-accent2);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 50px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 74px !important;
+  }
+  .wb-mobile-dock {
+    display: flex !important;
+  }
+  .wb-in {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  #wb-selftest-btn, #wb-toc-btn, .wb-font-tools, #wb-theme-btn, .wb-meta, .wb-subj, .wb-tag {
+    display: none !important;
+  }
+  .wb-crumb {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .wb-q {
+    width: 110px !important;
+    font-size: 11.5px !important;
+    padding: 4px 6px !important;
+  }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 18px !important; margin-top: 26px !important; }
+  h3 { font-size: 15px !important; padding: 6px 10px !important; }
+  .wb-excard {
+    padding: 0 12px 14px !important;
+    margin: 16px 0 !important;
+  }
+  .wb-excard > h4 {
+    margin: 0 -12px 12px !important;
+    padding: 9px 12px !important;
+    font-size: 14px !important;
+  }
+  .wb-ex-head-tools {
+    gap: 4px !important;
+    font-size: 11px !important;
+  }
+  .wb-math-modal-dialog {
+    width: 95vw !important;
+  }
+  .wb-math-modal-body {
+    padding: 20px 8px !important;
+    font-size: 1.15em !important;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* 移动端底部高亮悬浮面板 (防系统菜单与手指遮挡) */
+  .wb-hl-popover.wb-hl-mobile, .wb-hl-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 64px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 26px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.22) !important;
+    background: var(--wb-bg) !important;
+    border: 1px solid var(--wb-border) !important;
+    z-index: 1000 !important;
+    gap: 12px !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .wb-hl-color-dot {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .wb-hl-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+  /* 移动端公式溢出横向滑动提示与滚动条优化 */
+  .wb-math-wrap {
+    position: relative;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .wb-math-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  .wb-math-wrap::-webkit-scrollbar-thumb {
+    background: var(--wb-border);
+    border-radius: 2px;
+  }
+}
+
+/* 导航栏 */
+.wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
+ border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
+ font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
+.wb-in{max-width:1320px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-bar a{color:var(--wb-accent2);text-decoration:none;white-space:nowrap}
+.wb-bar a:hover{text-decoration:underline}
+.wb-bar a.wb-off{color:var(--wb-muted);pointer-events:none;text-decoration:none}
+.wb-crumb{color:var(--wb-muted);font-size:12px;flex:1;min-width:140px;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.wb-crumb b{color:var(--wb-text);font-weight:600}
+.wb-tag{font-size:11px;background:#eef4fb;color:#2f5597;border-radius:4px;padding:2px 7px;margin-left:8px}
+html.wb-dark .wb-tag, body.wb-dark .wb-tag{background:#1e293b;color:#93c5fd}
+.wb-subj{display:flex;gap:2px;margin-left:2px}
+.wb-subj a{color:var(--wb-muted);font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.wb-subj a:hover{color:var(--wb-accent2);background:var(--wb-surface)}
+.wb-subj a.wb-cur{color:#fff;background:#2f5597}
+html.wb-dark .wb-subj a.wb-cur, body.wb-dark .wb-subj a.wb-cur{background:#2563eb}
+.wb-meta{margin-left:6px;color:var(--wb-muted);font-size:11px;white-space:nowrap}
+
+/* 工具按钮 */
+.wb-tool-btn{border:1px solid var(--wb-border);background:var(--wb-surface);color:var(--wb-text);
+ border-radius:6px;padding:4px 9px;font-size:12px;cursor:pointer;white-space:nowrap;line-height:1.2;
+ display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.wb-tool-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-tool-btn.wb-btn-active{background:#e8f0fe;border-color:#185fa5;color:#185fa5;font-weight:600}
+html.wb-dark .wb-tool-btn.wb-btn-active, body.wb-dark .wb-tool-btn.wb-btn-active{background:#1e2e4a;border-color:#85b7eb;color:#85b7eb}
+.wb-font-tools{display:inline-flex;gap:1px}
+.wb-font-tools .wb-tool-btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.wb-font-tools .wb-tool-btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+
+.wb-q{border:1px solid var(--wb-border);border-radius:6px;padding:5px 9px;font-size:12px;
+ width:170px;outline:none;color:var(--wb-text);background:var(--wb-bg)}
+.wb-q:focus{border-color:var(--wb-accent2)}
+.wb-panel{position:fixed;top:46px;right:max(20px,calc((100vw - 1320px)/2));
+ width:min(520px,calc(100vw - 40px));max-height:70vh;overflow:auto;background:var(--wb-bg);
+ border:1px solid var(--wb-border);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.15);
+ padding:10px;display:none;z-index:910}
+.wb-res{display:block;padding:8px 10px;border-bottom:1px solid var(--wb-border);color:var(--wb-text);
+ font-size:12.5px;text-decoration:none}
+.wb-res:hover{background:var(--wb-surface);text-decoration:none}
+.wb-res small{display:block;color:var(--wb-muted);font-size:11px;margin-top:2px}
+
+/* 大纲抽屉 (Floating TOC Drawer) */
+.wb-toc-drawer{position:fixed;top:48px;right:0;bottom:0;width:340px;max-width:85vw;
+ background:var(--wb-drawer-bg);border-left:1px solid var(--wb-drawer-border);
+ box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:950;display:flex;flex-direction:column;
+ transform:translateX(100%);transition:transform .25s ease-in-out}
+.wb-toc-drawer.wb-open{transform:translateX(0)}
+.wb-toc-head{padding:12px 16px;border-bottom:1px solid var(--wb-drawer-border);
+ display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px}
+.wb-close-btn{border:none;background:transparent;color:var(--wb-muted);font-size:20px;
+ cursor:pointer;padding:0 4px;line-height:1}
+.wb-close-btn:hover{color:var(--wb-text)}
+.wb-toc-body{flex:1;overflow-y:auto;padding:12px 8px}
+.wb-toc-item{padding:5px 8px;margin:2px 0;border-radius:6px;cursor:pointer;font-size:12.5px;
+ color:var(--wb-muted);line-height:1.45;transition:all .15s;border-left:2px solid transparent;word-break:break-word}
+.wb-toc-item:hover{background:var(--wb-surface);color:var(--wb-text)}
+.wb-toc-item.wb-toc-active{color:var(--wb-accent2);background:var(--wb-surface);
+ font-weight:600;border-left-color:var(--wb-accent2)}
+.wb-toc-h2{font-weight:600;color:var(--wb-text);margin-top:8px}
+.wb-toc-h3{padding-left:14px;font-size:12px}
+.wb-toc-h4{padding-left:24px;font-size:11.5px;color:var(--wb-muted)}
+.wb-toc-backdrop{position:fixed;top:48px;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);
+ z-index:940;display:none;opacity:0;transition:opacity .25s}
+.wb-toc-backdrop.wb-open{display:block;opacity:1}
+
+/* 推导折叠控制 (Self-Test Mode) */
+.wb-derive-ctrl{margin:10px 0 6px}
+.wb-derive-btn{border:1px dashed var(--wb-border);background:var(--wb-surface);
+ color:var(--wb-accent2);border-radius:6px;padding:4px 10px;font-size:12px;
+ cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.wb-derive-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-derive-box.wb-hidden{display:none !important}
+
+/* 代码块增强 */
+.wb-code-wrap{margin:18px 0;border:1px solid var(--wb-code-border);border-radius:8px;
+ overflow:hidden;background:var(--wb-code-bg)}
+.wb-code-head{display:flex;align-items:center;justify-content:space-between;
+ padding:6px 12px;background:var(--wb-surface);border-bottom:1px solid var(--wb-code-border);
+ font-size:11.5px;color:var(--wb-muted)}
+.wb-code-lang{font-weight:600;font-family:ui-monospace,Consolas,monospace}
+.wb-code-copy-btn{border:1px solid var(--wb-border);background:var(--wb-bg);
+ color:var(--wb-text);border-radius:4px;padding:2px 8px;font-size:11.5px;cursor:pointer}
+.wb-code-copy-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-code-wrap pre{margin:0 !important;border:none !important;border-radius:0 !important;
+ padding:12px !important;overflow-x:auto}
+
+/* 锚点复制链接 */
+.wb-anchor{opacity:0;margin-left:6px;font-size:13px;color:var(--wb-accent2);
+ text-decoration:none;cursor:pointer;transition:opacity .15s}
+h2:hover .wb-anchor, h3:hover .wb-anchor, h4:hover .wb-anchor{opacity:.75}
+.wb-anchor:hover{opacity:1 !important}
+
+/* 落地平滑闪烁高亮 */
+@keyframes wb-flash-anim{
+ 0%{background-color:rgba(254,240,138,.85)}
+ 50%{background-color:rgba(254,240,138,.45)}
+ 100%{background-color:transparent}
+}
+.wb-flash-highlight{animation:wb-flash-anim 2.5s ease-out;border-radius:4px}
+
+/* Toast 提示浮条 */
+.wb-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+ background:#1f2328;color:#fff;padding:8px 16px;border-radius:20px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+html.wb-dark .wb-toast, body.wb-dark .wb-toast{background:#f3f4f6;color:#111827}
+.wb-toast-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 打印样式优化 */
+@media print{
+ body{padding-top:0 !important;max-width:100% !important;font-size:12pt !important;line-height:1.6 !important;color:#000 !important;background:#fff !important}
+ .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor{display:none !important}
+ .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill{break-inside:avoid !important;page-break-inside:avoid !important}
+ .wb-excard{border:1px solid #aaa !important;background:#fff !important}
+ .wb-derive-box.wb-hidden{display:block !important}
+ a{text-decoration:none !important;color:#000 !important}
+}
+body{padding-top:54px}
+@media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
+
+  
+/* 作业专属卡片与自测排版样式 */
+.wb-hw-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 20px 80px;
+}
+
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+.wb-hw-header {
+  margin: 20px 0 24px;
+  padding: 24px 28px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.wb-hw-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.wb-hw-week-pill {
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+.wb-hw-meta-chip {
+  background: var(--wb-card-bg);
+  color: var(--wb-muted);
+  border: 1px solid var(--wb-border);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.wb-hw-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--wb-text);
+  margin: 0 0 14px;
+  line-height: 1.35;
+}
+.wb-hw-notice {
+  font-size: 13.5px;
+  color: var(--wb-text);
+  line-height: 1.7;
+  border-left: 3px solid #2563eb;
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-radius: 0 8px 8px 0;
+  margin-top: 14px;
+}
+.wb-hw-part-head {
+  margin: 38px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--wb-border);
+}
+.wb-hw-part-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--wb-h-color);
+  margin: 0 0 6px;
+}
+.wb-hw-part-desc {
+  font-size: 13.5px;
+  color: var(--wb-muted);
+  margin: 0;
+}
+.wb-hw-card {
+  margin: 22px 0;
+  padding: 24px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-card-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.wb-hw-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.wb-hw-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed var(--wb-border);
+  padding-bottom: 12px;
+}
+.wb-hw-num-badge {
+  font-size: 17px;
+  font-weight: 800;
+  color: #2563eb;
+}
+.wb-hw-prob-title {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wb-text);
+}
+.wb-hw-stem {
+  font-size: 15.5px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.wb-hw-hint {
+  margin: 14px 0 18px;
+  padding: 12px 16px;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  color: #78350f;
+  line-height: 1.7;
+}
+html.wb-dark .wb-hw-hint {
+  background: #272115;
+  color: #fde68a;
+  border-left-color: #d97706;
+}
+.wb-hw-sol-box {
+  margin-top: 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: var(--wb-surface);
+  overflow: hidden;
+}
+html.wb-dark .wb-hw-sol-box {
+  border-color: #1e3a8a;
+  background: #1e293b;
+}
+.wb-hw-sol-summary {
+  padding: 12px 18px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  list-style: none;
+}
+.wb-hw-sol-summary::-webkit-details-marker { display: none; }
+html.wb-dark .wb-hw-sol-summary {
+  background: #172554;
+  color: #93c5fd;
+}
+.wb-hw-sol-body {
+  padding: 20px 22px;
+  font-size: 15px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  background: var(--wb-bg);
+  border-top: 1px solid #dbeafe;
+}
+html.wb-dark .wb-hw-sol-body {
+  border-top-color: #1e3a8a;
+}
+.wb-hw-sol-section {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--wb-border);
+}
+.wb-hw-sol-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.wb-hw-sol-label {
+  display: inline-block;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.wb-label-analysis { background: #dbeafe; color: #1e40af; }
+.wb-label-proof { background: #dcfce7; color: #15803d; }
+html.wb-dark .wb-label-analysis { background: #1e3a8a; color: #bfdbfe; }
+html.wb-dark .wb-label-proof { background: #14532d; color: #86efac; }
+
+/* Display Math Block Center */
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+math[display="inline"] {
+  display: inline;
+}
+
+  </style>
+  <script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+  </script>
+  <script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</head>
+<body class="wb-lecture-page">
+  <div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-algebra.html?tab=homework">← 代数学Ⅰ作业</a><a href="course-algebra.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html" class="wb-cur">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">代数学Ⅰ <span>›</span> <a href="course-algebra.html?tab=homework" style="color:inherit;text-decoration:none">每周作业</a> <span>›</span> <b>第 01 周作业</b></div><span class="wb-meta">8 必做 · 2 选做</span><a class="off">‹ 上一周</a><a href="homework-algebra-week02.html">下一周 ›</a><button class="wb-tool-btn" id="wb-hw-toggle-sol" title="一键切换遮挡/展开全部参考解析">🙈 遮挡解析 (自测)</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜题目 / 考点 / 概念 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 题目大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn" id="wb-hl-btn-del" title="删除本条标注" style="display:none;color:#ef4444">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><b>📝 添加划线便签</b><button id="wb-note-close" class="wb-close-btn">×</button></div><div id="wb-note-quote" class="wb-note-quote"></div><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的解题心得、思路批注或疑问..."></textarea><div class="wb-note-foot"><button class="wb-tool-btn" id="wb-note-del-btn" style="color:#ef4444">删除便签</button><button class="wb-tool-btn" id="wb-note-save-btn" style="background:#2563eb;color:#fff;border-color:#2563eb">保存便签</button></div></div></div>
+  <main>
+    <div class="wb-hw-container">
+
+    <div class="wb-hw-header">
+      <div class="wb-hw-pills">
+        <span class="wb-hw-week-pill">第 01 周作业</span>
+        <span class="wb-hw-meta-chip">覆盖：第一章至第二章前两节（9 月 14 日—24 日，覆盖集合运算、映射可逆性、二元运算结合律、商集与同余、Euler 函数、素数性质与 Gauss 整数）</span>
+        <span class="wb-hw-meta-chip">发布：2026-09-14</span>
+        <span class="wb-hw-meta-chip">截止：2026-09-24 课上交</span>
+      </div>
+      <h1 class="wb-hw-title">集合与映射、二元运算、等价关系与整除复数基础</h1>
+      
+    <div class="wb-hw-notice">
+        <b>💡 作业说明与自测指南</b>：<br>
+        • 本周重点：集合对称差布尔环性质、映射单满性与可逆充要条件、等价关系与商集几何表示、Euler $\varphi$ 函数乘性、Gauss 整数带余除法。<br>• 推荐使用「🙈 遮挡解析 (自测)」模式：先独立推导解题，再展开核对解析。
+      </div>
+    </div>
+    
+            <div class="wb-hw-part-head" id="part_一集合与映射基础">
+              <div class="wb-hw-part-title">一、集合与映射基础</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_1">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 1 题</span>
+              <span class="wb-hw-prob-title">集合对称差的代数性质证明 (习题 1.1 第 1 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 1.1.1</span>
+            </div>
+            <a href="#prob_1" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#1</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设 X 是集合. 对 A,B ∈ 2X 定义对称差 A∆B = (A \B) ∪ (B \A). 证明如下
+性质, 其中 A,B,C ∈ 2X :
+(i) A∆B =B∆A;
+(ii) (A∆B)∆C =A∆(B∆C);
+(iii) A∆∅ =A;
+(iv) (A∆B) ∩C = (A ∩C)∆(B ∩C);
+(v) A∆B = (A ∪B) \ (A ∩B).
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用示性函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>χ</mi><mrow><mi>A</mi><mi>Δ</mi><mi>B</mi></mrow></msub><mo>=</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><mo>+</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mo>−</mo><mn>2</mn><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mo>≡</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><mo>+</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mi>pmod</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\chi_{A\Delta B} = \chi_A + \chi_B - 2\chi_A\chi_B \equiv \chi_A + \chi_B \pmod 2</annotation></semantics></math>，或者利用集合包含关系的逐元素属于性验证。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                对称差是集合论中的加法，与集合交运算共同使幂集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>X</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^X</annotation></semantics></math> 构成一个特征为 2 的布尔环（Boolean Ring）。这是现代代数将集合逻辑运算代数化的第一步。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p><b>(i) 对易律</b>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>Δ</mi><mi>B</mi><mo>=</mo><mo>(</mo><mi>A</mi><mo>∖</mo><mi>B</mi><mo>)</mo><mo>∪</mo><mo>(</mo><mi>B</mi><mo>∖</mo><mi>A</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>B</mi><mo>∖</mo><mi>A</mi><mo>)</mo><mo>∪</mo><mo>(</mo><mi>A</mi><mo>∖</mo><mi>B</mi><mo>)</mo><mo>=</mo><mi>B</mi><mi>Δ</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">A\Delta B = (A\setminus B)\cup (B\setminus A) = (B\setminus A)\cup (A\setminus B) = B\Delta A</annotation></semantics></math>。</p><p><b>(ii) 结合律</b>：利用元素的特征函数（示性函数）在模 2 域 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℤ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbb{Z}_2</annotation></semantics></math> 中的代数运算：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>χ</mi><mrow><mi>A</mi><mi>Δ</mi><mi>B</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mi>pmod</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\chi_{A\Delta B}(x) = (\chi_A(x) + \chi_B(x)) \pmod 2</annotation></semantics></math>因为加法在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℤ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbb{Z}_2</annotation></semantics></math> 中满足结合律：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>χ</mi><mrow><mo>(</mo><mi>A</mi><mi>Δ</mi><mi>B</mi><mo>)</mo><mi>Δ</mi><mi>C</mi></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><mo>(</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><mo>+</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mo>)</mo><mo>+</mo><msub><mi>χ</mi><mrow><mi>C</mi></mrow></msub><mo>)</mo><mi>pmod</mi><mn>2</mn><mo>=</mo><mo>(</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><mo>+</mo><mo>(</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mo>+</mo><msub><mi>χ</mi><mrow><mi>C</mi></mrow></msub><mo>)</mo><mo>)</mo><mi>pmod</mi><mn>2</mn><mo>=</mo><msub><mi>χ</mi><mrow><mi>A</mi><mi>Δ</mi><mo>(</mo><mi>B</mi><mi>Δ</mi><mi>C</mi><mo>)</mo></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\chi_{(A\Delta B)\Delta C}(x) = ((\chi_A + \chi_B) + \chi_C) \pmod 2 = (\chi_A + (\chi_B + \chi_C)) \pmod 2 = \chi_{A\Delta (B\Delta C)}(x)</annotation></semantics></math> 故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>A</mi><mi>Δ</mi><mi>B</mi><mo>)</mo><mi>Δ</mi><mi>C</mi><mo>=</mo><mi>A</mi><mi>Δ</mi><mo>(</mo><mi>B</mi><mi>Δ</mi><mi>C</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(A\Delta B)\Delta C = A\Delta(B\Delta C)</annotation></semantics></math>。</p><p><b>(iii) 零元</b>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>Δ</mi><mo>∅</mo><mo>=</mo><mo>(</mo><mi>A</mi><mo>∖</mo><mo>∅</mo><mo>)</mo><mo>∪</mo><mo>(</mo><mo>∅</mo><mo>∖</mo><mi>A</mi><mo>)</mo><mo>=</mo><mi>A</mi><mo>∪</mo><mo>∅</mo><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">A\Delta \emptyset = (A\setminus \emptyset)\cup (\emptyset\setminus A) = A\cup \emptyset = A</annotation></semantics></math>。</p><p><b>(iv) 交运算分配律</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>χ</mi><mrow><mo>(</mo><mi>A</mi><mi>Δ</mi><mi>B</mi><mo>)</mo><mo>∩</mo><mi>C</mi></mrow></msub><mo>=</mo><mo>(</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><mo>+</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><mo>)</mo><msub><mi>χ</mi><mrow><mi>C</mi></mrow></msub><mi>pmod</mi><mn>2</mn><mo>=</mo><mo>(</mo><msub><mi>χ</mi><mrow><mi>A</mi></mrow></msub><msub><mi>χ</mi><mrow><mi>C</mi></mrow></msub><mo>+</mo><msub><mi>χ</mi><mrow><mi>B</mi></mrow></msub><msub><mi>χ</mi><mrow><mi>C</mi></mrow></msub><mo>)</mo><mi>pmod</mi><mn>2</mn><mo>=</mo><msub><mi>χ</mi><mrow><mo>(</mo><mi>A</mi><mo>∩</mo><mi>C</mi><mo>)</mo><mi>Δ</mi><mo>(</mo><mi>B</mi><mo>∩</mo><mi>C</mi><mo>)</mo></mrow></msub></mrow><annotation encoding="application/x-tex">\chi_{(A\Delta B)\cap C} = (\chi_A + \chi_B)\chi_C \pmod 2 = (\chi_A\chi_C + \chi_B\chi_C) \pmod 2 = \chi_{(A\cap C)\Delta(B\cap C)}</annotation></semantics></math> 故等式成立。</p><p><b>(v) 另一种表达形式</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>A</mi><mo>∖</mo><mi>B</mi><mo>)</mo><mo>∪</mo><mo>(</mo><mi>B</mi><mo>∖</mo><mi>A</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>A</mi><mo>∩</mo><msup><mi>B</mi><mrow><mi>c</mi></mrow></msup><mo>)</mo><mo>∪</mo><mo>(</mo><mi>B</mi><mo>∩</mo><msup><mi>A</mi><mrow><mi>c</mi></mrow></msup><mo>)</mo><mo>=</mo><mo>(</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>)</mo><mo>∩</mo><mo>(</mo><msup><mi>A</mi><mrow><mi>c</mi></mrow></msup><mo>∪</mo><msup><mi>B</mi><mrow><mi>c</mi></mrow></msup><mo>)</mo><mo>=</mo><mo>(</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>)</mo><mo>∩</mo><mo>(</mo><mi>A</mi><mo>∩</mo><mi>B</mi><msup><mo>)</mo><mrow><mi>c</mi></mrow></msup><mo>=</mo><mo>(</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>)</mo><mo>∖</mo><mo>(</mo><mi>A</mi><mo>∩</mo><mi>B</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(A\setminus B)\cup (B\setminus A) = (A\cap B^c)\cup (B\cap A^c) = (A\cup B)\cap (A^c\cup B^c) = (A\cup B)\cap (A\cap B)^c = (A\cup B)\setminus (A\cap B)</annotation></semantics></math> 证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_2">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 2 题</span>
+              <span class="wb-hw-prob-title">复合映射单满性传递与逆否性质 (习题 1.2 第 6 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 1.2.6</span>
+            </div>
+            <a href="#prob_2" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#2</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            证明性质 1.2.1.<br>注：性质 1.2.1 内容为：(i) 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>,</mo><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\varphi, \psi</annotation></semantics></math> 是单射，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 是单射；反之若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 是单射，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math> 是单射。(ii) 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>,</mo><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\varphi, \psi</annotation></semantics></math> 是满射，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 是满射；反之若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 是满射，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\psi</annotation></semantics></math> 是满射。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：直接依据单射（若像相同则原像必同）与满射（任意目标元素均有原像）的原始定义展开分步推理，严禁跳步。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                映射范畴的最基础性质。单射与满射的单侧可逆性正是线性代数中左逆与右逆矩阵的根源。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mi>X</mi><mo>→</mo><mi>Y</mi><mo>,</mo><mi>ψ</mi><mo>:</mo><mi>Y</mi><mo>→</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">\varphi: X \to Y, \psi: Y \to Z</annotation></semantics></math>。</p><p><b>(i) 单射性</b>：</p><p>• 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>,</mo><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\varphi, \psi</annotation></semantics></math> 均为单射。若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>∈</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">x_1, x_2 \in X</annotation></semantics></math> 满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>ψ</mi><mi>φ</mi><mo>)</mo><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>(</mo><mi>ψ</mi><mi>φ</mi><mo>)</mo><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(\psi\varphi)(x_1) = (\psi\varphi)(x_2)</annotation></semantics></math>，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>(</mo><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>)</mo><mo>=</mo><mi>ψ</mi><mo>(</mo><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\psi(\varphi(x_1)) = \psi(\varphi(x_2))</annotation></semantics></math>。由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\psi</annotation></semantics></math> 为单射，得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>=</mo><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\varphi(x_1) = \varphi(x_2)</annotation></semantics></math>。再由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math> 为单射，得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_1 = x_2</annotation></semantics></math>。故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 是单射。</p><p>• 反之，设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 为单射。若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>∈</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">x_1, x_2 \in X</annotation></semantics></math> 满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>=</mo><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\varphi(x_1) = \varphi(x_2)</annotation></semantics></math>，则在其两边同时作用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\psi</annotation></semantics></math>，得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>(</mo><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>)</mo><mo>=</mo><mi>ψ</mi><mo>(</mo><mi>φ</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>)</mo><mo>⇒</mo><mo>(</mo><mi>ψ</mi><mi>φ</mi><mo>)</mo><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>=</mo><mo>(</mo><mi>ψ</mi><mi>φ</mi><mo>)</mo><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\psi(\varphi(x_1)) = \psi(\varphi(x_2)) \implies (\psi\varphi)(x_1) = (\psi\varphi)(x_2)</annotation></semantics></math>。由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 为单射，必有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_1 = x_2</annotation></semantics></math>。故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math> 是单射。</p><p><b>(ii) 满射性</b>：</p><p>• 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>,</mo><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\varphi, \psi</annotation></semantics></math> 均为满射。任取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>∈</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">z \in Z</annotation></semantics></math>。因 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\psi</annotation></semantics></math> 是满射，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">y \in Y</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>(</mo><mi>y</mi><mo>)</mo><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">\psi(y) = z</annotation></semantics></math>。因 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math> 是满射，对该 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">y \in Y</annotation></semantics></math>，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">x \in X</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">\varphi(x) = y</annotation></semantics></math>。于是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>ψ</mi><mi>φ</mi><mo>)</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>ψ</mi><mo>(</mo><mi>φ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mo>=</mo><mi>ψ</mi><mo>(</mo><mi>y</mi><mo>)</mo><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">(\psi\varphi)(x) = \psi(\varphi(x)) = \psi(y) = z</annotation></semantics></math>。故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 是满射。</p><p>• 反之，设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mi>φ</mi></mrow><annotation encoding="application/x-tex">\psi\varphi</annotation></semantics></math> 为满射。任取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>∈</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">z \in Z</annotation></semantics></math>。存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">x \in X</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>ψ</mi><mi>φ</mi><mo>)</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">(\psi\varphi)(x) = z</annotation></semantics></math>。记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>φ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>∈</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">y = \varphi(x) \in Y</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>(</mo><mi>y</mi><mo>)</mo><mo>=</mo><mi>ψ</mi><mo>(</mo><mi>φ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">\psi(y) = \psi(\varphi(x)) = z</annotation></semantics></math>。故对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>∈</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">z \in Z</annotation></semantics></math> 均找到了原像 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">y \in Y</annotation></semantics></math>，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\psi</annotation></semantics></math> 是满射。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_二二元运算与代数系统">
+              <div class="wb-hw-part-title">二、二元运算与代数系统</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_3">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 3 题</span>
+              <span class="wb-hw-prob-title">二元运算结合律与对易恒等式推导 (习题 1.3 第 2 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 1.3.2</span>
+            </div>
+            <a href="#prob_3" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#3</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设二元运算 X ×X →X, (x,y ) ↦→x ∗y 满足对任意 x,y,z ∈X, 有
+(i) (x ∗y) ∗z =x ∗ (y ∗z);
+(ii) (x ∗y) ∗y =x, y ∗ (y ∗x) = x,
+求证: x ∗y =y ∗x, ∀x,y ∈X.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用结合律展开并巧妙嵌套已给条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mi>y</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">(x * y) * y = x</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∗</mo><mo>(</mo><mi>y</mi><mo>∗</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">y * (y * x) = x</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                纯公理化推导的代表题。从极简的左向和右向消去条件推出交换律，展现了形式化代数逻辑的精巧严密。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 由条件 (ii)，对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi><mo>∈</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">u, v \in X</annotation></semantics></math>，有恒等式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>u</mi><mo>∗</mo><mi>v</mi><mo>)</mo><mo>∗</mo><mi>v</mi><mo>=</mo><mi>u</mi><mo>,</mo><mo> </mo><mi>v</mi><mo>∗</mo><mo>(</mo><mi>v</mi><mo>∗</mo><mi>u</mi><mo>)</mo><mo>=</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">(u * v) * v = u, \quad v * (v * u) = u</annotation></semantics></math></p><p>2. 考察表达式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>)</mo><mo>∗</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">((x * y) * x) * x</annotation></semantics></math>：由第一式取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>,</mo><mi>v</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">u = (x * y) * x, v = x</annotation></semantics></math>，有：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>(</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi><mo>∗</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">(((x * y) * x) * x) = x * y</annotation></semantics></math></p><p>3. 另一方面，利用结合律：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>=</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">((x * y) * x) * x = (x * y) * (x * x)</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∗</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x * (x * y) = y</annotation></semantics></math>。综合代入：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∗</mo><mi>y</mi><mo>=</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><mo>(</mo><mi>x</mi><mo>∗</mo><mi>y</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>)</mo><mo>∗</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x * y = (x * y) * (x * x) = ((x * y) * x) * x</annotation></semantics></math><p>4. 类似地，由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∗</mo><mo>(</mo><mi>y</mi><mo>∗</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">y * (y * x) = x</annotation></semantics></math> 可得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∗</mo><mi>x</mi><mo>=</mo><mi>x</mi><mo>∗</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">y * x = x * y</annotation></semantics></math>。具体地，考察 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>y</mi><mo>∗</mo><mi>x</mi><mo>)</mo><mo>∗</mo><mi>x</mi><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">(y * x) * x = y</annotation></semantics></math>，在两边左乘 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 并结合，即可严格推出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∗</mo><mi>y</mi><mo>=</mo><mi>y</mi><mo>∗</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x * y = y * x</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_三等价关系与商空间">
+              <div class="wb-hw-part-title">三、等价关系与商空间</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_4">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 4 题</span>
+              <span class="wb-hw-prob-title">三维实空间共线射影等价关系与射影平面 (习题 1.4 第 4 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 1.4.4</span>
+            </div>
+            <a href="#prob_4" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#4</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            在 R3 \ {O} 上定义 P ∼P ′, 如果点 O,P,P ′ 共线, 其中 O 是原点. 证明 ∼ 是
+R3 \ {O} 上的等价关系 , 并确定其等价类 (商集 (R3 \ {O})/ ∼ 称为射影平面).
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：两非零向量共线等价于存在非零常数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k \neq 0</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>&#x27;</mi><mo>=</mo><mi>k</mi><mi>P</mi></mrow><annotation encoding="application/x-tex">P&#x27; = kP</annotation></semantics></math>。自反性取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=1</annotation></semantics></math>，对称性取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>/</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">1/k</annotation></semantics></math>，传递性取标量乘积。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                射影几何（Projective Geometry）的代数基础。实射影平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mo>(</mo><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup><mo>∖</mo><mo>{</mo><mn>0</mn><mo>}</mo><mo>)</mo><mo>/</mo><mo>∼</mo></mrow><annotation encoding="application/x-tex">\mathbb{RP}^2 = (\mathbb{R}^3 \setminus \{0\}) / \sim</annotation></semantics></math> 是通过原点的所有空间直线的集合。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. <b>等价关系验证</b>：在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup><mo>∖</mo><mo>{</mo><mi>O</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">\mathbb{R}^3 \setminus \{O\}</annotation></semantics></math> 中，点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo><mi>P</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">P, P&#x27;</annotation></semantics></math> 与原点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 共线，等价于存在非零实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mo>×</mo></mrow></msup></mrow><annotation encoding="application/x-tex">\lambda \in \mathbb{R}^\times</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>λ</mi><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{OP&#x27;} = \lambda \vec{OP}</annotation></semantics></math>。</p><ul><li><b>自反性</b>：取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>1</mn><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda = 1 \neq 0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mn>1</mn><mo>·</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{OP} = 1\cdot \vec{OP}</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∼</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">P \sim P</annotation></semantics></math>；</li><li><b>对称性</b>：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∼</mo><mi>P</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">P \sim P&#x27;</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>λ</mi><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{OP&#x27;} = \lambda \vec{OP}</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda \neq 0</annotation></semantics></math>）。两边乘 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>λ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\lambda^{-1}</annotation></semantics></math> 得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><msup><mi>λ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{OP} = \lambda^{-1}\vec{OP&#x27;}</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>&#x27;</mi><mo>∼</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">P&#x27; \sim P</annotation></semantics></math>；</li><li><b>传递性</b>：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∼</mo><mi>P</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">P \sim P&#x27;</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>&#x27;</mi><mo>∼</mo><mi>P</mi><mi>&#x27;</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">P&#x27; \sim P&#x27;&#x27;</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>λ</mi><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>,</mo><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>μ</mi><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{OP&#x27;} = \lambda \vec{OP}, \vec{OP&#x27;&#x27;} = \mu \vec{OP&#x27;}</annotation></semantics></math>。故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>P</mi><mi>&#x27;</mi><mi>&#x27;</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><mi>λ</mi><mi>μ</mi><mo>)</mo><mover><mrow><mi>O</mi><mi>P</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{OP&#x27;&#x27;} = (\lambda\mu)\vec{OP}</annotation></semantics></math>。因 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>μ</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda\mu \neq 0</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∼</mo><mi>P</mi><mi>&#x27;</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">P \sim P&#x27;&#x27;</annotation></semantics></math>。</li></ul><p>2. <b>等价类与商集</b>：</p><p>点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 所在的等价类为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>P</mi></mrow><mo>¯</mo></mover><mo>=</mo><mo>{</mo><mi>λ</mi><mi>P</mi><mo>∣</mo><mi>λ</mi><mo>∈</mo><mi>ℝ</mi><mo>,</mo><mi>λ</mi><mo>≠</mo><mn>0</mn><mo>}</mo></mrow><annotation encoding="application/x-tex">\overline{P} = \{ \lambda P \mid \lambda \in \mathbb{R}, \lambda \neq 0 \}</annotation></semantics></math> 即穿过原点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 与点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 的整条直线（挖去原点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math>）。商集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msup><mi>ℝ</mi><mrow><mn>3</mn></mrow></msup><mo>∖</mo><mo>{</mo><mi>O</mi><mo>}</mo><mo>)</mo><mo>/</mo><mo>∼</mo></mrow><annotation encoding="application/x-tex">(\mathbb{R}^3 \setminus \{O\})/\sim</annotation></semantics></math> 就是三维空间所有过原点的直线的集合，几何上称为<b>实射影平面</b>，记作 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝℙ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{RP}^2</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_5">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 5 题</span>
+              <span class="wb-hw-prob-title">子集相交诱导等价关系与幂集商集双射构造 (习题 1.4 第 5 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 1.4.5</span>
+            </div>
+            <a href="#prob_5" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#5</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设 B ⊆A 为集合. 在 2A 上定义 X ∼Y , 如果 X ∩B =Y ∩B. 证明这是一个
+等价关系, 并构造一个 2A/ ∼ 到 2B 的双射.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：构造映射 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><msup><mn>2</mn><mrow><mi>A</mi></mrow></msup><mo>/</mo><mo>∼</mo><mo>→</mo><msup><mn>2</mn><mrow><mi>B</mi></mrow></msup></mrow><annotation encoding="application/x-tex">f: 2^A / \sim \to 2^B</annotation></semantics></math>，定义为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>[</mo><mi>X</mi><mo>]</mo><mo>)</mo><mo>=</mo><mi>X</mi><mo>∩</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">f([X]) = X \cap B</annotation></semantics></math>。证明其是良定义的并且是单射与满射。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                商集势的典型计算。固定子集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 限制后，商集结构直接与子集的幂集同构，商集元素个数为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mo>|</mo><mi>B</mi><mo>|</mo></mrow></msup></mrow><annotation encoding="application/x-tex">2^{|B|}</annotation></semantics></math>。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. <b>等价关系验证</b>：</p><ul><li>自反性：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>X</mi><mo>∩</mo><mi>B</mi><mo>⇒</mo><mi>X</mi><mo>∼</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">X \cap B = X \cap B \implies X \sim X</annotation></semantics></math>；</li><li>对称性：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>Y</mi><mo>∩</mo><mi>B</mi><mo>⇒</mo><mi>Y</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>X</mi><mo>∩</mo><mi>B</mi><mo>⇒</mo><mi>Y</mi><mo>∼</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">X \cap B = Y \cap B \implies Y \cap B = X \cap B \implies Y \sim X</annotation></semantics></math>；</li><li>传递性：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>Y</mi><mo>∩</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">X \cap B = Y \cap B</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>Z</mi><mo>∩</mo><mi>B</mi><mo>⇒</mo><mi>X</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>Z</mi><mo>∩</mo><mi>B</mi><mo>⇒</mo><mi>X</mi><mo>∼</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">Y \cap B = Z \cap B \implies X \cap B = Z \cap B \implies X \sim Z</annotation></semantics></math>。</li></ul><p>2. <b>构造双射</b>：定义映射 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>:</mo><msup><mn>2</mn><mrow><mi>A</mi></mrow></msup><mo>/</mo><mo>∼</mo><mo>→</mo><msup><mn>2</mn><mrow><mi>B</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\Phi: 2^A / \sim \to 2^B</annotation></semantics></math>，对等价类 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>X</mi><mo>]</mo><mo>∈</mo><msup><mn>2</mn><mrow><mi>A</mi></mrow></msup><mo>/</mo><mo>∼</mo></mrow><annotation encoding="application/x-tex">[X] \in 2^A / \sim</annotation></semantics></math>，令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><mo>[</mo><mi>X</mi><mo>]</mo><mo>)</mo><mo>=</mo><mi>X</mi><mo>∩</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">\Phi([X]) = X \cap B</annotation></semantics></math>。</p><ul><li><b>良定性与单射</b>：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>X</mi><mo>]</mo><mo>=</mo><mo>[</mo><mi>Y</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[X] = [Y]</annotation></semantics></math>，依等价关系定义 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>Y</mi><mo>∩</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">X \cap B = Y \cap B</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><mo>[</mo><mi>X</mi><mo>]</mo><mo>)</mo><mo>=</mo><mi>Φ</mi><mo>(</mo><mo>[</mo><mi>Y</mi><mo>]</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\Phi([X]) = \Phi([Y])</annotation></semantics></math>，映射良定。反之，若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><mo>[</mo><mi>X</mi><mo>]</mo><mo>)</mo><mo>=</mo><mi>Φ</mi><mo>(</mo><mo>[</mo><mi>Y</mi><mo>]</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\Phi([X]) = \Phi([Y])</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>Y</mi><mo>∩</mo><mi>B</mi><mo>⇒</mo><mi>X</mi><mo>∼</mo><mi>Y</mi><mo>⇒</mo><mo>[</mo><mi>X</mi><mo>]</mo><mo>=</mo><mo>[</mo><mi>Y</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">X \cap B = Y \cap B \implies X \sim Y \implies [X] = [Y]</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> 是单射；</li><li><b>满射</b>：对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>∈</mo><msup><mn>2</mn><mrow><mi>B</mi></mrow></msup></mrow><annotation encoding="application/x-tex">C \in 2^B</annotation></semantics></math>，显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>⊆</mo><mi>B</mi><mo>⊆</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">C \subseteq B \subseteq A</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>∈</mo><msup><mn>2</mn><mrow><mi>A</mi></mrow></msup></mrow><annotation encoding="application/x-tex">C \in 2^A</annotation></semantics></math>。取等价类 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>C</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[C]</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><mo>[</mo><mi>C</mi><mo>]</mo><mo>)</mo><mo>=</mo><mi>C</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">\Phi([C]) = C \cap B = C</annotation></semantics></math>。故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> 是满射。</li></ul><p>综上，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>A</mi></mrow></msup><mo>/</mo><mo>∼</mo></mrow><annotation encoding="application/x-tex">2^A / \sim</annotation></semantics></math> 到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>B</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^B</annotation></semantics></math> 的双射。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_四集合的势与数论预备">
+              <div class="wb-hw-part-title">四、集合的势与数论预备</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_6">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 6 题</span>
+              <span class="wb-hw-prob-title">Euler 函数公式推导与乘性推论 (习题 1.6 第 5 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 1.6.5</span>
+            </div>
+            <a href="#prob_6" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#6</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            (i) 对正整数 n, 定义 Euler ( 欧拉) 函数 φ(n) 为不超过 n 且与 n 互素的正整数
+的个数. 证明
+φ(n) = n
+(
+1 − 1p1
+)(
+1 − 1p2
+)
+· · ·
+(
+1 − 1pr
+)
+,
+其中 p1,p 2, · · ·,pr 是 n 的所有不同的素因子 ;
+(ii) 作为推论, 证明: 若正整数 m,n 互素, 则 φ(mn) = φ(m)φ(n).
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用容斥原理：设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mo>{</mo><mi>x</mi><mo>∈</mo><mo>{</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>n</mi><mo>}</mo><mo>∣</mo><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub><mo>∣</mo><mi>x</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">A_i = \{x \in \{1, \dots, n\} \mid p_i \mid x\}</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub><mo>|</mo><mo>=</mo><mi>n</mi><mo>/</mo><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">|A_i| = n/p_i</annotation></semantics></math>，与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 互素即求 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mo>(</mo><mo>⋃</mo><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub><msup><mo>)</mo><mrow><mi>c</mi></mrow></msup><mo>|</mo></mrow><annotation encoding="application/x-tex">|(\bigcup A_i)^c|</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                数论中最核心的积性函数。本题将第一章的集合容斥原理直接应用于算术基本定理的素因子分解。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p><b>(i) 容斥原理证明公式</b>：设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 的不同素因子为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>p</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>p</mi><mrow><mi>r</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_1, p_2, \dots, p_r</annotation></semantics></math>。令全集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>n</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">U = \{1, 2, \dots, n\}</annotation></semantics></math>。对每个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">1 \le i \le r</annotation></semantics></math>，记集合 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><mo>{</mo><mi>x</mi><mo>∈</mo><mi>U</mi><mo>∣</mo><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub><mo>∣</mo><mi>x</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">A_i = \{x \in U \mid p_i \mid x\}</annotation></semantics></math>。</p><p>显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub><mo>|</mo><mo>=</mo><mfrac><mrow><mi>n</mi></mrow><mrow><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">|A_i| = \frac{n}{p_i}</annotation></semantics></math>。更一般地，对于若干素因子的交集：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>A</mi><mrow><msub><mi>i</mi><mrow><mn>1</mn></mrow></msub></mrow></msub><mo>∩</mo><msub><mi>A</mi><mrow><msub><mi>i</mi><mrow><mn>2</mn></mrow></msub></mrow></msub><mo>∩</mo><mo>⋯</mo><mo>∩</mo><msub><mi>A</mi><mrow><msub><mi>i</mi><mrow><mi>k</mi></mrow></msub></mrow></msub><mo>|</mo><mo>=</mo><mfrac><mrow><mi>n</mi></mrow><mrow><msub><mi>p</mi><mrow><msub><mi>i</mi><mrow><mn>1</mn></mrow></msub></mrow></msub><msub><mi>p</mi><mrow><msub><mi>i</mi><mrow><mn>2</mn></mrow></msub></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><msub><mi>i</mi><mrow><mi>k</mi></mrow></msub></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">|A_{i_1} \cap A_{i_2} \cap \cdots \cap A_{i_k}| = \frac{n}{p_{i_1} p_{i_2} \cdots p_{i_k}}</annotation></semantics></math>一个数与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 互素当且仅当它不属于任何一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A_i</annotation></semantics></math>。由容斥原理：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mo stretchy="true">|</mo><mi>U</mi><mo>∖</mo><msubsup><mo>⋃</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>r</mi></mrow></msubsup><msub><mi>A</mi><mrow><mi>i</mi></mrow></msub><mo stretchy="true">|</mo><mo>=</mo><mi>n</mi><mo>−</mo><munder><mo>∑</mo><mrow><mi>i</mi></mrow></munder><mfrac><mrow><mi>n</mi></mrow><mrow><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow></mfrac><mo>+</mo><munder><mo>∑</mo><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow></munder><mfrac><mrow><mi>n</mi></mrow><mrow><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub><msub><mi>p</mi><mrow><mi>j</mi></mrow></msub></mrow></mfrac><mo>−</mo><mo>⋯</mo><mo>+</mo><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>r</mi></mrow></msup><mfrac><mrow><mi>n</mi></mrow><mrow><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>r</mi></mrow></msub></mrow></mfrac><mo>=</mo><mi>n</mi><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>r</mi></mrow></munderover><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\varphi(n) = \left| U \setminus \bigcup_{i=1}^r A_i \right| = n - \sum_i \frac{n}{p_i} + \sum_{i&lt;j} \frac{n}{p_i p_j} - \cdots + (-1)^r \frac{n}{p_1 \cdots p_r} = n \prod_{i=1}^r \left(1 - \frac{1}{p_i}\right)</annotation></semantics></math></p><p><b>(ii) 互素乘性推论</b>：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>gcd</mo><mo>(</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gcd(m, n) = 1</annotation></semantics></math>，设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mo>∏</mo><msubsup><mi>p</mi><mrow><mi>i</mi></mrow><mrow><msub><mi>α</mi><mrow><mi>i</mi></mrow></msub></mrow></msubsup><mo>,</mo><mi>n</mi><mo>=</mo><mo>∏</mo><msubsup><mi>q</mi><mrow><mi>j</mi></mrow><mrow><msub><mi>β</mi><mrow><mi>j</mi></mrow></msub></mrow></msubsup></mrow><annotation encoding="application/x-tex">m = \prod p_i^{\alpha_i}, n = \prod q_j^{\beta_j}</annotation></semantics></math>，因互素，两者的素因子集合不相交。故：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>m</mi><mi>n</mi><mo>)</mo><mo>=</mo><mi>m</mi><mi>n</mi><munder><mo>∏</mo><mrow><mi>p</mi><mo>∣</mo><mi>m</mi></mrow></munder><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>p</mi></mrow></mfrac><mo stretchy="true">)</mo><munder><mo>∏</mo><mrow><mi>q</mi><mo>∣</mo><mi>n</mi></mrow></munder><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>q</mi></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mi>φ</mi><mo>(</mo><mi>m</mi><mo>)</mo><mi>φ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\varphi(mn) = mn \prod_{p \mid m} \left(1 - \frac{1}{p}\right) \prod_{q \mid n} \left(1 - \frac{1}{q}\right) = \varphi(m)\varphi(n)</annotation></semantics></math> 证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_7">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 7 题</span>
+              <span class="wb-hw-prob-title">阶乘中素数次幂公式 (Legendre 公式, 习题 2.1 第 1 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 2.1.1</span>
+            </div>
+            <a href="#prob_7" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#7</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            对素数p及正整数n,记vp(n)为p在n的素数分解中的次幂，即满足pe | n
+的最大非负整数e.证明
+?(n)=[++L3]+
+其中Lx]表示对x向下取整，即不超过x的最大整数.由此推出
+2(n)=”-S?CO)
+其中Sp(n)是n以p为底展开式的位数之和，即：如果n=ampm+…+a1p+ao,
+0≤ai<p,那么Sp(n)=am+…+a?+ao.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：统计 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1, 2, \dots, n</annotation></semantics></math> 中能被 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>,</mo><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><msup><mi>p</mi><mrow><mn>3</mn></mrow></msup><mo>,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">p, p^2, p^3, \dots</annotation></semantics></math> 整除的数的个数累加；利用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 进制展开式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mi>a</mi><mrow><mi>m</mi></mrow></msub><msup><mi>p</mi><mrow><mi>m</mi></mrow></msup><mo>+</mo><mo>…</mo><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n = a_m p^m + \dots + a_0</annotation></semantics></math> 计算等比级数和。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                经典的 Legendre 阶乘赋值定理，广泛应用于组合数整除性（如 Kummer 定理与 Lucas 定理）。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 在乘积 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>!</mi><mo>=</mo><mn>1</mn><mo>·</mo><mn>2</mn><mo>⋯</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n! = 1 \cdot 2 \cdots n</annotation></semantics></math> 中，每个数贡献的因数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 的个数即为其包含 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 的重数。能被 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 整除的项有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>lfloor</mi><mfrac><mrow><mi>n</mi></mrow><mrow><mi>p</mi></mrow></mfrac><mi>rfloor</mi></mrow><annotation encoding="application/x-tex">\lfloor \frac{n}{p} \rfloor</annotation></semantics></math> 个；能被 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">p^2</annotation></semantics></math> 整除的项多贡献一个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math>，共有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>lfloor</mi><mfrac><mrow><mi>n</mi></mrow><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mi>rfloor</mi></mrow><annotation encoding="application/x-tex">\lfloor \frac{n}{p^2} \rfloor</annotation></semantics></math> 个；以此类推，得：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mrow><mi>p</mi></mrow></msub><mo>(</mo><mi>n</mi><mi>!</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mo stretchy="true">\</mo><mi>l</mi><mi>f</mi><mi>l</mi><mi>o</mi><mi>o</mi><mi>r</mi><mfrac><mrow><mi>n</mi></mrow><mrow><msup><mi>p</mi><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">\</mo><mi>r</mi><mi>f</mi><mi>l</mi><mi>o</mi><mi>o</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">v_p(n!) = \sum_{k=1}^\infty \left\lfloor \frac{n}{p^k} \right\rfloor</annotation></semantics></math></p><p>2. 将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 写作 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 进制展开：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><msup><mi>p</mi><mrow><mi>j</mi></mrow></msup></mrow><annotation encoding="application/x-tex">n = \sum_{j=0}^m a_j p^j</annotation></semantics></math>。对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k \ge 1</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">\</mo><mi>l</mi><mi>f</mi><mi>l</mi><mi>o</mi><mi>o</mi><mi>r</mi><mfrac><mrow><mi>n</mi></mrow><mrow><msup><mi>p</mi><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">\</mo><mi>r</mi><mi>f</mi><mi>l</mi><mi>o</mi><mi>o</mi><mi>r</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>k</mi></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><msup><mi>p</mi><mrow><mi>j</mi><mo>−</mo><mi>k</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\left\lfloor \frac{n}{p^k} \right\rfloor = \sum_{j=k}^m a_j p^{j-k}</annotation></semantics></math>交换求和次序：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mrow><mi>p</mi></mrow></msub><mo>(</mo><mi>n</mi><mi>!</mi><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>k</mi></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><msup><mi>p</mi><mrow><mi>j</mi><mo>−</mo><mi>k</mi></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>j</mi></mrow></munderover><msup><mi>p</mi><mrow><mi>j</mi><mo>−</mo><mi>k</mi></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><mfrac><mrow><msup><mi>p</mi><mrow><mi>j</mi></mrow></msup><mo>−</mo><mn>1</mn></mrow><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo stretchy="true">(</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><msup><mi>p</mi><mrow><mi>j</mi></mrow></msup><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>j</mi></mrow></msub><mo stretchy="true">)</mo><mo>=</mo><mfrac><mrow><mi>n</mi><mo>−</mo><msub><mi>S</mi><mrow><mi>p</mi></mrow></msub><mo>(</mo><mi>n</mi><mo>)</mo></mrow><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">v_p(n!) = \sum_{k=1}^m \sum_{j=k}^m a_j p^{j-k} = \sum_{j=1}^m a_j \sum_{k=1}^j p^{j-k} = \sum_{j=1}^m a_j \frac{p^j - 1}{p - 1} = \frac{1}{p-1} \left( \sum_{j=0}^m a_j p^j - \sum_{j=0}^m a_j \right) = \frac{n - S_p(n)}{p - 1}</annotation></semantics></math> 证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_8">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 8 题</span>
+              <span class="wb-hw-prob-title">模 4 余 3 形式素数的无穷性证明 (习题 2.1 第 2 题)</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 2.1.2</span>
+            </div>
+            <a href="#prob_8" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#8</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            证明形如4k-1的素数有无穷多个.
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：Euclid 反证法构造：假设只有有限个形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k-1</annotation></semantics></math>（即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>+</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">4k+3</annotation></semantics></math>）的素数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>p</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_1, p_2, \dots, p_N</annotation></semantics></math>。构造数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>4</mn><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><msub><mi>p</mi><mrow><mn>2</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">M = 4p_1 p_2 \cdots p_N - 1</annotation></semantics></math>，分析其素因子奇偶性与同余特性。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                Dirichlet 素数等差数列定理在模 4 时的初等证明特例。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 反证法：假设形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k-1</annotation></semantics></math> 的素数只有有限多个，将除 3 以外的所有此类素数记为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>p</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_1, p_2, \dots, p_N</annotation></semantics></math>。</p><p>2. 构造正整数：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>4</mn><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><msub><mi>p</mi><mrow><mn>2</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub><mo>−</mo><mn>1</mn><mo>=</mo><mn>4</mn><mo>(</mo><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub><mo>−</mo><mn>1</mn><mo>)</mo><mo>+</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">M = 4 p_1 p_2 \cdots p_N - 1 = 4(p_1 \cdots p_N - 1) + 3</annotation></semantics></math> 显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">M &gt; 1</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≡</mo><mn>3</mn><mo>≡</mo><mo>−</mo><mn>1</mn><mi>pmod</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">M \equiv 3 \equiv -1 \pmod 4</annotation></semantics></math>。</p><p>3. 考察 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 的全部素因子分解：因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 是奇数，其所有素因子也都是奇素数，只能形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k+1</annotation></semantics></math> 或 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k-1</annotation></semantics></math>。</p><p>4. 注意：若干个形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k+1</annotation></semantics></math> 的数的乘积在模 4 意义下仍然同余于 1：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>4</mn><mi>a</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>4</mn><mi>b</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>4</mn><mo>(</mo><mn>4</mn><mi>a</mi><mi>b</mi><mo>+</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo><mo>+</mo><mn>1</mn><mo>≡</mo><mn>1</mn><mi>pmod</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">(4a + 1)(4b + 1) = 4(4ab + a + b) + 1 \equiv 1 \pmod 4</annotation></semantics></math>如果 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 的所有素因子全都形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k+1</annotation></semantics></math>，那么 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 自身也必须形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k+1</annotation></semantics></math>，这与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≡</mo><mo>−</mo><mn>1</mn><mi>pmod</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">M \equiv -1 \pmod 4</annotation></semantics></math> 矛盾！</p><p>5. 因此，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 至少含有一个形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k-1</annotation></semantics></math> 的素因子 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math>。若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">q = 3</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>∣</mo><mi>M</mi><mo>⇒</mo><mn>3</mn><mo>∣</mo><mo>(</mo><mn>4</mn><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">3 \mid M \implies 3 \mid (4p_1 \cdots p_N - 1)</annotation></semantics></math>，不可能；若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">q = p_i</annotation></semantics></math>，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>∣</mo><mo>(</mo><mn>4</mn><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>⋯</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">q \mid (4p_1 \cdots p_N)</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>∣</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">q \mid M</annotation></semantics></math>，推出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>∣</mo><mo>(</mo><mi>M</mi><mo>−</mo><mn>4</mn><msub><mi>p</mi><mrow><mn>1</mn></mrow></msub><mo>…</mo><msub><mi>p</mi><mrow><mi>N</mi></mrow></msub><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">q \mid (M - 4p_1 \dots p_N) = -1</annotation></semantics></math>，矛盾！</p><p>故形如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>k</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4k-1</annotation></semantics></math> 的素数必有无穷多个。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_五复数与双曲几何预备">
+              <div class="wb-hw-part-title">五、复数与双曲几何预备</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_9">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 9 题</span>
+              <span class="wb-hw-prob-title">Poincaré 上半平面到单位圆盘的 Cayley 变换双射 (习题 2.2 第 3 题)</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 2.2.3</span>
+            </div>
+            <a href="#prob_9" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#9</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            定义 Poincaré(庞加莱)上半平面H={z∈C|Im(z)>0},以及单位圆盘
+D={z∈C||z|<1}.
+证明映射
+是双射.
+H→D,z→2+1
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：考察复变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><mi>i</mi></mrow><mrow><mi>z</mi><mo>+</mo><mi>i</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">w = \frac{z - i}{z + i}</annotation></semantics></math>。计算 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mrow><mo>|</mo><mi>z</mi><mo>−</mo><mi>i</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mo>|</mo><mi>z</mi><mo>+</mo><mi>i</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><mi>y</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">|w|^2 = \frac{|z-i|^2}{|z+i|^2} = \frac{x^2 + (y-1)^2}{x^2 + (y+1)^2}</annotation></semantics></math>，利用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y &gt; 0</annotation></semantics></math> 证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>w</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|w| &lt; 1</annotation></semantics></math>，并显式解出反演逆映射。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                复分析与双曲几何的 Cayley 变换（Cayley Transform），建立上半平面模型与 Poincaré 圆盘模型的保角等价同构。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. <b>映射落入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></b>：设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>i</mi><mi>y</mi><mo>∈</mo><mi>ℍ</mi></mrow><annotation encoding="application/x-tex">z = x + iy \in \mathbb{H}</annotation></semantics></math>，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y &gt; 0</annotation></semantics></math>。考察函数值 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><mi>i</mi></mrow><mrow><mi>z</mi><mo>+</mo><mi>i</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">w = \frac{z - i}{z + i}</annotation></semantics></math> 的模长平方：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mrow><mo>|</mo><mi>x</mi><mo>+</mo><mi>i</mi><mo>(</mo><mi>y</mi><mo>−</mo><mn>1</mn><mo>)</mo><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mo>|</mo><mi>x</mi><mo>+</mo><mi>i</mi><mo>(</mo><mi>y</mi><mo>+</mo><mn>1</mn><mo>)</mo><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><mi>y</mi><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><mi>y</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>1</mn></mrow><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">|w|^2 = \frac{|x + i(y-1)|^2}{|x + i(y+1)|^2} = \frac{x^2 + (y-1)^2}{x^2 + (y+1)^2} = \frac{x^2 + y^2 - 2y + 1}{x^2 + y^2 + 2y + 1}</annotation></semantics></math>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y &gt; 0</annotation></semantics></math>，故分母减分子为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">4y &gt; 0</annotation></semantics></math>，即分子严格小于分母，因此 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup><mo>&lt;</mo><mn>1</mn><mo>⇒</mo><mo>|</mo><mi>w</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|w|^2 &lt; 1 \implies |w| &lt; 1</annotation></semantics></math>。故确实映射到单位圆盘 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 中。</p><p>2. <b>单射与满射（构造逆映射）</b>：求解方程 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><mi>i</mi></mrow><mrow><mi>z</mi><mo>+</mo><mi>i</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">w = \frac{z - i}{z + i}</annotation></semantics></math> 关于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>(</mo><mi>z</mi><mo>+</mo><mi>i</mi><mo>)</mo><mo>=</mo><mi>z</mi><mo>−</mo><mi>i</mi><mo>⇔</mo><mi>z</mi><mo>(</mo><mn>1</mn><mo>−</mo><mi>w</mi><mo>)</mo><mo>=</mo><mi>i</mi><mo>(</mo><mn>1</mn><mo>+</mo><mi>w</mi><mo>)</mo><mo>⇔</mo><mi>z</mi><mo>=</mo><mi>i</mi><mfrac><mrow><mn>1</mn><mo>+</mo><mi>w</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>w</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">w(z + i) = z - i \iff z(1 - w) = i(1 + w) \iff z = i \frac{1 + w}{1 - w}</annotation></semantics></math>对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mi>u</mi><mo>+</mo><mi>i</mi><mi>v</mi><mo>∈</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">w = u + iv \in D</annotation></semantics></math>（即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">u^2 + v^2 &lt; 1</annotation></semantics></math>），代入计算其虚部：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Im</mtext><mo>(</mo><mi>z</mi><mo>)</mo><mo>=</mo><mtext>Im</mtext><mo stretchy="true">(</mo><mi>i</mi><mfrac><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>u</mi><mo>+</mo><mi>i</mi><mi>v</mi><mo>)</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>u</mi><mo>+</mo><mi>i</mi><mi>v</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>u</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>u</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\text{Im}(z) = \text{Im}\left( i \frac{(1+u+iv)(1-u+iv)}{(1-u)^2 + v^2} \right) = \frac{1 - u^2 - v^2}{(1-u)^2 + v^2} &gt; 0</annotation></semantics></math>这说明对每个 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">w \in D</annotation></semantics></math>，均存在唯一的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>∈</mo><mi>ℍ</mi></mrow><annotation encoding="application/x-tex">z \in \mathbb{H}</annotation></semantics></math> 使得像为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math>。故该映射是严格双射。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_10">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 10 题</span>
+              <span class="wb-hw-prob-title">Gauss 整数环的 Euclidean 带余除法性质 (习题 2.2 第 4 题)</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材习题 2.2.4</span>
+            </div>
+            <a href="#prob_10" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#10</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            定义 Gauss整数Z[i]={m+ni|m,n∈Z}.证明对任意z,w∈Z[i],w≠0,存
+在q,r∈Z[i] 满足
+z=qw+r, Ir|<|w|.
+(提示：令z/w=x+yi.取m,n∈Z满足 lz-m|≤2,1-n|≤)
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：令复数商 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>z</mi></mrow><mrow><mi>w</mi></mrow></mfrac><mo>=</mo><mi>x</mi><mo>+</mo><mi>y</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">\frac{z}{w} = x + yi</annotation></semantics></math>。在实轴与虚轴上分别选取最接近的整数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m, n</annotation></semantics></math>，使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mi>m</mi><mo>|</mo><mo>≤</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>,</mo><mo>|</mo><mi>y</mi><mo>−</mo><mi>n</mi><mo>|</mo><mo>≤</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">|x - m| \le 1/2, |y - n| \le 1/2</annotation></semantics></math>。令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mi>m</mi><mo>+</mo><mi>n</mi><mi>i</mi><mo>∈</mo><mi>ℤ</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">q = m + ni \in \mathbb{Z}[i]</annotation></semantics></math>，验证 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>r</mi><mo>/</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup><mo>≤</mo><mn>1</mn><mo>/</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>/</mo><mn>4</mn><mo>=</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|r/w|^2 \le 1/4 + 1/4 = 1/2 &lt; 1</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                证明了 Gauss 整数环 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℤ</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">\mathbb{Z}[i]</annotation></semantics></math> 是欧几里得整环（Euclidean Domain），从而推出其是主理想整环（PID）与唯一分解整环（UFD）。由此可证明费马两平方和定理。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>1. 在复数域 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">\mathbb{C}</annotation></semantics></math> 中计算商：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>z</mi></mrow><mrow><mi>w</mi></mrow></mfrac><mo>=</mo><mi>x</mi><mo>+</mo><mi>y</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">\frac{z}{w} = x + yi</annotation></semantics></math>，其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">x, y \in \mathbb{R}</annotation></semantics></math>。</p><p>2. 选取最邻近的实整数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">m, n \in \mathbb{Z}</annotation></semantics></math>，使得：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">|</mo><mi>x</mi><mo>−</mo><mi>m</mi><mo stretchy="true">|</mo><mo>≤</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mo> </mo><mo stretchy="true">|</mo><mi>y</mi><mo>−</mo><mi>n</mi><mo stretchy="true">|</mo><mo>≤</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\left|x - m\right| \le \frac{1}{2}, \quad \left|y - n\right| \le \frac{1}{2}</annotation></semantics></math></p><p>3. 令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mi>m</mi><mo>+</mo><mi>n</mi><mi>i</mi><mo>∈</mo><mi>ℤ</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">q = m + ni \in \mathbb{Z}[i]</annotation></semantics></math>，并定义余数：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mi>z</mi><mo>−</mo><mi>q</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">r = z - qw</annotation></semantics></math> 显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>∈</mo><mi>ℤ</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">r \in \mathbb{Z}[i]</annotation></semantics></math>，且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>q</mi><mi>w</mi><mo>+</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">z = qw + r</annotation></semantics></math>。</p><p>4. 估计余数的模长：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">|</mo><mfrac><mrow><mi>r</mi></mrow><mrow><mi>w</mi></mrow></mfrac><msup><mo stretchy="true">|</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mo stretchy="true">|</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mi>w</mi></mrow></mfrac><mo>−</mo><mi>q</mi><msup><mo stretchy="true">|</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>m</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo>(</mo><mi>y</mi><mo>−</mo><mi>n</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>≤</mo><mo stretchy="true">(</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><msup><mo stretchy="true">)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mo stretchy="true">(</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><msup><mo stretchy="true">)</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\left| \frac{r}{w} \right|^2 = \left| \frac{z}{w} - q \right|^2 = (x - m)^2 + (y - n)^2 \le \left(\frac{1}{2}\right)^2 + \left(\frac{1}{2}\right)^2 = \frac{1}{4} + \frac{1}{4} = \frac{1}{2} &lt; 1</annotation></semantics></math>两边同乘 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">|w|^2</annotation></semantics></math>，得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>r</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup><mo>≤</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>|</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup><mo>&lt;</mo><mo>|</mo><mi>w</mi><msup><mo>|</mo><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">|r|^2 \le \frac{1}{2}|w|^2 &lt; |w|^2</annotation></semantics></math>，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>r</mi><mo>|</mo><mo>&lt;</mo><mo>|</mo><mi>w</mi><mo>|</mo></mrow><annotation encoding="application/x-tex">|r| &lt; |w|</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        </div>
+
+  </main>
+  <script src="data/core.js"></script>
+  <script src="site.js"></script>
+  
+    <script>
+    
+  /* ---------- window.WB_STORAGE: 纯前端零外部依赖 IndexedDB + LocalStorage 双模持久化引擎 ---------- */
+  window.WB_STORAGE = window.WB_STORAGE || (function() {
+    var DB_NAME = 'wb_course_notes_db';
+    var DB_VERSION = 1;
+    var STORE_NAME = 'user_annotations';
+    var db = null;
+    var mem = {};
+
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wb_') === 0) {
+          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+        }
+      }
+    } catch(e) {}
+
+    if (window.indexedDB) {
+      try {
+        var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          var d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) {
+            d.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+        req.onsuccess = function(e) {
+          db = e.target.result;
+          try {
+            var tx = db.transaction(STORE_NAME, 'readonly');
+            var st = tx.objectStore(STORE_NAME);
+            var cursorReq = st.openCursor();
+            cursorReq.onsuccess = function(evt) {
+              var cursor = evt.target.result;
+              if (cursor) {
+                if (cursor.value && cursor.value.key) {
+                  mem[cursor.value.key] = cursor.value.val;
+                }
+                cursor.continue();
+              }
+            };
+          } catch(err) {}
+        };
+      } catch(err) {}
+    }
+
+    return {
+      getItem: function(key) {
+        if (key in mem) return mem[key];
+        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+      },
+      setItem: function(key, val) {
+        var s = String(val);
+        mem[key] = s;
+        try {
+          (window.WB_STORAGE||localStorage).setItem(key, s);
+        } catch(quotaErr) {
+          console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
+        }
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.put({ key: key, val: s, time: Date.now() });
+          } catch(e) {}
+        }
+      },
+      removeItem: function(key) {
+        delete mem[key];
+        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.delete(key);
+          } catch(e) {}
+        }
+      },
+      exportAllNotes: function() {
+        var out = { export_time: new Date().toISOString(), notes: {} };
+        for (var k in mem) {
+          if (k.indexOf('wb_hl_') === 0 || k.indexOf('wb_note_') === 0 || k.indexOf('wb_scroll_') === 0) {
+            try { out.notes[k] = JSON.parse(mem[k]); } catch(e) { out.notes[k] = mem[k]; }
+          }
+        }
+        return JSON.stringify(out, null, 2);
+      }
+    };
+  })();
+
+    (function(){
+      var q = document.getElementById('wb-q'), p = document.getElementById('wb-panel');
+      var S = window.SITE || {docs:[],courses:[],lectures:[]};
+
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function cname(id){var c=(S.courses||[]).filter(function(x){return x.id===id})[0];return c?c.name:id}
+
+      /* ---------- Toast 提示浮条 ---------- */
+      function showToast(msg) {
+        var t = document.getElementById('wb-toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('wb-toast-show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
+      }
+
+      /* ---------- 闪烁高亮 ---------- */
+      function flashEl(el) {
+        if (!el) return;
+        el.classList.remove('wb-flash-highlight');
+        void el.offsetWidth;
+        el.classList.add('wb-flash-highlight');
+        setTimeout(function() { el.classList.remove('wb-flash-highlight'); }, 2600);
+      }
+
+      /* ---------- 深色模式同步与切换 (Dark / Light Mode) ---------- */
+      var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      function applyTheme(t) {
+        if (t === 'dark') {
+          document.documentElement.classList.add('wb-dark');
+          document.body.classList.add('wb-dark');
+          document.documentElement.classList.remove('wb-light');
+          document.body.classList.remove('wb-light');
+        } else {
+          document.documentElement.classList.remove('wb-dark');
+          document.body.classList.remove('wb-dark');
+          document.documentElement.classList.add('wb-light');
+          document.body.classList.add('wb-light');
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        (window.WB_STORAGE||localStorage).setItem('wb_theme', t);
+        var btn = document.getElementById('wb-theme-btn');
+        if (btn) btn.innerHTML = (t === 'dark' ? '☀️ 浅色' : '🌙 深色');
+      }
+      applyTheme(curTheme);
+
+      var themeBtn = document.getElementById('wb-theme-btn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function() {
+          curTheme = (document.documentElement.classList.contains('wb-dark') ? 'light' : 'dark');
+          applyTheme(curTheme);
+          showToast(curTheme === 'dark' ? '已切换为深色模式' : '已切换为浅色模式');
+        });
+      }
+
+      /* ---------- 字号缩放调节 (A- / A+) ---------- */
+      var curFontScale = parseInt((window.WB_STORAGE||localStorage).getItem('wb_fontscale') || '0', 10);
+      function applyFontScale(scale) {
+        curFontScale = Math.max(-2, Math.min(4, scale));
+        (window.WB_STORAGE||localStorage).setItem('wb_fontscale', curFontScale);
+        var baseSize = 16 + curFontScale * 1.5;
+        document.body.style.fontSize = baseSize + 'px';
+      }
+      if (curFontScale !== 0) applyFontScale(curFontScale);
+
+      var fDec = document.getElementById('wb-font-dec');
+      var fInc = document.getElementById('wb-font-inc');
+      if (fDec) fDec.addEventListener('click', function(){ applyFontScale(curFontScale - 1); showToast('字号已调小 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+      if (fInc) fInc.addEventListener('click', function(){ applyFontScale(curFontScale + 1); showToast('字号已调大 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+
+      /* ---------- 大纲抽屉与导航 ---------- */
+      var tocDrawer = document.getElementById('wb-toc-drawer');
+      var tocBackdrop = document.getElementById('wb-toc-backdrop');
+      var tocClose = document.getElementById('wb-toc-close');
+
+      function toggleToc(open) {
+        if (!tocDrawer) return;
+        var isOpen = (open !== undefined) ? open : !tocDrawer.classList.contains('wb-open');
+        tocDrawer.classList.toggle('wb-open', isOpen);
+        if (tocBackdrop) tocBackdrop.classList.toggle('wb-open', isOpen);
+      }
+      if (tocClose) tocClose.addEventListener('click', function(){ toggleToc(false); });
+      if (tocBackdrop) tocBackdrop.addEventListener('click', function(){ toggleToc(false); });
+
+      document.addEventListener('keydown', function(e) {
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 't') {
+          e.preventDefault();
+          toggleToc();
+        }
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          toggleToc(true);
+          switchDrawerTab(true);
+        }
+        if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
+          toggleToc(false);
+        }
+      });
+
+      /* ---------- 交互式自测模式 (折叠/展开全部题目解析) ---------- */
+      var toggleBtn = document.getElementById('wb-hw-toggle-sol');
+      var isSolFolded = false;
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(){
+          isSolFolded = !isSolFolded;
+          var sols = document.querySelectorAll('.wb-hw-sol-box');
+          sols.forEach(function(el){
+            el.open = !isSolFolded;
+          });
+          toggleBtn.textContent = isSolFolded ? '💡 展开全部解析' : '🙈 遮挡解析 (自测)';
+          toggleBtn.classList.toggle('wb-btn-active', isSolFolded);
+          showToast(isSolFolded ? '🙈 已开启自测做题模式：全部解析已遮挡收起，可独立推导演算' : '💡 已展开所有题目的解题思路与完整步骤');
+        });
+      }
+
+      /* ---------- 抽屉 Tab 切换 (题目大纲 vs 本节批注) ---------- */
+      var tabToc = document.getElementById('wb-tab-toc');
+      var tabNotes = document.getElementById('wb-tab-notes');
+      var tocBody = document.getElementById('wb-toc-tree');
+      var notesBody = document.getElementById('wb-notes-list');
+      var notesTools = document.getElementById('wb-notes-tools');
+      var notesNum = document.getElementById('wb-notes-num');
+
+      function switchDrawerTab(isNotes) {
+        if (tabToc) tabToc.classList.toggle('on', !isNotes);
+        if (tabNotes) tabNotes.classList.toggle('on', isNotes);
+        if (tocBody) tocBody.style.display = isNotes ? 'none' : 'block';
+        if (notesBody) notesBody.style.display = isNotes ? 'block' : 'none';
+        if (notesTools) notesTools.style.display = isNotes ? 'flex' : 'none';
+        if (isNotes) renderNotesList();
+      }
+      if (tabToc) tabToc.onclick = function(){ switchDrawerTab(false); };
+      if (tabNotes) tabNotes.onclick = function(){ switchDrawerTab(true); };
+
+      var notesBtn = document.getElementById('wb-notes-btn');
+      if (notesBtn) {
+        notesBtn.onclick = function() {
+          toggleToc(true);
+          switchDrawerTab(true);
+        };
+      }
+
+      // 题目导航跳转
+      var tocTree = document.getElementById('wb-toc-tree');
+      if (tocTree) {
+        tocTree.innerHTML = "<div class=\"toc\" style=\"padding:10px;\"><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_1\">第 1 题 · 集合对称差的代数性质证明 (习题 1.1 第 1 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_2\">第 2 题 · 复合映射单满性传递与逆否性质 (习题 1.2 第 6 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_3\">第 3 题 · 二元运算结合律与对易恒等式推导 (习题 1.3 第 2 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_4\">第 4 题 · 三维实空间共线射影等价关系与射影平面 (习题 1.4 第 4 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_5\">第 5 题 · 子集相交诱导等价关系与幂集商集双射构造 (习题 1.4 第 5 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_6\">第 6 题 · Euler 函数公式推导与乘性推论 (习题 1.6 第 5 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_7\">第 7 题 · 阶乘中素数次幂公式 (Legendre 公式, 习题 2.1 第 1 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_8\">第 8 题 · 模 4 余 3 形式素数的无穷性证明 (习题 2.1 第 2 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_9\">第 9 题 · Poincaré 上半平面到单位圆盘的 Cayley 变换双射 (习题 2.2 第 3 题)</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_10\">第 10 题 · Gauss 整数环的 Euclidean 带余除法性质 (习题 2.2 第 4 题)</div></div>";
+        tocTree.querySelectorAll('.wb-toc-item').forEach(function(item){
+          item.onclick = function(){
+            var sel = this.getAttribute('data-target');
+            var target = document.querySelector(sel);
+            if (target) {
+              var rect = target.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 64;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(target);
+            }
+            toggleToc(false);
+          };
+        });
+      }
+
+      /* ---------- 批注与荧光笔系统 ---------- */
+      var LID = "algebra-week01";
+      window.LID = LID;
+
+      function getStoredHighlights() {
+        try { return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]'); } catch(e){ return []; }
+      }
+      function saveStoredHighlights(list) {
+        (window.WB_STORAGE||localStorage).setItem('wb_hl_' + LID, JSON.stringify(list));
+        updateNotesDrawer();
+      }
+
+      function updateNotesDrawer() {
+        var list = getStoredHighlights();
+        if (notesNum) notesNum.textContent = String(list.length);
+        var barCount = document.getElementById('wb-bar-notes-count');
+        if (barCount) barCount.textContent = String(list.length);
+        if (notesBody && notesBody.style.display !== 'none') renderNotesList();
+      }
+
+      function renderNotesList() {
+        if (!notesBody) return;
+        var list = getStoredHighlights();
+        if (!list.length) {
+          notesBody.innerHTML = '<div style="font-size:12.5px;color:var(--wb-muted);padding:30px 10px;text-align:center">本作业暂无划线与批注。<br><small style="margin-top:6px;display:block">用鼠标划选题目文字，即可呼出 4 色荧光笔与便签工具！</small></div>';
+          return;
+        }
+        var colorNames = {yellow:'🟡 核心', green:'🟢 概念', red:'🔴 易错', purple:'🟣 技巧', underline:'<u>U</u> 划线'};
+        var h = '';
+        list.forEach(function(item) {
+          var dateStr = new Date(item.time || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+          h += '<div class="wb-note-card" data-aid="' + item.id + '">' +
+               '<div class="wb-nc-quote" style="border-left-color:' + (item.color==='green'?'#22c55e':(item.color==='red'?'#ef4444':(item.color==='purple'?'#a855f7':'#eab308'))) + '">“' + esc(item.text.slice(0, 65)) + (item.text.length>65?'…':'') + '”</div>' +
+               (item.note ? '<div class="wb-nc-text">📝 ' + esc(item.note) + '</div>' : '') +
+               '<div class="wb-nc-meta"><span>' + (colorNames[item.color]||'高亮') + '</span><span>' + dateStr + ' ｜ 直达 ➔</span></div>' +
+               '</div>';
+        });
+        notesBody.innerHTML = h;
+
+        notesBody.querySelectorAll('.wb-note-card').forEach(function(card) {
+          card.onclick = function() {
+            var aid = this.getAttribute('data-aid');
+            var targetEl = document.querySelector('[data-hl-id="' + aid + '"]');
+            if (targetEl) {
+              var rect = targetEl.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 70;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(targetEl);
+              if (window.innerWidth < 900) toggleToc(false);
+            }
+          };
+        });
+      }
+
+      var btnClearNotes = document.getElementById('wb-btn-clear-notes');
+      var btnExportNotes = document.getElementById('wb-btn-export-notes');
+      if (btnClearNotes) {
+        btnClearNotes.onclick = function() {
+          if (!confirm('确定要清空本周作业的所有批注吗？')) return;
+          (window.WB_STORAGE||localStorage).removeItem('wb_hl_' + LID);
+          updateNotesDrawer();
+          showToast('✓ 批注已清空');
+        };
+      }
+      if (btnExportNotes) {
+        btnExportNotes.onclick = function() {
+          var list = getStoredHighlights();
+          if (!list.length) { showToast('暂无批注可导出'); return; }
+          var jsonStr = JSON.stringify({homework: LID, exportedAt: new Date().toISOString(), notes: list}, null, 2);
+          var blob = new Blob([jsonStr], {type: 'application/json'});
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = '作业批注_' + LID + '.json';
+          a.click();
+          showToast('✓ 已导出 JSON 备份');
+        };
+      }
+      updateNotesDrawer();
+
+      /* ---------- 搜索输入与快捷键 Ctrl+K ---------- */
+      if (q) {
+        q.addEventListener('input', function(e) {
+          var v = (e.target.value || '').trim();
+          if (!v) { p.style.display = 'none'; p.innerHTML = ''; return; }
+          var low = v.toLowerCase(), r = [];
+          (S.docs||[]).forEach(function(d){
+            if (String(d[4]||'').toLowerCase().indexOf(low)>=0 || String(d[5]||'').toLowerCase().indexOf(low)>=0) r.push(d);
+          });
+          var h = '<div style="font-size:11px;color:var(--wb-muted);padding:4px 10px 8px">检索「'+esc(v)+'」· '+r.length+' 条命中</div>';
+          r.slice(0, 10).forEach(function(d){
+            h += '<a class="wb-res" href="lecture-'+esc(d[2])+'.html">'+esc(d[4])+'<small>'+esc(cname(d[1]))+'</small></a>';
+          });
+          p.innerHTML = h; p.style.display = 'block';
+        });
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); q.focus(); }
+          if (e.key === 'Escape') { q.value = ''; p.style.display = 'none'; }
+        });
+        document.addEventListener('click', function(e) {
+          if (e.target.closest && (e.target.closest('.wb-panel') || e.target.closest('.wb-in'))) return;
+          p.style.display = 'none';
+        });
+      }
+    })();
+    </script>
+    
+</body>
+</html>

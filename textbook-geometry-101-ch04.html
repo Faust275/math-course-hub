@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>几何与变换 ｜ “101计划”核心教材 几何学基础 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+/* 教材阅读专属排版与讲义隔断增强 */
+:root {
+  --wb-book-maxw: 940px;
+  --wb-seg-line: #e3e2dd;
+  --wb-hl-yellow: #fff3a8;
+  --wb-hl-green: #cbf5c4;
+  --wb-hl-red: #ffc9c9;
+  --wb-hl-purple: #e8d5fc;
+  --wb-hl-wavy: #e05252;
+}
+html[data-theme="dark"], body.wb-dark {
+  --wb-seg-line: #3a3a37;
+  --wb-hl-yellow: rgba(255, 230, 90, 0.32);
+  --wb-hl-green: rgba(120, 235, 140, 0.32);
+  --wb-hl-red: rgba(255, 110, 110, 0.32);
+  --wb-hl-purple: rgba(195, 145, 255, 0.32);
+  --wb-hl-wavy: #f07b7b;
+}
+
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  z-index: 1000;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+
+
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: none !important;
+  margin: 12px 0 !important;
+  padding-left: 0 !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout {
+  max-width: var(--wb-book-maxw);
+  margin: 0 auto;
+  padding: 30px 24px 80px;
+  line-height: 1.84;
+  font-size: 15.5px;
+}
+
+.wb-book-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+.wb-book-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--okbg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.wb-book-meta-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wb-book-intro {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 24px 0 36px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.76;
+}
+.wb-book-intro b {
+  color: var(--accent);
+}
+
+/* 联动：本课讲义与作业 */
+.wb-linkage {
+  margin: 18px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.wb-lk-title {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--okbg);
+  border-bottom: 1px solid var(--border);
+}
+.wb-lk-cols { display: flex; flex-wrap: wrap; }
+.wb-lk-col { flex: 1 1 300px; padding: 12px 16px; min-width: 240px; }
+.wb-lk-col + .wb-lk-col { border-left: 1px solid var(--border); }
+.wb-lk-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.wb-lk-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; }
+.wb-lk-list li { margin: 0 0 8px; line-height: 1.5; }
+.wb-lk-list a { color: var(--text); text-decoration: none; font-size: 13.5px; }
+.wb-lk-list a:hover { color: var(--accent); text-decoration: underline; }
+.wb-lk-date { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.wb-lk-cov { color: var(--muted); font-size: 12px; margin: 2px 0 0 18px; }
+
+/* 讲义体系核心隔断：.wb-seg 时间轴/逻辑小节隔断 */
+.wb-seg {
+  position: relative;
+  border-left: 3px solid var(--wb-seg-line);
+  padding-left: 24px;
+  margin-left: 8px;
+  margin-bottom: 48px;
+  transition: border-left-color .15s;
+}
+.wb-seg:hover {
+  border-left-color: var(--accent);
+}
+.wb-seg::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--wb-seg-line);
+}
+
+.wb-sec-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.wb-sec-num {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* 讲义式结构化卡片排版系统 */
+.wb-card, .wb-def, .wb-thm, .wb-prop, .wb-lemma, .wb-cor, .wb-example, .wb-exercise, .wb-axiom, .wb-remark {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,.025);
+}
+.wb-def { border-left: 4px solid #10b981; }
+.wb-thm { border-left: 4px solid #3b82f6; }
+.wb-axiom { border-left: 4px solid #8b5cf6; }
+.wb-prop, .wb-lemma { border-left: 4px solid #06b6d4; }
+.wb-cor { border-left: 4px solid #6366f1; }
+.wb-example { border-left: 4px solid #f59e0b; background: var(--surface2); }
+.wb-remark { border-left: 4px solid #64748b; background: var(--surface2); font-size: 14.5px; }
+.wb-exercise { border-left: 4px solid #ec4899; }
+
+.wb-blk-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wb-def .wb-blk-title { color: #059669; }
+.wb-thm .wb-blk-title { color: #2563eb; }
+.wb-axiom .wb-blk-title { color: #7c3aed; }
+.wb-prop .wb-blk-title, .wb-lemma .wb-blk-title { color: #0891b2; }
+.wb-cor .wb-blk-title { color: #4f46e5; }
+.wb-example .wb-blk-title { color: #d97706; }
+.wb-remark .wb-blk-title { color: #475569; }
+.wb-exercise .wb-blk-title { color: #db2777; }
+
+/* 例题细分板块与推导步骤 */
+.wb-ex-sec {
+  margin: 10px 0;
+}
+.wb-ex-tag {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--accent2);
+  margin-right: 6px;
+}
+.wb-ex-thought {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent2);
+  font-size: 14px;
+}
+.wb-ex-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.wb-ex-steps li {
+  margin-bottom: 6px;
+}
+.wb-ex-conclusion {
+  background: var(--okbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-ex-pitfall {
+  background: var(--warnbg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  color: var(--warn);
+  font-size: 14px;
+}
+
+/* 严格证明样式 */
+.wb-proof {
+  margin: 14px 0 20px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.015);
+  border-left: 3px solid var(--muted);
+  font-size: 14.5px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.8;
+}
+.wb-proof-title {
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wb-qed {
+  float: right;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+/* MathML 与行内数学样式微调，消除视觉下沉 */
+math {
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 1.05em;
+  line-height: 0;
+}
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 划词高亮标记 */
+.wb-user-hl {
+  border-radius: 3px;
+  padding: 1px 2px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.wb-user-hl:hover { opacity: .82; }
+.wb-user-hl-yellow { background-color: var(--wb-hl-yellow); }
+.wb-user-hl-green  { background-color: var(--wb-hl-green); }
+.wb-user-hl-red    { background-color: var(--wb-hl-red); }
+.wb-user-hl-purple { background-color: var(--wb-hl-purple); }
+.wb-user-hl-wavy   {
+  background: transparent;
+  text-decoration: underline wavy var(--wb-hl-wavy);
+  text-underline-offset: 4px;
+}
+.wb-user-hl-has-note::after {
+  content: ' 💬';
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform .12s;
+}
+.wb-hl-color-dot:hover {
+  transform: scale(1.22);
+}
+.wb-hl-dot-yellow { background: #ffd644; }
+.wb-hl-dot-green  { background: #62d871; }
+.wb-hl-dot-red    { background: #ff6565; }
+.wb-hl-dot-purple { background: #c68aff; }
+.wb-hl-btn-wavy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.wb-hl-btn-wavy:hover { background: var(--surface2); }
+.wb-hl-btn-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+}
+.wb-hl-btn-note:hover { background: var(--accent); color: #fff; }
+.wb-hl-btn-del {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--warn);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* 便签弹窗 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(520px, 94vw);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  padding: 20px;
+}
+.wb-note-quote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding: 6px 12px;
+  margin: 10px 0 14px;
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  max-height: 90px;
+  overflow-y: auto;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.wb-note-textarea:focus { border-color: var(--accent); }
+.wb-note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 侧边抽屉 */
+.wb-drawer {
+  position: fixed;
+  top: 0; right: -360px;
+  width: min(340px, 86vw);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+  z-index: 950;
+  transition: right .24s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.wb-drawer.wb-open { right: 0; }
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.wb-drawer-title { font-weight: 700; font-size: 16px; }
+.wb-drawer-close {
+  border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+.wb-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+.wb-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+}
+.wb-toc-list li {
+  margin-bottom: 6px;
+}
+.wb-toc-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.wb-toc-list a:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.wb-toc-list a.cur {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 批注卡片 */
+.wb-note-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+.wb-note-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+.wb-note-item-quote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-note-item-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 底部翻页栏 */
+.wb-book-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.wb-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  transition: background .15s, border-color .15s;
+}
+.wb-nav-btn:hover:not(.disabled) {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.wb-nav-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.wb-nav-btn.hub {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.wb-nav-btn.hub:hover {
+  opacity: .9;
+  color: #fff;
+}
+
+/* 工具条按钮群 */
+.wb-tool-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.wb-tool-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.wb-tool-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  
+.wb-book-layout p {
+  margin: 12px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.wb-book-layout ul {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+  list-style: disc;
+}
+.wb-book-layout ol {
+  margin: 12px 0 16px 24px;
+  padding-left: 0;
+}
+.wb-book-layout li {
+  margin-bottom: 8px;
+  line-height: 1.82;
+}
+.wb-num-list {
+  list-style: none !important;
+  margin: 12px 0 !important;
+  padding-left: 0 !important;
+}
+.wb-num-list li {
+  margin: 8px 0;
+  line-height: 1.82;
+  text-indent: 0;
+}
+.wb-formula-block {
+  margin: 16px 0;
+  text-align: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.wb-book-layout { padding: 20px 14px 60px; font-size: 14.5px; }
+  .wb-seg { padding-left: 16px; margin-left: 4px; }
+  .wb-book-nav { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="wb-read-progress" id="wb-read-prog"></div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">课程讲义汇总 <small>离线站点</small></div>
+  <nav class="subjnav">
+    <a href="course-analysis.html">分析</a>
+    <a href="course-algebra.html">代数</a>
+    <a href="course-geometry.html" class="on">几何</a>
+    <a href="course-cprog.html">C 程</a>
+  </nav>
+  <div class="crumb">
+    <a href="index.html">首页</a> <span>›</span>
+    <a href="course-geometry.html">几何学</a> <span>›</span>
+    <a href="course-geometry.html?tab=textbook">核心教材</a> <span>›</span>
+    <b>第 4 章</b>
+  </div>
+  <div class="wb-tool-group">
+    <button class="wb-tool-btn" id="wb-btn-toc" title="全书目录">📑 目录</button>
+    <button class="wb-tool-btn" id="wb-btn-notes" title="我的重点标注">🖍️ 批注 (<span id="wb-notes-count">0</span>)</button>
+    <button class="wb-tool-btn" id="wb-btn-font-dec" title="缩小字号">A-</button>
+    <button class="wb-tool-btn" id="wb-btn-font-inc" title="放大字号">A+</button>
+    <button class="theme-btn" id="theme-btn" title="切换深色/浅色模式">🌙</button>
+  </div>
+</header>
+
+<main class="wb-book-layout" id="wb-book-content">
+  <div class="wb-book-header">
+    <div class="wb-book-tagline">📖 “101计划”核心教材 几何学基础 ｜ 盛茂、王作勤 编著</div>
+    <h1 style="font-size:24px;margin:8px 0 4px;">第 4 章 ｜ 几何与变换</h1>
+    <div class="wb-book-meta-sub">
+      高等教育出版社（教育部计算机与数学101计划核心教材） ｜ 原书对应页码：第  页 ｜ 共 5 个小节
+    </div>
+  </div>
+
+  <div class="wb-book-intro">
+    <b>本章导读与理论脉络</b>：<br>
+    几何与变换
+  </div>
+
+  <div class="wb-linkage"><div class="wb-lk-title">🔗 联动 · 本课程讲义与作业（均按课本顺序推进，可一键跳转）</div><div class="wb-lk-cols"><div class="wb-lk-col"><div class="wb-lk-h">🎬 课堂讲义（15 节）</div><ul class="wb-lk-list"><li><a href="lecture-geometry-0914.html">🎬 2026-09-14<span class="wb-lk-date">2026-09-14</span></a></li><li><a href="lecture-geometry-2026-09-16.html">🎬 2026-09-16<span class="wb-lk-date">2026-09-16</span></a></li><li><a href="lecture-geometry-2026-09-21.html">🎬 2026-09-21<span class="wb-lk-date">2026-09-21</span></a></li><li><a href="lecture-geometry-2026-09-23.html">🎬 2026-09-23<span class="wb-lk-date">2026-09-23</span></a></li><li><a href="lecture-geometry-2026-09-28.html">🎬 2026-09-28<span class="wb-lk-date">2026-09-28</span></a></li><li><a href="lecture-geometry-2026-09-30.html">🎬 2026-09-30<span class="wb-lk-date">2026-09-30</span></a></li><li><a href="lecture-geometry-2026-10-10.html">🎬 2026-10-10<span class="wb-lk-date">2026-10-10</span></a></li><li><a href="lecture-geometry-2026-10-12.html">🎬 2026-10-12<span class="wb-lk-date">2026-10-12</span></a></li><li><a href="lecture-geometry-2026-10-14.html">🎬 2026-10-14<span class="wb-lk-date">2026-10-14</span></a></li><li><a href="lecture-geometry-2026-10-19.html">🎬 2026-10-19<span class="wb-lk-date">2026-10-19</span></a></li><li><a href="lecture-geometry-2026-10-21.html">🎬 2026-10-21<span class="wb-lk-date">2026-10-21</span></a></li><li><a href="lecture-geometry-2026-10-26.html">🎬 2026-10-26<span class="wb-lk-date">2026-10-26</span></a></li><li><a href="lecture-geometry-2026-10-28.html">🎬 2026-10-28<span class="wb-lk-date">2026-10-28</span></a></li><li><a href="lecture-geometry-2026-11-02.html">🎬 2026-11-02<span class="wb-lk-date">2026-11-02</span></a></li><li><a href="lecture-geometry-2026-11-04.html">🎬 2026-11-04<span class="wb-lk-date">2026-11-04</span></a></li></ul></div><div class="wb-lk-col"><div class="wb-lk-h">📝 每周作业（6 次）</div><ul class="wb-lk-list"><li><a href="homework-geometry-week01.html">📝 第 1 周 ｜ 向量的线性运算与线性关系</a><div class="wb-lk-cov">第一周（覆盖第 1 次课、第 2 次课）</div></li><li><a href="homework-geometry-week02.html">📝 第 2 周 ｜ 标架与坐标·向量的内积与外积</a><div class="wb-lk-cov">第二周（9 月 21 日—27 日，覆盖第三次课、第四次课）</div></li><li><a href="homework-geometry-week03.html">📝 第 3 周 ｜ 混合积与双重外积·曲面与曲线的方程</a><div class="wb-lk-cov">第三周（9 月 28 日—30 日，覆盖第五次课、第六次课）</div></li><li><a href="homework-geometry-week04.html">📝 第 4 周 ｜ 平面与直线综合·平面束与柱面</a><div class="wb-lk-cov">第四周（10 月 10 日—16 日，覆盖第七、八、九次课）</div></li><li><a href="homework-geometry-week05.html">📝 第 5 周 ｜ 柱面与锥面·旋转面与二次曲面</a><div class="wb-lk-cov">第五周（10 月 19 日—23 日，覆盖第十、十一次课）</div></li><li><a href="homework-geometry-week06.html">📝 第 6 周 ｜ 二次直纹面：直母线及其应用</a><div class="wb-lk-cov">第六周（10 月 26 日—30 日，覆盖第十二、十三次课）</div></li></ul></div></div></div>
+
+  <div class="wb-book-body">
+    <section class="wb-seg" id="sec_1"><h3 class="wb-sec-title"><span class="wb-sec-num"></span> 本章导引</h3><p>本章 4.1 节首先对埃尔朗根纲领的主旨即 “几何学是研究对称群下不变量的学科” 这一观点做简要介绍, 接着 4.2 节将具体分析 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{2}</annotation></semantics></math> 这个简单模型上的各种经典几何, 讨论与它们相对应的变换群与不变量, 并比较它们之间的关系.</p></section>
+<section class="wb-seg" id="sec_2"><h3 class="wb-sec-title"><span class="wb-sec-num">§4.1</span> 埃尔朗根纲领简介</h3><p>让我们进行一个总结性和前瞻性的思考：几何学到底是什么？不同历史时期的人们对这个问题有不同的回答：从古埃及人的“土地测量学”，到古希腊哲人的“用以理解‘永恒存在’的逻辑推导方式”(柏拉图)，再到“研究单个物体的形状、物体之间的空间关系以及外围空间的性质之数学分支”(《不列颠百科全书》)，等等。几何学的研究内容包括但不限于距离、形状、大小、相对位置、平坦性/弯曲性、对称性等。</p>
+<p>19 世纪之前的几何学是朴素的几何学, 基本上是围绕欧氏几何而展开的: 几何可以被看做是对我们所处现实世界中空间关系的数学描述. 从某种意义上说, 解析几何 (以及之后微积分方法在几何学中的广泛应用) 只能被视为处理古典几何对象的新方法、新视角, 而不能算作是新的几何分支. 但是, 如同本书 1.1 节所提到的, 19 世纪是几何学的黄金时代. 各种新的几何学不断涌现并快速发展, 并改变了几何的主旨以及人们对于几何的认知. 在这些新的几何分支中, 当时最引人注目的当属非欧几何学 (包含了球面几何与双曲几何学作为其特例)、射影几何学 (下一章的主题)、高维空间几何学 (例如欧氏空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^n</annotation></semantics></math> 、哈密顿四元数、一般的线性代数理论) 以及拓扑学 (本书最后一章的主题).</p>
+<p>在这样一个背景下, 人们开始思考: 几何学的实质是什么? 针对这个问题, 1872 年 10 月, 年仅 23 岁的克莱因在埃尔朗根大学教授就职演讲中提出了著名的埃尔朗根纲领, 指出 “几何学是研究对称群下不变量的学科”. 他的演讲后来被整理成题为《对新近以来几何学研究的比较考察》的小册子流传于世. 在这个小册子开头, 克莱因写道 (参见 [5]):</p>
+<p>可是由于几何学近年来取得了飞速的发展, 尽管就其主题而言是一致的, (几何学) 已经被分割成一系列几乎相互隔绝的分支, 并且在相当大的程度上互不相关地继续成长着. (现在) 发表这样一种综观全局性的研究, 就显得更加有理由了.</p>
+<p>在这个纲领中, 克莱因利用由若尔当 (C. Jordan, 1838—1922)、李 (S. Lie, 1842—1899) 等人发展起来的变换群 (对称) 思想统一了当时几个不同的几何学分支: 欧氏几何、非欧几何 (球面与双曲) 与射影几何; 指出每种几何学所研究的都是几何对象在特定变换群作用下不变的性质; 并前瞻性地预测了新几何, 例如代数几何是研究双有理变换下的不变性质, 而拓扑学是研究拓扑变换 (即同胚) 下的不变性质. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> </p>
+<p>埃尔朗根纲领全书有 10 节, 前两节总括性地提出了其主旨思想, 之后各节则对多种不同的几何学 (其中很多都已经湮没在历史中) 具体展开其观点. 在第一节克莱因就定义了 (变换) 群, 说明了主群的概念, 明确地区分空间与流形 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>②</mn></mrow><annotation encoding="application/x-tex">^{②}</annotation></semantics></math> , 以及几何的直观图像与抽象形式. 他指出几何性质在主群的变换下保持不变; 反之, 几何性质是由 “它们在主群的变换下保持不变” 所刻画. 于是, 几何的中心问题就是</p>
+<p>给定一个流形以及作用在其上的一个变换群, 要研究这个流形中几何形体之</p>
+<p>“在这个群的变换下保持不变”的那些性质.</p>
+<p>用当时比较前沿的术语说, 就是 “给定一个流形以及作用在其上的一个变换群, 要建立相对于这个群的不变量理论”.</p>
+<p>在第二节中, 克莱因进一步阐述了同一个空间上不同变换群所对应的不同几何之间的联系, 并指出各种新几何与初等几何的关系都建立在这样一种联系之上:</p>
+<p>如果用一个包括主群在内的群来代替主群, 那么只剩下一部分几何性质能保持不变, 其余的则不再表现为空间实体本身的性质, 而是表现为 “由空间添加某些特定的几何实体构成的系统” 的性质. 这个特选的形体是如此确定的: 在所给变换群中, 主群的元素所对应的变换使之保持不变.</p>
+<p>例如, 在下一章将会学到, 当把仿射变换群扩大到射影变换群之后, 仿射变换可被视为 “保持无穷远直线不变” 的特殊射影变换.</p>
+<p>换而言之, 不同几何学在同一个背景空间中可以共存, 一种几何对应着该空间一个特定变换群. 进一步地, 这种 “群-几何对应关系” 应该能够显式地给出不变量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>③</mn></mrow><annotation encoding="application/x-tex">^{③}</annotation></semantics></math> . 所以, 作为用代数方法研究对称性的数学分支, 群论成为研究几何学的重要手段.</p>
+<p>通过“群-几何对应关系”，还能根据变换群之间的关系，对同一个背景空间上不同的几何进行比较：变换群越大，对应的几何就“越小”(即该种几何的研究内容（不变量）越少)。例如下面将要看到，欧氏几何对应的变换群比仿射几何对应的变换群小，所以欧氏几何中可以研究的几何性质比仿射几何更丰富；而射影几何对应的变换群最大，故射影几何中不变量非常少 (例如在射影几何中没有长度、角度、面积、平行等概念). 而射影几何是被克莱因用于统一当时所有几何的一个框架.</p>
+<p>当然, 现代的几何学研究呈现出多学科交叉融合的特征, 故而很难只用一个观点去看待当前所有的几何学分支. 但无论是从历史的角度还是从哲学的角度来说, 克莱因的观点都是非常精辟的, 对理解大学阶段将要学习的很多课程都有很好的指导性意义.</p></section>
+<section class="wb-seg" id="sec_3"><h3 class="wb-sec-title"><span class="wb-sec-num">§4.2</span> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上的各种几何与变换群</h3><p>回忆一下, 我们把空间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math> 到自身的双射</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><mi>X</mi><mo>→</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">\phi : X \to X</annotation></semantics></math></div>
+<p>叫做变换. 在几何中, 我们仅关心几何变换, 即保持底空间特定几何性质不变的变换.</p>
+<div class="wb-example">
+  <div class="wb-blk-title"><span>例 4.2.1 设 X 是向量空间. 一般把向量空间的加法和数乘结构合称为线性结构, 并把保持向量空间线性结构不变的变换, 即满足</span><span class="tag">经典例题</span></div>
+<p>例 4.2.1 设 X 是向量空间. 一般把向量空间的加法和数乘结构合称为线性结构, 并把保持向量空间线性结构不变的变换, 即满足</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>λ</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mi>μ</mi><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><mi>λ</mi><mi>ϕ</mi><mo>(</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>+</mo><mi>μ</mi><mi>ϕ</mi><mo>(</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>,</mo><mo> </mo><mo>∀</mo><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">\phi (\lambda \vec {u} + \mu \vec {v}) = \lambda \phi (\vec {u}) + \mu \phi (\vec {v}), \quad \forall \lambda , \mu \in \mathbb {R}</annotation></semantics></math></div>
+<p>的变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 称为线性变换 (在线性代数里, “变换” 有着更广义的解释, 即指代 “映射”, 而不要求可逆性, 甚至原像空间和像空间也不要求是同一个空间. 故线性代数中的 “线性变换” 是指所有保持线性结构的映射, 见定义 A.3.6).</p>
+<p>注意线性变换一定把原点映为原点, 因此一般的平移变换不是线性变换. 另一方面, 不难发现 “旋转轴过原点的旋转变换” 是线性变换.</p>
+<p>根据定义, 变换群是 “由变换构成的群”(这是本书要求几何变换可逆的原因). 特别地, 群 G 是空间 X 的一个变换群意味着</p>
+<ul><li>恒等变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mi>d</mi><mo>:</mo><mi>X</mi><mo>→</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">Id: X \to X</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的一个元素.</li></ul>
+<ul><li>若变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的元素, 则其逆变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ϕ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi^{-1}</annotation></semantics></math> 也是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的元素.</li></ul>
+<ul><li>若变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>ϕ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_1, \phi_2</annotation></semantics></math> 都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的元素, 则复合变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>∘</mo><msub><mi>ϕ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_1 \circ \phi_2</annotation></semantics></math> 也是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的元素.</li></ul>
+<p>下面用具体的例子解释克莱因在埃尔朗根纲领中的思想. 为简单起见, 我们把空间维数降低到 2 维, 即以平面几何为模型, 通过研究 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上不同的变换群, 来解释克莱因关于几何和对称的观点.</p>
+<p>刚体变换的几何</p>
+<p>考虑 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">X = \mathbb{E}^2</annotation></semantics></math> 上的刚体变换群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext> 刚体 </mtext></mrow></msub><mo>=</mo><mo>{</mo><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>∣</mo><mi>ϕ</mi><mtext> 是一个刚体变换 </mtext><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\text { 刚体 }} = \{\phi : \mathbb {E} ^ {2} \to \mathbb {E} ^ {2} \mid \phi \text { 是一个刚体变换 } \}.</annotation></semantics></math></div>
+<p>上一章学到, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上的每个刚体变换由以下两条性质刻画:</p>
+<ol class="wb-num-list"><li>保欧氏距离.</li></ol>
+<ol class="wb-num-list"><li>保定向.</li></ol>
+<p>任何刚体变换可被表示为一个旋转变换和一个平移变换的复合. 在标准直角坐标系下, 刚体变换可被表示为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>=</mo><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mfrac linethickness="0"><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><mrow><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub></mrow></mfrac><mo>)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\phi_ {A, \vec {u}} \binom{x}{y} = A \binom{x}{y} + \binom{x _ {0}}{y _ {0}},</annotation></semantics></math></div>
+<p>其中</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mo>cos</mo><mi>θ</mi></mtd><mtd><mo>−</mo><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mo>sin</mo><mi>θ</mi></mtd><mtd><mo>cos</mo><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">A = \left( \begin{array}{c c} {\cos \theta} &amp; {- \sin \theta} \\ {\sin \theta} &amp; {\cos \theta} \end{array} \right)</annotation></semantics></math></div>
+<p>代表逆时针旋转 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math> 角的旋转变换, 而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mtd></mtr><mtr><mtd><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\vec{u} = \begin{pmatrix} x_0 \\ y_0 \end{pmatrix}</annotation></semantics></math> 为平移变换的平移量.</p>
+<div class="wb-thm">
+  <div class="wb-blk-title"><span>引理4.2.2(刚体变换确定平移与旋转) 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_{A,\vec{u}} = \phi_{B,\vec{v}}</annotation></semantics></math> ，则 A = B, \vec{u} </span><span class="tag">命题/引理</span></div>
+<p>引理4.2.2(刚体变换确定平移与旋转) 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_{A,\vec{u}} = \phi_{B,\vec{v}}</annotation></semantics></math> ，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">A = B, \vec{u} = \vec{v}</annotation></semantics></math> . 证明 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_{A,\vec{u}} = \phi_{B,\vec{v}}</annotation></semantics></math> ，则</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>(</mo><mi>O</mi><mo>)</mo><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mo>(</mo><mi>O</mi><mo>)</mo><mo>=</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec {u} = \phi_ {A, \vec {u}} (O) = \phi_ {B, \vec {v}} (O) = \vec {v}.</annotation></semantics></math></div>
+<p>于是对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">x, y,</annotation></semantics></math> 有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>=</mo><mi>B</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A \binom{x}{y} = B \binom{x}{y}.</annotation></semantics></math></div>
+<p>特别地, 通过分别取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 1, y = 0</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>y</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 0, y = 1</annotation></semantics></math> , 可知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math> 具有完全相同的第一列以及相同的第二列, 从而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A = B</annotation></semantics></math> .</p>
+<p>故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的刚体变换一一对应于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>∈</mo><mi>S</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>×</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(A, \vec{u}) \in SO(2) \times \mathbb{E}^2</annotation></semantics></math> , 且</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>刚体</mtext></mrow></msub><mo>=</mo><mo>{</mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>∣</mo><mi>A</mi><mo>∈</mo><mi>S</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\text {刚体}} = \{\phi_ {A, \vec {u}} \mid A \in S O (2), \vec {u} \in \mathbb {E} ^ {2} \}.</annotation></semantics></math></div>
+<p>根据定义, 两个刚体变换的复合为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mo>∘</mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>)</mo><mo>(</mo><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>)</mo><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mo>(</mo><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><mi>B</mi><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mi>B</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mi>A</mi><mo>,</mo><mi>B</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">(\phi_ {B, \vec {v}} \circ \phi_ {A, \vec {u}}) (\binom{x}{y}) = \phi_ {B, \vec {v}} (A \binom{x}{y} + \vec {u}) = B A \binom{x}{y} + B \vec {u} + \vec {v} = \phi_ {B A, B \vec {u} + \vec {v}}.</annotation></semantics></math></div>
+<p>为了跟后文中别的变换群进行比较, 我们还需要把平移和旋转放在同一个矩阵中, 即引入特殊欧氏群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>A</mi></mtd><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><msub><mo stretchy="true">)</mo><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow></msub><mi>bigg</mi><mo>|</mo><mi>A</mi><mo>∈</mo><mi>S</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">S E (2) = \left\{\left( \begin{array}{c c} A &amp; \vec {u} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right) _ {3 \times 3} \bigg | A \in S O (2), \vec {u} \in \mathbb {E} ^ {2} \right\}.</annotation></semantics></math></div>
+<p>不难验证 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">SE(2)</annotation></semantics></math> 是一般线性群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>L</mi><mo>(</mo><mn>3</mn><mo>,</mo><mi>ℝ</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">GL(3, \mathbb{R})</annotation></semantics></math> (见附录A.4)的一个子群. 下面证明</p>
+<div class="wb-thm">
+  <div class="wb-blk-title"><span>命题4.2.3(刚体变换群的代数描述) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的刚体变换群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>刚体</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">G_{\text{刚体}}</annotation></semantics></math> 同构于特殊欧氏群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">SE(2)</annotation></semantics></math> .</span><span class="tag">命题</span></div>
+<p>命题4.2.3(刚体变换群的代数描述) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的刚体变换群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>刚体</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">G_{\text{刚体}}</annotation></semantics></math> 同构于特殊欧氏群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">SE(2)</annotation></semantics></math> .</p>
+</div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明 考虑映射</span><span class="tag">证明</span></div>
+<p>证明 考虑映射</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>varPhi</mi><mo>:</mo><msub><mi>G</mi><mrow><mtext>刚体</mtext></mrow></msub><mo>→</mo><mi>S</mi><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mo> </mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>↦</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>A</mi></mtd><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo stretchy="true">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varPhi : G _ {\mathrm{刚体}} \to S E (2), \quad \phi_ {A, \vec {u}} \mapsto \left( \begin{array}{c c} {{A}} &amp; {{\vec {u}}} \\ {{\vec {0} ^ {\mathrm{T}}}} &amp; {{1}} \end{array} \right).</annotation></semantics></math></div>
+<p>则有</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mo>∘</mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>)</mo><mo>=</mo><mi>Φ</mi><mo>(</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mi>A</mi><mo>,</mo><mi>B</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mo>)</mo><mo>=</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>B</mi><mi>A</mi></mtd><mtd><mi>B</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\Phi (\phi_ {B, \vec {v}} \circ \phi_ {A, \vec {u}}) = \Phi (\phi_ {B A, B \vec {u} + \vec {v}}) = \left( \begin{array}{c c} B A &amp; B \vec {u} + \vec {v} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right)</annotation></semantics></math></div>
+<p>以及</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><msub><mi>ϕ</mi><mrow><mi>B</mi><mo>,</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow></msub><mo>)</mo><mi>Φ</mi><mo>(</mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>)</mo><mo>=</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>B</mi></mtd><mtd><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>A</mi></mtd><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo stretchy="true">)</mo><mo>=</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>B</mi><mi>A</mi></mtd><mtd><mi>B</mi><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>+</mo><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\Phi (\phi_ {B, \vec {v}}) \Phi (\phi_ {A, \vec {u}}) = \left( \begin{array}{c c} B &amp; \vec {v} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right) \left( \begin{array}{c c} A &amp; \vec {u} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right) = \left( \begin{array}{c c} B A &amp; B \vec {u} + \vec {v} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right)</annotation></semantics></math></div>
+<p>故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> 是一个群同态. 另一方面, 由引理4.2.2知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math> 是一个双射, 所以它是一个群同构. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>□</mo></mrow><annotation encoding="application/x-tex">\square</annotation></semantics></math> </p>
+<p>等距变换几何</p>
+<p>比刚体变换群稍大一点的是等距变换群. 令</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext> 等距 </mtext></mrow></msub><mo>=</mo><mo>{</mo><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>∣</mo><mi>ϕ</mi><mtext> 是一个等距变换 </mtext><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\text { 等距 }} = \{\phi : \mathbb {E} ^ {2} \to \mathbb {E} ^ {2} \mid \phi \text { 是一个等距变换 } \}.</annotation></semantics></math></div>
+<p>根据定义, 等距变换是 “保持任意两点间距离不变 (但不必保持定向)” 的变换. 于是, 等距变换跟刚体变换的唯一区别在于是否保定向. 特别地, 刚体变换都是等距变换,</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>刚体</mtext></mrow></msub><mo>⊂</mo><msub><mi>G</mi><mrow><mtext>等距</mtext></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\mathrm{刚体}} \subset G _ {\mathrm{等距}}.</annotation></semantics></math></div>
+<p>类似于刚体变换, 可以证明 (习题) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的等距变换群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>等距</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">G_{\text{等距}}</annotation></semantics></math> 同构于欧氏群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>A</mi></mtd><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><msub><mo stretchy="true">)</mo><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow></msub><mi>bigg</mi><mo>|</mo><mi>A</mi><mo>∈</mo><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">E (2) = \left\{\left( \begin{array}{c c} A &amp; \vec {u} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right) _ {3 \times 3} \bigg |   A \in O (2), \vec {u} \in \mathbb {E} ^ {2} \right\}.</annotation></semantics></math></div>
+<p>平面反射变换是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上的等距变换但不是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上的刚体变换, 因为它会翻转定向. 事实上, 若一个平面等距变换不是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上的刚体变换, 则它一定翻转定向, 从而在复合任意一个反射变换后 (例如复合上变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>↦</mo><mo>(</mo><mi>x</mi><mo>,</mo><mo>−</mo><mi>y</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">(x, y) \mapsto (x, -y))</annotation></semantics></math> , 一定会得到一个保定向的等距变换, 即得到一个刚体变换.</p>
+<p>“旋转”几何</p>
+<p>考虑 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上刚体变换群的一个子群, 即旋转变换群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext> 旋转 </mtext></mrow></msub><mo>=</mo><mo>{</mo><msub><mi>R</mi><mrow><mi>θ</mi></mrow></msub><mo>∣</mo><msub><mi>R</mi><mrow><mi>θ</mi></mrow></msub><mtext> 表示绕原点逆时针旋转角度 </mtext><mi>θ</mi><mtext> 的变换 </mtext><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\text { 旋转 }} = \{R _ {\theta} \mid R _ {\theta} \text { 表示绕原点逆时针旋转角度 } \theta \text { 的变换 } \}.</annotation></semantics></math></div>
+<p>在定理 3.2.13 的证明过程中, 我们证明过一个断言, 即一个刚体变换是旋转变换当且仅当它保持原点不动. 这与克莱因的观点吻合: 当所考虑的群从旋转变换群扩大到刚体变换群时, 旋转变换群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>旋</mi><mi>转</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_{旋转}</annotation></semantics></math> “保持到原点距离不变” 这一性质不再是刚体变换群下不变的性质, 而是刚体变换群作用在 “空间添加原点” 这个系统下的性质 (当然, 从纯几何的角度来说, 并不存在一个比其他点更特殊的点叫做 “原点”. 可以添加任意一个点, 此时所得到的是 “绕该点旋转的旋转变换群”).</p>
+<p>在标准直角坐标系下, 旋转变换可被表示为</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>θ</mi></mrow></msub><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>=</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mo>cos</mo><mi>θ</mi></mtd><mtd><mo>−</mo><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mo>sin</mo><mi>θ</mi></mtd><mtd><mo>cos</mo><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">R _ {\theta} \binom{x}{y} = \left( \begin{array}{c c} \cos \theta &amp; - \sin \theta \\ \sin \theta &amp; \cos \theta \end{array} \right) \binom{x}{y}.</annotation></semantics></math></div>
+<p>于是旋转变换群同构于由特殊正交矩阵组成的特殊正交群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mo>cos</mo><mi>θ</mi></mtd><mtd><mo>−</mo><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mo>sin</mo><mi>θ</mi></mtd><mtd><mo>cos</mo><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">|</mo><mi>θ</mi><mo>∈</mo><mi>ℝ</mi><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">S O (2) = \left\{\left. \left( \begin{array}{c c} \cos \theta &amp; - \sin \theta \\ \sin \theta &amp; \cos \theta \end{array} \right) \right| \theta \in \mathbb {R} \right\}.</annotation></semantics></math></div>
+<p>也可以把反射轴过原点的反射变换添加进来, 得到 “旋转反射群”. 几何上, 这个群由保持原点不动的等距变换构成. 这个群同构于正交群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mo>cos</mo><mi>θ</mi></mtd><mtd><mo>−</mo><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mo>sin</mo><mi>θ</mi></mtd><mtd><mo>cos</mo><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">|</mo><mi>θ</mi><mo>∈</mo><mi>ℝ</mi><mo stretchy="true">}</mo><mo>∪</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mo>cos</mo><mi>θ</mi></mtd><mtd><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mo>sin</mo><mi>θ</mi></mtd><mtd><mo>−</mo><mo>cos</mo><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">|</mo><mi>θ</mi><mo>∈</mo><mi>ℝ</mi><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">O (2) = \left\{\left. \left( \begin{array}{c c} \cos \theta &amp; - \sin \theta \\ \sin \theta &amp; \cos \theta \end{array} \right) \right| \theta \in \mathbb {R} \right\} \cup \left\{\left. \left( \begin{array}{c c} \cos \theta &amp; \sin \theta \\ \sin \theta &amp; - \cos \theta \end{array} \right) \right| \theta \in \mathbb {R} \right\}.</annotation></semantics></math></div>
+<p>相似变换的几何</p>
+<p>把旋转变换群、刚体变换群、等距变换群放在一起看, 可以得到如下图表 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>①</mn></mrow><annotation encoding="application/x-tex">^{①}</annotation></semantics></math> :</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mi>r</mi><mi>l</mi><mi>r</mi><mtext>旋转变换群</mtext><msub><mi>G</mi><mrow><mtext>旋转</mtext></mrow></msub></mtd><mtd><mo>≅</mo></mtd><mtd><mi>S</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo></mtd></mtr><mtr><mtd><mi>wedge</mi><mi>ℕ</mi></mtd><mtd></mtd><mtd><mi>wedge</mi><mi>ℕ</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l r} {{\mathrm{旋转变换群} G _ {\mathrm{旋转}}}} &amp; {{\cong}} &amp; {{S O (2)}} \\ {{\wedge \mathbb {N}}} &amp; {} &amp; {{\wedge \mathbb {N}}} \end{array}</annotation></semantics></math></div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mi>r</mi><mi>l</mi><mi>r</mi><mtext>刚体变换群</mtext><msub><mi>G</mi><mrow><mtext>刚体</mtext></mrow></msub></mtd><mtd><mo>≅</mo></mtd><mtd><mi>S</mi><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mtd></mtr><mtr><mtd><mi>wedge</mi><mi>aleph</mi></mtd><mtd></mtd><mtd><mi>wedge</mi><mi>aleph</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l r} {{\mathrm{刚体变换群} G _ {\mathrm{刚体}}}} &amp; {{\cong}} &amp; {{S E (2)}} \\ {{\wedge \aleph}} &amp; {} &amp; {{\wedge \aleph}} \end{array}</annotation></semantics></math></div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>等距变换群</mtext><msub><mi>G</mi><mrow><mtext>等距</mtext></mrow></msub><mo>≅</mo><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathrm{等距变换群} G _ {\mathrm{等距}} \cong E (2)</annotation></semantics></math></div>
+<p>以及如下表格：</p>
+<p>&lt;table&gt;&lt;tr&gt;&lt;td&gt;几何不变性质&lt;/td&gt;&lt;td&gt;变换(对称)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保距,保定向,保到原点距离&lt;/td&gt;&lt;td&gt;旋转变换&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保距,保定向&lt;/td&gt;&lt;td&gt;刚体变换&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保距&lt;/td&gt;&lt;td&gt;等距变换&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</p>
+<p>等距变换群对应的几何不变性就是中学阶段所学的“全等关系”. 我们知道, 比全等更一般的是相似关系. 于是, 可以考虑相似变换群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>相似</mtext></mrow></msub><mo>=</mo><mo>{</mo><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>∣</mo><mi>ϕ</mi><msup><mtext>是一个相似变换</mtext><mrow><mn>①</mn></mrow></msup><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\text {相似}} = \{\phi : \mathbb {E} ^ {2} \to \mathbb {E} ^ {2} \mid \phi \text {是一个相似变换} ^ {①} \}.</annotation></semantics></math></div>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi : \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个相似变换. 跟等距变换类似, 在复合上一个平移变换后, 可以不妨设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>O</mi><mo>)</mo><mo>=</mo><mi>O</mi></mrow><annotation encoding="application/x-tex">\phi(O) = O</annotation></semantics></math> . 这样的相似变换跟“保持原点不变的等距变换”仅仅相差一个伸缩 (即数乘). 于是它们由</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>↦</mo><mi>λ</mi><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo> </mo><mo>(</mo><mi>λ</mi><mo>&gt;</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\binom {x} {y} \mapsto \lambda A \binom {x} {y} \quad (\lambda &gt; 0)</annotation></semantics></math></div>
+<p>给出. 换而言之, 在标准坐标系下, 相似变换由</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>↦</mo><mi>λ</mi><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\binom {x} {y} \mapsto \lambda A \binom {x} {y} + \vec {u}</annotation></semantics></math></div>
+<p>给出, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>∈</mo><msub><mi>R</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><mo>,</mo><mi>A</mi><mo>∈</mo><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>E</mi><mrow><mn>2</mn></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda \in R_{&gt;0}, A \in O(2), \vec{u} \in E^{2}.</annotation></semantics></math> </p>
+<p>于是, 我们自然考虑 (线性共形群)</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>{</mo><mi>λ</mi><mi>A</mi><mo>|</mo><mi>λ</mi><mo>∈</mo><msub><mi>ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><mo>,</mo><mi>A</mi><mo>∈</mo><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">C O (2) = \{\lambda A | \lambda \in \mathbb {R} _ {&gt; 0}, A \in O (2) \}.</annotation></semantics></math></div>
+<p>不难证明, 由上述相似变换所组成的相似变换群同构于</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>I</mi><mi>M</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>A</mi></mtd><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><msub><mo stretchy="true">)</mo><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow></msub><mi>bigg</mi><mo>|</mo><mi>A</mi><mo>∈</mo><mi>C</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">S I M (2) = \left\{\left( \begin{array}{c c} A &amp; \vec {u} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right) _ {3 \times 3} \bigg |   A \in C O (2), \vec {u} \in \mathbb {E} ^ {2} \right\}.</annotation></semantics></math></div>
+<p>当然, 相似变换不再保持距离不变. 那么, 相似变换群下的几何不变量是什么呢? 命题 4.2.4 (相似变换的不变量)</p>
+<ol class="wb-num-list"><li>对于任意相似变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mtext>相似</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">\phi \in G_{\text{相似}}</annotation></semantics></math> ，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &gt; 0</annotation></semantics></math> 使得</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo><mo>=</mo><mi>λ</mi><mo>|</mo><mi>P</mi><mi>Q</mi><mo>|</mo><mo>,</mo><mo> </mo><mo>∀</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">| \phi (P) \phi (Q) | = \lambda | P Q |, \quad \forall P, Q \in \mathbb {E} ^ {2}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>相似变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 保持角度不变, 即对于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 中的任意角 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>P</mi><mi>Q</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">\angle PQR</annotation></semantics></math> ,</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∠</mo><mi>P</mi><mi>Q</mi><mi>R</mi><mo>≡</mo><mo>∠</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\angle P Q R \equiv \angle \phi (P) \phi (Q) \phi (R).</annotation></semantics></math></div>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个相似变换, 则存在实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>&amp;</mi><mi>g</mi><mi>t</mi><mo>;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &amp;gt; 0</annotation></semantics></math> , 向量 \v</span><span class="tag">证明</span></div>
+<p>证明 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个相似变换, 则存在实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &gt; 0</annotation></semantics></math> , 向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\vec{u} \in \mathbb{E}^2</annotation></semantics></math> 以及保持原点不动的等距变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_1</annotation></semantics></math> , 使得</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>=</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\phi (P) = \lambda \phi_ {1} (P) + \vec {u}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>对于任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo><mi>Q</mi><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P, Q \in \mathbb{E}^{2}</annotation></semantics></math> ,</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mi>r</mi><mi>l</mi><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mtd><mtd><mo>=</mo><mo>|</mo><mo>(</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>−</mo><mo>(</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>Q</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>|</mo></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mo>|</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>)</mo><mo>−</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mi>λ</mi><mo>|</mo><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>)</mo><mo>−</mo><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mi>λ</mi><mo>|</mo><mi>P</mi><mi>Q</mi><mo>|</mo><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} | \phi (P) \phi (Q) | &amp; = | (\lambda \phi_ {1} (P) + \vec {u}) - (\lambda \phi_ {1} (Q) + \vec {u}) | \\ &amp; = | \lambda \phi_ {1} (P) - \lambda \phi_ {1} (Q) | \\ &amp; = \lambda | \phi_ {1} (P) - \phi_ {1} (Q) | \\ &amp; = \lambda | P Q |. \end{array}</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>因为等距变换保内积, 所以由余弦定理,</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd><mi>r</mi><mi>l</mi></mtd><mtd><mo>cos</mo><mo>∠</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mo>(</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>−</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>)</mo><mo>·</mo><mo>(</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mo>−</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>)</mo></mrow><mrow><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>−</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mo>−</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>  </mo><mo>=</mo><mfrac><mrow><mo>(</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>)</mo><mo>·</mo><mo>(</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>R</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>)</mo></mrow><mrow><mo>|</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>|</mo><mo>|</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>R</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>  </mo><mo>=</mo><mfrac><mrow><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>·</mo><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>R</mi><mo>−</mo><mi>Q</mi><mo>)</mo></mrow><mrow><mo>|</mo><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>|</mo><mo>|</mo><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>R</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>  </mo><mo>=</mo><mfrac><mrow><mo>(</mo><mi>P</mi><mo>−</mo><mi>Q</mi><mo>)</mo><mo>·</mo><mo>(</mo><mi>R</mi><mo>−</mo><mi>Q</mi><mo>)</mo></mrow><mrow><mo>|</mo><mi>P</mi><mo>−</mo><mi>Q</mi><mo>|</mo><mo>|</mo><mi>R</mi><mo>−</mo><mi>Q</mi><mo>|</mo></mrow></mfrac></mtd></mtr><mtr><mtd></mtd><mtd><mo>  </mo><mo>=</mo><mo>cos</mo><mo>∠</mo><mi>P</mi><mi>Q</mi><mi>R</mi><mi>.</mi></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{array}{r l} &amp; {\cos \angle \phi (P) \phi (Q) \phi (R) = \frac {(\phi (P) - \phi (Q)) \cdot (\phi (R) - \phi (Q))}{| \phi (P) - \phi (Q) | | \phi (R) - \phi (Q) |}} \\ &amp; {\qquad = \frac {(\lambda \phi_ {1} (P - Q)) \cdot (\lambda \phi_ {1} (R - Q))}{| \lambda \phi_ {1} (P - Q) | | \lambda \phi_ {1} (R - Q) |}} \\ &amp; {\qquad = \frac {\phi_ {1} (P - Q) \cdot \phi_ {1} (R - Q)}{| \phi_ {1} (P - Q) | | \phi_ {1} (R - Q) |}} \\ &amp; {\qquad = \frac {(P - Q) \cdot (R - Q)}{| P - Q | | R - Q |}} \\ &amp; {\qquad = \cos \angle P Q R.} \end{array}</annotation></semantics></math></div>
+<p>于是, 相似变换保角, 并且保距离比, 跟大家在中学几何中所得到的印象吻合. (注意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的保距变换自然保角 (这是极化恒等式的推论) 以及保距离比, 但反之不然.)</p>
+<p>仿射变换的几何</p>
+<p>从刚体变换到等距变换再到相似变换, 在模去平移变换后, 其核心的变换群分别是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mi>not</mi><mo>≤</mo><mi>O</mi><mo>(</mo><mn>2</mn><mo>)</mo><mi>not</mi><mo>≤</mo><mi>G</mi><msub><mi>O</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">S O (2) \not \leq O (2) \not \leq G O _ {2}</annotation></semantics></math></div>
+<p>这些群都是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上的线性变换群, 而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 上最大的线性变换群则是一般线性群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>L</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr><mtr><mtd><mi>c</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mi>Bigg</mi><mo>|</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo>∈</mo><mi>ℝ</mi><mo>,</mo><mi>a</mi><mi>d</mi><mo>−</mo><mi>b</mi><mi>c</mi><mo>≠</mo><mn>0</mn><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G L (2) = \left\{\left( \begin{array}{c c} a &amp; b \\ c &amp; d \end{array} \right) \Bigg | a, b, c, d \in \mathbb {R}, a d - b c \neq 0 \right\}.</annotation></semantics></math></div>
+<p>于是, 还可以考虑对应的变换群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>F</mi><mi>F</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo stretchy="true">{</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>A</mi></mtd><mtd><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mtd></mtr><mtr><mtd><msup><mover><mrow><mn>0</mn></mrow><mo>→</mo></mover><mrow><mtext>T</mtext></mrow></msup></mtd><mtd><mn>1</mn></mtd></mtr></mtable><msub><mo stretchy="true">)</mo><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow></msub><mi>bigg</mi><mo>|</mo><mi>A</mi><mo>∈</mo><mi>G</mi><mi>L</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">A F F (2) = \left\{\left( \begin{array}{c c} A &amp; \vec {u} \\ \vec {0} ^ {\mathrm{T}} &amp; 1 \end{array} \right) _ {3 \times 3} \bigg | A \in G L (2), \vec {u} \in \mathbb {E} ^ {2} \right\}.</annotation></semantics></math></div>
+<p>该群里的每个元素对应的变换依然形如</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>=</mo><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mfrac linethickness="0"><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><mrow><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub></mrow></mfrac><mo>)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\phi_ {A, \vec {u}} \binom{x}{y} = A \binom{x}{y} + \binom{x _ {0}}{y _ {0}},</annotation></semantics></math></div>
+<p>跟前面唯一的差别在于现在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 可以是任意可逆线性变换. 这样的变换被称为仿射变换 (见第3.2.3节), 而对应的变换群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>仿射</mtext></mrow></msub><mo>=</mo><mo>{</mo><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>|</mo><mi>ϕ</mi><mtext>是一个仿射变换</mtext><mo>}</mo></mrow><annotation encoding="application/x-tex">G _ {\mathrm{仿射}} = \{\phi : \mathbb {E} ^ {2} \to \mathbb {E} ^ {2} | \phi \mathrm{是一个仿射变换} \}</annotation></semantics></math></div>
+<p>被称为仿射变换群.</p>
+<p>不难看出, 在仿射变换下, 距离、角度、面积等都不再是不变的了. 那么, 仿射变换下的不变量是什么呢? 这是仿射几何学的内容, 我们稍作介绍:</p>
+<div class="wb-thm">
+  <div class="wb-blk-title"><span>命题4.2.5(仿射变换的不变量) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi : \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个仿射变换, P, Q, R, S </span><span class="tag">命题</span></div>
+<p>命题4.2.5(仿射变换的不变量) 设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi : \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个仿射变换, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo><mi>Q</mi><mo>,</mo><mi>R</mi><mo>,</mo><mi>S</mi><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P, Q, R, S \in \mathbb{E}^2</annotation></semantics></math> .</p>
+</div>
+<ol class="wb-num-list"><li>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>Q</mi><mo>∥</mo><mi>R</mi><mi>S</mi></mrow><annotation encoding="application/x-tex">PQ \parallel RS</annotation></semantics></math> , 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>∥</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>S</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(P)\phi(Q) \parallel \phi(R)\phi(S)</annotation></semantics></math> , 且</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>|</mo><mi>P</mi><mi>Q</mi><mo>|</mo></mrow><mrow><mo>|</mo><mi>R</mi><mi>S</mi><mo>|</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mrow><mrow><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>|</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac {| P Q |}{| R S |} = \frac {| \phi (P) \phi (Q) |}{| \phi (R) \phi (S) |}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>存在常数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mo>△</mo><mi>P</mi><mi>Q</mi><mi>R</mi></mrow></msub><mo>=</mo><mi>C</mi><msub><mi>S</mi><mrow><mo>△</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo></mrow></msub></mrow><annotation encoding="application/x-tex">S_{\triangle PQR} = CS_{\triangle \phi(P)\phi(Q)\phi(R)}</annotation></semantics></math> .</li></ol>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明 (1) 不妨设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>≠</mo><mi>Q</mi><mo>,</mo><mi>R</mi><mo>≠</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">P \neq Q, R \neq S</annotation></semantics></math> . 则</span><span class="tag">证明</span></div>
+<p>证明 (1) 不妨设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>≠</mo><mi>Q</mi><mo>,</mo><mi>R</mi><mo>≠</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">P \neq Q, R \neq S</annotation></semantics></math> . 则</p>
+</div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>Q</mi><mo>∥</mo><mi>R</mi><mi>S</mi><mi>Longleftrightarrow</mi><mtext>存在</mtext><mi>λ</mi><mo>≠</mo><mn>0</mn><mtext>使得</mtext><mover><mrow><mi>P</mi><mi>Q</mi></mrow><mo>→</mo></mover><mo>=</mo><mi>λ</mi><mover><mrow><mi>R</mi><mi>S</mi></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">P Q \parallel R S \Longleftrightarrow \text {存在} \lambda \neq 0 \text {使得} \overrightarrow {P Q} = \lambda \overrightarrow {R S}.</annotation></semantics></math></div>
+<p>根据定义, 存在线性变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi_0: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\vec{u} \in \mathbb{E}^2</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>=</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\phi(P) = \phi_0(P) + \vec{u}</annotation></semantics></math> . 于是</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>S</mi><mo>)</mo></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mi>S</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>−</mo><mo>(</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mi>R</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mover><mrow><mi>R</mi><mi>S</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\overrightarrow {\phi (R) \phi (S)} = (\phi_ {0} (S) + \vec {u}) - (\phi_ {0} (R) + \vec {u}) = \phi_ {0} (\overrightarrow {R S}),</annotation></semantics></math></div>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mi>Q</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>−</mo><mo>(</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mi>P</mi><mo>)</mo><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mover><mrow><mi>P</mi><mi>Q</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><mi>λ</mi><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><mover><mrow><mi>R</mi><mi>S</mi></mrow><mo>→</mo></mover><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow {\phi (P) \phi (Q)} = (\phi_ {0} (Q) + \vec {u}) - (\phi_ {0} (P) + \vec {u}) = \phi_ {0} (\overrightarrow {P Q}) = \lambda \phi_ {0} (\overrightarrow {R S}).</annotation></semantics></math></div>
+<p>由此可知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>∥</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>S</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi (P)\phi (Q)\parallel \phi (R)\phi (S)</annotation></semantics></math> ，且</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>|</mo><mi>P</mi><mi>Q</mi><mo>|</mo></mrow><mrow><mo>|</mo><mi>R</mi><mi>S</mi><mo>|</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>|</mo></mrow><mrow><mo>|</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>|</mo></mrow></mfrac><mo>=</mo><mi>λ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac {| P Q |}{| R S |} = \frac {| \phi (P) \phi (Q) |}{| \phi (R) \phi (S) |} = \lambda .</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>设变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 对应的线性变换为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_0</annotation></semantics></math> , 其矩阵是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> . 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>P</mi><mi>Q</mi></mrow><mo>→</mo></mover><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mi>a</mi></mtd></mtr><mtr><mtd><mi>b</mi></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\overrightarrow{PQ} = \begin{pmatrix} a \\ b \end{pmatrix}</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>P</mi><mi>R</mi></mrow><mo>→</mo></mover><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><mi>c</mi></mtd></mtr><mtr><mtd><mi>d</mi></mtd></mtr></mtable><mo>)</mo></mrow></mrow><annotation encoding="application/x-tex">\overrightarrow{PR} = \begin{pmatrix} c \\ d \end{pmatrix}</annotation></semantics></math> , 则</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo></mrow><mo>→</mo></mover><mo>=</mo><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>a</mi></mrow><mrow><mi>b</mi></mrow></mfrac><mo>)</mo></mrow><mo>,</mo><mo> </mo><mover><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo></mrow><mo>→</mo></mover><mo>=</mo><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>c</mi></mrow><mrow><mi>d</mi></mrow></mfrac><mo>)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow {\phi (P) \phi (Q)} = A \binom{a}{b}, \quad \overrightarrow {\phi (P) \phi (R)} = A \binom{c}{d}.</annotation></semantics></math></div>
+<p>于是由</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mo>△</mo><mi>P</mi><mi>Q</mi><mi>R</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">|</mo><mo>det</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr><mtr><mtd><mi>c</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">|</mo></mrow><annotation encoding="application/x-tex">S _ {\triangle P Q R} = \frac {1}{2} \left| \det \left( \begin{array}{c c} a &amp; b \\ c &amp; d \end{array} \right) \right|</annotation></semantics></math></div>
+<p>以及</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mo>△</mo><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mi>ϕ</mi><mo>(</mo><mi>R</mi><mo>)</mo></mrow></msub><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">|</mo><mo>det</mo><mo stretchy="true">(</mo><mi>A</mi><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr><mtr><mtd><mi>c</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">)</mo><mo stretchy="true">|</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>|</mo><mo>det</mo><mi>A</mi><mo>|</mo><mo stretchy="true">|</mo><mo>det</mo><mo stretchy="true">(</mo><mtable><mtr><mtd><mi>c</mi><mi>c</mi><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr><mtr><mtd><mi>c</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable><mo stretchy="true">)</mo><mo stretchy="true">|</mo></mrow><annotation encoding="application/x-tex">S _ {\triangle \phi (P) \phi (Q) \phi (R)} = \frac {1}{2} \left| \det \left(A \left( \begin{array}{c c} a &amp; b \\ c &amp; d \end{array} \right)\right) \right| = \frac {1}{2} | \det A | \left| \det \left( \begin{array}{c c} a &amp; b \\ c &amp; d \end{array} \right) \right|</annotation></semantics></math></div>
+<p>即得欲证.</p>
+<p>把相似变换和仿射变换加到表格里, 得到:</p>
+<p>&lt;table&gt;&lt;tr&gt;&lt;td&gt;几何不变性质&lt;/td&gt;&lt;td&gt;变换(对称)&lt;/td&gt;&lt;td&gt;对称群&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保距, 保定向, 保到原点距离&lt;/td&gt;&lt;td&gt;旋转变换&lt;/td&gt;&lt;td&gt;&lt;eq&gt;SO(2)&lt;/eq&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保距, 保定向&lt;/td&gt;&lt;td&gt;刚体变换&lt;/td&gt;&lt;td&gt;&lt;eq&gt;SE(2)&lt;/eq&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保距&lt;/td&gt;&lt;td&gt;等距变换&lt;/td&gt;&lt;td&gt;&lt;eq&gt;E(2)&lt;/eq&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保角, 保长度比&lt;/td&gt;&lt;td&gt;相似变换&lt;/td&gt;&lt;td&gt;&lt;eq&gt;SIM(2)&lt;/eq&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;保平行性, 保平行线段长度比, 保面积比&lt;/td&gt;&lt;td&gt;仿射变换&lt;/td&gt;&lt;td&gt;&lt;eq&gt;AFF(2)&lt;/eq&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;??&lt;/td&gt;&lt;td&gt;??&lt;/td&gt;&lt;td&gt;??&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</p>
+<p>注意仿射变换的这几个性质都是“相似变换保长度比、保角”的推论, 所以我们再次看到, 群越大, 保持的性质就越少.</p>
+<p>克莱因关于几何和对称的思想与当时李以微分方程对称性为起点发展李群的思想是契合的. 事实上, 我们已经看到一些重要李群及其子群的例子. 学好李群对于学好几何非常重要. 最后一个问题 (这也是克莱因 1872 年演讲的一个要点):</p>
+<p>还有没有比仿射变换群“更大”的变换群, 以及相应的仍然“有趣”的几何?</p>
+<p>答案是肯定的：下一章将要学习的射影几何, 研究的是 (在某个扩大了的空间上) 射影变换, 即 “保持共线性 (它比保平行性更特殊), 保持交比 (它比保平行线段长度比更特殊)” 的变换. 于是, 变换群带着我们进入射影几何的新世界.</p>
+<p>当然, 上面所有变换都是很几何的: 至少还依然有直线的概念, 并始终只考虑把直线映为直线的变换. 如果进一步放松这个限制, 还可以进入拓扑学的广阔天地: 拓扑变换群是一个巨大的群, 在这样的变换下, 所保持的只有最基本的 “邻近关系”.</p></section>
+<section class="wb-seg" id="sec_4"><h3 class="wb-sec-title"><span class="wb-sec-num">习题</span> 习题 4</h3><ol class="wb-num-list"><li>等距变换与刚体变换</li></ol>
+<ol class="wb-num-list"><li>证明： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{2}</annotation></semantics></math> 的反射变换是等距变换, 但不是刚体变换.</li></ol>
+<ol class="wb-num-list"><li>证明：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>ϕ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_1, \phi_2</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的等距变换，但不是刚体变换，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mn>1</mn></mrow></msub><mo>∘</mo><msub><mi>ϕ</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\phi_1 \circ \phi_2</annotation></semantics></math> 是刚体变换.</li></ol>
+<ol class="wb-num-list"><li>等距变换群的表示</li></ol>
+<div class="wb-proof">
+  <div class="wb-blk-title"><span>证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{2}</annotation></semantics></math> 的等距变换群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>等</mi><mi>距</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_{等距}</annotation></semantics></math> 同构于欧氏群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">E(2)</annotation></semantics></math> .</span><span class="tag">证明</span></div>
+<p>证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>E</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">E^{2}</annotation></semantics></math> 的等距变换群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>等</mi><mi>距</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_{等距}</annotation></semantics></math> 同构于欧氏群 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">E(2)</annotation></semantics></math> .</p>
+</div>
+<ol class="wb-num-list"><li>刚体变换：旋转与平移</li></ol>
+<p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 的刚体变换群, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">G_{1}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中所有平移变换构成的群, 而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^3</annotation></semantics></math> 中所有旋转变换 (保持原点不变) 构成的群.</p>
+<ol class="wb-num-list"><li>证明：若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\tau \in G_1</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><msub><mi>G</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">R \in G_2</annotation></semantics></math> ，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∘</mo><mi>τ</mi><mo>∘</mo><msup><mi>R</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>∈</mo><msub><mi>G</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">R \circ \tau \circ R^{-1} \in G_1</annotation></semantics></math> .</li></ol>
+<ol class="wb-num-list"><li>我们在正文中证明了任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">\phi \in G</annotation></semantics></math> 可被表示为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mi>τ</mi><mo>∘</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">\phi = \tau \circ R</annotation></semantics></math> , 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\tau \in G_1</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><msub><mi>G</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">R \in G_2</annotation></semantics></math> . 证明: 存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mi>&#x27;</mi><mo>∈</mo><msub><mi>G</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\tau&#x27; \in G_1</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mi>R</mi><mo>∘</mo><mi>τ</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">\phi = R \circ \tau&#x27;</annotation></semantics></math> .</li></ol>
+<ol class="wb-num-list"><li>证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">G_{1}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的一个正规子群①.</li></ol>
+<ol class="wb-num-list"><li>证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的子群. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 的正规子群吗? 为什么?</li></ol>
+<ol class="wb-num-list"><li>取定 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P \in \mathbb{E}^3</annotation></semantics></math> . 令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>P</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_P</annotation></semantics></math> 为所有保持 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math> 点不动的刚体变换构成的集合. 试给出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>P</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_P</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">G_2</annotation></semantics></math> 的关系.</li></ol>
+<p><b>4. 相似变换</b></p>
+<ol class="wb-num-list"><li>证明：若在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>B</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\triangle ABC</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>&#x27;</mi><mi>B</mi><mi>&#x27;</mi><mi>C</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">\triangle A&#x27;B&#x27;C&#x27;</annotation></semantics></math> 相似，则存在相似变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\Phi: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 使得</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Φ</mi><mo>(</mo><mo>△</mo><mi>A</mi><mi>B</mi><mi>C</mi><mo>)</mo><mo>=</mo><mo>△</mo><msup><mi>A</mi><mrow><mo>′</mo></mrow></msup><msup><mi>B</mi><mrow><mo>′</mo></mrow></msup><msup><mi>C</mi><mrow><mo>′</mo></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\Phi (\triangle A B C) = \triangle A ^ {\prime} B ^ {\prime} C ^ {\prime}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个相似变换, 且它不是等距变换. 求证: 存在唯一的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P \in \mathbb{E}^2</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>=</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">\phi(P) = P</annotation></semantics></math> . (这个点被称为相似中心.)</li></ol>
+<ol class="wb-num-list"><li>证明：映射 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是相似变换当且仅当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 保持线段的比例，即对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>≠</mo><mi>Q</mi><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P \neq Q \in \mathbb{E}^2</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msub><mi>d</mi><mrow><mi>E</mi></mrow></msub><mo>(</mo><mi>Φ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>,</mo><mi>Φ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>)</mo></mrow><mrow><msub><mi>d</mi><mrow><mi>E</mi></mrow></msub><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{d_E(\Phi(P), \Phi(Q))}{d_E(P, Q)}</annotation></semantics></math> 是非零常值.</li></ol>
+<p><b>5. 仿射变换的应用</b></p>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>geqslant</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">n \geqslant 3</annotation></semantics></math> 是奇数. 证明: 椭圆上存在内接 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 边形, 使得椭圆在该 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 边形每个顶点处的切线都平行于该顶点相对的边.</li></ol>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo><mi>Q</mi><mo>,</mo><mi>R</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P, Q, R \in \mathbb{R}^2</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>&#x27;</mi><mo>,</mo><mi>Q</mi><mi>&#x27;</mi><mo>,</mo><mi>R</mi><mi>&#x27;</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P&#x27;, Q&#x27;, R&#x27; \in \mathbb{R}^2</annotation></semantics></math> 为两组不共线的点. 证明: 存在唯一的仿射变换</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mi>longrightarrow</mi><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi : \mathbb {R} ^ {2} \longrightarrow \mathbb {R} ^ {2}</annotation></semantics></math></div>
+<p>使得</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>=</mo><msup><mi>P</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo> </mo><mi>φ</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>=</mo><msup><mi>Q</mi><mrow><mo>′</mo></mrow></msup><mo>,</mo><mo> </mo><mi>φ</mi><mo>(</mo><mi>R</mi><mo>)</mo><mo>=</mo><msup><mi>R</mi><mrow><mo>′</mo></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi (P) = P ^ {\prime}, \quad \varphi (Q) = Q ^ {\prime}, \quad \varphi (R) = R ^ {\prime}.</annotation></semantics></math></div>
+<p>进一步证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math> 将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>P</mi><mi>Q</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">\triangle PQR</annotation></semantics></math> 的重心映为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>P</mi><mi>&#x27;</mi><mi>Q</mi><mi>&#x27;</mi><mi>R</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">\triangle P&#x27;Q&#x27;R&#x27;</annotation></semantics></math> 的重心.</p>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math> 是空间中的一个椭球面. 设方向为向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec{v}</annotation></semantics></math> 的一束平行光线照射 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math> , 其中部分光线跟 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math> 相切. 记切点在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math> 上所形成的曲线为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> . 证明: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> 落在一张过椭球中心的平面上.</li></ol>
+<p><b>6. 一般坐标系</b></p>
+<p>令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mi>longrightarrow</mi><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi : \mathbb{E}^2 \longrightarrow \mathbb{E}^2</annotation></semantics></math> 为仿射变换, 记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>O</mi><mo>)</mo><mo>=</mo><mi>O</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">\phi(O) = O&#x27;</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>ϕ</mi></mrow><mo>~</mo></mover><mo>=</mo><msub><mi>τ</mi><mrow><mo>−</mo><mi>O</mi><mi>&#x27;</mi></mrow></msub><mo>∘</mo><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\tilde{\phi} = \tau_{-O&#x27;} \circ \phi</annotation></semantics></math> , 记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>ϕ</mi></mrow><mo>~</mo></mover><mo>(</mo><munderover><mrow><mi>i</mi></mrow><mrow><mi>e</mi></mrow><mo>→</mo></munderover><mo>)</mo><mo>=</mo><munderover><mrow><mi>i</mi></mrow><mrow><mi>e</mi></mrow><mo>→</mo></munderover><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">\tilde{\phi}(\vec{e}_i) = \vec{e}_i&#x27;</annotation></semantics></math> , <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">i = 1, 2</annotation></semantics></math> . 试证: 对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\vec{u} \in \mathbb{E}^2</annotation></semantics></math> , 存在唯一系数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>&#x27;</mi><mo>,</mo><mi>y</mi><mi>&#x27;</mi></mrow><annotation encoding="application/x-tex">x&#x27;, y&#x27;</annotation></semantics></math> , 使得</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>=</mo><msup><mi>x</mi><mrow><mo>′</mo></mrow></msup><mo>·</mo><mover><mrow><msubsup><mi>e</mi><mrow><mn>1</mn></mrow><mrow><mo>′</mo></mrow></msubsup></mrow><mo>→</mo></mover><mo>+</mo><msup><mi>y</mi><mrow><mo>′</mo></mrow></msup><mo>·</mo><mover><mrow><msubsup><mi>e</mi><mrow><mn>2</mn></mrow><mrow><mo>′</mo></mrow></msubsup></mrow><mo>→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">\vec {u} = x ^ {\prime} \cdot \vec {e _ {1} ^ {\prime}} + y ^ {\prime} \cdot \vec {e _ {2} ^ {\prime}},</annotation></semantics></math></div>
+<p>从而 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><mi>O</mi><mi>&#x27;</mi><mo>;</mo><munderover><mrow><mn>1</mn></mrow><mrow><mi>e</mi></mrow><mo>→</mo></munderover><mi>&#x27;</mi><mo>,</mo><munderover><mrow><mn>2</mn></mrow><mrow><mi>e</mi></mrow><mo>→</mo></munderover><mi>&#x27;</mi><mo>}</mo></mrow><annotation encoding="application/x-tex">\{O&#x27;;\vec{e}_1&#x27;,\vec{e}_2&#x27;\}</annotation></semantics></math> 可以看作 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的一个新“坐标系”： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 中的每一点由唯一的一个数对</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mi>&#x27;</mi><mo>,</mo><mi>y</mi><mi>&#x27;</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(x&#x27;, y&#x27;)</annotation></semantics></math> 所代表.</p>
+<ol class="wb-num-list"><li>一个简单的变换群</li></ol>
+<p>令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math> 为一个平面, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math> 中的一条直线, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math> 为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 中的一个点. 考虑由满足条件</p>
+<ul><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∀</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>∈</mo><mi>X</mi><mo>,</mo><mi>P</mi><mi>Q</mi><mo>≅</mo><mi>T</mi><mo>(</mo><mi>P</mi><mo>)</mo><mi>T</mi><mo>(</mo><mi>Q</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\forall P, Q \in X, PQ \cong T(P)T(Q)</annotation></semantics></math> . </li></ul>
+<ul><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>∈</mo><mi>l</mi><mo>⇔</mo><mi>T</mi><mo>(</mo><mi>P</mi><mo>)</mo><mo>∈</mo><mi>l</mi></mrow><annotation encoding="application/x-tex">P \in l \iff T(P) \in l</annotation></semantics></math> . </li></ul>
+<ul><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>(</mo><mi>O</mi><mo>)</mo><mo>=</mo><mi>O</mi></mrow><annotation encoding="application/x-tex">T(O) = O</annotation></semantics></math> </li></ul>
+<p>的变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>:</mo><mi>X</mi><mo>→</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">T: X \to X</annotation></semantics></math> 所组成的集合 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> .</p>
+<ol class="wb-num-list"><li>证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>G</mi><mo>,</mo><mo>∘</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">(G, \circ)</annotation></semantics></math> 是一个群, 其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∘</mo></mrow><annotation encoding="application/x-tex">\circ</annotation></semantics></math> 表示变换的复合.</li></ol>
+<ol class="wb-num-list"><li>写出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 中所有的元素, 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math> 中任意两个元素在复合下的结果.</li></ol>
+<ol class="wb-num-list"><li>保持双曲线不变的变换</li></ol>
+<p>考虑平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^2</annotation></semantics></math> 中的双曲线</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒞</mi><mo>=</mo><mo>{</mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>∣</mo><mi>x</mi><mi>y</mi><mo>=</mo><mn>1</mn><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathcal {C} = \{(x, y) \mid x y = 1 \}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>求所有满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>𝒞</mi><mo>)</mo><mo>=</mo><mi>𝒞</mi></mrow><annotation encoding="application/x-tex">\varphi(\mathcal{C}) = \mathcal{C}</annotation></semantics></math> 的等距变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi: \mathbb{R}^2 \to \mathbb{R}^2</annotation></semantics></math> .</li></ol>
+<ol class="wb-num-list"><li>求所有满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>𝒞</mi><mo>)</mo><mo>=</mo><mi>𝒞</mi></mrow><annotation encoding="application/x-tex">\varphi(\mathcal{C}) = \mathcal{C}</annotation></semantics></math> 的仿射变换 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi: \mathbb{R}^2 \to \mathbb{R}^2</annotation></semantics></math> .</li></ol>
+<ol class="wb-num-list"><li>仿射分类</li></ol>
+<ol class="wb-num-list"><li>证明：任意两个平行四边形都是仿射等价的.</li></ol>
+<ol class="wb-num-list"><li>任意两个梯形仿射等价吗?</li></ol>
+<ol class="wb-num-list"><li>证明图形的凸性在仿射变换下不变, 并给出凸四边形的仿射分类.</li></ol>
+<ol class="wb-num-list"><li>给出平面二次曲线的仿射分类.</li></ol>
+<ol class="wb-num-list"><li>特殊仿射变换</li></ol>
+<ol class="wb-num-list"><li>对于任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda, \mu &gt; 0</annotation></semantics></math> , 称形如</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>λ</mi><mo>,</mo><mi>μ</mi></mrow></msub><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>→</mo><mo>(</mo><mi>λ</mi><mi>x</mi><mo>,</mo><mi>μ</mi><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi_ {\lambda , \mu}: \mathbb {E} ^ {2} \to \mathbb {E} ^ {2}, (x, y) \to (\lambda x, \mu y)</annotation></semantics></math></div>
+<p>的变换为伸缩变换. 证明：所有伸缩变换构成仿射变换群的一个子群.</p>
+<ol class="wb-num-list"><li>证明： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{E}^2</annotation></semantics></math> 的每个仿射变换可被写成一个平移变换、一个伸缩变换和不超过两个等距变换的复合.</li></ol>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{E}^2 \to \mathbb{E}^2</annotation></semantics></math> 是一个变换, 保平行性且保平行线段的长度比. 求证: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 是一个仿射变换.</li></ol></section>
+<section class="wb-seg" id="sec_5"><h3 class="wb-sec-title"><span class="wb-sec-num">思考题</span> 思考题 4</h3><p>I. 保面积的变换</p>
+<p>考虑 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>L</mi><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">GL(2)</annotation></semantics></math> 的子群</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msup><mi>L</mi><mrow><mo>±</mo></mrow></msup><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>{</mo><mi>A</mi><mo>∈</mo><msub><mi>M</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mi>ℝ</mi><mo>)</mo><mo>|</mo><mo>det</mo><mi>A</mi><mo>=</mo><mo>±</mo><mn>1</mn><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">S L ^ {\pm} (2) = \{A \in M _ {2} (\mathbb {R}) | \det A = \pm 1 \}.</annotation></semantics></math></div>
+<p>对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mi>S</mi><msup><mi>L</mi><mrow><mo>±</mo></mrow></msup><mo>(</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A \in SL^{\pm}(2)</annotation></semantics></math> 以及 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\vec{u} \in \mathbb{E}^2</annotation></semantics></math> , 考虑变换</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>:</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mo>,</mo><mo> </mo><mi>varPhi</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>=</mo><mi>A</mi><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>x</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\phi_ {A, \vec {u}}: \mathbb {R} ^ {2} \to \mathbb {R} ^ {2}, \quad \varPhi (x, y) = A \binom {x} {y} + \vec {u}.</annotation></semantics></math></div>
+<p>记</p>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>面积</mtext></mrow></msub><mo>=</mo><mo>{</mo><msub><mi>ϕ</mi><mrow><mi>A</mi><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover></mrow></msub><mo>∣</mo><mi>A</mi><mo>∈</mo><mi>S</mi><msup><mi>L</mi><mrow><mo>±</mo></mrow></msup><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mover><mrow><mi>u</mi></mrow><mo>→</mo></mover><mo>∈</mo><msup><mi>𝔼</mi><mrow><mn>2</mn></mrow></msup><mo>}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">G _ {\text {面积}} = \{\phi_ {A, \vec {u}} \mid A \in S L ^ {\pm} (2), \vec {u} \in \mathbb {E} ^ {2} \}.</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>证明: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>面积</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">G_{\text {面积}}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>仿射</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">G_{\text {仿射}}</annotation></semantics></math> 的子群.</li></ol>
+<ol class="wb-num-list"><li>举例: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mtext>面积</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">\phi \in G_{\text {面积}}</annotation></semantics></math> 但 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 不保持角度不变.</li></ol>
+<ol class="wb-num-list"><li>证明：任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mtext>面积</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">\phi \in G_{\text{面积}}</annotation></semantics></math> 保持三角形的面积不变 (从而保持更一般的区域面积不变).</li></ol>
+<ol class="wb-num-list"><li>反之, 证明: 若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mtext>仿射</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">\phi \in G_{\text{仿射}}</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math> 保持任意三角形的面积不变, 则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>∈</mo><msub><mi>G</mi><mrow><mtext>面积</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">\phi \in G_{\text{面积}}</annotation></semantics></math> .</li></ol>
+<ol class="wb-num-list"><li>举例： <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{R}^2 \to \mathbb{R}^2</annotation></semantics></math> 保持任意区域面积不变, 但不是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mtext>仿射</mtext></mrow></msub></mrow><annotation encoding="application/x-tex">G_{\text{仿射}}</annotation></semantics></math> 中的元素.</li></ol>
+<ol class="wb-num-list"><li>描述 “保定向面积”.</li></ol>
+<p>Ⅱ. 仿射变换的刻画：保直线</p>
+<ol class="wb-num-list"><li>假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup><mo>→</mo><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi: \mathbb{R}^2 \to \mathbb{R}^2</annotation></semantics></math> 是一个把任意直线均映为直线的变换, 且存在三点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>,</mo><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">O, A, B</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>△</mo><mi>A</mi><mi>O</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\triangle AOB</annotation></semantics></math> 是一个等腰直角三角形, 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mi>O</mi><mo>)</mo><mo>=</mo><mi>O</mi><mo>,</mo><mi>φ</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>=</mo><mi>A</mi><mo>,</mo><mi>φ</mi><mo>(</mo><mi>B</mi><mo>)</mo><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">\varphi(O) = O, \varphi(A) = A, \varphi(B) = B</annotation></semantics></math> .</li></ol>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>A</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_{1}, A_{2}, A_{3}</annotation></semantics></math> 位于直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">OA</annotation></semantics></math> 上, 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub></mrow><mo>→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>3</mn></mrow></msub></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OA_1} + \overrightarrow{OA_2} = \overrightarrow{OA_3}</annotation></semantics></math> , 证明</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub></mrow><mo>→</mo></mover><mo>)</mo><mo>+</mo><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>3</mn></mrow></msub></mrow><mo>→</mo></mover><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi (\overrightarrow {O A _ {1}}) + \varphi (\overrightarrow {O A _ {2}}) = \varphi (\overrightarrow {O A _ {3}}).</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_{1}, A_{2}</annotation></semantics></math> 位于直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">OA</annotation></semantics></math> 上, 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>2</mn></mrow><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></munderover><mo>·</mo><mover><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></mover><mo>=</mo><munderover><mrow><mn>1</mn></mrow><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></munderover><mo>·</mo><munderover><mrow><mn>1</mn></mrow><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></munderover></mrow><annotation encoding="application/x-tex">\overrightarrow{OA}_{2} \cdot \overrightarrow{OA} = \overrightarrow{OA}_{1} \cdot \overrightarrow{OA}_{1}</annotation></semantics></math> , 证明</li></ol>
+<div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>2</mn></mrow></msub></mrow><mo>→</mo></mover><mo>)</mo><mo>·</mo><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><mi>A</mi></mrow><mo>→</mo></mover><mo>)</mo><mo>=</mo><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub></mrow><mo>→</mo></mover><mo>)</mo><mo>·</mo><mi>φ</mi><mo>(</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mrow><mn>1</mn></mrow></msub></mrow><mo>→</mo></mover><mo>)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi (\overrightarrow {O A _ {2}}) \cdot \varphi (\overrightarrow {O A}) = \varphi (\overrightarrow {O A _ {1}}) \cdot \varphi (\overrightarrow {O A _ {1}}).</annotation></semantics></math></div>
+<ol class="wb-num-list"><li>根据以上结果, 证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math> 必须是恒等映射.</li></ol>
+<ol class="wb-num-list"><li>证明若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^2</annotation></semantics></math> 的一个变换把直线映为直线, 则它必须是仿射变换.</li></ol>
+<ol class="wb-num-list"><li>证明若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℝ</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^2</annotation></semantics></math> 的一个变换把直线映为直线, 把圆映为圆, 则它一定是相似变换.</li></ol></section>
+  </div>
+
+  <div class="wb-book-nav"><a class="wb-nav-btn prev" href="textbook-geometry-101-ch03.html">‹ 上一章：刚体变换</a><a class="wb-nav-btn hub" href="course-geometry.html?tab=textbook">📚 返回教材库</a><a class="wb-nav-btn next" href="textbook-geometry-101-ch05.html">下一章：射影平面与射影变换 ›</a></div>
+</main>
+
+<!-- 全书目录抽屉 -->
+<aside class="wb-drawer" id="wb-toc-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">📑 全书章节目录</div>
+    <button class="wb-drawer-close" id="wb-toc-close">×</button>
+  </div>
+  <div class="wb-drawer-body">
+    <ul class="wb-toc-list">
+      <li><a href="textbook-geometry-101-ch01.html">第 1 章 ｜ 几何与公理化</a></li>
+<li><a href="textbook-geometry-101-ch02.html">第 2 章 ｜ 向量与欧氏空间</a></li>
+<li><a href="textbook-geometry-101-ch03.html">第 3 章 ｜ 刚体变换</a></li>
+<li><a href="textbook-geometry-101-ch04.html" class="cur">第 4 章 ｜ 几何与变换</a></li>
+<li><a href="textbook-geometry-101-ch05.html">第 5 章 ｜ 射影平面与射影变换</a></li>
+<li><a href="textbook-geometry-101-ch06.html">第 6 章 ｜ 拓扑空间与拓扑变换</a></li>
+<li><a href="textbook-geometry-101-chA.html">第 A 章 ｜ 附录  集合论与代数基础</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- 我的批注抽屉 -->
+<aside class="wb-drawer" id="wb-notes-drawer">
+  <div class="wb-drawer-head">
+    <div class="wb-drawer-title">🖍️ 本章高亮与便签 (<span id="wb-drawer-notes-count">0</span>)</div>
+    <button class="wb-drawer-close" id="wb-notes-close">×</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-notes-list">
+    <div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>
+  </div>
+</aside>
+
+<!-- 划选悬浮菜单 -->
+<div id="wb-hl-popover" class="wb-hl-popover">
+  <div class="wb-hl-color-dot wb-hl-dot-yellow" data-color="yellow" title="🟡 核心考点"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-green" data-color="green" title="🟢 概念定义"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-red" data-color="red" title="🔴 易错警示"></div>
+  <div class="wb-hl-color-dot wb-hl-dot-purple" data-color="purple" title="🟣 解题技巧"></div>
+  <button class="wb-hl-btn-wavy" data-color="wavy" title="〰️ 重点波浪线">〰️</button>
+  <button class="wb-hl-btn-note" id="wb-hl-add-note">💬 批注</button>
+  <button class="wb-hl-btn-del" id="wb-hl-btn-del" style="display:none;" title="删除此标注">🗑️</button>
+</div>
+
+<!-- 便签输入弹窗 -->
+<div id="wb-note-modal" class="wb-note-modal">
+  <div class="wb-note-card">
+    <h4 style="margin:0;font-size:15px;font-weight:600;">📝 添加 / 编辑学习笔记</h4>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea class="wb-note-textarea" id="wb-note-input" placeholder="写下你的思考、引申证明或疑难提示..."></textarea>
+    <div class="wb-note-actions">
+      <button class="wb-tool-btn" id="wb-note-del-btn" style="color:var(--warn);display:none;">删除批注</button>
+      <button class="wb-tool-btn" id="wb-note-close">取消</button>
+      <button class="wb-nav-btn hub" id="wb-note-save-btn" style="padding:5px 16px;">保存笔记</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+本教材纯净阅读页为全离线生成，数学公式已在构建期编译为原生标准 MathML 并通过 MathJax 渲染。<br>
+双击即可在任意浏览器直接阅读，所有高亮标注与笔记自动保存在浏览器本地存储中。
+</footer>
+
+<script>
+window.BOOK_PAGE = {
+  page_id: "book_geometry-101_ch04",
+  book_id: "geometry-101",
+  ch_id: "ch04",
+  title: "几何与变换"
+};
+</script>
+
+<script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+
+<script>
+/* ---------- 教材阅读交互系统 (高亮/笔记/深浅色/目录/字号) ---------- */
+(function(){
+  var PAGE_ID = window.BOOK_PAGE.page_id;
+
+  // 1. 阅读进度与断点记录
+  var progEl = document.getElementById('wb-read-prog');
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = sh > 0 ? Math.min(100, Math.max(0, Math.round((st / sh) * 100))) : 0;
+    if (progEl) progEl.style.width = pct + '%';
+  });
+
+  // 2. 深浅色切换（修复：始终显式设置明暗两态，暗色OS下也尊重用户浅色偏好）
+  var themeBtn = document.getElementById('theme-btn');
+  function updateThemeUI(isDark) {
+    if (themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  var storedTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme');
+  var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.body.classList.toggle('wb-dark', isDark);
+  document.body.classList.toggle('wb-light', !isDark);
+  updateThemeUI(isDark);
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function(){
+      var darkNow = document.body.classList.toggle('wb-dark');
+      document.body.classList.toggle('wb-light', !darkNow);
+      document.documentElement.setAttribute('data-theme', darkNow ? 'dark' : 'light');
+      (window.WB_STORAGE||localStorage).setItem('wb_theme', darkNow ? 'dark' : 'light');
+      updateThemeUI(darkNow);
+    });
+  }
+
+  // 3. 字号缩放
+  var contentEl = document.getElementById('wb-book-content');
+  var curFontSize = parseInt((window.WB_STORAGE||localStorage).getItem('wb_book_fontsize') || '15', 10);
+  function applyFontSize(fs) {
+    if (contentEl) contentEl.style.fontSize = fs + 'px';
+    (window.WB_STORAGE||localStorage).setItem('wb_book_fontsize', fs);
+  }
+  applyFontSize(curFontSize);
+  document.getElementById('wb-btn-font-inc').onclick = function(){
+    if (curFontSize < 22) { curFontSize += 1; applyFontSize(curFontSize); }
+  };
+  document.getElementById('wb-btn-font-dec').onclick = function(){
+    if (curFontSize > 13) { curFontSize -= 1; applyFontSize(curFontSize); }
+  };
+
+  // 4. 抽屉控制
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var notesDrawer = document.getElementById('wb-notes-drawer');
+  document.getElementById('wb-btn-toc').onclick = function(){
+    tocDrawer.classList.toggle('wb-open');
+    notesDrawer.classList.remove('wb-open');
+  };
+  document.getElementById('wb-toc-close').onclick = function(){ tocDrawer.classList.remove('wb-open'); };
+  document.getElementById('wb-btn-notes').onclick = function(){
+    notesDrawer.classList.toggle('wb-open');
+    tocDrawer.classList.remove('wb-open');
+    updateNotesDrawer();
+  };
+  document.getElementById('wb-notes-close').onclick = function(){ notesDrawer.classList.remove('wb-open'); };
+
+  // 5. 荧光笔与便签批注系统
+  var hlPopover = document.getElementById('wb-hl-popover');
+  var noteModal = document.getElementById('wb-note-modal');
+  var noteQuote = document.getElementById('wb-note-quote');
+  var noteInput = document.getElementById('wb-note-input');
+  var noteClose = document.getElementById('wb-note-close');
+  var noteSaveBtn = document.getElementById('wb-note-save-btn');
+  var noteDelBtn = document.getElementById('wb-note-del-btn');
+  var btnDelInPop = document.getElementById('wb-hl-btn-del');
+  var btnAddNote = document.getElementById('wb-hl-add-note');
+
+  var currentSelectionRange = null;
+  var currentActiveHlId = null;
+
+  function getStoredHighlights() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + PAGE_ID) || '[]');
+    } catch(e) { return []; }
+  }
+  function saveStoredHighlights(list) {
+    (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
+    updateNotesDrawer();
+  }
+
+  function handleTextSelect(e) {
+    if (noteModal && noteModal.classList.contains('wb-open')) return;
+    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if (hlPopover && !currentActiveHlId) hlPopover.style.display = 'none';
+      return;
+    }
+    var text = sel.toString().trim();
+    if (text.length === 0 || text.length > 500) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    var range = sel.getRangeAt(0);
+    var common = range.commonAncestorContainer;
+    var el = common.nodeType === 1 ? common : common.parentElement;
+    if (el && (el.closest('header') || el.closest('.wb-drawer'))) {
+      if (hlPopover) hlPopover.style.display = 'none';
+      return;
+    }
+
+    currentSelectionRange = range;
+    currentActiveHlId = null;
+    if (btnDelInPop) btnDelInPop.style.display = 'none';
+
+    var rect = range.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  document.addEventListener('mouseup', handleTextSelect);
+  document.addEventListener('touchend', function(e){ setTimeout(function(){ handleTextSelect(e); }, 80); });
+
+  function wrapRangeWithHl(range, hlId, color, note) {
+    var startNode = range.startContainer;
+    var endNode = range.endContainer;
+
+    if (startNode === endNode && startNode.nodeType === Node.TEXT_NODE) {
+      var val = startNode.nodeValue;
+      var s = range.startOffset, e = range.endOffset;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = startNode.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), startNode);
+      parent.insertBefore(mark, startNode);
+      if (after) parent.insertBefore(document.createTextNode(after), startNode);
+      parent.removeChild(startNode);
+      return;
+    }
+
+    var walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(n) {
+          if (!range.intersectsNode(n)) return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var textNodes = [];
+    var cur;
+    while (cur = walker.nextNode()) textNodes.push(cur);
+
+    textNodes.forEach(function(node) {
+      var s = (node === range.startContainer) ? range.startOffset : 0;
+      var e = (node === range.endContainer) ? range.endOffset : node.nodeValue.length;
+      if (s >= e) return;
+
+      var val = node.nodeValue;
+      var before = val.substring(0, s), mid = val.substring(s, e), after = val.substring(e);
+
+      var mark = document.createElement('mark');
+      mark.className = 'wb-user-hl wb-user-hl-' + color + (note ? ' wb-user-hl-has-note' : '');
+      mark.setAttribute('data-hl-id', hlId);
+      mark.setAttribute('data-color', color);
+      if (note) mark.setAttribute('data-note', note);
+      mark.textContent = mid;
+      mark.addEventListener('click', onHighlightClick);
+
+      var parent = node.parentNode;
+      if (before) parent.insertBefore(document.createTextNode(before), node);
+      parent.insertBefore(mark, node);
+      if (after) parent.insertBefore(document.createTextNode(after), node);
+      parent.removeChild(node);
+    });
+  }
+
+  function onHighlightClick(e) {
+    e.stopPropagation();
+    var mark = e.currentTarget;
+    var hlId = mark.getAttribute('data-hl-id');
+    if (!hlId) return;
+
+    var list = getStoredHighlights();
+    var item = list.find(function(x){ return x.id === hlId; });
+    if (!item) return;
+
+    currentActiveHlId = hlId;
+    currentSelectionRange = null;
+
+    var rect = mark.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - 46;
+    var left = Math.max(10, Math.min(window.innerWidth - 240, window.pageXOffset + rect.left + (rect.width / 2) - 100));
+
+    if (btnDelInPop) btnDelInPop.style.display = 'inline-block';
+    if (hlPopover) {
+      hlPopover.style.top = top + 'px';
+      hlPopover.style.left = left + 'px';
+      hlPopover.style.display = 'flex';
+    }
+  }
+
+  function applyColorHighlight(color) {
+    if (currentActiveHlId) {
+      var list = getStoredHighlights();
+      var item = list.find(function(x){ return x.id === currentActiveHlId; });
+      if (item) {
+        item.color = color;
+        saveStoredHighlights(list);
+        document.querySelectorAll('[data-hl-id="' + currentActiveHlId + '"]').forEach(function(m) {
+          m.className = 'wb-user-hl wb-user-hl-' + color + (item.note ? ' wb-user-hl-has-note' : '');
+          m.setAttribute('data-color', color);
+        });
+      }
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+      return;
+    }
+
+    if (!currentSelectionRange) return;
+    var text = currentSelectionRange.toString().trim();
+    if (!text) return;
+
+    var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+    wrapRangeWithHl(currentSelectionRange, hlId, color, '');
+
+    var list = getStoredHighlights();
+    list.push({
+      id: hlId,
+      text: text,
+      color: color,
+      note: '',
+      time: Date.now()
+    });
+    saveStoredHighlights(list);
+
+    window.getSelection().removeAllRanges();
+    currentSelectionRange = null;
+    if (hlPopover) hlPopover.style.display = 'none';
+  }
+
+  hlPopover.querySelectorAll('[data-color]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyColorHighlight(el.getAttribute('data-color'));
+    });
+  });
+
+  if (btnDelInPop) {
+    btnDelInPop.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentActiveHlId) return;
+      deleteHighlight(currentActiveHlId);
+      if (hlPopover) hlPopover.style.display = 'none';
+      currentActiveHlId = null;
+    });
+  }
+
+  function deleteHighlight(hlId) {
+    var list = getStoredHighlights().filter(function(x){ return x.id !== hlId; });
+    saveStoredHighlights(list);
+    document.querySelectorAll('[data-hl-id="' + hlId + '"]').forEach(function(m) {
+      var parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+    });
+  }
+
+  if (btnAddNote) {
+    btnAddNote.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var quote = '';
+      var noteVal = '';
+      var targetHlId = currentActiveHlId;
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) { quote = item.text; noteVal = item.note || ''; }
+      } else if (currentSelectionRange) {
+        quote = currentSelectionRange.toString().trim();
+      }
+
+      if (!quote) return;
+      noteQuote.textContent = quote;
+      noteInput.value = noteVal;
+      noteModal.setAttribute('data-target-hl', targetHlId || '');
+      noteDelBtn.style.display = (targetHlId && noteVal) ? 'inline-block' : 'none';
+      noteModal.classList.add('wb-open');
+      noteInput.focus();
+      if (hlPopover) hlPopover.style.display = 'none';
+    });
+  }
+
+  if (noteClose) {
+    noteClose.onclick = function(){ noteModal.classList.remove('wb-open'); };
+  }
+
+  if (noteSaveBtn) {
+    noteSaveBtn.onclick = function(){
+      var targetHlId = noteModal.getAttribute('data-target-hl');
+      var val = noteInput.value.trim();
+
+      if (targetHlId) {
+        var list = getStoredHighlights();
+        var item = list.find(function(x){ return x.id === targetHlId; });
+        if (item) {
+          item.note = val;
+          saveStoredHighlights(list);
+          document.querySelectorAll('[data-hl-id="' + targetHlId + '"]').forEach(function(m) {
+            if (val) {
+              m.classList.add('wb-user-hl-has-note');
+              m.setAttribute('data-note', val);
+            } else {
+              m.classList.remove('wb-user-hl-has-note');
+              m.removeAttribute('data-note');
+            }
+          });
+        }
+      } else if (currentSelectionRange) {
+        var text = currentSelectionRange.toString().trim();
+        var hlId = 'hl_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        wrapRangeWithHl(currentSelectionRange, hlId, 'yellow', val);
+        var list = getStoredHighlights();
+        list.push({
+          id: hlId,
+          text: text,
+          color: 'yellow',
+          note: val,
+          time: Date.now()
+        });
+        saveStoredHighlights(list);
+        window.getSelection().removeAllRanges();
+      }
+
+      noteModal.classList.remove('wb-open');
+      currentActiveHlId = null;
+      currentSelectionRange = null;
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    var countEl = document.getElementById('wb-notes-count');
+    var dCountEl = document.getElementById('wb-drawer-notes-count');
+    if (countEl) countEl.textContent = list.length;
+    if (dCountEl) dCountEl.textContent = list.length;
+
+    var container = document.getElementById('wb-notes-list');
+    if (!container) return;
+    if (!list.length) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">在正文中划选文字即可添加荧光笔标注或便签笔记。</div>';
+      return;
+    }
+
+    var h = '';
+    list.forEach(function(item) {
+      var dotColor = item.color === 'yellow' ? '#ffd644' : item.color === 'green' ? '#62d871' : item.color === 'red' ? '#ff6565' : item.color === 'purple' ? '#c68aff' : '#e05252';
+      h += '<div class="wb-note-item" onclick="jumpToHighlight(\'' + item.id + '\')">' +
+           '<div class="wb-note-item-quote" style="border-left:3px solid ' + dotColor + ';padding-left:6px;">“' + esc(item.text) + '”</div>' +
+           (item.note ? '<div class="wb-note-item-text">💬 ' + esc(item.note) + '</div>' : '<div style="font-size:12px;color:var(--muted)">重点划线</div>') +
+           '</div>';
+    });
+    container.innerHTML = h;
+  }
+
+  window.jumpToHighlight = function(hlId) {
+    var target = document.querySelector('[data-hl-id="' + hlId + '"]');
+    if (target) {
+      notesDrawer.classList.remove('wb-open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.transition = 'outline .2s';
+      target.style.outline = '3px solid var(--accent)';
+      setTimeout(function(){ target.style.outline = 'none'; }, 1400);
+    }
+  };
+
+  function restoreHighlights() {
+    var list = getStoredHighlights();
+    if (!list.length) return;
+    var body = document.querySelector('.wb-book-body');
+    if (!body) return;
+
+    list.forEach(function(item) {
+      if (!item.text) return;
+      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(item.text);
+        if (idx !== -1) {
+          var range = document.createRange();
+          range.setStart(node, idx);
+          range.setEnd(node, idx + item.text.length);
+          wrapRangeWithHl(range, item.id, item.color, item.note);
+          break;
+        }
+      }
+    });
+    updateNotesDrawer();
+  }
+
+  restoreHighlights();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>分析学Ⅰ · 第 05 周作业（函数极限计算、Cauchy 准则、间断点分类、单调函数连续性）</title>
+  <style>
+  
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+/* 基础导航条与主题变量 */
+:root {
+  --wb-bg: #ffffff;
+  --wb-surface: #f7f7f5;
+  --wb-surface2: #fbfbf9;
+  --wb-text: #1f2328;
+  --wb-muted: #6b7280;
+  --wb-border: #e3e6ec;
+  --wb-accent: #0f6e56;
+  --wb-accent2: #185fa5;
+  --wb-h-color: #1a3d7c;
+  --wb-h3-bg: #f2f6fc;
+  --wb-h3-color: #24508c;
+  --wb-card-bg: #fbfaf6;
+  --wb-card-head: #f3ecde;
+  --wb-card-border: #ece5d8;
+  --wb-seg-line: #c3d5f0;
+  --wb-ts-bg: #eef2f8;
+  --wb-ts-color: #24508c;
+  --wb-ts-border: #d3deec;
+  --wb-code-bg: #f8f9fa;
+  --wb-code-border: #e9ecef;
+  --wb-pre-bg: #f4f5f7;
+  --wb-pill-bg: #f4f3f0;
+  --wb-pill-text: #5f5a54;
+  --wb-toc-bg: #ffffff;
+  --wb-drawer-bg: #ffffff;
+  --wb-drawer-border: #e3e6ec;
+  --wb-math-bg: #fcfcfb;
+  --wb-math-border: #e6e8ee;
+}
+
+html.wb-dark, body.wb-dark {
+  --wb-bg: #181817;
+  --wb-surface: #222220;
+  --wb-surface2: #282826;
+  --wb-text: #e6e6e3;
+  --wb-muted: #9ca3af;
+  --wb-border: #383834;
+  --wb-accent: #5dcaa5;
+  --wb-accent2: #85b7eb;
+  --wb-h-color: #85b7eb;
+  --wb-h3-bg: #1e2634;
+  --wb-h3-color: #93c5fd;
+  --wb-card-bg: #201f1d;
+  --wb-card-head: #2c2822;
+  --wb-card-border: #3d3a34;
+  --wb-seg-line: #263852;
+  --wb-ts-bg: #1e2634;
+  --wb-ts-color: #93c5fd;
+  --wb-ts-border: #2c394d;
+  --wb-code-bg: #222220;
+  --wb-code-border: #333330;
+  --wb-pre-bg: #141413;
+  --wb-pill-bg: #2b2825;
+  --wb-pill-text: #d1cbc5;
+  --wb-toc-bg: #1e222a;
+  --wb-drawer-bg: #1c1c1a;
+  --wb-drawer-border: #333330;
+  --wb-math-bg: #21211f;
+  --wb-math-border: #353531;
+  background-color: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not(.wb-light) {
+    --wb-bg: #181817;
+    --wb-surface: #222220;
+    --wb-surface2: #282826;
+    --wb-text: #e6e6e3;
+    --wb-muted: #9ca3af;
+    --wb-border: #383834;
+    --wb-accent: #5dcaa5;
+    --wb-accent2: #85b7eb;
+    --wb-h-color: #85b7eb;
+    --wb-h3-bg: #1e2634;
+    --wb-h3-color: #93c5fd;
+    --wb-card-bg: #201f1d;
+    --wb-card-head: #2c2822;
+    --wb-card-border: #3d3a34;
+    --wb-seg-line: #263852;
+    --wb-ts-bg: #1e2634;
+    --wb-ts-color: #93c5fd;
+    --wb-ts-border: #2c394d;
+    --wb-code-bg: #222220;
+    --wb-code-border: #333330;
+    --wb-pre-bg: #141413;
+    --wb-pill-bg: #2b2825;
+    --wb-pill-text: #d1cbc5;
+    --wb-toc-bg: #1e222a;
+    --wb-drawer-bg: #1c1c1a;
+    --wb-drawer-border: #333330;
+  }
+}
+
+body.wb-dark h1, html.wb-dark h1 { color: var(--wb-h-color) !important; border-bottom-color: #2a4365 !important; }
+body.wb-dark h2, html.wb-dark h2 { color: var(--wb-h-color) !important; border-left-color: #2a4365 !important; }
+body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; background: var(--wb-h3-bg) !important; }
+body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
+body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
+body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
+body.wb-dark .wb-excard p > strong:first-child,
+body.wb-dark .wb-excard li > strong:first-child,
+html.wb-dark .wb-excard p > strong:first-child,
+html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
+body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
+body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
+body.wb-dark code, html.wb-dark code { background: #282825 !important; color: #f0f0ed !important; }
+body.wb-dark pre, html.wb-dark pre { background: var(--wb-pre-bg) !important; border-color: #333330 !important; color: #f0f0ed !important; }
+body.wb-dark #TOC, html.wb-dark #TOC { background: var(--wb-toc-bg) !important; border-color: #333d4d !important; }
+body.wb-dark table th, html.wb-dark table th { background: #1e2634 !important; color: #93c5fd !important; border-color: #333d4d !important; }
+body.wb-dark table td, html.wb-dark table td { border-color: #333d4d !important; }
+body.wb-dark tr:nth-child(even) td, html.wb-dark tr:nth-child(even) td { background: #1a1f29 !important; }
+body.wb-dark blockquote, html.wb-dark blockquote { background: #1a222e !important; border-left-color: #3b82f6 !important; color: #c4ccd8 !important; }
+body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark mjx-container { color: var(--wb-text) !important; }
+
+
+/* 数学公式容器增强与横向滚动 */
+.wb-math-wrap {
+  position: relative;
+  margin: 18px 0;
+  border: 1px solid var(--wb-math-border);
+  border-radius: 8px;
+  background: var(--wb-math-bg);
+  padding: 12px 16px 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wb-math-wrap:hover {
+  border-color: var(--wb-accent2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.wb-math-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+  opacity: 0.55;
+  transition: opacity .15s;
+}
+.wb-math-wrap:hover .wb-math-bar { opacity: 1; }
+.wb-math-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-muted);
+  margin-right: auto;
+  letter-spacing: .04em;
+}
+.wb-math-copy, .wb-math-zoom {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: all .15s;
+}
+.wb-math-copy:hover, .wb-math-zoom:hover {
+  background: var(--wb-surface2);
+  border-color: var(--wb-accent2);
+  color: var(--wb-accent2);
+}
+.wb-math-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  text-align: center;
+}
+.wb-math-scroll mjx-container { max-width: 100%; }
+
+/* 公式高清放大模态浮层 */
+.wb-math-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.62);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-math-modal.wb-open { display: flex; }
+.wb-math-modal-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.28);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-modal-pop .2s ease-out;
+}
+@keyframes wb-modal-pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.wb-math-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-math-modal-body {
+  padding: 34px 24px;
+  overflow: auto;
+  text-align: center;
+  font-size: 1.4em;
+  background: var(--wb-surface2);
+}
+.wb-math-modal-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 搜索结果关键词正文高亮 */
+.wb-hit-mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px #fde047;
+}
+html.wb-dark .wb-hit-mark, body.wb-dark .wb-hit-mark {
+  background: #854d0e;
+  color: #fef08a;
+  box-shadow: 0 0 0 1px #a16207;
+}
+.wb-res.active {
+  background: var(--wb-surface);
+  border-left: 3px solid var(--wb-accent2);
+  padding-left: 7px;
+}
+
+
+/* 阅读进度条 */
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #185fa5, #0f6e56);
+  z-index: 999;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+html.wb-dark .wb-read-progress, body.wb-dark .wb-read-progress {
+  background: linear-gradient(90deg, #85b7eb, #5dcaa5);
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,.15);
+  transition: transform .15s;
+  display: inline-block;
+}
+.wb-hl-color-dot:hover { transform: scale(1.22); }
+.wb-dot-yellow { background: #fef08a; }
+.wb-dot-green  { background: #bbf7d0; }
+.wb-dot-red    { background: #fecaca; }
+.wb-dot-purple { background: #e9d5ff; }
+
+.wb-hl-btn {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-hl-btn:hover { background: var(--wb-surface2); border-color: var(--wb-accent2); color: var(--wb-accent2); }
+.wb-hl-btn.wb-btn-del { color: #dc2626; border-color: #fca5a5; }
+
+/* 用户划词高亮样式 (4 色荧光笔 + 下划线) */
+.wb-user-hl {
+  border-radius: 2px;
+  padding: 1px 1px;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.wb-user-hl:hover { filter: brightness(.93); }
+.wb-user-hl-yellow { background: #fef08a; color: inherit; }
+.wb-user-hl-green  { background: #bbf7d0; color: inherit; }
+.wb-user-hl-red    { background: #fecaca; color: inherit; }
+.wb-user-hl-purple { background: #e9d5ff; color: inherit; }
+.wb-user-hl-underline {
+  background: transparent;
+  text-decoration: underline wavy #185fa5 2px;
+  text-underline-offset: 3px;
+}
+html.wb-dark .wb-user-hl-yellow, body.wb-dark .wb-user-hl-yellow { background: #714207; color: #fef08a; }
+html.wb-dark .wb-user-hl-green,  body.wb-dark .wb-user-hl-green  { background: #134e2a; color: #bbf7d0; }
+html.wb-dark .wb-user-hl-red,    body.wb-dark .wb-user-hl-red    { background: #6b1717; color: #fecaca; }
+html.wb-dark .wb-user-hl-purple, body.wb-dark .wb-user-hl-purple { background: #4a1570; color: #e9d5ff; }
+html.wb-dark .wb-user-hl-underline, body.wb-dark .wb-user-hl-underline { text-decoration-color: #85b7eb; }
+
+.wb-user-hl-has-note::after {
+  content: " 📝";
+  font-size: 10px;
+  vertical-align: super;
+  cursor: pointer;
+}
+body.wb-hl-hidden .wb-user-hl {
+  background: transparent !important;
+  text-decoration: none !important;
+}
+body.wb-hl-hidden .wb-user-hl::after { display: none !important; }
+
+/* 便签便签编辑模态浮层 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  width: 460px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-pop-in .15s ease-out;
+}
+.wb-note-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.wb-note-quote {
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-border);
+  font-size: 12.5px;
+  color: var(--wb-muted);
+  max-height: 80px;
+  overflow-y: auto;
+  font-style: italic;
+}
+.wb-note-body {
+  padding: 14px 16px;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.wb-note-textarea:focus { border-color: var(--wb-accent2); }
+.wb-note-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--wb-muted);
+}
+.wb-note-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 大纲抽屉的双 Tab 导航与批注列表 */
+.wb-drawer-nav {
+  display: flex;
+  gap: 4px;
+}
+.wb-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-tab-btn:hover { background: var(--wb-surface); color: var(--wb-text); }
+.wb-tab-btn.on { background: var(--wb-surface2); color: var(--wb-accent2); }
+.wb-notes-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.wb-note-card {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-note-card:hover {
+  border-color: var(--wb-accent2);
+  transform: translateY(-1px);
+}
+.wb-nc-quote {
+  font-size: 12px;
+  color: var(--wb-text);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  border-left: 3px solid #fde047;
+  padding-left: 8px;
+}
+.wb-nc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wb-h-color);
+  background: var(--wb-surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+.wb-nc-meta {
+  font-size: 11px;
+  color: var(--wb-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.wb-notes-tools {
+  padding: 10px 12px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* 断点续读右下角浮动提示 */
+.wb-resume-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-accent);
+  border-left: 4px solid var(--wb-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  z-index: 930;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: wb-pop-in .2s ease-out;
+}
+.wb-resume-btn {
+  background: var(--wb-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+
+/* 例题卡片攻克打卡与切题工具条 */
+.wb-excard > h4 {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-ex-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wb-mastery-btn {
+  border: 1px solid var(--wb-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  line-height: 1.3;
+  transition: all .15s;
+}
+.wb-mastery-btn:hover { border-color: var(--wb-accent); }
+.wb-mastery-btn.wb-st-todo  { background: var(--wb-surface2); color: var(--wb-muted); border-color: var(--wb-border); }
+.wb-mastery-btn.wb-st-doubt { background: #fef9c3; color: #854d0e; border-color: #fde047; font-weight: 600; }
+.wb-mastery-btn.wb-st-done  { background: #dcfce7; color: #15803d; border-color: #86efac; font-weight: 600; }
+html.wb-dark .wb-mastery-btn.wb-st-doubt { background: #713f12; color: #fef08a; border-color: #a16207; }
+html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; border-color: #16a34a; }
+
+.wb-ex-nav-btns {
+  display: inline-flex;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--wb-bg);
+}
+.wb-step-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  padding: 2px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-step-btn:hover { background: var(--wb-surface2); color: var(--wb-text); }
+.wb-step-btn:first-child { border-right: 1px solid var(--wb-border); }
+
+/* 大纲抽屉内的攻克率进度条 */
+.wb-mastery-bar {
+  padding: 10px 14px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-drawer-border);
+  font-size: 12px;
+}
+.wb-mb-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--wb-muted);
+}
+.wb-mb-text b { color: var(--wb-accent); font-weight: 600; }
+.wb-mb-track {
+  height: 6px;
+  background: var(--wb-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wb-mb-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width .25s ease;
+}
+
+/* 移动端专属底部悬浮控制台 (手机单手握持热区) */
+.wb-mobile-dock {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--wb-bg);
+  border-top: 1px solid var(--wb-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  z-index: 890;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(8px);
+}
+.wb-dock-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-text);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+.wb-dock-btn:active {
+  background: var(--wb-surface);
+  color: var(--wb-accent2);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 50px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 74px !important;
+  }
+  .wb-mobile-dock {
+    display: flex !important;
+  }
+  .wb-in {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  #wb-selftest-btn, #wb-toc-btn, .wb-font-tools, #wb-theme-btn, .wb-meta, .wb-subj, .wb-tag {
+    display: none !important;
+  }
+  .wb-crumb {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .wb-q {
+    width: 110px !important;
+    font-size: 11.5px !important;
+    padding: 4px 6px !important;
+  }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 18px !important; margin-top: 26px !important; }
+  h3 { font-size: 15px !important; padding: 6px 10px !important; }
+  .wb-excard {
+    padding: 0 12px 14px !important;
+    margin: 16px 0 !important;
+  }
+  .wb-excard > h4 {
+    margin: 0 -12px 12px !important;
+    padding: 9px 12px !important;
+    font-size: 14px !important;
+  }
+  .wb-ex-head-tools {
+    gap: 4px !important;
+    font-size: 11px !important;
+  }
+  .wb-math-modal-dialog {
+    width: 95vw !important;
+  }
+  .wb-math-modal-body {
+    padding: 20px 8px !important;
+    font-size: 1.15em !important;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* 移动端底部高亮悬浮面板 (防系统菜单与手指遮挡) */
+  .wb-hl-popover.wb-hl-mobile, .wb-hl-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 64px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 26px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.22) !important;
+    background: var(--wb-bg) !important;
+    border: 1px solid var(--wb-border) !important;
+    z-index: 1000 !important;
+    gap: 12px !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .wb-hl-color-dot {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .wb-hl-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+  /* 移动端公式溢出横向滑动提示与滚动条优化 */
+  .wb-math-wrap {
+    position: relative;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .wb-math-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  .wb-math-wrap::-webkit-scrollbar-thumb {
+    background: var(--wb-border);
+    border-radius: 2px;
+  }
+}
+
+/* 导航栏 */
+.wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
+ border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
+ font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
+.wb-in{max-width:1320px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-bar a{color:var(--wb-accent2);text-decoration:none;white-space:nowrap}
+.wb-bar a:hover{text-decoration:underline}
+.wb-bar a.wb-off{color:var(--wb-muted);pointer-events:none;text-decoration:none}
+.wb-crumb{color:var(--wb-muted);font-size:12px;flex:1;min-width:140px;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.wb-crumb b{color:var(--wb-text);font-weight:600}
+.wb-tag{font-size:11px;background:#eef4fb;color:#2f5597;border-radius:4px;padding:2px 7px;margin-left:8px}
+html.wb-dark .wb-tag, body.wb-dark .wb-tag{background:#1e293b;color:#93c5fd}
+.wb-subj{display:flex;gap:2px;margin-left:2px}
+.wb-subj a{color:var(--wb-muted);font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.wb-subj a:hover{color:var(--wb-accent2);background:var(--wb-surface)}
+.wb-subj a.wb-cur{color:#fff;background:#2f5597}
+html.wb-dark .wb-subj a.wb-cur, body.wb-dark .wb-subj a.wb-cur{background:#2563eb}
+.wb-meta{margin-left:6px;color:var(--wb-muted);font-size:11px;white-space:nowrap}
+
+/* 工具按钮 */
+.wb-tool-btn{border:1px solid var(--wb-border);background:var(--wb-surface);color:var(--wb-text);
+ border-radius:6px;padding:4px 9px;font-size:12px;cursor:pointer;white-space:nowrap;line-height:1.2;
+ display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.wb-tool-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-tool-btn.wb-btn-active{background:#e8f0fe;border-color:#185fa5;color:#185fa5;font-weight:600}
+html.wb-dark .wb-tool-btn.wb-btn-active, body.wb-dark .wb-tool-btn.wb-btn-active{background:#1e2e4a;border-color:#85b7eb;color:#85b7eb}
+.wb-font-tools{display:inline-flex;gap:1px}
+.wb-font-tools .wb-tool-btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.wb-font-tools .wb-tool-btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+
+.wb-q{border:1px solid var(--wb-border);border-radius:6px;padding:5px 9px;font-size:12px;
+ width:170px;outline:none;color:var(--wb-text);background:var(--wb-bg)}
+.wb-q:focus{border-color:var(--wb-accent2)}
+.wb-panel{position:fixed;top:46px;right:max(20px,calc((100vw - 1320px)/2));
+ width:min(520px,calc(100vw - 40px));max-height:70vh;overflow:auto;background:var(--wb-bg);
+ border:1px solid var(--wb-border);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.15);
+ padding:10px;display:none;z-index:910}
+.wb-res{display:block;padding:8px 10px;border-bottom:1px solid var(--wb-border);color:var(--wb-text);
+ font-size:12.5px;text-decoration:none}
+.wb-res:hover{background:var(--wb-surface);text-decoration:none}
+.wb-res small{display:block;color:var(--wb-muted);font-size:11px;margin-top:2px}
+
+/* 大纲抽屉 (Floating TOC Drawer) */
+.wb-toc-drawer{position:fixed;top:48px;right:0;bottom:0;width:340px;max-width:85vw;
+ background:var(--wb-drawer-bg);border-left:1px solid var(--wb-drawer-border);
+ box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:950;display:flex;flex-direction:column;
+ transform:translateX(100%);transition:transform .25s ease-in-out}
+.wb-toc-drawer.wb-open{transform:translateX(0)}
+.wb-toc-head{padding:12px 16px;border-bottom:1px solid var(--wb-drawer-border);
+ display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px}
+.wb-close-btn{border:none;background:transparent;color:var(--wb-muted);font-size:20px;
+ cursor:pointer;padding:0 4px;line-height:1}
+.wb-close-btn:hover{color:var(--wb-text)}
+.wb-toc-body{flex:1;overflow-y:auto;padding:12px 8px}
+.wb-toc-item{padding:5px 8px;margin:2px 0;border-radius:6px;cursor:pointer;font-size:12.5px;
+ color:var(--wb-muted);line-height:1.45;transition:all .15s;border-left:2px solid transparent;word-break:break-word}
+.wb-toc-item:hover{background:var(--wb-surface);color:var(--wb-text)}
+.wb-toc-item.wb-toc-active{color:var(--wb-accent2);background:var(--wb-surface);
+ font-weight:600;border-left-color:var(--wb-accent2)}
+.wb-toc-h2{font-weight:600;color:var(--wb-text);margin-top:8px}
+.wb-toc-h3{padding-left:14px;font-size:12px}
+.wb-toc-h4{padding-left:24px;font-size:11.5px;color:var(--wb-muted)}
+.wb-toc-backdrop{position:fixed;top:48px;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);
+ z-index:940;display:none;opacity:0;transition:opacity .25s}
+.wb-toc-backdrop.wb-open{display:block;opacity:1}
+
+/* 推导折叠控制 (Self-Test Mode) */
+.wb-derive-ctrl{margin:10px 0 6px}
+.wb-derive-btn{border:1px dashed var(--wb-border);background:var(--wb-surface);
+ color:var(--wb-accent2);border-radius:6px;padding:4px 10px;font-size:12px;
+ cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.wb-derive-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-derive-box.wb-hidden{display:none !important}
+
+/* 代码块增强 */
+.wb-code-wrap{margin:18px 0;border:1px solid var(--wb-code-border);border-radius:8px;
+ overflow:hidden;background:var(--wb-code-bg)}
+.wb-code-head{display:flex;align-items:center;justify-content:space-between;
+ padding:6px 12px;background:var(--wb-surface);border-bottom:1px solid var(--wb-code-border);
+ font-size:11.5px;color:var(--wb-muted)}
+.wb-code-lang{font-weight:600;font-family:ui-monospace,Consolas,monospace}
+.wb-code-copy-btn{border:1px solid var(--wb-border);background:var(--wb-bg);
+ color:var(--wb-text);border-radius:4px;padding:2px 8px;font-size:11.5px;cursor:pointer}
+.wb-code-copy-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-code-wrap pre{margin:0 !important;border:none !important;border-radius:0 !important;
+ padding:12px !important;overflow-x:auto}
+
+/* 锚点复制链接 */
+.wb-anchor{opacity:0;margin-left:6px;font-size:13px;color:var(--wb-accent2);
+ text-decoration:none;cursor:pointer;transition:opacity .15s}
+h2:hover .wb-anchor, h3:hover .wb-anchor, h4:hover .wb-anchor{opacity:.75}
+.wb-anchor:hover{opacity:1 !important}
+
+/* 落地平滑闪烁高亮 */
+@keyframes wb-flash-anim{
+ 0%{background-color:rgba(254,240,138,.85)}
+ 50%{background-color:rgba(254,240,138,.45)}
+ 100%{background-color:transparent}
+}
+.wb-flash-highlight{animation:wb-flash-anim 2.5s ease-out;border-radius:4px}
+
+/* Toast 提示浮条 */
+.wb-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+ background:#1f2328;color:#fff;padding:8px 16px;border-radius:20px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+html.wb-dark .wb-toast, body.wb-dark .wb-toast{background:#f3f4f6;color:#111827}
+.wb-toast-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 打印样式优化 */
+@media print{
+ body{padding-top:0 !important;max-width:100% !important;font-size:12pt !important;line-height:1.6 !important;color:#000 !important;background:#fff !important}
+ .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor{display:none !important}
+ .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill{break-inside:avoid !important;page-break-inside:avoid !important}
+ .wb-excard{border:1px solid #aaa !important;background:#fff !important}
+ .wb-derive-box.wb-hidden{display:block !important}
+ a{text-decoration:none !important;color:#000 !important}
+}
+body{padding-top:54px}
+@media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
+
+  
+/* 作业专属卡片与自测排版样式 */
+.wb-hw-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 20px 80px;
+}
+
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+.wb-hw-header {
+  margin: 20px 0 24px;
+  padding: 24px 28px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.wb-hw-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.wb-hw-week-pill {
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+.wb-hw-meta-chip {
+  background: var(--wb-card-bg);
+  color: var(--wb-muted);
+  border: 1px solid var(--wb-border);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.wb-hw-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--wb-text);
+  margin: 0 0 14px;
+  line-height: 1.35;
+}
+.wb-hw-notice {
+  font-size: 13.5px;
+  color: var(--wb-text);
+  line-height: 1.7;
+  border-left: 3px solid #2563eb;
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-radius: 0 8px 8px 0;
+  margin-top: 14px;
+}
+.wb-hw-part-head {
+  margin: 38px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--wb-border);
+}
+.wb-hw-part-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--wb-h-color);
+  margin: 0 0 6px;
+}
+.wb-hw-part-desc {
+  font-size: 13.5px;
+  color: var(--wb-muted);
+  margin: 0;
+}
+.wb-hw-card {
+  margin: 22px 0;
+  padding: 24px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-card-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.wb-hw-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.wb-hw-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed var(--wb-border);
+  padding-bottom: 12px;
+}
+.wb-hw-num-badge {
+  font-size: 17px;
+  font-weight: 800;
+  color: #2563eb;
+}
+.wb-hw-prob-title {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wb-text);
+}
+.wb-hw-stem {
+  font-size: 15.5px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.wb-hw-hint {
+  margin: 14px 0 18px;
+  padding: 12px 16px;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  color: #78350f;
+  line-height: 1.7;
+}
+html.wb-dark .wb-hw-hint {
+  background: #272115;
+  color: #fde68a;
+  border-left-color: #d97706;
+}
+.wb-hw-sol-box {
+  margin-top: 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: var(--wb-surface);
+  overflow: hidden;
+}
+html.wb-dark .wb-hw-sol-box {
+  border-color: #1e3a8a;
+  background: #1e293b;
+}
+.wb-hw-sol-summary {
+  padding: 12px 18px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  list-style: none;
+}
+.wb-hw-sol-summary::-webkit-details-marker { display: none; }
+html.wb-dark .wb-hw-sol-summary {
+  background: #172554;
+  color: #93c5fd;
+}
+.wb-hw-sol-body {
+  padding: 20px 22px;
+  font-size: 15px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  background: var(--wb-bg);
+  border-top: 1px solid #dbeafe;
+}
+html.wb-dark .wb-hw-sol-body {
+  border-top-color: #1e3a8a;
+}
+.wb-hw-sol-section {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--wb-border);
+}
+.wb-hw-sol-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.wb-hw-sol-label {
+  display: inline-block;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.wb-label-analysis { background: #dbeafe; color: #1e40af; }
+.wb-label-proof { background: #dcfce7; color: #15803d; }
+html.wb-dark .wb-label-analysis { background: #1e3a8a; color: #bfdbfe; }
+html.wb-dark .wb-label-proof { background: #14532d; color: #86efac; }
+
+/* Display Math Block Center */
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+math[display="inline"] {
+  display: inline;
+}
+
+  </style>
+  <script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+  </script>
+  <script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</head>
+<body class="wb-lecture-page">
+  <div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-analysis.html?tab=homework">← 分析学Ⅰ作业</a><a href="course-analysis.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html" class="wb-cur">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">分析学Ⅰ <span>›</span> <a href="course-analysis.html?tab=homework" style="color:inherit;text-decoration:none">每周作业</a> <span>›</span> <b>第 05 周作业</b></div><span class="wb-meta">16 必做 · 0 选做</span><a href="homework-analysis-week04.html">‹ 上一周</a><a href="homework-analysis-week06.html">下一周 ›</a><button class="wb-tool-btn" id="wb-hw-toggle-sol" title="一键切换遮挡/展开全部参考解析">🙈 遮挡解析 (自测)</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜题目 / 考点 / 概念 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 题目大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn" id="wb-hl-btn-del" title="删除本条标注" style="display:none;color:#ef4444">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><b>📝 添加划线便签</b><button id="wb-note-close" class="wb-close-btn">×</button></div><div id="wb-note-quote" class="wb-note-quote"></div><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的解题心得、思路批注或疑问..."></textarea><div class="wb-note-foot"><button class="wb-tool-btn" id="wb-note-del-btn" style="color:#ef4444">删除便签</button><button class="wb-tool-btn" id="wb-note-save-btn" style="background:#2563eb;color:#fff;border-color:#2563eb">保存便签</button></div></div></div>
+  <main>
+    <div class="wb-hw-container">
+
+    <div class="wb-hw-header">
+      <div class="wb-hw-pills">
+        <span class="wb-hw-week-pill">第 05 周作业</span>
+        <span class="wb-hw-meta-chip">覆盖：第九周（10 月 20 日—27 日，覆盖函数极限、间断点、单调函数像定理）</span>
+        <span class="wb-hw-meta-chip">发布：2026-10-20</span>
+        <span class="wb-hw-meta-chip">截止：2026-10-27 课前</span>
+      </div>
+      <h1 class="wb-hw-title">函数极限计算、Cauchy 准则、间断点分类、单调函数连续性</h1>
+      
+    <div class="wb-hw-notice">
+        <b>💡 作业说明与自测指南</b>：<br>
+        • 本周作业包含 16 道大题，覆盖函数极限高级计算、间断点分类、单调函数连续性充要条件与迭代极限。<br>• 修正题干说明：第 14 题原题干区间记号纠正为闭区间 $[a,b]$；第 15 题系数笔误纠正为小写字母 $b$。<br>• 推荐使用「🙈 遮挡解析 (自测)」先在草稿纸上独立推导。
+      </div>
+    </div>
+    
+            <div class="wb-hw-part-head" id="part_一函数极限的高级计算">
+              <div class="wb-hw-part-title">一、函数极限的高级计算</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_1">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 1 题</span>
+              <span class="wb-hw-prob-title">典型三角与连乘函数极限计算</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第一题</span>
+            </div>
+            <a href="#prob_1" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#1</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            计算下面各极限：<br>(1) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>π</mi><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty} \sin(\pi\sqrt{n^2 + 1})</annotation></semantics></math>；<br>(2) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mo stretchy="true">(</mo><mstyle displaystyle="true"><mfrac><mrow><mi>n</mi><mo>+</mo><mi>x</mi></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac></mstyle><msup><mo stretchy="true">)</mo><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty}\left(\dfrac{n+x}{n-1}\right)^n</annotation></semantics></math>；<br>(3) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mo>cos</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>cos</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi></mrow><mrow><mn>4</mn></mrow></mfrac></mstyle><mo>⋯</mo><mo>cos</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty} \cos\dfrac{x}{2} \cos\dfrac{x}{4} \cdots \cos\dfrac{x}{2^n}</annotation></semantics></math>；<br>(4) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mi>n</mi><mo>sin</mo><mo>(</mo><mn>2</mn><mi>π</mi><mi>n</mi><mi>!</mi><mi>e</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty} n\sin(2\pi n! e)</annotation></semantics></math>。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：(1) 利用诱导公式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo>(</mo><mi>π</mi><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>)</mo><mo>=</mo><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup><mo>sin</mo><mo>(</mo><mi>π</mi><mo>(</mo><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>−</mo><mi>n</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\sin(\pi\sqrt{n^2+1}) = (-1)^n \sin(\pi(\sqrt{n^2+1}-n))</annotation></semantics></math> 有理化；(2) 化为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>/</mo><mi>n</mi><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(1+1/n)^n</annotation></semantics></math> 的标准复合指数形式；(3) 两边同乘 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">\sin(x/2^n)</annotation></semantics></math> 裂项倍角相消；(4) 将自然数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math> 展开为 Taylor 级数余项。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                四大著名极限计算：诱导公式相消、重要极限 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">e^{x+1}</annotation></semantics></math>、Euler 连乘余弦恒等式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>sin</mo><mi>x</mi></mrow><mrow><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\sin x}{x}</annotation></semantics></math>，以及利用 Taylor 级数截断计算阶乘调制正弦极限。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>(1) 解</b>：</p><p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>=</mo><mi>n</mi><mo>+</mo><mo>(</mo><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>−</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\sqrt{n^2+1} = n + (\sqrt{n^2+1} - n)</annotation></semantics></math>，利用诱导公式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo>(</mo><mi>π</mi><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>)</mo><mo>=</mo><mo>sin</mo><mo>(</mo><mi>n</mi><mi>π</mi><mo>+</mo><mi>π</mi><mo>(</mo><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>−</mo><mi>n</mi><mo>)</mo><mo>)</mo><mo>=</mo><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup><mo>sin</mo><mo stretchy="true">(</mo><mfrac><mrow><mi>π</mi></mrow><mrow><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>+</mo><mi>n</mi></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\sin(\pi\sqrt{n^2+1}) = \sin(n\pi + \pi(\sqrt{n^2+1}-n)) = (-1)^n \sin\left(\frac{\pi}{\sqrt{n^2+1}+n}\right)</annotation></semantics></math><p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">n \to \infty</annotation></semantics></math> 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>π</mi></mrow><mrow><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>+</mo><mi>n</mi></mrow></mfrac><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\pi}{\sqrt{n^2+1}+n} \to 0</annotation></semantics></math>。由 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>u</mi><mo>∼</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">\sin u \sim u</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mo>sin</mo><mo>(</mo><mi>π</mi><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>)</mo><mo>|</mo><mo>∼</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>2</mn><mi>n</mi></mrow></mfrac><mo>→</mo><mn>0</mn><mo>⇒</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mo>sin</mo><mo>(</mo><mi>π</mi><msqrt><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">|\sin(\pi\sqrt{n^2+1})| \sim \frac{\pi}{2n} \to 0 \implies \lim_{n\to+\infty} \sin(\pi\sqrt{n^2+1}) = 0</annotation></semantics></math></p><p><b>(2) 解</b>：</p><p>变形为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>n</mi><mo>+</mo><mi>x</mi></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></mfrac><mo>+</mo><mi>O</mi><mo>(</mo><msup><mi>n</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">\frac{n+x}{n-1} = 1 + \frac{x+1}{n-1} = 1 + \frac{x+1}{n} + O(n^{-2})</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><msup><mo stretchy="true">)</mo><mrow><mi>n</mi></mrow></msup><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mo stretchy="true">[</mo><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><msup><mo stretchy="true">)</mo><mrow><mfrac><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow></msup><msup><mo stretchy="true">]</mo><mrow><mfrac><mrow><mi>n</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty}\left(1 + \frac{x+1}{n-1}\right)^n = \lim_{n\to+\infty}\left[\left(1 + \frac{x+1}{n-1}\right)^{\frac{n-1}{x+1}}\right]^{\frac{n(x+1)}{n-1}} = e^{x+1}</annotation></semantics></math></p><p><b>(3) 解</b>：</p><p>利用倍角公式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>u</mi><mo>=</mo><mfrac><mrow><mo>sin</mo><mn>2</mn><mi>u</mi></mrow><mrow><mn>2</mn><mo>sin</mo><mi>u</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\cos u = \frac{\sin 2u}{2\sin u}</annotation></semantics></math>。两端乘上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\sin\frac{x}{2^n}</annotation></semantics></math>：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mo>cos</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>cos</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>4</mn></mrow></mfrac><mo>⋯</mo><mo>cos</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>sin</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac><mo>sin</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\left(\cos\frac{x}{2} \cos\frac{x}{4} \cdots \cos\frac{x}{2^n}\right) \sin\frac{x}{2^n} = \frac{1}{2^n} \sin x</annotation></semantics></math><p>两边除以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\sin\frac{x}{2^n}</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mfrac><mrow><mo>sin</mo><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>sin</mo><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>sin</mo><mi>x</mi></mrow><mrow><mi>x</mi></mrow></mfrac><mo>·</mo><mfrac><mrow><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>sin</mo><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">P_n = \frac{\sin x}{2^n \sin(x/2^n)} = \frac{\sin x}{x} \cdot \frac{x/2^n}{\sin(x/2^n)}</annotation></semantics></math><p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">n \to \infty</annotation></semantics></math> 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow><mrow><mo>sin</mo><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo></mrow></mfrac><mo>→</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{x/2^n}{\sin(x/2^n)} \to 1</annotation></semantics></math>。因此极限为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><mo>sin</mo><mi>x</mi></mrow><mrow><mi>x</mi></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{\sin x}{x}</annotation></semantics></math>（若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0</annotation></semantics></math>，恒等于 1）。</p><p><b>(4) 解</b>：</p><p>将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math> 用级数展开：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><mi>k</mi><mi>!</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>!</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>!</mi></mrow></mfrac><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">e = \sum_{k=0}^n \frac{1}{k!} + \frac{1}{(n+1)!} + \frac{1}{(n+2)!} + \dots</annotation></semantics></math></p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>!</mi><mi>e</mi><mo>=</mo><mo stretchy="true">(</mo><mtext>整数</mtext><mi>M</mi><mo stretchy="true">)</mo><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>n</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mfrac><mo>+</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">n! e = \left(\text{整数} M\right) + \frac{1}{n+1} + \frac{1}{(n+1)(n+2)} + \dots</annotation></semantics></math><p>乘上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math> 整数周期消去：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo>(</mo><mn>2</mn><mi>π</mi><mi>n</mi><mi>!</mi><mi>e</mi><mo>)</mo><mo>=</mo><mo>sin</mo><mo stretchy="true">(</mo><mn>2</mn><mi>π</mi><mi>M</mi><mo>+</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mi>O</mi><mo>(</mo><msup><mi>n</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo><mo stretchy="true">)</mo><mo>=</mo><mo>sin</mo><mo stretchy="true">(</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mi>O</mi><mo>(</mo><msup><mi>n</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo><mo stretchy="true">)</mo><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mi>O</mi><mo>(</mo><msup><mi>n</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">\sin(2\pi n! e) = \sin\left(2\pi M + \frac{2\pi}{n+1} + O(n^{-2})\right) = \sin\left(\frac{2\pi}{n+1} + O(n^{-2})\right) = \frac{2\pi}{n+1} + O(n^{-2})</annotation></semantics></math><p>乘上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 取极限：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mi>n</mi><mo>sin</mo><mo>(</mo><mn>2</mn><mi>π</mi><mi>n</mi><mi>!</mi><mi>e</mi><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mfrac><mrow><mn>2</mn><mi>π</mi><mi>n</mi></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty} n\sin(2\pi n! e) = \lim_{n\to+\infty} \frac{2\pi n}{n+1} = 2\pi</annotation></semantics></math></p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_2">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 2 题</span>
+              <span class="wb-hw-prob-title">函数在无穷远处极限存在的 Cauchy 准则陈述</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第二题</span>
+            </div>
+            <a href="#prob_2" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#2</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            陈述 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{x\to+\infty} f(x)</annotation></semantics></math> 存在的 Cauchy 准则。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：将数列的 Cauchy 准则平移到连续自变量：任给 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math>，存在大数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math>，当两个自变量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>&#x27;</mi><mo>,</mo><mi>x</mi><mi>&#x27;</mi><mi>&#x27;</mi><mo>&gt;</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">x&#x27;, x&#x27;&#x27; &gt; X</annotation></semantics></math> 时，差值满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>f</mi><mo>(</mo><mi>x</mi><mi>&#x27;</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mi>&#x27;</mi><mi>&#x27;</mi><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|f(x&#x27;) - f(x&#x27;&#x27;)| &lt; \varepsilon</annotation></semantics></math>。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                分析学基本准则。无需预先知晓极限值 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 即可判定极限存在性。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解答（Cauchy 收敛准则）</b>：</p><p>极限 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{x\to+\infty} f(x)</annotation></semantics></math> 存在的充要条件是：</p><blockquote>对任意给定的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math>，总存在正实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X &gt; 0</annotation></semantics></math>，使得当任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>&#x27;</mi><mo>,</mo><mi>x</mi><mi>&#x27;</mi><mi>&#x27;</mi><mo>&gt;</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">x&#x27;, x&#x27;&#x27; &gt; X</annotation></semantics></math> 时，恒有：<br><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>f</mi><mo>(</mo><mi>x</mi><mi>&#x27;</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mi>&#x27;</mi><mi>&#x27;</mi><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|f(x&#x27;) - f(x&#x27;&#x27;)| &lt; \varepsilon</annotation></semantics></math></blockquote>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_3">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 3 题</span>
+              <span class="wb-hw-prob-title">双倍差商极限推出导数差商极限</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第三题</span>
+            </div>
+            <a href="#prob_3" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#3</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{x\to 0} f(x) = 0</annotation></semantics></math>，且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mstyle displaystyle="true"><mfrac><mrow><mi>f</mi><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{x\to 0} \dfrac{f(2x) - f(x)}{x} = 0</annotation></semantics></math>。证明：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mstyle displaystyle="true"><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{x\to 0} \dfrac{f(x)}{x} = 0</annotation></semantics></math>。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用二分伸缩级数求和：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><mo>[</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup><mo>)</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">f(x) - f(x/2^n) = \sum_{k=1}^n [f(x/2^{k-1}) - f(x/2^k)]</annotation></semantics></math>；除以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 后应用裂项控制。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                泛函方程与尺度变换引理。通过二分级数收缩将局部的差分信息累加传递到整体导数极限。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>记差商函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>f</mi><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">g(x) = \frac{f(2x) - f(x)}{x}</annotation></semantics></math>。已知当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x \to 0</annotation></semantics></math> 时 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">g(x) \to 0</annotation></semantics></math>。</p><p>对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k \ge 1</annotation></semantics></math>，令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">t = \frac{x}{2^k}</annotation></semantics></math>，有：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup><mo>)</mo></mrow><mrow><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo>=</mo><mi>g</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>⇒</mo><mi>f</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>−</mo><mi>f</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mi>g</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\frac{f(x/2^{k-1}) - f(x/2^k)}{x/2^k} = g\left(\frac{x}{2^k}\right) \implies f\left(\frac{x}{2^{k-1}}\right) - f\left(\frac{x}{2^k}\right) = \frac{x}{2^k} g\left(\frac{x}{2^k}\right)</annotation></semantics></math><p>对 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> 从 1 到 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 求和，中间项裂项全部相消：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mi>x</mi><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mi>g</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">f(x) - f\left(\frac{x}{2^n}\right) = x \sum_{k=1}^n \frac{1}{2^k} g\left(\frac{x}{2^k}\right)</annotation></semantics></math><p>两端除以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mi>g</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\frac{f(x)}{x} - \frac{f(x/2^n)}{x} = \sum_{k=1}^n \frac{1}{2^k} g\left(\frac{x}{2^k}\right)</annotation></semantics></math><p>因为已知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>t</mi><mo>→</mo><mn>0</mn></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{t\to 0} f(t) = 0</annotation></semantics></math>，固定 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x \neq 0</annotation></semantics></math>，令 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">n \to \infty</annotation></semantics></math>，有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>n</mi></mrow></msup><mo>)</mo><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f(x/2^n) \to 0</annotation></semantics></math>。因此级数收敛且成立：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mi>g</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\frac{f(x)}{x} = \sum_{k=1}^\infty \frac{1}{2^k} g\left(\frac{x}{2^k}\right)</annotation></semantics></math><p>任给 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math>，因 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">g(t) \to 0</annotation></semantics></math>，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\delta &gt; 0</annotation></semantics></math>，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>t</mi><mo>|</mo><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|t| &lt; \delta</annotation></semantics></math> 时 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>g</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|g(t)| &lt; \varepsilon</annotation></semantics></math>。当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|x| &lt; \delta</annotation></semantics></math> 时，对一切 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k \ge 1</annotation></semantics></math> 均有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>x</mi><mo>/</mo><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup><mo>|</mo><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|x/2^k| &lt; \delta</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">|</mo><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac><mo stretchy="true">|</mo><mo>≤</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">|</mo><mi>g</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">|</mo><mo>&lt;</mo><mi>ε</mi><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></munderover><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mn>2</mn><mrow><mi>k</mi></mrow></msup></mrow></mfrac><mo>=</mo><mi>ε</mi><mo>×</mo><mn>1</mn><mo>=</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">\left| \frac{f(x)}{x} \right| \le \sum_{k=1}^\infty \frac{1}{2^k} \left| g\left(\frac{x}{2^k}\right) \right| &lt; \varepsilon \sum_{k=1}^\infty \frac{1}{2^k} = \varepsilon \times 1 = \varepsilon</annotation></semantics></math><p>由极限定义，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>x</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{x\to 0} \frac{f(x)}{x} = 0</annotation></semantics></math>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_二间断点分类与连续性判定">
+              <div class="wb-hw-part-title">二、间断点分类与连续性判定</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_4">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 4 题</span>
+              <span class="wb-hw-prob-title">函数间断点分类分析</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第七题</span>
+            </div>
+            <a href="#prob_4" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#4</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            指出下面函数的间断点及其类型：<br>(1) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f(x) = x[x]</annotation></semantics></math>；<br>(2) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mtext>sgn</mtext><mo>(</mo><mo>sin</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x) = \mathrm{sgn}(\sin x)</annotation></semantics></math>；<br>(3) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><msup><mi>e</mi><mrow><mn>1</mn><mo>/</mo><mi>x</mi></mrow></msup><mo>,</mo></mtd><mtd><mi>x</mi><mo>≠</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f(x) = \begin{cases} e^{1/x}, &amp; x \neq 0 \\ 0, &amp; x = 0 \end{cases}</annotation></semantics></math>。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：(1) 在非零整数点左右极限不同（第一类跳跃间断点），但在 0 处连续；(2) 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 的整数倍处左右符号相反；(3) 右极限为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">+\infty</annotation></semantics></math>（第二类无穷间断点）。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                间断点分类（第一类：可去间断点、跳跃间断点；第二类：无穷间断点、振荡间断点）的综合判定。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>(1) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f(x) = x[x]</annotation></semantics></math></b>：</p><ul><li>取整函数在非整数点处连续，故可能间断点仅为整数点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>k</mi><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">x = k \in \mathbb{Z}</annotation></semantics></math>；</li><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k = 0</annotation></semantics></math> 时：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msup><mn>0</mn><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msup><mn>0</mn><mrow><mo>−</mo></mrow></msup></mrow></munder><mi>x</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f(0^-) = \lim_{x\to 0^-} x(-1) = 0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msup><mn>0</mn><mrow><mo>+</mo></mrow></msup><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><msup><mn>0</mn><mrow><mo>+</mo></mrow></msup></mrow></munder><mi>x</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>=</mo><mi>f</mi><mo>(</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">f(0^+) = \lim_{x\to 0^+} x(0) = 0 = f(0)</annotation></semantics></math>，在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0</annotation></semantics></math> 处连续；</li><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>∈</mo><mi>ℤ</mi><mo>∖</mo><mo>{</mo><mn>0</mn><mo>}</mo></mrow><annotation encoding="application/x-tex">k \in \mathbb{Z} \setminus \{0\}</annotation></semantics></math> 时：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msup><mi>k</mi><mrow><mo>+</mo></mrow></msup><mo>)</mo><mo>=</mo><mi>k</mi><mo>·</mo><mi>k</mi><mo>=</mo><msup><mi>k</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">f(k^+) = k \cdot k = k^2</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msup><mi>k</mi><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>=</mo><mi>k</mi><mo>(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><msup><mi>k</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">f(k^-) = k(k-1) = k^2 - k</annotation></semantics></math>。左右极限均存在但不相等（跳跃度 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>k</mi><mo>|</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">|k| &gt; 0</annotation></semantics></math>），为<b>第一类跳跃间断点</b>。</li></ul><p><b>(2) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mtext>sgn</mtext><mo>(</mo><mo>sin</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x) = \mathrm{sgn}(\sin x)</annotation></semantics></math></b>：</p><ul><li>间断点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sin x = 0</annotation></semantics></math> 的点，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>k</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">x = k\pi</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">k \in \mathbb{Z}</annotation></semantics></math>)；</li><li>在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>2</mn><mi>m</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">x = 2m\pi</annotation></semantics></math> 处：左侧 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn><mo>⇒</mo><mi>f</mi><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sin x &lt; 0 \implies f=-1</annotation></semantics></math>，右侧 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>⇒</mo><mi>f</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sin x &gt; 0 \implies f=1</annotation></semantics></math>。左右极限分别为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math>；</li><li>在一切 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>k</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">x = k\pi</annotation></semantics></math> 处均为<b>第一类跳跃间断点</b>。</li></ul><p><b>(3) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><msup><mi>e</mi><mrow><mn>1</mn><mo>/</mo><mi>x</mi></mrow></msup><mo>,</mo></mtd><mtd><mi>x</mi><mo>≠</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f(x) = \begin{cases} e^{1/x}, &amp; x \neq 0 \\ 0, &amp; x = 0 \end{cases}</annotation></semantics></math></b>：</p><ul><li>间断点仅在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> 处；</li><li>考察左极限：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><msup><mn>0</mn><mrow><mo>−</mo></mrow></msup></mrow><annotation encoding="application/x-tex">x \to 0^-</annotation></semantics></math> 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mi>x</mi></mrow></mfrac><mo>→</mo><mo>−</mo><mo>∞</mo><mo>⇒</mo><msup><mi>e</mi><mrow><mn>1</mn><mo>/</mo><mi>x</mi></mrow></msup><mo>→</mo><mn>0</mn><mo>=</mo><mi>f</mi><mo>(</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\frac{1}{x} \to -\infty \implies e^{1/x} \to 0 = f(0)</annotation></semantics></math>；</li><li>考察右极限：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><msup><mn>0</mn><mrow><mo>+</mo></mrow></msup></mrow><annotation encoding="application/x-tex">x \to 0^+</annotation></semantics></math> 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mi>x</mi></mrow></mfrac><mo>→</mo><mo>+</mo><mo>∞</mo><mo>⇒</mo><msup><mi>e</mi><mrow><mn>1</mn><mo>/</mo><mi>x</mi></mrow></msup><mo>→</mo><mo>+</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">\frac{1}{x} \to +\infty \implies e^{1/x} \to +\infty</annotation></semantics></math>；</li><li>右极限不存在且发散至无穷大，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> 为<b>第二类无穷间断点</b>。</li></ul>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_5">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 5 题</span>
+              <span class="wb-hw-prob-title">单调函数连续性充要条件定理证明</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第九题</span>
+            </div>
+            <a href="#prob_5" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#5</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上单调增加。证明：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上连续当且仅当它的像集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo><mo>)</mo><mo>=</mo><mo>[</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">f([a, b]) = [f(a), f(b)]</annotation></semantics></math>。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：必要性由介值定理保证；充分性利用反证法：若存在间断点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math>，由于单调性该点必为跳跃间断点，其跳跃区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>−</mo></mrow></msubsup><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>+</mo></mrow></msubsup><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">(f(x_0^-), f(x_0^+))</annotation></semantics></math> 中的值无法被取到，导致像集出现空隙产生矛盾。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                单调函数最核心的拓扑特征。单调函数的间断点只可能是跳跃间断点，而连续函数把闭区间映射为闭区间，没有缝隙直接排除了跳跃间断点的存在。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p><b>必要性（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\implies</annotation></semantics></math>）</b>：</p><p>设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 连续。因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 单调递增，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(a)</annotation></semantics></math> 为最小值，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(b)</annotation></semantics></math> 为最大值。由闭区间连续函数的介值定理（Darboux 定理），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 能取到介于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(a)</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(b)</annotation></semantics></math> 之间的任何实数，故值域 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo><mo>)</mo><mo>=</mo><mo>[</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">f([a, b]) = [f(a), f(b)]</annotation></semantics></math>。</p><p><b>充分性（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>impliedby</mi></mrow><annotation encoding="application/x-tex">\impliedby</annotation></semantics></math>）</b>：</p><p>用反证法。设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo><mo>)</mo><mo>=</mo><mo>[</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">f([a, b]) = [f(a), f(b)]</annotation></semantics></math>，假设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上存在某个间断点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math>。</p><p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 是单调递增函数，它在任意点的左右单侧极限必存在且满足：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>−</mo></mrow></msubsup><mo>)</mo><mo>≤</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo><mo>≤</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>+</mo></mrow></msubsup><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x_0^-) \le f(x_0) \le f(x_0^+)</annotation></semantics></math><p>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_0</annotation></semantics></math> 不连续，则必有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>−</mo></mrow></msubsup><mo>)</mo><mo>&lt;</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>+</mo></mrow></msubsup><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x_0^-) &lt; f(x_0^+)</annotation></semantics></math>（跳跃间断）。</p><p>考察开区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi><mo>=</mo><mo>(</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>−</mo></mrow></msubsup><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>+</mo></mrow></msubsup><mo>)</mo><mo>)</mo><mo>∖</mo><mo>{</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">J = (f(x_0^-), f(x_0^+)) \setminus \{f(x_0)\}</annotation></semantics></math>。因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi></mrow><annotation encoding="application/x-tex">J</annotation></semantics></math> 是非空开区间，且对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x &lt; x_0</annotation></semantics></math> 有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≤</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>−</mo></mrow></msubsup><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x) \le f(x_0^-)</annotation></semantics></math>，对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&gt;</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x &gt; x_0</annotation></semantics></math> 有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≥</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>0</mn></mrow><mrow><mo>+</mo></mrow></msubsup><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x) \ge f(x_0^+)</annotation></semantics></math>，所以在区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi></mrow><annotation encoding="application/x-tex">J</annotation></semantics></math> 中的任何数都无法在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 中找到原像！</p><p>这表明像集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">f([a, b])</annotation></semantics></math> 缺少了开区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi></mrow><annotation encoding="application/x-tex">J</annotation></semantics></math> 中的点，不是一个连通闭区间，与已知条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo><mo>)</mo><mo>=</mo><mo>[</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">f([a, b]) = [f(a), f(b)]</annotation></semantics></math> 产生矛盾！</p><p>因此假设不成立，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上处处连续。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_6">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 6 题</span>
+              <span class="wb-hw-prob-title">单调函数跳跃间断点的可数性证明</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第十一题</span>
+            </div>
+            <a href="#prob_6" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#6</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            证明：单调函数的不连续点集至多是可数的。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：单调函数的每个间断点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 对应一个不退化的互不相交开区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>f</mi><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><msup><mi>x</mi><mrow><mo>+</mo></mrow></msup><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">(f(x^-), f(x^+))</annotation></semantics></math>；由有理数在实数中的稠密性，在每个开区间中挑选一个有理数建立单射。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                现代实分析的经典结论。通过将间断点与互不相交的开区间一一对应，再利用有理数集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> 的可数性，得出单调函数绝不可能有不可数个间断点。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>不妨设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在定义域区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math> 上单调递增。记其所有不连续点组成的集合为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math>。</p><p>由单调函数性质，对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">x \in D</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math> 处的单侧极限必存在，且因不连续必成立严格不等式：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>&lt;</mo><mi>f</mi><mo>(</mo><msup><mi>x</mi><mrow><mo>+</mo></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x^-) &lt; f(x^+)</annotation></semantics></math><p>令对应的开区间为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>x</mi></mrow></msub><mo>=</mo><mo>(</mo><mi>f</mi><mo>(</mo><msup><mi>x</mi><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>,</mo><mi>f</mi><mo>(</mo><msup><mi>x</mi><mrow><mo>+</mo></mrow></msup><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">I_x = (f(x^-), f(x^+))</annotation></semantics></math>。由单调性，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>&lt;</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_1 &lt; x_2</annotation></semantics></math> 时，显然有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>1</mn></mrow><mrow><mo>+</mo></mrow></msubsup><mo>)</mo><mo>≤</mo><mi>f</mi><mo>(</mo><msubsup><mi>x</mi><mrow><mn>2</mn></mrow><mrow><mo>−</mo></mrow></msubsup><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x_1^+) \le f(x_2^-)</annotation></semantics></math>，因此不同的间断点所对应的开区间两两互不相交：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>≠</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>⇒</mo><msub><mi>I</mi><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub></mrow></msub><mo>∩</mo><msub><mi>I</mi><mrow><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow></msub><mo>=</mo><mo>∅</mo></mrow><annotation encoding="application/x-tex">x_1 \neq x_2 \implies I_{x_1} \cap I_{x_2} = \emptyset</annotation></semantics></math><p>由有理数集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> 在实数集中的稠密性，在每个非空开区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">I_x</annotation></semantics></math> 中必至少包含一个有理数，记为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>∈</mo><msub><mi>I</mi><mrow><mi>x</mi></mrow></msub><mo>∩</mo><mi>ℚ</mi></mrow><annotation encoding="application/x-tex">r(x) \in I_x \cap \mathbb{Q}</annotation></semantics></math>。</p><p>因为各区间两两不相交，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>≠</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_1 \neq x_2</annotation></semantics></math> 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>≠</mo><mi>r</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">r(x_1) \neq r(x_2)</annotation></semantics></math>。这便建立了从间断点集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 到有理数集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> 的一个单射映射 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><mi>r</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">x \mapsto r(x)</annotation></semantics></math>。</p><p>因为有理数集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℚ</mi></mrow><annotation encoding="application/x-tex">\mathbb{Q}</annotation></semantics></math> 是可数集，可数集的子集至多可数。因此单调函数的不连续点集 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math> 至多是可数的。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_三连续函数运算与题干笔误">
+              <div class="wb-hw-part-title">三、连续函数运算与题干笔误修正</div>
+              
+            </div>
+            
+        <article class="wb-hw-card" id="prob_7">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 7 题</span>
+              <span class="wb-hw-prob-title">连续函数单调极大值包络函数保持连续（修正题干）</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第十四题（题干修正）</span>
+            </div>
+            <a href="#prob_7" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#7</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><mi>C</mi><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f \in C[a, b]</annotation></semantics></math>（原题干笔误写为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">C[0,1]</annotation></semantics></math> 但后文采用 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>，现已纠正）。<br>定义 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mo>sup</mo><mrow><mi>a</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>x</mi></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x) = \sup_{a \le t \le x} f(t)</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mo>inf</mo><mrow><mi>a</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>x</mi></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">m(x) = \inf_{a \le t \le x} f(t)</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">x \in [a, b]</annotation></semantics></math>)。<br>证明：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x)</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">m(x)</annotation></semantics></math> 也是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上的连续函数。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用闭区间连续函数的一致连续性：任给 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math>，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\delta &gt; 0</annotation></semantics></math>，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>|</mo><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|x_1 - x_2| &lt; \delta</annotation></semantics></math> 时 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|f(x_1) - f(x_2)| &lt; \varepsilon</annotation></semantics></math>。证明 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x)</annotation></semantics></math> 的振幅被 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 的振幅控制。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                题干笔误已修正。极大值包络函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x)</annotation></semantics></math> 在随机过程（Brownian 运动运行最大值）与非线性分析中极为重要，证明其连续性需依赖一致连续性。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>证明</b>：</p><p>因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在有限闭区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上连续，由 Cantor 定理，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上必<b>一致连续</b>。</p><p>任给 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\varepsilon &gt; 0</annotation></semantics></math>，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\delta &gt; 0</annotation></semantics></math>，使得对任意 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mn>2</mn></mrow></msub><mo>∈</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">t_1, t_2 \in [a, b]</annotation></semantics></math>，只要 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>t</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>t</mi><mrow><mn>2</mn></mrow></msub><mo>|</mo><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|t_1 - t_2| &lt; \delta</annotation></semantics></math>，就有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>f</mi><mo>(</mo><msub><mi>t</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>t</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|f(t_1) - f(t_2)| &lt; \varepsilon</annotation></semantics></math>。</p><p>现在任取 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>∈</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">x_1, x_2 \in [a, b]</annotation></semantics></math> 满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>&lt;</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">x_1 &lt; x_2</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">x_2 - x_1 &lt; \delta</annotation></semantics></math>。由极大值定义：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><munder><mo>sup</mo><mrow><mi>a</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mo>max</mo><mo stretchy="true">(</mo><munder><mo>sup</mo><mrow><mi>a</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo><mspace width="0.22em"/><munder><mo>sup</mo><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo stretchy="true">)</mo><mo>=</mo><mo>max</mo><mo>(</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>,</mo><mspace width="0.22em"/><munder><mo>sup</mo><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x_2) = \sup_{a \le t \le x_2} f(t) = \max\left( \sup_{a \le t \le x_1} f(t),\ \sup_{x_1 \le t \le x_2} f(t) \right) = \max(M(x_1),\ \sup_{x_1 \le t \le x_2} f(t))</annotation></semantics></math><p>显然 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>≥</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x_2) \ge M(x_1)</annotation></semantics></math>（单调递增）。若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>&gt;</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x_2) &gt; M(x_1)</annotation></semantics></math>，则必有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>=</mo><munder><mo>sup</mo><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub></mrow></munder><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x_2) = \sup_{x_1 \le t \le x_2} f(t)</annotation></semantics></math>。</p><p>由闭区间连续函数的最值定理，存在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>t</mi><mrow><mo>∗</mo></mrow></msup><mo>∈</mo><mo>[</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>]</mo></mrow><annotation encoding="application/x-tex">t^* \in [x_1, x_2]</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><msup><mi>t</mi><mrow><mo>∗</mo></mrow></msup><mo>)</mo><mo>=</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">f(t^*) = M(x_2)</annotation></semantics></math>。此时因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msup><mi>t</mi><mrow><mo>∗</mo></mrow></msup><mo>−</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>|</mo><mo>≤</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|t^* - x_1| \le x_2 - x_1 &lt; \delta</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>−</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>≤</mo><mi>f</mi><mo>(</mo><msup><mi>t</mi><mrow><mo>∗</mo></mrow></msup><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">0 \le M(x_2) - M(x_1) \le f(t^*) - f(x_1) &lt; \varepsilon</annotation></semantics></math><p>因此当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>|</mo><mo>&lt;</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">|x_1 - x_2| &lt; \delta</annotation></semantics></math> 时，恒有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>|</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>−</mo><mi>M</mi><mo>(</mo><msub><mi>x</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|M(x_1) - M(x_2)| &lt; \varepsilon</annotation></semantics></math>。由连续性定义，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x)</annotation></semantics></math> 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[a, b]</annotation></semantics></math> 上处处连续。</p><p>同理，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><munder><mo>sup</mo><mrow><mi>a</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>x</mi></mrow></munder><mo>(</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">m(x) = -\sup_{a \le t \le x} (-f(t))</annotation></semantics></math>，故 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">m(x)</annotation></semantics></math> 亦连续。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_8">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 8 题</span>
+              <span class="wb-hw-prob-title">分段函数待定系数连续性拼接（修正题干）</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第十五题（题干修正）</span>
+            </div>
+            <a href="#prob_8" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#8</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a, b, c</annotation></semantics></math> 的值，使得下面的函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">\mathbb{R}</annotation></semantics></math> 上的连续函数（原题干笔误印刷为大写 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math>，已纠正为小写参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math>）：<br><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>1</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>≤</mo><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd><mi>a</mi><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>,</mo></mtd><mtd><mo>|</mo><mi>x</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn><mo>,</mo><mi>x</mi><mo>≠</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>2</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>3</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>≥</mo><mn>1</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f(x) = \begin{cases} 1, &amp; x \le -1 \\ ax^2 + bx + c, &amp; |x| &lt; 1, x \neq 0 \\ 2, &amp; x = 0 \\ 3, &amp; x \ge 1 \end{cases}</annotation></semantics></math>
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：在分界点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = -1, 0, 1</annotation></semantics></math> 处分别要求左极限、右极限与函数值三者严格相等，列出关于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a, b, c</annotation></semantics></math> 的联立线性方程组并求解。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                题干大写 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">Bx</annotation></semantics></math> 笔误纠正为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">bx</annotation></semantics></math>。考查分段函数在分界点处连续的充要条件：左右极限相等且等于该点函数值。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>函数在各开区间段内是多项式或常数，均连续。连续性完全由分界点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = -1, 0, 1</annotation></semantics></math> 处的左右极限决定：</p><p><b>1. 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x = 0</annotation></semantics></math> 处</b>：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>2</mn><mo>,</mo><mo> </mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mi>a</mi><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>)</mo><mo>=</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(0) = 2,\quad \lim_{x\to 0} f(x) = \lim_{x\to 0} (ax^2 + bx + c) = c</annotation></semantics></math><p>连续性要求：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">c = 2</annotation></semantics></math>。</p><p><b>2. 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = -1</annotation></semantics></math> 处</b>：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>1</mn><mo>,</mo><mo> </mo><mi>f</mi><mo>(</mo><mo>−</mo><msup><mn>1</mn><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>=</mo><mn>1</mn><mo>,</mo><mo> </mo><mi>f</mi><mo>(</mo><mo>−</mo><msup><mn>1</mn><mrow><mo>+</mo></mrow></msup><mo>)</mo><mo>=</mo><mi>a</mi><mo>(</mo><mo>−</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mi>b</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>+</mo><mi>c</mi><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(-1) = 1,\quad f(-1^-) = 1,\quad f(-1^+) = a(-1)^2 + b(-1) + c = a - b + c</annotation></semantics></math><p>连续性要求：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a - b + c = 1</annotation></semantics></math>。代入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">c = 2</annotation></semantics></math> 得：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a - b + 2 = 1 \implies a - b = -1</annotation></semantics></math>（式 1）。</p><p><b>3. 在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> 处</b>：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>3</mn><mo>,</mo><mo> </mo><mi>f</mi><mo>(</mo><msup><mn>1</mn><mrow><mo>+</mo></mrow></msup><mo>)</mo><mo>=</mo><mn>3</mn><mo>,</mo><mo> </mo><mi>f</mi><mo>(</mo><msup><mn>1</mn><mrow><mo>−</mo></mrow></msup><mo>)</mo><mo>=</mo><mi>a</mi><mo>(</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mi>b</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>+</mo><mi>c</mi><mo>=</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(1) = 3,\quad f(1^+) = 3,\quad f(1^-) = a(1)^2 + b(1) + c = a + b + c</annotation></semantics></math><p>连续性要求：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">a + b + c = 3</annotation></semantics></math>。代入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">c = 2</annotation></semantics></math> 得：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>3</mn><mo>⇒</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a + b + 2 = 3 \implies a + b = 1</annotation></semantics></math>（式 2）。</p><p>联立式 1 与式 2：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>a</mi><mo>−</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>1</mn></mtd></mtr></mtable></mrow><mo>⇒</mo><mn>2</mn><mi>a</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo> </mo><mi>b</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\begin{cases} a - b = -1 \\ a + b = 1 \end{cases} \implies 2a = 0 \implies a = 0,\quad b = 1</annotation></semantics></math><p><b>结论</b>：参数的值为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.22em"/><mi>b</mi><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="0.22em"/><mi>c</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">a = 0,\ b = 1,\ c = 2</annotation></semantics></math>。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_9">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 9 题</span>
+              <span class="wb-hw-prob-title">正弦函数无限次复合迭代的极限</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">作业第十六题</span>
+            </div>
+            <a href="#prob_9" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#9</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求极限 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><msup><mo>sin</mo><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty} \sin^{(n)}(x)</annotation></semantics></math>（其中 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mo>sin</mo><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\sin^{(n)}(x)</annotation></semantics></math> 表示 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo></mrow><annotation encoding="application/x-tex">\sin</annotation></semantics></math> 函数的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 次复合）。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：利用单调有界定理：在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo>/</mo><mn>2</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">(0, \pi/2]</annotation></semantics></math> 上 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>t</mi><mo>&lt;</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">\sin t &lt; t</annotation></semantics></math>，数列单调递减有下界 0，极限必为不动点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mi>L</mi><mo>=</mo><mi>L</mi><mo>⇒</mo><mi>L</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sin L = L \implies L = 0</annotation></semantics></math>；对称性推广到全实数轴。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                非线性迭代动力系统的吸引子不动点。正弦函数在原点处是切向吸引子（Neutral/Weak Attractor），全实数轴上的所有轨道均被原点吸引。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>记迭代数列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x_0 = x</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mo>sin</mo><mo>(</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">x_n = \sin(x_{n-1})</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \ge 1</annotation></semantics></math>)。</p><p>1. 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_0 = 0</annotation></semantics></math> 时，对一切 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_n = 0</annotation></semantics></math>，极限显然为 0。</p><p>2. 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>∈</mo><mo>(</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">x_0 \in (0, \pi)</annotation></semantics></math> 时，第 1 次迭代后 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>1</mn></mrow></msub><mo>=</mo><mo>sin</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>∈</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>⊂</mo><mo>(</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo>/</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">x_1 = \sin x_0 \in (0, 1] \subset (0, \pi/2)</annotation></semantics></math>。</p><p>在区间 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo>/</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(0, \pi/2)</annotation></semantics></math> 上，由正弦函数不等式恒有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mo>sin</mo><mi>t</mi><mo>&lt;</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">0 &lt; \sin t &lt; t</annotation></semantics></math>。因此：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mo>sin</mo><mo>(</mo><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>)</mo><mo>&lt;</mo><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">0 &lt; x_{n+1} = \sin(x_n) &lt; x_n</annotation></semantics></math><p>数列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>{</mo><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>}</mo></mrow><annotation encoding="application/x-tex">\{x_n\}</annotation></semantics></math> 严格单调递减且有下界 0。由单调有界定理，极限必存在，记 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>∞</mo></mrow></munder><msub><mi>x</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mi>L</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty} x_n = L \ge 0</annotation></semantics></math>。</p><p>两端取连续函数正弦极限：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mo>sin</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">L = \sin L</annotation></semantics></math>。方程在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math> 内的唯一解为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L = 0</annotation></semantics></math>。</p><p>3. 当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_0 &lt; 0</annotation></semantics></math> 时，由正弦函数奇函数性质 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>sin</mo><mo>(</mo><mo>−</mo><mi>t</mi><mo>)</mo><mo>=</mo><mo>−</mo><mo>sin</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">\sin(-t) = -\sin t</annotation></semantics></math>，同样对称收敛到 0；对任意实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math>，初次迭代后均落入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">[-1, 1]</annotation></semantics></math>。</p><p><b>结论</b>：对任意实数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">x \in \mathbb{R}</annotation></semantics></math>，恒有 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>lim</mo><mrow><mi>n</mi><mo>→</mo><mo>+</mo><mo>∞</mo></mrow></munder><msup><mo>sin</mo><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{n\to+\infty} \sin^{(n)}(x) = 0</annotation></semantics></math>。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        </div>
+
+  </main>
+  <script src="data/core.js"></script>
+  <script src="site.js"></script>
+  
+    <script>
+    
+  /* ---------- window.WB_STORAGE: 纯前端零外部依赖 IndexedDB + LocalStorage 双模持久化引擎 ---------- */
+  window.WB_STORAGE = window.WB_STORAGE || (function() {
+    var DB_NAME = 'wb_course_notes_db';
+    var DB_VERSION = 1;
+    var STORE_NAME = 'user_annotations';
+    var db = null;
+    var mem = {};
+
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wb_') === 0) {
+          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+        }
+      }
+    } catch(e) {}
+
+    if (window.indexedDB) {
+      try {
+        var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          var d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) {
+            d.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+        req.onsuccess = function(e) {
+          db = e.target.result;
+          try {
+            var tx = db.transaction(STORE_NAME, 'readonly');
+            var st = tx.objectStore(STORE_NAME);
+            var cursorReq = st.openCursor();
+            cursorReq.onsuccess = function(evt) {
+              var cursor = evt.target.result;
+              if (cursor) {
+                if (cursor.value && cursor.value.key) {
+                  mem[cursor.value.key] = cursor.value.val;
+                }
+                cursor.continue();
+              }
+            };
+          } catch(err) {}
+        };
+      } catch(err) {}
+    }
+
+    return {
+      getItem: function(key) {
+        if (key in mem) return mem[key];
+        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+      },
+      setItem: function(key, val) {
+        var s = String(val);
+        mem[key] = s;
+        try {
+          (window.WB_STORAGE||localStorage).setItem(key, s);
+        } catch(quotaErr) {
+          console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
+        }
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.put({ key: key, val: s, time: Date.now() });
+          } catch(e) {}
+        }
+      },
+      removeItem: function(key) {
+        delete mem[key];
+        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.delete(key);
+          } catch(e) {}
+        }
+      },
+      exportAllNotes: function() {
+        var out = { export_time: new Date().toISOString(), notes: {} };
+        for (var k in mem) {
+          if (k.indexOf('wb_hl_') === 0 || k.indexOf('wb_note_') === 0 || k.indexOf('wb_scroll_') === 0) {
+            try { out.notes[k] = JSON.parse(mem[k]); } catch(e) { out.notes[k] = mem[k]; }
+          }
+        }
+        return JSON.stringify(out, null, 2);
+      }
+    };
+  })();
+
+    (function(){
+      var q = document.getElementById('wb-q'), p = document.getElementById('wb-panel');
+      var S = window.SITE || {docs:[],courses:[],lectures:[]};
+
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function cname(id){var c=(S.courses||[]).filter(function(x){return x.id===id})[0];return c?c.name:id}
+
+      /* ---------- Toast 提示浮条 ---------- */
+      function showToast(msg) {
+        var t = document.getElementById('wb-toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('wb-toast-show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
+      }
+
+      /* ---------- 闪烁高亮 ---------- */
+      function flashEl(el) {
+        if (!el) return;
+        el.classList.remove('wb-flash-highlight');
+        void el.offsetWidth;
+        el.classList.add('wb-flash-highlight');
+        setTimeout(function() { el.classList.remove('wb-flash-highlight'); }, 2600);
+      }
+
+      /* ---------- 深色模式同步与切换 (Dark / Light Mode) ---------- */
+      var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      function applyTheme(t) {
+        if (t === 'dark') {
+          document.documentElement.classList.add('wb-dark');
+          document.body.classList.add('wb-dark');
+          document.documentElement.classList.remove('wb-light');
+          document.body.classList.remove('wb-light');
+        } else {
+          document.documentElement.classList.remove('wb-dark');
+          document.body.classList.remove('wb-dark');
+          document.documentElement.classList.add('wb-light');
+          document.body.classList.add('wb-light');
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        (window.WB_STORAGE||localStorage).setItem('wb_theme', t);
+        var btn = document.getElementById('wb-theme-btn');
+        if (btn) btn.innerHTML = (t === 'dark' ? '☀️ 浅色' : '🌙 深色');
+      }
+      applyTheme(curTheme);
+
+      var themeBtn = document.getElementById('wb-theme-btn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function() {
+          curTheme = (document.documentElement.classList.contains('wb-dark') ? 'light' : 'dark');
+          applyTheme(curTheme);
+          showToast(curTheme === 'dark' ? '已切换为深色模式' : '已切换为浅色模式');
+        });
+      }
+
+      /* ---------- 字号缩放调节 (A- / A+) ---------- */
+      var curFontScale = parseInt((window.WB_STORAGE||localStorage).getItem('wb_fontscale') || '0', 10);
+      function applyFontScale(scale) {
+        curFontScale = Math.max(-2, Math.min(4, scale));
+        (window.WB_STORAGE||localStorage).setItem('wb_fontscale', curFontScale);
+        var baseSize = 16 + curFontScale * 1.5;
+        document.body.style.fontSize = baseSize + 'px';
+      }
+      if (curFontScale !== 0) applyFontScale(curFontScale);
+
+      var fDec = document.getElementById('wb-font-dec');
+      var fInc = document.getElementById('wb-font-inc');
+      if (fDec) fDec.addEventListener('click', function(){ applyFontScale(curFontScale - 1); showToast('字号已调小 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+      if (fInc) fInc.addEventListener('click', function(){ applyFontScale(curFontScale + 1); showToast('字号已调大 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+
+      /* ---------- 大纲抽屉与导航 ---------- */
+      var tocDrawer = document.getElementById('wb-toc-drawer');
+      var tocBackdrop = document.getElementById('wb-toc-backdrop');
+      var tocClose = document.getElementById('wb-toc-close');
+
+      function toggleToc(open) {
+        if (!tocDrawer) return;
+        var isOpen = (open !== undefined) ? open : !tocDrawer.classList.contains('wb-open');
+        tocDrawer.classList.toggle('wb-open', isOpen);
+        if (tocBackdrop) tocBackdrop.classList.toggle('wb-open', isOpen);
+      }
+      if (tocClose) tocClose.addEventListener('click', function(){ toggleToc(false); });
+      if (tocBackdrop) tocBackdrop.addEventListener('click', function(){ toggleToc(false); });
+
+      document.addEventListener('keydown', function(e) {
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 't') {
+          e.preventDefault();
+          toggleToc();
+        }
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          toggleToc(true);
+          switchDrawerTab(true);
+        }
+        if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
+          toggleToc(false);
+        }
+      });
+
+      /* ---------- 交互式自测模式 (折叠/展开全部题目解析) ---------- */
+      var toggleBtn = document.getElementById('wb-hw-toggle-sol');
+      var isSolFolded = false;
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(){
+          isSolFolded = !isSolFolded;
+          var sols = document.querySelectorAll('.wb-hw-sol-box');
+          sols.forEach(function(el){
+            el.open = !isSolFolded;
+          });
+          toggleBtn.textContent = isSolFolded ? '💡 展开全部解析' : '🙈 遮挡解析 (自测)';
+          toggleBtn.classList.toggle('wb-btn-active', isSolFolded);
+          showToast(isSolFolded ? '🙈 已开启自测做题模式：全部解析已遮挡收起，可独立推导演算' : '💡 已展开所有题目的解题思路与完整步骤');
+        });
+      }
+
+      /* ---------- 抽屉 Tab 切换 (题目大纲 vs 本节批注) ---------- */
+      var tabToc = document.getElementById('wb-tab-toc');
+      var tabNotes = document.getElementById('wb-tab-notes');
+      var tocBody = document.getElementById('wb-toc-tree');
+      var notesBody = document.getElementById('wb-notes-list');
+      var notesTools = document.getElementById('wb-notes-tools');
+      var notesNum = document.getElementById('wb-notes-num');
+
+      function switchDrawerTab(isNotes) {
+        if (tabToc) tabToc.classList.toggle('on', !isNotes);
+        if (tabNotes) tabNotes.classList.toggle('on', isNotes);
+        if (tocBody) tocBody.style.display = isNotes ? 'none' : 'block';
+        if (notesBody) notesBody.style.display = isNotes ? 'block' : 'none';
+        if (notesTools) notesTools.style.display = isNotes ? 'flex' : 'none';
+        if (isNotes) renderNotesList();
+      }
+      if (tabToc) tabToc.onclick = function(){ switchDrawerTab(false); };
+      if (tabNotes) tabNotes.onclick = function(){ switchDrawerTab(true); };
+
+      var notesBtn = document.getElementById('wb-notes-btn');
+      if (notesBtn) {
+        notesBtn.onclick = function() {
+          toggleToc(true);
+          switchDrawerTab(true);
+        };
+      }
+
+      // 题目导航跳转
+      var tocTree = document.getElementById('wb-toc-tree');
+      if (tocTree) {
+        tocTree.innerHTML = "<div class=\"toc\" style=\"padding:10px;\"><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_1\">第 1 题 · 典型三角与连乘函数极限计算</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_2\">第 2 题 · 函数在无穷远处极限存在的 Cauchy 准则陈述</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_3\">第 3 题 · 双倍差商极限推出导数差商极限</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_4\">第 4 题 · 函数间断点分类分析</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_5\">第 5 题 · 单调函数连续性充要条件定理证明</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_6\">第 6 题 · 单调函数跳跃间断点的可数性证明</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_7\">第 7 题 · 连续函数单调极大值包络函数保持连续（修正题干）</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_8\">第 8 题 · 分段函数待定系数连续性拼接（修正题干）</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_9\">第 9 题 · 正弦函数无限次复合迭代的极限</div></div>";
+        tocTree.querySelectorAll('.wb-toc-item').forEach(function(item){
+          item.onclick = function(){
+            var sel = this.getAttribute('data-target');
+            var target = document.querySelector(sel);
+            if (target) {
+              var rect = target.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 64;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(target);
+            }
+            toggleToc(false);
+          };
+        });
+      }
+
+      /* ---------- 批注与荧光笔系统 ---------- */
+      var LID = "analysis-week05";
+      window.LID = LID;
+
+      function getStoredHighlights() {
+        try { return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]'); } catch(e){ return []; }
+      }
+      function saveStoredHighlights(list) {
+        (window.WB_STORAGE||localStorage).setItem('wb_hl_' + LID, JSON.stringify(list));
+        updateNotesDrawer();
+      }
+
+      function updateNotesDrawer() {
+        var list = getStoredHighlights();
+        if (notesNum) notesNum.textContent = String(list.length);
+        var barCount = document.getElementById('wb-bar-notes-count');
+        if (barCount) barCount.textContent = String(list.length);
+        if (notesBody && notesBody.style.display !== 'none') renderNotesList();
+      }
+
+      function renderNotesList() {
+        if (!notesBody) return;
+        var list = getStoredHighlights();
+        if (!list.length) {
+          notesBody.innerHTML = '<div style="font-size:12.5px;color:var(--wb-muted);padding:30px 10px;text-align:center">本作业暂无划线与批注。<br><small style="margin-top:6px;display:block">用鼠标划选题目文字，即可呼出 4 色荧光笔与便签工具！</small></div>';
+          return;
+        }
+        var colorNames = {yellow:'🟡 核心', green:'🟢 概念', red:'🔴 易错', purple:'🟣 技巧', underline:'<u>U</u> 划线'};
+        var h = '';
+        list.forEach(function(item) {
+          var dateStr = new Date(item.time || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+          h += '<div class="wb-note-card" data-aid="' + item.id + '">' +
+               '<div class="wb-nc-quote" style="border-left-color:' + (item.color==='green'?'#22c55e':(item.color==='red'?'#ef4444':(item.color==='purple'?'#a855f7':'#eab308'))) + '">“' + esc(item.text.slice(0, 65)) + (item.text.length>65?'…':'') + '”</div>' +
+               (item.note ? '<div class="wb-nc-text">📝 ' + esc(item.note) + '</div>' : '') +
+               '<div class="wb-nc-meta"><span>' + (colorNames[item.color]||'高亮') + '</span><span>' + dateStr + ' ｜ 直达 ➔</span></div>' +
+               '</div>';
+        });
+        notesBody.innerHTML = h;
+
+        notesBody.querySelectorAll('.wb-note-card').forEach(function(card) {
+          card.onclick = function() {
+            var aid = this.getAttribute('data-aid');
+            var targetEl = document.querySelector('[data-hl-id="' + aid + '"]');
+            if (targetEl) {
+              var rect = targetEl.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 70;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(targetEl);
+              if (window.innerWidth < 900) toggleToc(false);
+            }
+          };
+        });
+      }
+
+      var btnClearNotes = document.getElementById('wb-btn-clear-notes');
+      var btnExportNotes = document.getElementById('wb-btn-export-notes');
+      if (btnClearNotes) {
+        btnClearNotes.onclick = function() {
+          if (!confirm('确定要清空本周作业的所有批注吗？')) return;
+          (window.WB_STORAGE||localStorage).removeItem('wb_hl_' + LID);
+          updateNotesDrawer();
+          showToast('✓ 批注已清空');
+        };
+      }
+      if (btnExportNotes) {
+        btnExportNotes.onclick = function() {
+          var list = getStoredHighlights();
+          if (!list.length) { showToast('暂无批注可导出'); return; }
+          var jsonStr = JSON.stringify({homework: LID, exportedAt: new Date().toISOString(), notes: list}, null, 2);
+          var blob = new Blob([jsonStr], {type: 'application/json'});
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = '作业批注_' + LID + '.json';
+          a.click();
+          showToast('✓ 已导出 JSON 备份');
+        };
+      }
+      updateNotesDrawer();
+
+      /* ---------- 搜索输入与快捷键 Ctrl+K ---------- */
+      if (q) {
+        q.addEventListener('input', function(e) {
+          var v = (e.target.value || '').trim();
+          if (!v) { p.style.display = 'none'; p.innerHTML = ''; return; }
+          var low = v.toLowerCase(), r = [];
+          (S.docs||[]).forEach(function(d){
+            if (String(d[4]||'').toLowerCase().indexOf(low)>=0 || String(d[5]||'').toLowerCase().indexOf(low)>=0) r.push(d);
+          });
+          var h = '<div style="font-size:11px;color:var(--wb-muted);padding:4px 10px 8px">检索「'+esc(v)+'」· '+r.length+' 条命中</div>';
+          r.slice(0, 10).forEach(function(d){
+            h += '<a class="wb-res" href="lecture-'+esc(d[2])+'.html">'+esc(d[4])+'<small>'+esc(cname(d[1]))+'</small></a>';
+          });
+          p.innerHTML = h; p.style.display = 'block';
+        });
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); q.focus(); }
+          if (e.key === 'Escape') { q.value = ''; p.style.display = 'none'; }
+        });
+        document.addEventListener('click', function(e) {
+          if (e.target.closest && (e.target.closest('.wb-panel') || e.target.closest('.wb-in'))) return;
+          p.style.display = 'none';
+        });
+      }
+    })();
+    </script>
+    
+</body>
+</html>

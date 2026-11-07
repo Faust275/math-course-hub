@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《geometry》2026-10-26 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《geometry》2026-10-26 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#一椭球面000240001818"
+id="toc-一椭球面000240001818">一、椭球面（00:02:40—00:18:18）</a>
+<ul>
+<li><a href="#由方程到几何性质椭球面的标准方程与特例"
+id="toc-由方程到几何性质椭球面的标准方程与特例">00:02:40—00:04:17 ｜
+由方程到几何性质：椭球面的标准方程与特例</a></li>
+<li><a href="#对称性" id="toc-对称性">00:05:20—00:07:58 ｜
+对称性</a></li>
+<li><a href="#有界性与三个半轴"
+id="toc-有界性与三个半轴">00:08:11—00:10:53 ｜ 有界性与三个半轴</a></li>
+<li><a href="#与坐标轴的交点" id="toc-与坐标轴的交点">00:11:05—00:12:01
+｜ 与坐标轴的交点</a></li>
+<li><a href="#平行截面法ct-扫描确定形状"
+id="toc-平行截面法ct-扫描确定形状">00:12:10—00:18:18 ｜ 平行截面法（“CT
+扫描”）确定形状</a></li>
+</ul></li>
+<li><a href="#二单叶双曲面001827003457"
+id="toc-二单叶双曲面001827003457">二、单叶双曲面（00:18:27—00:34:57）</a>
+<ul>
+<li><a href="#单叶双曲面的标准方程与对称性"
+id="toc-单叶双曲面的标准方程与对称性">00:18:27—00:19:17 ｜
+单叶双曲面的标准方程与对称性</a></li>
+<li><a href="#有界性与坐标轴交点"
+id="toc-有界性与坐标轴交点">00:19:35—00:21:58 ｜
+有界性与坐标轴交点</a></li>
+<li><a href="#平行截面法" id="toc-平行截面法">00:21:58—00:34:57 ｜
+平行截面法</a></li>
+</ul></li>
+<li><a href="#三双叶双曲面003510004453"
+id="toc-三双叶双曲面003510004453">三、双叶双曲面（00:35:10—00:44:53）</a>
+<ul>
+<li><a href="#双叶双曲面的标准方程与对称性"
+id="toc-双叶双曲面的标准方程与对称性">00:35:10—00:36:22 ｜
+双叶双曲面的标准方程与对称性</a></li>
+<li><a href="#范围与坐标轴交点"
+id="toc-范围与坐标轴交点">00:36:22—00:38:54 ｜ 范围与坐标轴交点</a></li>
+<li><a href="#平行截面法-1" id="toc-平行截面法-1">00:39:14—00:44:53 ｜
+平行截面法</a></li>
+</ul></li>
+<li><a href="#四椭圆抛物面004518005727"
+id="toc-四椭圆抛物面004518005727">四、椭圆抛物面（00:45:18—00:57:27）</a>
+<ul>
+<li><a href="#椭圆抛物面的标准方程与对称性"
+id="toc-椭圆抛物面的标准方程与对称性">00:45:18—00:47:11 ｜
+椭圆抛物面的标准方程与对称性</a></li>
+<li><a href="#坐标轴交点与范围"
+id="toc-坐标轴交点与范围">00:47:11—00:48:12 ｜ 坐标轴交点与范围</a></li>
+<li><a href="#平行截面法-2" id="toc-平行截面法-2">00:53:14—00:57:27 ｜
+平行截面法</a></li>
+</ul></li>
+<li><a href="#五双曲抛物面005733011038"
+id="toc-五双曲抛物面005733011038">五、双曲抛物面（00:57:33—01:10:38）</a>
+<ul>
+<li><a href="#双曲抛物面的标准方程与对称性"
+id="toc-双曲抛物面的标准方程与对称性">00:57:33—00:58:58 ｜
+双曲抛物面的标准方程与对称性</a></li>
+<li><a href="#坐标轴交点与范围-1"
+id="toc-坐标轴交点与范围-1">00:58:58—00:59:29 ｜
+坐标轴交点与范围</a></li>
+<li><a href="#平行截面法-3" id="toc-平行截面法-3">00:59:38—01:10:38 ｜
+平行截面法</a></li>
+</ul></li>
+<li><a href="#六二次曲面的一般形式与综合问题011043013801"
+id="toc-六二次曲面的一般形式与综合问题011043013801">六、二次曲面的一般形式与综合问题（01:10:43—01:38:01）</a>
+<ul>
+<li><a href="#由对称性化简一般二次曲面方程"
+id="toc-由对称性化简一般二次曲面方程">01:10:43—01:15:48 ｜
+由对称性化简一般二次曲面方程</a></li>
+<li><a href="#由两条已知截线反推曲面方程"
+id="toc-由两条已知截线反推曲面方程">01:11:42—01:18:03 ｜
+由两条已知截线反推曲面方程</a></li>
+<li><a href="#椭球面的过中心圆截面问题"
+id="toc-椭球面的过中心圆截面问题">01:18:23—01:38:01 ｜
+椭球面的过中心圆截面问题</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="一椭球面000240001818">一、椭球面（00:02:40—00:18:18）</h2>
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-1026/fig02_elliptic_paraboloid.png" alt="图 2: 椭圆抛物面与平行截面椭圆" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 2: 椭圆抛物面与平行截面椭圆</figcaption></figure>
+
+<figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="../assets/geometry-1026/fig01_ellipsoid_slices.png" alt="图 1: 椭球面的平行截面法与最大主截面椭圆" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 1: 椭球面的平行截面法与最大主截面椭圆</figcaption></figure>
+
+<h3 id="由方程到几何性质椭球面的标准方程与特例">00:02:40—00:04:17 ｜
+由方程到几何性质：椭球面的标准方程与特例</h3>
+<p>上节课从”锥面、旋转面”出发，是由几何图形（特征）推出方程；今天反过来，从方程的特点推出几何性质。先看一个”比较好”的方程：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}+\frac{z^2}{C^2}=1.</annotation></semantics></math></p>
+<p>它的特殊情形：</p>
+<ul>
+<li>当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>=</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A=B=C</annotation></semantics></math>
+时，方程化为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msup><mi>A</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=A^2</annotation></semantics></math>，这是<strong>球面</strong>，球心在原点、半径等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>。</li>
+<li>当三者中有两个相等（例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>≠</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A=B\neq C</annotation></semantics></math>）时，它是由一条椭圆曲线绕某一坐标轴旋转一周生成的<strong>旋转椭球面</strong>（旋转椭球面的一种特例）。</li>
+<li>一般情况
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A,B,C</annotation></semantics></math>
+互不相等，即为一般<strong>椭球面</strong>。可见球面、旋转椭球面都是椭球面的特例。</li>
+</ul>
+<h3 id="对称性">00:05:20—00:07:58 ｜ 对称性</h3>
+<p>看对称性，办法是把某一坐标换成它的相反数，检查方程是否不变。</p>
+<ul>
+<li>把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+换成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">-x</annotation></semantics></math>：点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-x,y,z)</annotation></semantics></math>
+都满足方程，说明图形关于
+<strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math>
+平面</strong>对称。同理关于三个坐标平面都对称。</li>
+<li>把其中两个坐标同时换号（如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mi>−</mi><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>→</mo><mi>−</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">x\to -x,\ y\to -y</annotation></semantics></math>），方程仍成立，说明图形关于相应的<strong>坐标轴</strong>对称；逐次推广可知关于三条坐标轴都对称。</li>
+<li>把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+全部换号，方程仍成立，说明图形关于原点<strong>中心对称</strong>。</li>
+</ul>
+<p>结论：椭球面关于三个坐标平面、三条坐标轴、原点都对称。原因在于方程中只含有平方项。</p>
+<h3 id="有界性与三个半轴">00:08:11—00:10:53 ｜ 有界性与三个半轴</h3>
+<p>方程左边是三个非负数之和，等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，所以每一项都不超过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>≤</mo><mn>1</mn><mo>,</mo><mspace width="1.0em"></mspace><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>≤</mo><mn>1</mn><mo>,</mo><mspace width="1.0em"></mspace><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>≤</mo><mn>1</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}\le 1,\quad \frac{y^2}{B^2}\le 1,\quad \frac{z^2}{C^2}\le 1,</annotation></semantics></math></p>
+<p>从而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>A</mi><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>y</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>B</mi><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|x|\le A,\ |y|\le B,\ |z|\le C</annotation></semantics></math>（设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A,B,C&gt;0</annotation></semantics></math>）。这说明图形被关在一个长方体
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>A</mi><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>y</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>B</mi><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|x|\le A,\ |y|\le B,\ |z|\le C</annotation></semantics></math>
+之内，即椭球面是<strong>有界</strong>的。</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A,B,C</annotation></semantics></math>
+称为椭球面的三个<strong>半轴</strong>（半长轴/半中轴/半短轴）。长方体长宽高分别为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>A</mi><mo>,</mo><mn>2</mn><mi>B</mi><mo>,</mo><mn>2</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">2A,2B,2C</annotation></semantics></math>，坐标轴穿过它并交于曲面
+[按图还原：板书中坐标轴从原点出发，在三处与曲面相交，分别对应长度
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A,B,C</annotation></semantics></math>；不另添图上没有的点线]。</p>
+<h3 id="与坐标轴的交点">00:11:05—00:12:01 ｜ 与坐标轴的交点</h3>
+<p>令两个坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，看第三个坐标：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,\ y=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn><mo>⇒</mo><mi>z</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">\dfrac{z^2}{C^2}=1\Rightarrow z=\pm C</annotation></semantics></math>，交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,\pm C)</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y=0,\ z=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>±</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">x=\pm A</annotation></semantics></math>，交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>±</mi><mi>A</mi><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\pm A,0,0)</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,\ z=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>±</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">y=\pm B</annotation></semantics></math>，交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>B</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,\pm B,0)</annotation></semantics></math>。</li>
+</ul>
+<p>共六个点，即椭球面的六个<strong>顶点</strong>。</p>
+<h3 id="平行截面法ct-扫描确定形状">00:12:10—00:18:18 ｜ 平行截面法（“CT
+扫描”）确定形状</h3>
+<p>老师把分析曲面形状类比成医学
+CT：用一族平行于某坐标平面的平面去”切”曲面，看每张截线是什么，再让平面上下移动，把一层层截面联动起来，立体形状就清楚了。</p>
+<h4 id="例题证明-1001210-用平行截面法分析椭球面形状">例题/证明
+1（00:12:10）｜ 用平行截面法分析椭球面形状</h4>
+<p><strong>命题／任务</strong>：用平行于各坐标平面的平面去截椭球面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}+\dfrac{z^2}{C^2}=1</annotation></semantics></math>，说明截线形状随截平面高度的变化，从而确定整个曲面的形状。</p>
+<p><strong>思路</strong>：所谓”平行截面法”（老师类比 CT
+扫描），是用一族平行平面去切曲面，看每一张截线是什么，再让平面上下移动、把截面联动起来得到立体形状。</p>
+<p><strong>逐步推导</strong>： 1. 用平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+去截，代入得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}=1-\frac{H^2}{C^2}.</annotation></semantics></math>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math>：右端为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，得最大椭圆
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}=1</annotation></semantics></math>（半轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math>），这是”最胖”的一层
+[按图还原：此椭圆位于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+平面，是椭球面在坐标平面上投影出的最大截面]。 -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">0&lt;|H|&lt;C</annotation></semantics></math>：右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">&lt;1</annotation></semantics></math>，得到更小的相似椭圆。
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">H=\pm C</annotation></semantics></math>：右端为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>，退化为点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,\pm C)</annotation></semantics></math>，即上下两个顶点。
+- 故随
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|H|</annotation></semantics></math>
+从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+增至
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>，椭圆连续收缩为点。
+2. 用平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+去截：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{z^2}{C^2}=1-\dfrac{H^2}{B^2}</annotation></semantics></math>，同理（以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+为界）是上下收缩到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>B</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,\pm B,0)</annotation></semantics></math>
+的椭圆。 3. 用平行于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math>
+的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=H</annotation></semantics></math>
+去截：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{y^2}{B^2}+\dfrac{z^2}{C^2}=1-\dfrac{H^2}{A^2}</annotation></semantics></math>，同理（以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+为界）收缩到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>±</mi><mi>A</mi><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\pm A,0,0)</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：椭球面是夹在长方体
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>A</mi><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>y</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>B</mi><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|x|\le A,\ |y|\le B,\ |z|\le C</annotation></semantics></math>
+内的封闭曲面；三张坐标平面上的最大椭圆与六个顶点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>±</mi><mi>A</mi><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>B</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\pm A,0,0),(0,\pm B,0),(0,0,\pm C)</annotation></semantics></math>
+完全刻画其形状
+[按图还原：板书中画出的即此封闭椭球，六个顶点为”苹果”状曲面的极点；除文字所述点、线外不另添图元]。</p>
+<p><strong>易错点</strong>：截椭圆”最大”在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math>
+而非两端；两端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">H=\pm C</annotation></semantics></math>
+是点而非椭圆。老师强调 CT 单张只能看截面，必须上下联动才有立体感。</p>
+<h2
+id="二单叶双曲面001827003457">二、单叶双曲面（00:18:27—00:34:57）</h2>
+<h3 id="单叶双曲面的标准方程与对称性">00:18:27—00:19:17 ｜
+单叶双曲面的标准方程与对称性</h3>
+<p>把椭球面方程中某项前面的加号改成减号：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}-\frac{z^2}{C^2}=1.</annotation></semantics></math></p>
+<p>对称性分析与椭球面完全相同——因为仍只含平方项，所以关于三个坐标平面、三条坐标轴、原点都对称。</p>
+<h3 id="有界性与坐标轴交点">00:19:35—00:21:58 ｜ 有界性与坐标轴交点</h3>
+<ul>
+<li><strong>有界性</strong>：由方程得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}=1+\dfrac{z^2}{C^2}</annotation></semantics></math>，左边固定时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+可任意大，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+都可趋于无穷，<strong>曲面无界</strong>，无界性无从谈起。</li>
+<li><strong>坐标轴交点</strong>：
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,\ y=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn><mo>⇒</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mi>−</mi><msup><mi>C</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">-\dfrac{z^2}{C^2}=1\Rightarrow z^2=-C^2</annotation></semantics></math>，无实解（虚的），即<strong>不与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴相交</strong>。</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y=0,\ z=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>±</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">x=\pm A</annotation></semantics></math>，交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>±</mi><mi>A</mi><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\pm A,0,0)</annotation></semantics></math>。</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,\ z=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>±</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">y=\pm B</annotation></semantics></math>，交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>B</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,\pm B,0)</annotation></semantics></math>。</li>
+<li>即与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>
+轴有交点，但与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴无交点。</li>
+</ul></li>
+</ul>
+<h3 id="平行截面法">00:21:58—00:34:57 ｜ 平行截面法</h3>
+<h4
+id="例题证明-1002158-用平行截面法分析单叶双曲面含腰部椭圆与直母线">例题/证明
+1（00:21:58）｜ 用平行截面法分析单叶双曲面（含腰部椭圆与直母线）</h4>
+<p><strong>命题／任务</strong>：用平行截面法确定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}-\dfrac{z^2}{C^2}=1</annotation></semantics></math>
+的形状。</p>
+<p><strong>思路</strong>：仍用三族平行于坐标平面的平面去截，重点观察
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截出的椭圆与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+截出的双曲线，尤其是临界位置
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">|H|=B</annotation></semantics></math>
+处出现的退化情形。</p>
+<p><strong>逐步推导</strong>： 1. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}=1+\frac{H^2}{C^2}.</annotation></semantics></math>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math>：右端为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，得最小椭圆（称为<strong>腰部</strong>），半轴
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math>。
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|H|</annotation></semantics></math>
+增大：右端增大，椭圆变大；故向上、向下都对称地扩展，且趋于无穷。说明这是<strong>一张连通的曲面</strong>（单叶）。
+2. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+截：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}-\frac{z^2}{C^2}=1-\frac{H^2}{B^2}.</annotation></semantics></math>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">|H|&lt;B</annotation></semantics></math>：右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>，为双曲线，实轴平行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴。 -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">|H|=B</annotation></semantics></math>：右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">=0</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}-\dfrac{z^2}{C^2}=0</annotation></semantics></math>，分解为两条相交直线
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>x</mi><mi>A</mi></mfrac><mo>+</mo><mfrac><mi>z</mi><mi>C</mi></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mfrac><mi>x</mi><mi>A</mi></mfrac><mo>−</mo><mfrac><mi>z</mi><mi>C</mi></mfrac><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x}{A}+\frac{z}{C}=0,\qquad \frac{x}{A}-\frac{z}{C}=0,</annotation></semantics></math>
+都过原点。这是截平面的临界位置（退化），说明单叶双曲面上<strong>含有直线</strong>——它是直纹面。
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>&gt;</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">|H|&gt;B</annotation></semantics></math>：右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{z^2}{C^2}-\dfrac{x^2}{A^2}=\dfrac{H^2}{B^2}-1&gt;0</annotation></semantics></math>，为双曲线，实轴平行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴。 - 故随
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|H|</annotation></semantics></math>
+跨过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>，双曲线的实轴由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+方向翻转到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+方向。 3. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=H</annotation></semantics></math>
+截，情形与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+完全类似。</p>
+<p><strong>结论</strong>：单叶双曲面是一张连通曲面，腰部（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>）为最小椭圆，向上向下扩展为越来越大的椭圆，并含有两族直母线（直线）[按图还原：板书中腰部那两条相交直线即直母线的一对，过原点相交；不另添图上没有的点线]。</p>
+<p><strong>易错点</strong>：与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴无交点（令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=y=0</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msup><mi>z</mi><mn>2</mn></msup><mi>/</mi><msup><mi>C</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-z^2/C^2=1</annotation></semantics></math>，虚）；“腰部”在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+而非两端；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">|H|=B</annotation></semantics></math>
+时截得两直线而非双曲线。老师强调：看上去弯得厉害的曲面，身上却长着直线，甚至可以用竹片（直线）编出来。</p>
+<h2
+id="三双叶双曲面003510004453">三、双叶双曲面（00:35:10—00:44:53）</h2>
+<h3 id="双叶双曲面的标准方程与对称性">00:35:10—00:36:22 ｜
+双叶双曲面的标准方程与对称性</h3>
+<p>把上式的常数项取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mi>−</mi><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}-\frac{z^2}{C^2}=-1.</annotation></semantics></math></p>
+<p>对称性同样关于三个坐标平面、三条坐标轴、原点都对称。</p>
+<h3 id="范围与坐标轴交点">00:36:22—00:38:54 ｜ 范围与坐标轴交点</h3>
+<ul>
+<li><strong>范围</strong>：移项得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mn>1</mn><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}=\dfrac{z^2}{C^2}-1\ge 0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{z^2}{C^2}\ge 1</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|z|\ge C</annotation></semantics></math>。在两平行平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">z=\pm C</annotation></semantics></math>
+之间<strong>没有图形</strong>，曲面分裂为上下两叶。</li>
+<li><strong>坐标轴交点</strong>：
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,\ y=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn><mo>⇒</mo><mi>z</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">-\dfrac{z^2}{C^2}=-1\Rightarrow z=\pm C</annotation></semantics></math>，交点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,\pm C)</annotation></semantics></math>。</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y=0,\ z=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}=-1</annotation></semantics></math>，虚，不与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴交。</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,\ z=0</annotation></semantics></math>
+代入，得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{y^2}{B^2}=-1</annotation></semantics></math>，虚，不与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴交。</li>
+<li>即只与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴交于两个顶点。</li>
+</ul></li>
+</ul>
+<h3 id="平行截面法-1">00:39:14—00:44:53 ｜ 平行截面法</h3>
+<h4 id="例题证明-1003914-用平行截面法分析双叶双曲面">例题/证明
+1（00:39:14）｜ 用平行截面法分析双叶双曲面</h4>
+<p><strong>命题／任务</strong>：用平行截面法确定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}-\dfrac{z^2}{C^2}=-1</annotation></semantics></math>
+的形状。</p>
+<p><strong>思路</strong>：重点观察
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截出的椭圆（仅在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|H|\ge C</annotation></semantics></math>
+时存在）以及
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+截出的双曲线，注意双曲线实轴始终不变。</p>
+<p><strong>逐步推导</strong>： 1. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>（要求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|H|\ge C</annotation></semantics></math>）截：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>−</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}=\frac{H^2}{C^2}-1.</annotation></semantics></math>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">H=\pm C</annotation></semantics></math>：右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">=0</annotation></semantics></math>，退化为点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mi>±</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,\pm C)</annotation></semantics></math>，即上下两叶的顶点。
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo><mo>&gt;</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|H|&gt;C</annotation></semantics></math>：为椭圆，随
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>H</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|H|</annotation></semantics></math>
+增大而增大；上下两叶对称。 2. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+截：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mi>−</mi><mn>1</mn><mo>−</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}-\frac{z^2}{C^2}=-1-\frac{H^2}{B^2}\quad\Longrightarrow\quad \frac{z^2}{C^2}-\frac{x^2}{A^2}=1+\frac{H^2}{B^2},</annotation></semantics></math>
+恒为双曲线，且实轴始终平行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴（无论
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+取何值，实轴方向都不变）。</p>
+<p><strong>结论</strong>：双叶双曲面由上下两叶组成，各叶是随
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|z|</annotation></semantics></math>
+增大而增大的椭圆，两叶在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">z=\pm C</annotation></semantics></math>
+处收为顶点，中间
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">|z|&lt;C</annotation></semantics></math>
+区域为空 [按图还原：板书中两张平行平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>±</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">z=\pm C</annotation></semantics></math>
+之间留白即为无图形区；不另添图上没有的点线]。</p>
+<p><strong>易错点</strong>：仅与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴相交；与单叶双曲面不同，此处双曲线实轴<strong>不翻转</strong>（恒平行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴）。</p>
+<h2
+id="四椭圆抛物面004518005727">四、椭圆抛物面（00:45:18—00:57:27）</h2>
+<h3 id="椭圆抛物面的标准方程与对称性">00:45:18—00:47:11 ｜
+椭圆抛物面的标准方程与对称性</h3>
+<p>抛物面中第一种方程为</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>2</mn><mi>z</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}+\frac{y^2}{B^2}=2z.</annotation></semantics></math></p>
+<p>这里出现了一次项
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>z</mi></mrow><annotation encoding="application/x-tex">2z</annotation></semantics></math>。对称性：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>→</mo><mi>−</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">x\to -x</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>→</mo><mi>−</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">y\to -y</annotation></semantics></math>
+方程不变，故关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+平面、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math>
+平面以及
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴对称；但
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>→</mo><mi>−</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">z\to -z</annotation></semantics></math>
+不对称（含一次项），故<strong>不</strong>关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面、也<strong>不</strong>关于原点。</p>
+<h3 id="坐标轴交点与范围">00:47:11—00:48:12 ｜ 坐标轴交点与范围</h3>
+<p>方程每项都含变量，唯
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,0)</annotation></semantics></math>
+满足，故曲面<strong>过原点</strong>（这是它与坐标轴的唯一公共点）。又左边
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>z</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">2z\ge 0</annotation></semantics></math>，即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z\ge 0</annotation></semantics></math>，曲面位于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面<strong>上方</strong>。</p>
+<h3 id="平行截面法-2">00:53:14—00:57:27 ｜ 平行截面法</h3>
+<p>（00:48:12—00:51:46 为课堂点名，属课堂管理，略过。）</p>
+<h4 id="例题证明-1005314-用平行截面法分析椭圆抛物面">例题/证明
+1（00:53:14）｜ 用平行截面法分析椭圆抛物面</h4>
+<p><strong>命题／任务</strong>：用平行截面法确定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>z</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}=2z</annotation></semantics></math>
+的形状。</p>
+<p><strong>思路</strong>：看
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截出的椭圆与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>（或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=H</annotation></semantics></math>）截出的抛物线，并找出抛物线顶点的轨迹。</p>
+<p><strong>逐步推导</strong>： 1. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>H</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}=2H</annotation></semantics></math>。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math>
+为原点一点；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H&gt;0</annotation></semantics></math>
+为椭圆，随
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+增大而增大，向上张开。 2. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+截：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>2</mn><mi>z</mi><mo>−</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><msup><mi>A</mi><mn>2</mn></msup><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>−</mo><mfrac><msup><mi>H</mi><mn>2</mn></msup><mrow><mn>2</mn><msup><mi>B</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}=2z-\frac{H^2}{B^2}\quad\Longrightarrow\quad x^2=2A^2\!\left(z-\frac{H^2}{2B^2}\right),</annotation></semantics></math>
+为抛物线，顶点在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><mrow><mn>2</mn><msup><mi>B</mi><mn>2</mn></msup></mrow></mfrac></mstyle><mo>,</mo><mspace width="0.167em"></mspace><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=\dfrac{H^2}{2B^2},\,x=0</annotation></semantics></math>。令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+变化，顶点轨迹为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>z</mi><mo>=</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><mrow><mn>2</mn><msup><mi>B</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">x=0,\qquad z=\frac{y^2}{2B^2},</annotation></semantics></math>
+即一条抛物线 [按图还原：板书中画出的”顶点所在抛物线”即此条]。 3. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=H</annotation></semantics></math>
+截，类同，顶点轨迹
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><mrow><mn>2</mn><msup><mi>A</mi><mn>2</mn></msup></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">y=0,\ z=\dfrac{x^2}{2A^2}</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：椭圆抛物面形如卫星天线/雷达锅，向上张开
+[按图还原：板书中画的即此凹面状曲面；不另添图上没有的点线]。</p>
+<p><strong>易错点</strong>：关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴、两竖坐标平面对称，但<strong>不</strong>关于原点；只过原点、不过其它轴；“最瘦”在原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>（非某个中间高度）。</p>
+<h2
+id="五双曲抛物面005733011038">五、双曲抛物面（00:57:33—01:10:38）</h2>
+<h3 id="双曲抛物面的标准方程与对称性">00:57:33—00:58:58 ｜
+双曲抛物面的标准方程与对称性</h3>
+<p>抛物面中第二种方程为</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>2</mn><mi>z</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{A^2}-\frac{y^2}{B^2}=2z.</annotation></semantics></math></p>
+<p>对称性同椭圆抛物面：关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xOz</annotation></semantics></math>
+平面、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math>
+平面、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+轴对称，不关于原点、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面。</p>
+<h3 id="坐标轴交点与范围-1">00:58:58—00:59:29 ｜ 坐标轴交点与范围</h3>
+<p>同样仅过原点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,0)</annotation></semantics></math>；此处对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+无范围限制（任意方向都可延伸）。</p>
+<h3 id="平行截面法-3">00:59:38—01:10:38 ｜ 平行截面法</h3>
+<h4
+id="例题证明-1005938-用平行截面法分析双曲抛物面马鞍面-直纹面">例题/证明
+1（00:59:38）｜ 用平行截面法分析双曲抛物面（马鞍面 / 直纹面）</h4>
+<p><strong>命题／任务</strong>：用平行截面法确定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>z</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}-\dfrac{y^2}{B^2}=2z</annotation></semantics></math>
+的形状。</p>
+<p><strong>思路</strong>：看
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截线（注意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math>
+退化为两直线）、以及
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=H</annotation></semantics></math>
+截出的抛物线开口方向。</p>
+<p><strong>逐步推导</strong>： 1. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">z=H</annotation></semantics></math>
+截：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>H</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}-\dfrac{y^2}{B^2}=2H</annotation></semantics></math>。
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mi>x</mi><mi>A</mi></mfrac></mstyle><mo>±</mo><mstyle displaystyle="true"><mfrac><mi>y</mi><mi>B</mi></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{x}{A}\pm\dfrac{y}{B}=0</annotation></semantics></math>，两条过原点的相交直线（说明它也是<strong>直纹面</strong>）。
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H&gt;0</annotation></semantics></math>：双曲线，实轴平行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+轴。 -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H&lt;0</annotation></semantics></math>：双曲线，实轴平行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+轴。 - 故跨过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+时双曲线实轴由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+翻转到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>，呈马鞍形。
+2. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y=H</annotation></semantics></math>
+截：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>z</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>⇒</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><msup><mi>A</mi><mn>2</mn></msup><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><mrow><mn>2</mn><msup><mi>B</mi><mn>2</mn></msup></mrow></mfrac></mstyle><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}=2z+\dfrac{H^2}{B^2}\Rightarrow x^2=2A^2\!\left(z+\dfrac{H^2}{2B^2}\right)</annotation></semantics></math>，抛物线，开口向上（沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">+z</annotation></semantics></math>）。
+3. 用平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=H</annotation></semantics></math>
+截：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>z</mi><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>⇒</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mi>−</mi><mn>2</mn><msup><mi>B</mi><mn>2</mn></msup><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>H</mi><mn>2</mn></msup><mrow><mn>2</mn><msup><mi>A</mi><mn>2</mn></msup></mrow></mfrac></mstyle><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\dfrac{y^2}{B^2}=2z-\dfrac{H^2}{A^2}\Rightarrow y^2=-2B^2\!\left(z-\dfrac{H^2}{2A^2}\right)</annotation></semantics></math>，抛物线，开口向下（沿
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">-z</annotation></semantics></math>）。</p>
+<p><strong>结论</strong>：双曲抛物面（又称马鞍面、直纹面），一个方向凹上一个方向凹下，且可由直线编织而成（老师举竹编为例）[按图还原：板书中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+处两条相交直线即直母线；不另添图上没有的点线]。</p>
+<p><strong>易错点</strong>：与椭圆抛物面不同，此处
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+截得两直线、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z\neq 0</annotation></semantics></math>
+截得双曲线且实轴跨
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+翻转；它也是直纹面，但实为”马鞍”而非”锅”。</p>
+<h2
+id="六二次曲面的一般形式与综合问题011043013801">六、二次曲面的一般形式与综合问题（01:10:43—01:38:01）</h2>
+<h3 id="由对称性化简一般二次曲面方程">01:10:43—01:15:48 ｜
+由对称性化简一般二次曲面方程</h3>
+<p>我们前面学过的柱面、锥面、旋转面，以及上面五种标准曲面，都可以纳入”二次曲面”的统一框架：最高次为二次项的曲面。</p>
+<p>一般二次曲面方程可含平方项、交叉项（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>,</mo><mi>x</mi><mi>z</mi><mo>,</mo><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xy,xz,yz</annotation></semantics></math>）、一次项与常数项。但<strong>若曲面关于坐标平面、坐标轴、原点都对称，则交叉项与一次项系数必为零</strong>——论证如下：把点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math>
+全部换号成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo>,</mo><mi>−</mi><mi>y</mi><mo>,</mo><mi>−</mi><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-x,-y,-z)</annotation></semantics></math>，方程仍应成立；两式相减，含奇次的项（一次项、交叉项）符号相反，要同时满足两式只能其系数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>。于是方程化为纯平方项加常数</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>22</mn></msub><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>33</mn></msub><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">A_{11}x^2+A_{22}y^2+A_{33}z^2+D=0,</annotation></semantics></math></p>
+<p>这正是前面各标准曲面共有的形式。</p>
+<h3 id="由两条已知截线反推曲面方程">01:11:42—01:18:03 ｜
+由两条已知截线反推曲面方程</h3>
+<h4
+id="例题证明-1011314-由两条已知平面截线确定对称二次曲面方程">例题/证明
+1（01:13:14）｜ 由两条已知平面截线确定对称二次曲面方程</h4>
+<p><strong>命题</strong>：设一二次曲面关于三坐标平面、三坐标轴、原点都对称，其方程只含平方项与常数项：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>22</mn></msub><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>33</mn></msub><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">A_{11}x^2+A_{22}y^2+A_{33}z^2+D=0.</annotation></semantics></math>
+已知该曲面上两条平面截线： -
+截线一：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><mn>4</mn></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^2+\dfrac{y^2}{4}=1</annotation></semantics></math>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></mrow><annotation encoding="application/x-tex">z=\sqrt{3}</annotation></semantics></math>；
+-
+截线二（转写不清，记为）<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><mn>8</mn></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^2+\dfrac{y^2}{8}=1</annotation></semantics></math>，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>−</mi><msqrt><mn>2</mn></msqrt></mrow><annotation encoding="application/x-tex">z=-\sqrt{2}</annotation></semantics></math>。
+求曲面方程（确定各系数，至多差一个公因子）。</p>
+<p><strong>思路</strong>：把每条截线代入曲面方程，使所得二次曲线与已知截线成比例，从而比较
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>,</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2,y^2</annotation></semantics></math>
+系数，列出关于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><mo>,</mo><msub><mi>A</mi><mn>22</mn></msub><mo>,</mo><msub><mi>A</mi><mn>33</mn></msub><mo>,</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">A_{11},A_{22},A_{33},D</annotation></semantics></math>
+的方程组；4 个未知量（含比例因子）由两条截线提供的方程解出。</p>
+<p><strong>逐步推导</strong>： 1. 由对称性，方程已化简为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>22</mn></msub><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>33</mn></msub><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A_{11}x^2+A_{22}y^2+A_{33}z^2+D=0</annotation></semantics></math>。
+2.
+代入截线一（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">z^2=3</annotation></semantics></math>）：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>22</mn></msub><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>3</mn><msub><mi>A</mi><mn>33</mn></msub><mo>+</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A_{11}x^2+A_{22}y^2+(3A_{33}+D)=0</annotation></semantics></math>。它必须与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><mn>4</mn></mfrac></mstyle><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x^2+\dfrac{y^2}{4}-1=0</annotation></semantics></math>
+表示同一曲线，故存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><mo>=</mo><mi>λ</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>A</mi><mn>22</mn></msub><mo>=</mo><mfrac><mi>λ</mi><mn>4</mn></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mn>3</mn><msub><mi>A</mi><mn>33</mn></msub><mo>+</mo><mi>D</mi><mo>=</mo><mi>−</mi><mi>λ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">A_{11}=\lambda,\qquad A_{22}=\frac{\lambda}{4},\qquad 3A_{33}+D=-\lambda.</annotation></semantics></math>
+3.
+代入截线二（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">z^2=2</annotation></semantics></math>）：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>A</mi><mn>22</mn></msub><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><msub><mi>A</mi><mn>33</mn></msub><mo>+</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A_{11}x^2+A_{22}y^2+(2A_{33}+D)=0</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><mn>8</mn></mfrac></mstyle><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x^2+\dfrac{y^2}{8}-1=0</annotation></semantics></math>
+比较，存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><mo>=</mo><mi>μ</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>A</mi><mn>22</mn></msub><mo>=</mo><mfrac><mi>μ</mi><mn>8</mn></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mn>2</mn><msub><mi>A</mi><mn>33</mn></msub><mo>+</mo><mi>D</mi><mo>=</mo><mi>−</mi><mi>μ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">A_{11}=\mu,\qquad A_{22}=\frac{\mu}{8},\qquad 2A_{33}+D=-\mu.</annotation></semantics></math>
+4. 两条截线各提供比较两个系数得到的两个方程，共 4 个方程，正好确定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>11</mn></msub><mo>:</mo><msub><mi>A</mi><mn>22</mn></msub><mo>:</mo><msub><mi>A</mi><mn>33</mn></msub><mo>:</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">A_{11}:A_{22}:A_{33}:D</annotation></semantics></math>
+的比例（系数至多差一公因子），从而曲面方程唯一确定
+[转写中第二条截线的具体系数需以课件原图为准，此处仅演示方法，故标注]。</p>
+<p><strong>结论</strong>：利用两条已知平面截线，可反推出对称二次曲面的方程（系数至多差一公因子）；关键是先由对称性把一般二次曲面化简为纯平方项加常数的标准型。</p>
+<p><strong>易错点</strong>：必须先由对称性消去交叉项与一次项，否则未知量过多无法定出；截线方程的具体数字以课件为准。</p>
+<h3 id="椭球面的过中心圆截面问题">01:18:23—01:38:01 ｜
+椭球面的过中心圆截面问题</h3>
+<h4 id="例题证明-2011823-椭球面是否存在过中心的圆截面">例题/证明
+2（01:18:23）｜ 椭球面是否存在过中心的圆截面</h4>
+<p><strong>命题</strong>：椭球面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>z</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{A^2}+\dfrac{y^2}{B^2}+\dfrac{z^2}{C^2}=1</annotation></semantics></math>，三半轴互不相等（课堂口述为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>&lt;</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A&lt;B&lt;C</annotation></semantics></math>[?]）。问：是否存在过中心的平面，使其与椭球面的交线为圆？</p>
+<p><strong>思路</strong>：分两步。第一步考察过某一坐标轴的平面（如过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>K</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">z=Kx</annotation></semantics></math>），把交线写成一个柱面方程，令其在自身平面内成为圆，从而解出斜率
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>。第二步再说明任意过原点的平面结论相同。</p>
+<p><strong>逐步推导</strong>： 1. <strong>第一步（过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴的平面）</strong>：设平面过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴，方程可写为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>K</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">z=Kx</annotation></semantics></math>（不含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>，故包含整条
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴）。与椭球面联立消去
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>1</mn><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>K</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\left(\frac1{A^2}+\frac{K^2}{C^2}\right)x^2+\frac{y^2}{B^2}=1.</annotation></semantics></math>
+这是投影到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math>
+平面（沿该平面方向看）的一个柱面方程，只含
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x,y</annotation></semantics></math>；它在平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>K</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">z=Kx</annotation></semantics></math>
+上的截线就是椭球与该平面的交线。该交线为圆
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\iff</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mn>2</mn></msup><annotation encoding="application/x-tex">x^2</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mn>2</mn></msup><annotation encoding="application/x-tex">y^2</annotation></semantics></math>
+的系数相等：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>K</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><msup><mi>B</mi><mn>2</mn></msup></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac1{A^2}+\frac{K^2}{C^2}=\frac1{B^2}.</annotation></semantics></math>
+解得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>K</mi><mn>2</mn></msup><mo>=</mo><msup><mi>C</mi><mn>2</mn></msup><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>1</mn><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><mn>1</mn><msup><mi>A</mi><mn>2</mn></msup></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>K</mi><mo>=</mo><mi>±</mi><mi>C</mi><msqrt><mrow><mfrac><mn>1</mn><msup><mi>B</mi><mn>2</mn></msup></mfrac><mo>−</mo><mfrac><mn>1</mn><msup><mi>A</mi><mn>2</mn></msup></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">K^2=C^2\!\left(\frac1{B^2}-\frac1{A^2}\right),\qquad K=\pm C\sqrt{\frac1{B^2}-\frac1{A^2}}.</annotation></semantics></math>
+当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><msup><mi>B</mi><mn>2</mn></msup></mfrac></mstyle><mo>&gt;</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><msup><mi>A</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac1{B^2}&gt;\dfrac1{A^2}</annotation></semantics></math>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>&gt;</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A&gt;B</annotation></semantics></math>）时有两实解，对应两张过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>±</mi><mi>K</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">z=\pm Kx</annotation></semantics></math>，其交线为圆
+[?]（口述
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>&lt;</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">A&lt;B&lt;C</annotation></semantics></math>
+与实数解条件略有出入，按几何标准此处应取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴为中间长度轴）。 2.
+<strong>第二步（任意过原点平面）</strong>：设过原点平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>:</mo><mi>p</mi><mi>x</mi><mo>+</mo><mi>q</mi><mi>y</mi><mo>+</mo><mi>r</mi><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha: px+qy+rz=0</annotation></semantics></math>。若该平面与椭球面的交线是半径为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+的圆，则它同时落在球面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow><msup><mi>R</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2+y^2+z^2}{R^2}=1</annotation></semantics></math>
+上（圆心在原点、半径
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>）。于是椭球面与该球面的交线
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>=</mo><annotation encoding="application/x-tex">=</annotation></semantics></math>
+椭球面与平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+的交线；两二次曲面相减得一个一次式，即该交线所在平面，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+正是这个平面。由此把两方程相减、比较系数可得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(p,q,r)</annotation></semantics></math>
+的关系
+[补全：该结论即蒙日圆截线定理——三轴椭球面恰有两族过中间轴的圆截面；课堂此处为概要性/“代理律师式”论证，细节留作自行深入思考，并非当堂完整证明]。</p>
+<p><strong>结论</strong>：存在过中心的平面使交线为圆；课堂上先给出过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+轴的平面
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>±</mi><mi>K</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">z=\pm Kx</annotation></semantics></math>（由上式定
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>），并指出任意过原点的平面同样可取到。</p>
+<p><strong>易错点</strong>：圆截面并非过任意轴都存在，是否实解取决于半轴大小关系（需
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>K</mi><mn>2</mn></msup><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">K^2&gt;0</annotation></semantics></math>）。老师强调这是”通过坐标轴的平面”与”任意过原点平面”两步，第二步细节需自行深入。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

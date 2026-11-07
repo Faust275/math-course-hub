@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《algebra》2026-10-22 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《algebra》2026-10-22 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#一二阶矩阵群与群同构000328003548"
+id="toc-一二阶矩阵群与群同构000328003548">一、二阶矩阵群与群同构（00:03:28—00:35:48）</a>
+<ul>
+<li><a href="#二阶特殊矩阵-beginpmatrixab01endpmatrix-与它的逆"
+id="toc-二阶特殊矩阵-beginpmatrixab01endpmatrix-与它的逆">00:03:28—00:11:21
+｜ 二阶特殊矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>
+与它的逆</a></li>
+<li><a href="#该矩阵群的几何意义仿射变换"
+id="toc-该矩阵群的几何意义仿射变换">00:11:21—00:14:45 ｜
+该矩阵群的几何意义：仿射变换</a></li>
+<li><a href="#群同构的定义与基本性质"
+id="toc-群同构的定义与基本性质">00:14:45—00:19:16 ｜
+群同构的定义与基本性质</a></li>
+<li><a href="#例指数映射与加群的同构"
+id="toc-例指数映射与加群的同构">00:19:16—00:21:21 ｜
+例：指数映射与加群的同构</a></li>
+<li><a href="#例ab01-矩阵群同构于仿射变换群"
+id="toc-例ab01-矩阵群同构于仿射变换群">00:21:30—00:28:32 ｜ 例：ab01
+矩阵群同构于仿射变换群</a></li>
+<li><a href="#例旋转矩阵与-so2-群同构于单位圆周群"
+id="toc-例旋转矩阵与-so2-群同构于单位圆周群">00:28:57—00:35:48 ｜
+例：旋转矩阵与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>
+群同构于单位圆周群</a></li>
+</ul></li>
+<li><a href="#二矩阵平方迹转置与分块矩阵003559013615"
+id="toc-二矩阵平方迹转置与分块矩阵003559013615">二、矩阵平方、迹、转置与分块矩阵（00:35:59—01:36:15）</a>
+<ul>
+<li><a href="#练习迹为零的二阶矩阵-a20-与锥面"
+id="toc-练习迹为零的二阶矩阵-a20-与锥面">00:35:59—00:44:04 ｜
+练习：迹为零的二阶矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0</annotation></semantics></math>
+与锥面</a></li>
+<li><a href="#转置的定义与基本例子"
+id="toc-转置的定义与基本例子">00:44:39—00:53:23 ｜
+转置的定义与基本例子</a></li>
+<li><a href="#转置的性质含乘法与求逆的转置"
+id="toc-转置的性质含乘法与求逆的转置">00:53:23—01:09:09 ｜
+转置的性质（含乘法与求逆的转置）</a></li>
+<li><a href="#分块矩阵加法乘法转置与例子"
+id="toc-分块矩阵加法乘法转置与例子">01:09:22—01:31:04 ｜
+分块矩阵：加法、乘法、转置与例子</a></li>
+<li><a href="#按行列分块与对角阵左乘右乘的效果"
+id="toc-按行列分块与对角阵左乘右乘的效果">01:31:04—01:36:15 ｜
+按行/列分块与对角阵左乘、右乘的效果</a></li>
+</ul></li>
+<li><a href="#三向量组的线性表示等价与替换定理013635022248"
+id="toc-三向量组的线性表示等价与替换定理013635022248">三、向量组的线性表示、等价与替换定理（01:36:35—02:22:48）</a>
+<ul>
+<li><a href="#矩阵乘法的来由向量组的线性表示"
+id="toc-矩阵乘法的来由向量组的线性表示">01:36:35—01:49:49 ｜
+矩阵乘法的来由：向量组的线性表示</a></li>
+<li><a href="#向量组的等价关系"
+id="toc-向量组的等价关系">01:49:49—01:54:57 ｜ 向量组的等价关系</a></li>
+<li><a href="#定理等价且都线性无关的两组向量个数相同"
+id="toc-定理等价且都线性无关的两组向量个数相同">01:54:57—02:00:27 ｜
+定理：等价且都线性无关的两组向量个数相同</a></li>
+<li><a href="#替换定理及其推论"
+id="toc-替换定理及其推论">02:00:27—02:22:48 ｜ 替换定理及其推论</a></li>
+</ul></li>
+<li><a href="#四维数概念的引入022248022732"
+id="toc-四维数概念的引入022248022732">四、维数概念的引入（02:22:48—02:27:32）</a>
+<ul>
+<li><a href="#维数极大线性无关组与-zorn-引理预告"
+id="toc-维数极大线性无关组与-zorn-引理预告">02:22:48—02:27:32 ｜
+维数、极大线性无关组与 Zorn 引理预告</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2
+id="一二阶矩阵群与群同构000328003548">一、二阶矩阵群与群同构（00:03:28—00:35:48）</h2>
+<h3
+id="二阶特殊矩阵-beginpmatrixab01endpmatrix-与它的逆">00:03:28—00:11:21
+｜ 二阶特殊矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>
+与它的逆</h3>
+<p>复习：上次已说明，在矩阵乘法下
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+阶方阵构成群（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>,</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">GL(n,\mathbb R)</annotation></semantics></math>
+的子群）。现在看一类特殊的二阶矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>a</mi><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>b</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix},\qquad a\neq0,\ b\in\mathbb R.</annotation></semantics></math></p>
+<h4
+id="例题证明-1000750-矩阵-beginpmatrixab01endpmatrix-aneq0-的可逆性及其逆矩阵">例题/证明
+1（00:07:50）｜ 矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>≠</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\ (a\neq0)</annotation></semantics></math>
+的可逆性及其逆矩阵</h4>
+<p><strong>命题／任务</strong>：判断上述矩阵是否可逆，并在可逆时求出逆矩阵。</p>
+<p><strong>思路</strong>：直接用可逆定义——若存在矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mo>′</mo></msup><annotation encoding="application/x-tex">A&#39;</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msup><mi>A</mi><mo>′</mo></msup><mo>=</mo><msup><mi>A</mi><mo>′</mo></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">AA&#39;=A&#39;A=I</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+可逆且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>′</mo></msup><mo>=</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">A&#39;=A^{-1}</annotation></semantics></math>。先从一个更特殊的情形找规律。</p>
+<p><strong>逐步推导</strong>： 1. 先考虑
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a=1</annotation></semantics></math>
+的情形：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>b</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">E_b=\begin{pmatrix}1&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>。直接计算两个这样的矩阵相乘：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>x</mi><mo>+</mo><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;x\\0&amp;1\end{pmatrix}\begin{pmatrix}1&amp;y\\0&amp;1\end{pmatrix}=\begin{pmatrix}1&amp;x+y\\0&amp;1\end{pmatrix},</annotation></semantics></math>
+即右上角元素相加（“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+增量叠加”）。 2. 由此猜测，当左上角是一般的非零元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+时，逆矩阵应仍保持”第二行为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,1)</annotation></semantics></math>、左上角非零”的形式。设
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A^{-1}=\begin{pmatrix}a^{-1}&amp;-a^{-1}b\\0&amp;1\end{pmatrix}.</annotation></semantics></math>
+3. 验证：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>I</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\begin{pmatrix}a^{-1}&amp;-a^{-1}b\\0&amp;1\end{pmatrix}=\begin{pmatrix}1&amp;0\\0&amp;1\end{pmatrix}=I,</annotation></semantics></math>
+反向相乘同样得到单位矩阵，故猜想成立。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+可逆，且
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A^{-1}=\begin{pmatrix}a^{-1}&amp;-a^{-1}b\\0&amp;1\end{pmatrix}.</annotation></semantics></math>
+这类矩阵的特点就是”第二行为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,1)</annotation></semantics></math>、左上角非零”，且逆矩阵仍属于同一形式。</p>
+<h4
+id="例题-2000825-特例-beginpmatrix1b01endpmatrix-的逆与同类矩阵相乘的规律">例题
+2（00:08:25）｜ 特例
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>
+的逆与同类矩阵相乘的规律</h4>
+<p><strong>命题／任务</strong>：把上述结论用于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a=1</annotation></semantics></math>
+的特例，并说明同类矩阵相乘的简便规律。</p>
+<p><strong>思路</strong>：直接套用例题/证明 1 的公式，令
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a=1</annotation></semantics></math>。</p>
+<p><strong>逐步推导</strong>： 1. 代入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a=1</annotation></semantics></math>
+得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;b\\0&amp;1\end{pmatrix}^{-1}=\begin{pmatrix}1&amp;-b\\0&amp;1\end{pmatrix}.</annotation></semantics></math>
+2. 由例题/证明 1 第 1 步已知，两个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;x\\0&amp;1\end{pmatrix}</annotation></semantics></math>
+型矩阵相乘，右上角元素相加；这也正好解释了逆矩阵中右上角为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">-b</annotation></semantics></math>（即”增量相消”）。</p>
+<p><strong>结论</strong>：特例与一般情况一致，且”第二行为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,1)</annotation></semantics></math>“的矩阵在乘法下封闭，构成二阶一般线性群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>,</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">GL(2,\mathbb R)</annotation></semantics></math>
+的一个子群。</p>
+<h3 id="该矩阵群的几何意义仿射变换">00:11:21—00:14:45 ｜
+该矩阵群的几何意义：仿射变换</h3>
+<p>把二阶方阵乘到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+元列向量上，得到从向量空间到自身的一个映射。对刚刚的矩阵，可观察它作用在特殊向量上的效果。</p>
+<h4
+id="例题-1001150-矩阵-beginpmatrixab01endpmatrix-作用在列向量-x1t-上">例题
+1（00:11:50）｜ 矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>
+作用在列向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(x,1)^T</annotation></semantics></math>
+上</h4>
+<p><strong>命题／任务</strong>：计算
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\begin{pmatrix}x\\1\end{pmatrix}</annotation></semantics></math>
+并说明其几何意义。</p>
+<p><strong>思路</strong>：直接做矩阵乘法。</p>
+<p><strong>逐步推导</strong>： 1. 计算：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\begin{pmatrix}x\\1\end{pmatrix}=\begin{pmatrix}ax+b\\1\end{pmatrix}.</annotation></semantics></math>
+2. 新向量的”第二坐标”仍是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，只是第一坐标由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+变成了
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">ax+b</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a\neq0</annotation></semantics></math>
+故斜率为非零）。</p>
+<p><strong>结论</strong>：该矩阵把平面上的点
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,1)</annotation></semantics></math>
+沿第一坐标方向作仿射变换
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">x\mapsto ax+b</annotation></semantics></math>。因此整个集合
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\left\{\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\right\}</annotation></semantics></math>
+给出了二维实平面上一类仿射变换（线性函数的推广）。</p>
+<h3 id="群同构的定义与基本性质">00:14:45—00:19:16 ｜
+群同构的定义与基本性质</h3>
+<p>为了严格描述”两个结构相同的群”，引进群同构。</p>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>,</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">G,H</annotation></semantics></math>
+是两个群。若存在一个双射
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mi>G</mi><mo>→</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\varphi:G\to H</annotation></semantics></math>，保持群运算，即对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a,b\in G</annotation></semantics></math>
+有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\varphi(ab)=\varphi(a)\varphi(b),</annotation></semantics></math>
+则称
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+的一个<strong>群同构</strong>，记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>≅</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">G\cong H</annotation></semantics></math>。简言之，群同构需满足：(1)
+映射是双射（一一对应）；(2)
+保持两边的群乘法。两个群在群同构下，群结构”完全一样”。</p>
+<h4 id="证明-1001807-群同构保持单位元与逆元">证明 1（00:18:07）｜
+群同构保持单位元与逆元</h4>
+<p><strong>命题／任务</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mi>G</mi><mo>→</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\varphi:G\to H</annotation></semantics></math>
+是群同构，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>e</mi><mi>H</mi></msub></mrow><annotation encoding="application/x-tex">\varphi(e_G)=e_H</annotation></semantics></math>，且对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a\in G</annotation></semantics></math>
+有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi(a^{-1})=\varphi(a)^{-1}</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：只需利用”保持乘法”这一条件即可推出，与是否双射无关（去掉双射就是一般的群同态）。</p>
+<p><strong>逐步推导</strong>： 1. 单位元：因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>G</mi></msub><msub><mi>e</mi><mi>G</mi></msub><mo>=</mo><msub><mi>e</mi><mi>G</mi></msub></mrow><annotation encoding="application/x-tex">e_G e_G=e_G</annotation></semantics></math>，两边用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>
+作用得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi(e_G)=\varphi(e_G e_G)=\varphi(e_G)\varphi(e_G).</annotation></semantics></math>
+两边同乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi(e_G)^{-1}</annotation></semantics></math>（在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+中）得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>e</mi><mi>H</mi></msub></mrow><annotation encoding="application/x-tex">\varphi(e_G)=e_H</annotation></semantics></math>。
+2. 逆元：对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">a\in G</annotation></semantics></math>，有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msub><mi>e</mi><mi>G</mi></msub></mrow><annotation encoding="application/x-tex">aa^{-1}=e_G</annotation></semantics></math>。作用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>G</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>e</mi><mi>H</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\varphi(a)\varphi(a^{-1})=\varphi(e_G)=e_H,</annotation></semantics></math>
+同理
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>e</mi><mi>H</mi></msub></mrow><annotation encoding="application/x-tex">\varphi(a^{-1})\varphi(a)=e_H</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\varphi(a^{-1})=\varphi(a)^{-1}</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：群同构（乃至一般群同态）自动保持单位元与逆运算。若只要求保持乘法而不要求双射，则称为<strong>群同态</strong>；双射的群同态才是群同构。</p>
+<h3 id="例指数映射与加群的同构">00:19:16—00:21:21 ｜
+例：指数映射与加群的同构</h3>
+<h4 id="例题-1001924-mathbb-rcongmathbb-r_0cdot">例题 1（00:19:24）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mi>+</mi><mo stretchy="false" form="postfix">)</mo><mo>≅</mo><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="double-struck">ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb R,+)\cong(\mathbb R_{&gt;0},\cdot)</annotation></semantics></math></h4>
+<p><strong>命题／任务</strong>：建立实数加群与正实数乘法群之间的群同构。</p>
+<p><strong>思路</strong>：利用指数与对数互为反函数，把加法转化为乘法。</p>
+<p><strong>逐步推导</strong>： 1. 正向：指数映射
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">exp</mi><mo>&#8289;</mo></mrow><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><msub><mi mathvariant="double-struck">ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>x</mi><mo>↦</mo><msup><mi>e</mi><mi>x</mi></msup></mrow><annotation encoding="application/x-tex">\exp:\mathbb R\to\mathbb R_{&gt;0},\ x\mapsto e^x</annotation></semantics></math>。对任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">x,y\in\mathbb R</annotation></semantics></math>，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">exp</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><msup><mi>e</mi><mi>y</mi></msup><mo>=</mo><mrow><mi mathvariant="normal">exp</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">exp</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\exp(x+y)=e^{x+y}=e^x e^y=\exp(x)\exp(y),</annotation></semantics></math>
+且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">exp</mi><annotation encoding="application/x-tex">\exp</annotation></semantics></math>
+是双射（反函数为自然对数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">ln</mi><annotation encoding="application/x-tex">\ln</annotation></semantics></math>）。
+2.
+反向：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mo>:</mo><msub><mi mathvariant="double-struck">ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><mo>→</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>a</mi><mo>↦</mo><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">\ln:\mathbb R_{&gt;0}\to\mathbb R,\ a\mapsto\ln a</annotation></semantics></math>
+满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mi>a</mi><mo>+</mo><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">\ln(ab)=\ln a+\ln b</annotation></semantics></math>，同样是双射且是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">exp</mi><annotation encoding="application/x-tex">\exp</annotation></semantics></math>
+的逆。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mi>+</mi><mo stretchy="false" form="postfix">)</mo><mo>≅</mo><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="double-struck">ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mathbb R,+)\cong(\mathbb R_{&gt;0},\cdot)</annotation></semantics></math>，指数映射给出该同构，对数给出其逆。</p>
+<h3 id="例ab01-矩阵群同构于仿射变换群">00:21:30—00:28:32 ｜ 例：ab01
+矩阵群同构于仿射变换群</h3>
+<h4
+id="例题证明-1002130-leftbeginpmatrixab01endpmatrixaneq0rightcongfxaxbmid-aneq0">例题/证明
+1（00:21:30）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">{</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>:</mo><mi>a</mi><mo>≠</mo><mn>0</mn><mo stretchy="true" form="postfix">}</mo></mrow><mo>≅</mo><mo stretchy="false" form="prefix">{</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>∣</mo><mi>a</mi><mo>≠</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\left\{\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}:a\neq0\right\}\cong\{f(x)=ax+b\mid a\neq0\}</annotation></semantics></math></h4>
+<p><strong>命题／任务</strong>：证明二阶矩阵集合
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo stretchy="true" form="infix">|</mo><mspace width="0.278em"></mspace><mi>a</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>a</mi><mo>≠</mo><mn>0</mn><mo stretchy="true" form="postfix">}</mo></mrow></mrow><annotation encoding="application/x-tex">G=\left\{\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\;\middle|\;a,b\in\mathbb R,\ a\neq0\right\}</annotation></semantics></math>
+与实数上的仿射变换集合
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi><mo>∣</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>a</mi><mo>≠</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">H=\{f:\mathbb R\to\mathbb R\mid f(x)=ax+b,\ a\neq0\}</annotation></semantics></math>
+在群结构下同构。</p>
+<p><strong>思路</strong>：先验证两端都是群；再定义映射
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>:</mo><mi>G</mi><mo>→</mo><mi>H</mi><mo>,</mo><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>↦</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">\Phi:G\to H,\ \begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\mapsto f(x)=ax+b</annotation></semantics></math>，验证它是双射且保持乘法（映射复合）。</p>
+<p><strong>逐步推导</strong>： 1. 右端
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb R</annotation></semantics></math>
+到自身的双射之集（每条都是斜率非零的直线），在映射复合下构成群，它是集合
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb R</annotation></semantics></math>
+的对称群（记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi mathvariant="double-struck">ℝ</mi></msub><annotation encoding="application/x-tex">S_{\mathbb R}</annotation></semantics></math>）的一个子群。
+2. 定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">\Phi\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}(x)=ax+b</annotation></semantics></math>。显然
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math>
+是双射（由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a,b)</annotation></semantics></math>
+唯一确定，且任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">f(x)=ax+b</annotation></semantics></math>
+都可逆）。 3. 保持乘法：对两个矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>′</mo></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mo>′</mo></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>b</mi><mo>′</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A&#39;=\begin{pmatrix}a&#39;&amp;b&#39;\\0&amp;1\end{pmatrix}</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>，有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mo>′</mo></msup><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi mathvariant="normal">Φ</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mo>′</mo></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>b</mi><mo>′</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi mathvariant="normal">Φ</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi><msup><mi>a</mi><mo>′</mo></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>a</mi><msup><mi>b</mi><mo>′</mo></msup><mo>+</mo><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><msup><mi>a</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><msup><mi>b</mi><mo>′</mo></msup><mo>+</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\Phi(A&#39;A)(x)=\Phi\!\left(\begin{pmatrix}a&#39;&amp;b&#39;\\0&amp;1\end{pmatrix}\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}\right)(x)=\Phi\!\left(\begin{pmatrix}aa&#39;&amp;ab&#39;+b\\0&amp;1\end{pmatrix}\right)(x)=(aa&#39;)x+(ab&#39;+b).</annotation></semantics></math>
+而
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>∘</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>a</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mi>b</mi><mo>′</mo></msup><mo>=</mo><msup><mi>a</mi><mo>′</mo></msup><mi>a</mi><mi>x</mi><mo>+</mo><msup><mi>a</mi><mo>′</mo></msup><mi>b</mi><mo>+</mo><msup><mi>b</mi><mo>′</mo></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">(\Phi(A&#39;)\circ\Phi(A))(x)=\Phi(A&#39;)(\Phi(A)(x))=a&#39;(ax+b)+b&#39;=a&#39;ax+a&#39;b+b&#39;.</annotation></semantics></math>
+两式相等，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mo>′</mo></msup><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>∘</mo><mi mathvariant="normal">Φ</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\Phi(A&#39;A)=\Phi(A&#39;)\circ\Phi(A)</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math>
+是群同构，即矩阵群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+与仿射变换群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+结构相同。</p>
+<h4 id="证明-2002626-由同构保持逆推出矩阵求逆公式">证明 2（00:26:26）｜
+由同构保持逆推出矩阵求逆公式</h4>
+<p><strong>命题／任务</strong>：用上面同构的”保持逆”性质，解释为何
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}^{-1}=\begin{pmatrix}a^{-1}&amp;-a^{-1}b\\0&amp;1\end{pmatrix}</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：先求仿射变换
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">f(x)=ax+b</annotation></semantics></math>
+的逆函数，再经
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="normal">Φ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">\Phi^{-1}</annotation></semantics></math>
+映回矩阵。</p>
+<p><strong>逐步推导</strong>： 1. 由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">y=ax+b</annotation></semantics></math>
+解出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>a</mi><mo>=</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>y</mi><mo>−</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mrow><annotation encoding="application/x-tex">x=(y-b)/a=a^{-1}y-a^{-1}b</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>x</mi><mo>−</mo><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mrow><annotation encoding="application/x-tex">f^{-1}(x)=a^{-1}x-a^{-1}b</annotation></semantics></math>。
+2. 按
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math>
+的定义，对应矩阵为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>a</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a^{-1}&amp;-a^{-1}b\\0&amp;1\end{pmatrix}</annotation></semantics></math>。
+3. 由证明 1（群同构保逆）知，这正是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}a&amp;b\\0&amp;1\end{pmatrix}</annotation></semantics></math>
+的逆矩阵，与例题/证明 1 直接验算的结果一致。</p>
+<p><strong>结论</strong>：同构保持逆运算，细节验证（如用矩阵乘法结合律直接推导）留作自习补充。</p>
+<h3 id="例旋转矩阵与-so2-群同构于单位圆周群">00:28:57—00:35:48 ｜
+例：旋转矩阵与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>
+群同构于单位圆周群</h3>
+<h4 id="例题证明-1002913-旋转矩阵-a_theta-与特殊正交群-so2">例题/证明
+1（00:29:13）｜ 旋转矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>θ</mi></msub><annotation encoding="application/x-tex">A_\theta</annotation></semantics></math>
+与特殊正交群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math></h4>
+<p><strong>命题／任务</strong>：考察矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>θ</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A_\theta=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\\sin\theta&amp;\cos\theta\end{pmatrix}</annotation></semantics></math>
+作用在二维列向量上的几何意义，并验证其在乘法下成群。</p>
+<p><strong>思路</strong>：计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>θ</mi></msub><annotation encoding="application/x-tex">A_\theta</annotation></semantics></math>
+作用于向量；用三角函数和差公式验证乘法封闭性与逆。</p>
+<p><strong>逐步推导</strong>： 1. 对向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒗</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\mathbf v=(x,y)^T</annotation></semantics></math>，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>θ</mi></msub><mi mathvariant="bold-italic">𝒗</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A_\theta\mathbf v=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\\sin\theta&amp;\cos\theta\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}</annotation></semantics></math>
+表示把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒗</mi><annotation encoding="application/x-tex">\mathbf v</annotation></semantics></math>
+在平面上逆时针旋转
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+角（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+可取实数，因周期性只需在长度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+的区间如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[0,2\pi)</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,\pi]</annotation></semantics></math>
+内取值即可）。 2. 记所有这样的矩阵之集为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>（特殊正交群）。它满足：
+- 乘法封闭（见下一条）； - 逆元
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mi>θ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>=</mo><msub><mi>A</mi><mrow><mi>−</mi><mi>θ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A_\theta^{-1}=A_{-\theta}</annotation></semantics></math>（由和差角公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>θ</mi></msub><msub><mi>A</mi><mrow><mi>−</mi><mi>θ</mi></mrow></msub><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A_\theta A_{-\theta}=I</annotation></semantics></math>）；
+- 结合律来自矩阵乘法。 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>
+在矩阵乘法下成群，且是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>,</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">GL(2,\mathbb R)</annotation></semantics></math>
+的子群。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>
+是二阶可逆矩阵群的又一个子群，几何上是平面旋转群。</p>
+<h4 id="例题证明-2003339-so2cong-单位圆周群复数乘法">例题/证明
+2（00:33:39）｜
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>≅</mo></mrow><annotation encoding="application/x-tex">SO(2)\cong</annotation></semantics></math>
+单位圆周群（复数乘法）</h4>
+<p><strong>命题／任务</strong>：建立
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>
+与复平面上单位圆周（模长为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+的复数在乘法下构成的群）之间的群同构。</p>
+<p><strong>思路</strong>：用欧拉公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>+</mo><mi>i</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">e^{i\theta}=\cos\theta+i\sin\theta</annotation></semantics></math>
+把旋转矩阵对应到单位复数。</p>
+<p><strong>逐步推导</strong>： 1. 定义
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ψ</mi><mo>:</mo><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">{</mo><mi>z</mi><mo>∈</mo><mi mathvariant="double-struck">ℂ</mi><mo>:</mo><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>A</mi><mi>θ</mi></msub><mo>↦</mo><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\Psi:SO(2)\to\{z\in\mathbb C:|z|=1\},\ A_\theta\mapsto e^{i\theta}</annotation></semantics></math>。
+2. 由三角函数和差角公式，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>θ</mi></msub><msub><mi>A</mi><mi>φ</mi></msub><mo>=</mo><msub><mi>A</mi><mrow><mi>θ</mi><mo>+</mo><mi>φ</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">A_\theta A_\varphi=A_{\theta+\varphi},</annotation></semantics></math>
+而复数乘法有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><msup><mi>e</mi><mrow><mi>i</mi><mi>φ</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>i</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo>+</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">e^{i\theta}e^{i\varphi}=e^{i(\theta+\varphi)}</annotation></semantics></math>，故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ψ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>A</mi><mi>θ</mi></msub><msub><mi>A</mi><mi>φ</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mi>i</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo>+</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><msup><mi>e</mi><mrow><mi>i</mi><mi>φ</mi></mrow></msup><mo>=</mo><mi mathvariant="normal">Ψ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>A</mi><mi>θ</mi></msub><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">Ψ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>A</mi><mi>φ</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\Psi(A_\theta A_\varphi)=e^{i(\theta+\varphi)}=e^{i\theta}e^{i\varphi}=\Psi(A_\theta)\Psi(A_\varphi).</annotation></semantics></math>
+3.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ψ</mi><annotation encoding="application/x-tex">\Psi</annotation></semantics></math>
+是双射（辐角一一对应），逆映射为取辐角。</p>
+<p><strong>结论</strong>：旋转群
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">SO(2)</annotation></semantics></math>
+与单位圆周群同构。这也说明前面两类矩阵群（仿射变换群、旋转群）以及相应的同构，都”天然地”出现在二阶可逆矩阵群中，并非人为造出的新名词。</p>
+<hr />
+<h2
+id="二矩阵平方迹转置与分块矩阵003559013615">二、矩阵平方、迹、转置与分块矩阵（00:35:59—01:36:15）</h2>
+<h3 id="练习迹为零的二阶矩阵-a20-与锥面">00:35:59—00:44:04 ｜
+练习：迹为零的二阶矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0</annotation></semantics></math>
+与锥面</h3>
+<p>矩阵乘法没有消去律（两个非零矩阵之积可以为零），这是与实数乘法的重要区别。</p>
+<h4 id="练习-1003559-矩阵乘法无消去律与幂零矩阵">练习 1（00:35:59）｜
+矩阵乘法无消去律与幂零矩阵</h4>
+<p><strong>命题／任务</strong>：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}0&amp;1\\0&amp;0\end{pmatrix}</annotation></semantics></math>，计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mn>2</mn></msup><annotation encoding="application/x-tex">A^2</annotation></semantics></math>
+并说明矩阵乘法没有消去律。</p>
+<p><strong>思路</strong>：直接平方。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">A^2=\begin{pmatrix}0&amp;1\\0&amp;0\end{pmatrix}\begin{pmatrix}0&amp;1\\0&amp;0\end{pmatrix}=\begin{pmatrix}0&amp;0\\0&amp;0\end{pmatrix}=0.</annotation></semantics></math></p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A\neq0</annotation></semantics></math>
+但
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0</annotation></semantics></math>，即存在非零矩阵其平方为零（幂零）。由此也可见
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">AB=0</annotation></semantics></math>
+不能推出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A=0</annotation></semantics></math>
+或
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math>，故矩阵乘法无消去律。该结论留作一道作业。</p>
+<h4 id="练习-2004007-迹为零的二阶矩阵-a20-的充要条件">练习
+2（00:40:07）｜ 迹为零的二阶矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0</annotation></semantics></math>
+的充要条件</h4>
+<p><strong>命题／任务</strong>：设二阶矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}</annotation></semantics></math>
+且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mo>+</mo><mi>d</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{tr}(A)=a+d=0</annotation></semantics></math>（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>−</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">d=-a</annotation></semantics></math>）。证明
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn><mo>⇔</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mn>0</mn><mo>⇔</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">A^2=0\iff\det A=0\iff a^2+bc=0.</annotation></semantics></math></p>
+<p><strong>思路</strong>：先把一般问题
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0</annotation></semantics></math>
+写成纯解方程；再加迹为零的条件化简。</p>
+<p><strong>逐步推导</strong>： 1.
+迹的定义：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mn>11</mn></msub><mo>+</mo><msub><mi>a</mi><mn>22</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\operatorname{tr}(A)=a_{11}+a_{22}+\cdots+a_{nn}</annotation></semantics></math>（对角元之和）。本题
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{tr}(A)=0</annotation></semantics></math>
+即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>−</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">d=-a</annotation></semantics></math>。
+2. 直接算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mn>2</mn></msup><annotation encoding="application/x-tex">A^2</annotation></semantics></math>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>a</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>a</mi><mi>b</mi><mo>−</mo><mi>a</mi><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi><mi>c</mi><mo>−</mo><mi>a</mi><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi><mi>c</mi><mo>+</mo><msup><mi>a</mi><mn>2</mn></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mi>I</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">A^2=\begin{pmatrix}a&amp;b\\c&amp;-a\end{pmatrix}^2=\begin{pmatrix}a^2+bc&amp;ab-ab\\ac-ac&amp;bc+a^2\end{pmatrix}=\begin{pmatrix}a^2+bc&amp;0\\0&amp;a^2+bc\end{pmatrix}=(a^2+bc)I.</annotation></semantics></math>
+3. 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn><mo>⇔</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0\iff a^2+bc=0</annotation></semantics></math>。又
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mi>a</mi><mi>d</mi><mo>−</mo><mi>b</mi><mi>c</mi><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>b</mi><mi>c</mi><mo>=</mo><mi>−</mi><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mi>b</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">\det A=ad-bc=a(-a)-bc=-a^2-bc</annotation></semantics></math>，所以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn><mo>⇔</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2+bc=0\iff\det A=0</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{tr}(A)=0</annotation></semantics></math>
+的前提下，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A^2=0</annotation></semantics></math>
+等价于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\det A=0</annotation></semantics></math>，也等价于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2+bc=0</annotation></semantics></math>。</p>
+<h4 id="练习-3004138-方程-a2bc0-在三维空间中给出锥面">练习
+3（00:41:38）｜ 方程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2+bc=0</annotation></semantics></math>
+在三维空间中给出锥面</h4>
+<p><strong>命题／任务</strong>：迹为零的二阶矩阵只有三个独立参数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a,b,c)</annotation></semantics></math>（因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>−</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">d=-a</annotation></semantics></math>）。把满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2+bc=0</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a,b,c)</annotation></semantics></math>
+放入三维空间，问它是什么曲面。</p>
+<p><strong>思路</strong>：识别二次曲面类型。</p>
+<p><strong>逐步推导</strong>： 1. 参数空间坐标为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a,b,c)</annotation></semantics></math>，约束方程为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2+bc=0</annotation></semantics></math>。
+2. 这是二次方程，二次型部分为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">a^2+bc</annotation></semantics></math>，其对应的曲面是二次锥面（以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+轴为轴的双锥）。</p>
+<p><strong>结论</strong>：满足条件的矩阵集合对应于三维空间中的一张<strong>锥面</strong>。该二次曲面的精确分类会在后续”二次曲面分类”中系统讲解，届时可用本例练习。</p>
+<h3 id="转置的定义与基本例子">00:44:39—00:53:23 ｜
+转置的定义与基本例子</h3>
+<p>引入转置运算：把矩阵的”行列互换”。</p>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>
+矩阵，其转置
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi>T</mi></msup><annotation encoding="application/x-tex">A^T</annotation></semantics></math>（也记作
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mo>′</mo></msup><annotation encoding="application/x-tex">A&#39;</annotation></semantics></math>）是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\times m</annotation></semantics></math>
+矩阵，定义为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi>T</mi></msup><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>a</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">(A^T)_{ij}=a_{ji}.</annotation></semantics></math>
+即第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列的元素被放到第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+行第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+列。</p>
+<h4 id="例题-1004713-列向量转置为行向量">例题 1（00:47:13）｜
+列向量转置为行向量</h4>
+<p><strong>命题／任务</strong>：将列向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x_1\\\vdots\\x_n\end{pmatrix}</annotation></semantics></math>
+转置。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>T</mi></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x_1\\\vdots\\x_n\end{pmatrix}^T=(x_1,\ldots,x_n).</annotation></semantics></math></p>
+<p><strong>结论</strong>：转置把一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n\times1</annotation></semantics></math>
+列向量变为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1\times n</annotation></semantics></math>
+行向量。</p>
+<h4 id="例题-2004739-矩阵-beginpmatrix123456endpmatrix-的转置">例题
+2（00:47:39）｜ 矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>5</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>6</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;2&amp;3\\4&amp;5&amp;6\end{pmatrix}</annotation></semantics></math>
+的转置</h4>
+<p><strong>命题／任务</strong>：计算给定矩阵的转置。</p>
+<p><strong>逐步推导</strong>：把行变列、列变行：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>5</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>6</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>T</mi></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>5</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>6</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;2&amp;3\\4&amp;5&amp;6\end{pmatrix}^T=\begin{pmatrix}1&amp;4\\2&amp;5\\3&amp;6\end{pmatrix}.</annotation></semantics></math></p>
+<p><strong>结论</strong>：原矩阵第一行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,2,3)</annotation></semantics></math>
+成为转置后的第一列，第二行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(4,5,6)</annotation></semantics></math>
+成为第二列。转置是一个直白而常用的操作（此处休息 5 分钟）。</p>
+<h3 id="转置的性质含乘法与求逆的转置">00:53:23—01:09:09 ｜
+转置的性质（含乘法与求逆的转置）</h3>
+<p><strong>学习方法提醒（00:53:32）</strong>：上周作业问题稍多，但总体体量适中，并不需要海量刷题；有余力可参考柯斯特利金（Кострикин）等代数教材自行补充习题。</p>
+<p>转置的基本性质（记号：矩阵右上标
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+表示转置）： 1.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi>T</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">(A^T)^T=A</annotation></semantics></math>（转置两次回到自身，与”求逆两次回到自身”类似）；
+2.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo>+</mo><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>A</mi><mi>T</mi></msup><mo>+</mo><msup><mi>B</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(A+B)^T=A^T+B^T</annotation></semantics></math>（减法同理）；
+3.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^T=B^T A^T</annotation></semantics></math>（乘积转置
+= 反序各因子转置之积）； 4.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>A</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mi>c</mi><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(cA)^T=cA^T</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+为数）； 5. 若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+可逆，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi>T</mi></msup><annotation encoding="application/x-tex">A^T</annotation></semantics></math>
+也可逆，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi>T</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(A^{-1})^T=(A^T)^{-1}</annotation></semantics></math>（转置与求逆可交换）。</p>
+<p>其中第 3、5 条需要验证，其余显然。</p>
+<h4 id="证明-1005958-可逆矩阵的转置可逆且-a-1tat-1">证明 1（00:59:58）｜
+可逆矩阵的转置可逆，且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi>T</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(A^{-1})^T=(A^T)^{-1}</annotation></semantics></math></h4>
+<p><strong>命题／任务</strong>：由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+可逆（即存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">A^{-1}</annotation></semantics></math>
+使
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">AA^{-1}=A^{-1}A=I</annotation></semantics></math>）推出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi>T</mi></msup><annotation encoding="application/x-tex">A^T</annotation></semantics></math>
+可逆，并求其逆。</p>
+<p><strong>思路</strong>：从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">AA^{-1}=I</annotation></semantics></math>
+出发，两边取转置，利用第 3 条性质。</p>
+<p><strong>逐步推导</strong>： 1. 由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">AA^{-1}=I</annotation></semantics></math>
+两边转置：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>I</mi><mi>T</mi></msup><mo>=</mo><mi>I</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">(AA^{-1})^T=I^T=I.</annotation></semantics></math>
+2. 按第 3
+条：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AA^{-1})^T=(A^{-1})^T A^T</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">(A^{-1})^T A^T=I</annotation></semantics></math>。
+3. 同理由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>A</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^{-1}A=I</annotation></semantics></math>
+得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi>T</mi></msup><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^T(A^{-1})^T=I</annotation></semantics></math>。
+4. 因此
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi>T</mi></msup><annotation encoding="application/x-tex">A^T</annotation></semantics></math>
+可逆，且其逆为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(A^{-1})^T</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi>T</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(A^T)^{-1}=(A^{-1})^T</annotation></semantics></math>，即可逆矩阵的转置与求逆可交换。</p>
+<h4 id="证明-2010255-乘积的转置-abtbt-at">证明 2（01:02:55）｜
+乘积的转置
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^T=B^T A^T</annotation></semantics></math></h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>
+矩阵、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">n\times p</annotation></semantics></math>
+矩阵，证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^T=B^T A^T</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：逐元素比较两边矩阵的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k,i)</annotation></semantics></math>
+元。</p>
+<p><strong>逐步推导</strong>： 1. 记
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">C=AB</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>b</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ik}=\sum_{j=1}^n a_{ij}b_{jk}</annotation></semantics></math>。
+2.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^T</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k,i)</annotation></semantics></math>
+元是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>a</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><msub><mi>b</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ki}=\sum_{j=1}^n a_{kj}b_{ji}</annotation></semantics></math>。
+3.
+另一方面，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>B</mi><mi>T</mi></msup><annotation encoding="application/x-tex">B^T</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k,j)</annotation></semantics></math>
+元是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">b_{jk}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi>T</mi></msup><annotation encoding="application/x-tex">A^T</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(j,i)</annotation></semantics></math>
+元是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">a_{kj}</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(B^T A^T)</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k,i)</annotation></semantics></math>
+元为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false" form="prefix">(</mo><msup><mi>B</mi><mi>T</mi></msup><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>k</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi>T</mi></msup><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>b</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><msub><mi>a</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><msub><mi>b</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\sum_{j=1}^n (B^T)_{kj}(A^T)_{ji}=\sum_{j=1}^n b_{jk}a_{kj}=\sum_{j=1}^n a_{kj}b_{ji}.</annotation></semantics></math>
+与第 2 步一致。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^T=B^T A^T</annotation></semantics></math>。注意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>B</mi><mi>T</mi></msup><annotation encoding="application/x-tex">B^T</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">p\times n</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi>T</mi></msup><annotation encoding="application/x-tex">A^T</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\times m</annotation></semantics></math>，按此顺序相乘恰有定义（而原顺序
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi>T</mi></msup><msup><mi>B</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">A^TB^T</annotation></semantics></math>
+未必有定义）。</p>
+<h4 id="例题构造-3010723-多个矩阵乘积转置-反序各因子转置之积">例题/构造
+3（01:07:23）｜ 多个矩阵乘积转置 = 反序各因子转置之积</h4>
+<p><strong>命题／任务</strong>：把第 3 条推广到一串可乘的矩阵。</p>
+<p><strong>思路</strong>：递推即可。</p>
+<p><strong>逐步推导</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>A</mi><mn>2</mn></msub><mi>⋯</mi><msub><mi>A</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">A_1A_2\cdots A_k</annotation></semantics></math>
+有定义（每个矩阵的列数等于下一个的行数），则反复套用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^T=B^T A^T</annotation></semantics></math>
+得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>A</mi><mn>1</mn></msub><msub><mi>A</mi><mn>2</mn></msub><mi>⋯</mi><msub><mi>A</mi><mi>k</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msubsup><mi>A</mi><mi>k</mi><mi>T</mi></msubsup><mi>⋯</mi><msubsup><mi>A</mi><mn>2</mn><mi>T</mi></msubsup><msubsup><mi>A</mi><mn>1</mn><mi>T</mi></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">(A_1A_2\cdots A_k)^T=A_k^T\cdots A_2^T A_1^T.</annotation></semantics></math></p>
+<p><strong>结论</strong>：整串乘积的转置，等于把各因子转置后按相反顺序相乘。</p>
+<h3 id="分块矩阵加法乘法转置与例子">01:09:22—01:31:04 ｜
+分块矩阵：加法、乘法、转置与例子</h3>
+<p>把一个矩阵的每个元素替换成一个小矩阵（子块），就得到<strong>分块矩阵</strong>；用横竖线把大矩形切成若干块即可。</p>
+<p>设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>
+矩阵，把行分为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
+段（大小
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>m</mi><mi>r</mi></msub><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">m_1+\cdots+m_r=m</annotation></semantics></math>），列分为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+段（大小
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>n</mi><mi>s</mi></msub><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n_1+\cdots+n_s=n</annotation></semantics></math>），则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+可写为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>×</mo><mi>s</mi></mrow><annotation encoding="application/x-tex">r\times s</annotation></semantics></math>
+的分块矩阵
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>A</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>A</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>A</mi><mrow><mn>1</mn><mi>s</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>A</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mo>⋱</mo></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>A</mi><mrow><mi>r</mi><mn>1</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>A</mi><mrow><mi>r</mi><mi>s</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}A_{11}&amp;A_{12}&amp;\cdots&amp;A_{1s}\\ A_{21}&amp;\ddots&amp;&amp;\vdots\\ \vdots&amp;&amp;&amp;\\ A_{r1}&amp;\cdots&amp;&amp;A_{rs}\end{pmatrix},</annotation></semantics></math>
+其中子块
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">A_{ij}</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>i</mi></msub><mo>×</mo><msub><mi>n</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">m_i\times n_j</annotation></semantics></math>
+矩阵。</p>
+<h4 id="例题-1012251-分块矩阵-beginpmatrixi_mx0i_nendpmatrix-的逆">例题
+1（01:22:51）｜ 分块矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}I_m&amp;X\\0&amp;I_n\end{pmatrix}</annotation></semantics></math>
+的逆</h4>
+<p><strong>命题／任务</strong>：设左上、右下分别为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+阶、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+阶单位阵，右上为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>），左下为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\times m</annotation></semantics></math>
+零矩阵，求该分块矩阵的逆。</p>
+<p><strong>思路</strong>：形式上用分块乘法”猜”逆，再验证。</p>
+<p><strong>逐步推导</strong>： 1. 猜测逆为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}I_m&amp;-X\\0&amp;I_n\end{pmatrix}</annotation></semantics></math>。
+2. 分块相乘：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub><mo>⋅</mo><msub><mi>I</mi><mi>m</mi></msub><mo>+</mo><mi>X</mi><mo>⋅</mo><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>X</mi><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn><mo>⋅</mo><msub><mi>I</mi><mi>m</mi></msub><mo>+</mo><msub><mi>I</mi><mi>n</mi></msub><mo>⋅</mo><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>I</mi><mi>n</mi></msub><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>I</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}I_m&amp;X\\0&amp;I_n\end{pmatrix}\begin{pmatrix}I_m&amp;-X\\0&amp;I_n\end{pmatrix}=\begin{pmatrix}I_m\cdot I_m+X\cdot0&amp;I_m(-X)+XI_n\\0\cdot I_m+I_n\cdot0&amp;0(-X)+I_n I_n\end{pmatrix}=\begin{pmatrix}I_m&amp;0\\0&amp;I_n\end{pmatrix}=I_{m+n}.</annotation></semantics></math></p>
+<p><strong>结论</strong>：该分块矩阵可逆，且其逆为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}I_m&amp;-X\\0&amp;I_n\end{pmatrix}</annotation></semantics></math>。</p>
+<h4
+id="例题-2012553-通常二阶矩阵-beginpmatrix0110endpmatrix-及其分块形式的逆">例题
+2（01:25:53）｜ 通常二阶矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}</annotation></semantics></math>
+及其分块形式的逆</h4>
+<p><strong>命题／任务</strong>：(1) 直接计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}</annotation></semantics></math>
+的逆；(2) 把它看作分块矩阵（右上为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+阶单位阵、左下为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+阶单位阵，其余为零块），求其逆。</p>
+<p><strong>思路</strong>：先算通常乘法，再用分块观点解释。</p>
+<p><strong>逐步推导</strong>： 1.
+通常计算：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^2=\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}=\begin{pmatrix}1&amp;0\\0&amp;1\end{pmatrix}=I</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">A^{-1}=A</annotation></semantics></math>。
+2. 分块观点：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+写成
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}0&amp;I_n\\I_m&amp;0\end{pmatrix},</annotation></semantics></math>
+其中右上为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n\times n</annotation></semantics></math>
+单位块、左下为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">m\times m</annotation></semantics></math>
+单位块（左上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\times m</annotation></semantics></math>、右下
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>
+为零块）。注意在原来的分块下，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+与自身不能直接按块相乘（左上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\times m</annotation></semantics></math>
+块乘左上
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\times m</annotation></semantics></math>
+块无定义，除非
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m=n</annotation></semantics></math>）；需改变划分（把行、列重新分配）才能做分块自乘。直接验证：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>n</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>m</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>I</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}0&amp;I_n\\I_m&amp;0\end{pmatrix}\begin{pmatrix}0&amp;I_n\\I_m&amp;0\end{pmatrix}=\begin{pmatrix}I_n&amp;0\\0&amp;I_m\end{pmatrix}=I_{m+n}.</annotation></semantics></math></p>
+<p><strong>结论</strong>：该分块矩阵是分块置换矩阵，自己就是自己的逆（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">A^{-1}=A</annotation></semantics></math>）。老师提醒：分块自乘时要检查各块尺寸是否匹配，必要时改变划分。</p>
+<h3 id="按行列分块与对角阵左乘右乘的效果">01:31:04—01:36:15 ｜
+按行/列分块与对角阵左乘、右乘的效果</h3>
+<p>对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>
+矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>，有两种特殊分块：
+- <strong>按行分块</strong>：写成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mi>m</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}\alpha_1\\\vdots\\\alpha_m\end{pmatrix}</annotation></semantics></math>，其中每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1\times n</annotation></semantics></math>
+行向量； - <strong>按列分块</strong>：写成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A=(\beta_1,\ldots,\beta_n)</annotation></semantics></math>，其中每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m\times1</annotation></semantics></math>
+列向量。</p>
+<h4 id="例题-1013254-对角阵左乘-a各行乘以对应对角元">例题
+1（01:32:54）｜ 对角阵左乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>：各行乘以对应对角元</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">D=\operatorname{diag}(d_1,\ldots,d_m)</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+阶对角阵，计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">DA</annotation></semantics></math>（按行分块）。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><mo>⋱</mo></mtd><mtd columnalign="center" style="text-align: center"></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mi>m</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mi>m</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mn>1</mn></msub><msub><mi>α</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mi>m</mi></msub><msub><mi>α</mi><mi>m</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">DA=\begin{pmatrix}d_1&amp;&amp;\\ &amp;\ddots&amp;\\ &amp;&amp;d_m\end{pmatrix}\begin{pmatrix}\alpha_1\\\vdots\\\alpha_m\end{pmatrix}=\begin{pmatrix}d_1\alpha_1\\\vdots\\d_m\alpha_m\end{pmatrix}.</annotation></semantics></math></p>
+<p><strong>结论</strong>：左乘对角阵的效果是把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行整体乘以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>i</mi></msub><annotation encoding="application/x-tex">d_i</annotation></semantics></math>。</p>
+<h4 id="例题-2013355-对角阵右乘-a各列乘以对应对角元">例题
+2（01:33:55）｜ 对角阵右乘
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>：各列乘以对应对角元</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">D=\operatorname{diag}(d_1,\ldots,d_n)</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+阶对角阵，计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">AD</annotation></semantics></math>（按列分块）。</p>
+<p><strong>逐步推导</strong>：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>D</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>β</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>β</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><mo>⋱</mo></mtd><mtd columnalign="center" style="text-align: center"></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mn>1</mn></msub><msub><mi>β</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>d</mi><mi>n</mi></msub><msub><mi>β</mi><mi>n</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">AD=\begin{pmatrix}\beta_1&amp;\cdots&amp;\beta_n\end{pmatrix}\begin{pmatrix}d_1&amp;&amp;\\ &amp;\ddots&amp;\\ &amp;&amp;d_n\end{pmatrix}=\begin{pmatrix}d_1\beta_1&amp;\cdots&amp;d_n\beta_n\end{pmatrix}.</annotation></semantics></math></p>
+<p><strong>结论</strong>：右乘对角阵的效果是把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列整体乘以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>j</mi></msub><annotation encoding="application/x-tex">d_j</annotation></semantics></math>（学生答：把对角元乘到列上）。这类分块操作在具体计算中会反复出现。</p>
+<hr />
+<h2
+id="三向量组的线性表示等价与替换定理013635022248">三、向量组的线性表示、等价与替换定理（01:36:35—02:22:48）</h2>
+<h3 id="矩阵乘法的来由向量组的线性表示">01:36:35—01:49:49 ｜
+矩阵乘法的来由：向量组的线性表示</h3>
+<p>矩阵最初正是为了表达”一组向量被另一组向量线性表出”而引进的。</p>
+<h4
+id="例题构造-1013715-向量组-beta-由-alpha-线性表出写成矩阵乘法">例题/构造
+1（01:37:15）｜ 向量组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+线性表出写成矩阵乘法</h4>
+<p><strong>命题／任务</strong>：设有向量组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_n</annotation></semantics></math>，且每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+都可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+线性表出，即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>j</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>α</mi><mi>i</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\beta_j=\sum_{i=1}^m a_{ij}\alpha_i,</annotation></semantics></math>
+把这件事写成矩阵形式。</p>
+<p><strong>思路</strong>：把系数排成矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A=(a_{ij})</annotation></semantics></math>，用”形式乘法”表达。</p>
+<p><strong>逐步推导</strong>： 1. 记
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>
+矩阵，其第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mrow><mi>m</mi><mi>j</mi></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(a_{1j},\ldots,a_{mj})^T</annotation></semantics></math>
+正是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+写成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+线性组合的系数。 2. 形式上可写为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_n)=(\alpha_1,\ldots,\alpha_m)A,</annotation></semantics></math>
+其中右端是”行向量（抽象向量）乘矩阵”的形式计算：第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+个位置等于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>β</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">\sum_i\alpha_i a_{ij}=\beta_j</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：向量组之间的线性表出，恰好对应一个矩阵乘法等式；矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+的第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+列存放
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>
+的组合系数。</p>
+<h4
+id="例题-2014733-两次线性表出的复合代入得到-gammaalpha-ab传递性">例题
+2（01:47:33）｜ 两次线性表出的复合：代入得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mi>α</mi><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\gamma=\alpha AB</annotation></semantics></math>（传递性）</h4>
+<p><strong>命题／任务</strong>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+表出（矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>），且另一组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>γ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>γ</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">\gamma_1,\ldots,\gamma_p</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+表出（矩阵
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>），证明
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+表出，并写出矩阵。</p>
+<p><strong>思路</strong>：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的表达式代入，利用矩阵乘法的结合律。</p>
+<p><strong>逐步推导</strong>： 1. 已知
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_n)=(\alpha_1,\ldots,\alpha_m)A</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math>），且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>γ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>γ</mi><mi>p</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">(\gamma_1,\ldots,\gamma_p)=(\beta_1,\ldots,\beta_n)B</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">n\times p</annotation></semantics></math>）。
+2. 代入得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>γ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>γ</mi><mi>p</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mi>B</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">(\gamma_1,\ldots,\gamma_p)=(\alpha_1,\ldots,\alpha_m)AB.</annotation></semantics></math>
+这里用到矩阵乘法结合律（尽管左端是形式写法，运算规律与数字矩阵一致）。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+表出，对应矩阵为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">AB</annotation></semantics></math>。线性表出关系具有<strong>传递性</strong>。</p>
+<h3 id="向量组的等价关系">01:49:49—01:54:57 ｜ 向量组的等价关系</h3>
+<p>若两个向量组可以互相线性表出，则称它们<strong>等价</strong>。即
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>∼</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>⇔</mo><mtext mathvariant="normal">每组都可由另一组线性表出</mtext><mi>.</mi></mrow><annotation encoding="application/x-tex">\{\alpha_1,\ldots,\alpha_m\}\sim\{\beta_1,\ldots,\beta_n\}\iff\text{每组都可由另一组线性表出}.</annotation></semantics></math>
+由上面的传递性易见这是等价关系（自反：每组可由自己表出；对称：互相表出；传递：表出关系可传递）。</p>
+<h4 id="例题-1015153-等价向量组元素个数可以不同反例">例题
+1（01:51:53）｜ 等价向量组元素个数可以不同（反例）</h4>
+<p><strong>命题／任务</strong>：举出两组等价但向量个数不同的例子。</p>
+<p><strong>思路</strong>：往等价组中不断加入”可被线性表出的”向量，个数就会改变。</p>
+<p><strong>逐步推导</strong>： 1. 单向量组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>b</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{b\}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>b</mi><mo>,</mo><mn>2</mn><mi>b</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{b,2b\}</annotation></semantics></math>
+等价：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+显然可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>b</mi><mo>,</mo><mn>2</mn><mi>b</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{b,2b\}</annotation></semantics></math>
+表出，而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>b</mi><mo>=</mo><mn>2</mn><mo>⋅</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">2b=2\cdot b</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>b</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{b\}</annotation></semantics></math>
+表出。 2. 向量组
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{u,v\}</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo>+</mo><mi>v</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{u,u+v\}</annotation></semantics></math>
+等价：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{u,v\}</annotation></semantics></math>
+可表出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>+</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u+v</annotation></semantics></math>；反过来
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>+</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">v=(u+v)-u</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo>+</mo><mi>v</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{u,u+v\}</annotation></semantics></math>
+也可表出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：等价向量组的向量个数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m,n</annotation></semantics></math>
+一般可以不等。若无额外限制，无法从”等价”推出个数相同。</p>
+<h3 id="定理等价且都线性无关的两组向量个数相同">01:54:57—02:00:27 ｜
+定理：等价且都线性无关的两组向量个数相同</h3>
+<h4 id="证明-1015457-两等价且均线性无关的向量组元素个数相等">证明
+1（01:54:57）｜ 两等价且均线性无关的向量组元素个数相等</h4>
+<p><strong>命题／任务</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_n</annotation></semantics></math>
+等价，且两组都线性无关，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m=n</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：用下面将证明的”替换定理”作为推论推出。</p>
+<p><strong>逐步推导</strong>： 1. 取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">W=\operatorname{span}\{\beta_1,\ldots,\beta_n\}</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+都在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+中（因可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+表出），且它们线性无关。 2. 由替换定理（见下一节）得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\le n</annotation></semantics></math>。
+3. 对称地，把角色对调（取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>W</mi><mo>′</mo></msup><mo>=</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><mi>α</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">W&#39;=\operatorname{span}\{\alpha\}</annotation></semantics></math>，因
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+可由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+表出且
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+线性无关）得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\le m</annotation></semantics></math>。
+4. 故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m=n</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：等价的线性无关向量组必有相同个数。这是后续许多理论的基础。</p>
+<h3 id="替换定理及其推论">02:00:27—02:22:48 ｜ 替换定理及其推论</h3>
+<h4 id="证明-1020302-替换定理对-m-归纳法证明">证明 1（02:03:02）｜
+替换定理（对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+归纳法证明）</h4>
+<p><strong>命题／任务（替换定理）</strong>：设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+是线性空间，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_n</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+的一组生成元（即
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">W=\operatorname{span}\{\beta_1,\ldots,\beta_n\}</annotation></semantics></math>），而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个线性无关的向量。则 1.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\le n</annotation></semantics></math>；
+2. 可用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+替换
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+中的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个，使得替换后得到的集合仍能生成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>。</p>
+<p><strong>思路</strong>：对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+用数学归纳法。</p>
+<p><strong>逐步推导</strong>： 1. <strong>基础
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m=0</annotation></semantics></math></strong>：空集无需替换，结论平凡成立（此时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">0\le n</annotation></semantics></math>）。
+2. <strong>归纳假设</strong>：设结论对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个线性无关向量成立。 3. <strong>归纳步骤</strong>：考虑
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m+1</annotation></semantics></math>
+个线性无关向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m,\alpha_{m+1}</annotation></semantics></math>。
+- 由归纳假设，对前
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个可用替换得到：存在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+的一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n-m</annotation></semantics></math>
+元子集（记为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>β</mi><mn>1</mn><mo>′</mo></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mi>β</mi><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow><mo>′</mo></msubsup></mrow><annotation encoding="application/x-tex">\beta&#39;_1,\ldots,\beta&#39;_{n-m}</annotation></semantics></math>），使得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo>,</mo><msubsup><mi>β</mi><mn>1</mn><mo>′</mo></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mi>β</mi><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow><mo>′</mo></msubsup><mo stretchy="false" form="postfix">}</mo><mspace width="0.222em"></mspace><mrow><mtext mathvariant="normal">生成 </mtext><mspace width="0.333em"></mspace></mrow><mi>W</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\{\alpha_1,\ldots,\alpha_m,\beta&#39;_1,\ldots,\beta&#39;_{n-m}\}\ \text{生成 }W.</annotation></semantics></math>
+- 因为该集合生成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>，可将
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">\alpha_{m+1}</annotation></semantics></math>
+线性表出：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow></munderover><msub><mi>b</mi><mi>j</mi></msub><msubsup><mi>β</mi><mi>j</mi><mo>′</mo></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">\alpha_{m+1}=\sum_{i=1}^m a_i\alpha_i+\sum_{j=1}^{n-m} b_j\beta&#39;_j.</annotation></semantics></math>
+- 由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_{m+1}</annotation></semantics></math>
+线性无关，上式中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>β</mi><mo>′</mo></msup><annotation encoding="application/x-tex">\beta&#39;</annotation></semantics></math>
+的系数不能全为零（否则得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">\alpha_{m+1}</annotation></semantics></math>
+由前
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+表出的非平凡线性关系，矛盾）。不妨设
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b_{n-m}\neq0</annotation></semantics></math>。
+- 由此可解出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>β</mi><mrow><mi>n</mi><mo>−</mo><mi>m</mi></mrow><mo>′</mo></msubsup><annotation encoding="application/x-tex">\beta&#39;_{n-m}</annotation></semantics></math>
+落在其余向量（包括
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">\alpha_{m+1}</annotation></semantics></math>）的张成空间中；代入生成集即得新集合
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo>,</mo><msub><mi>α</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><msubsup><mi>β</mi><mn>1</mn><mo>′</mo></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mi>β</mi><mrow><mi>n</mi><mo>−</mo><mi>m</mi><mo>−</mo><mn>1</mn></mrow><mo>′</mo></msubsup><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\alpha_1,\ldots,\alpha_m,\alpha_{m+1},\beta&#39;_1,\ldots,\beta&#39;_{n-m-1}\}</annotation></semantics></math>
+仍生成
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>。
+4. 故结论对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m+1</annotation></semantics></math>
+也成立，由归纳法证毕。</p>
+<p><strong>结论</strong>：线性无关子集的元素个数不超过生成集的元素个数（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\le n</annotation></semantics></math>）。</p>
+<h4 id="证明-2021845-替换定理的推论与逆否形式">证明 2（02:18:45）｜
+替换定理的推论与逆否形式</h4>
+<p><strong>命题／任务</strong>：给出替换定理的直接推论及其等价（逆否）表述。</p>
+<p><strong>思路</strong>：取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">N=n</annotation></semantics></math>
+为生成集大小，改写不等式与前提。</p>
+<p><strong>逐步推导</strong>： 1. 推论：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>
+线性无关，且每个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+都可由另
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个向量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\ldots,\beta_n</annotation></semantics></math>
+线性表出，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\le n</annotation></semantics></math>。
+2. 等价（逆否）表述：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个向量可由<strong>少于</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个向量线性表出，则这
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+个向量必<strong>线性相关</strong>。</p>
+<p><strong>结论</strong>：替换定理表达的是”线性无关向量的个数不超过生成集的大小”；其逆否形式是判断线性相关性的有力工具。</p>
+<hr />
+<h2
+id="四维数概念的引入022248022732">四、维数概念的引入（02:22:48—02:27:32）</h2>
+<h3 id="维数极大线性无关组与-zorn-引理预告">02:22:48—02:27:32 ｜
+维数、极大线性无关组与 Zorn 引理预告</h3>
+<p>引入向量组等价与线性相关的目的，是为了给线性空间严格定义”维数”。直观上：一条直线是一维线性空间，一个平面是二维，通常的物理空间是三维。</p>
+<h4 id="例题-1022353-无穷维例子多项式环-fx">例题 1（02:23:53）｜
+无穷维例子：多项式环
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">F[x]</annotation></semantics></math></h4>
+<p><strong>命题／任务</strong>：举出一个维数为无穷的线性空间的例子。</p>
+<p><strong>思路</strong>：找不能由有限个向量线性生成的空间。</p>
+<p><strong>逐步推导</strong>： 1. 取域
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+上的多项式环
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><msup><mi>x</mi><mn>2</mn></msup><mo>,</mo><mi>…</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">F[x]=\{1,x,x^2,\ldots\}</annotation></semantics></math>。
+2.
+任意有限个多项式的最高次数有界，其线性组合仍不能超过该次数，故不可能生成全部
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">F[x]</annotation></semantics></math>。</p>
+<p><strong>结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">F[x]</annotation></semantics></math>
+在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+上不能被有限个向量线性生成，因此是<strong>无穷维</strong>线性空间。</p>
+<h4 id="构造-2022456-维数-极大线性无关子集的元素个数基">构造
+2（02:24:56）｜ 维数 = 极大线性无关子集的元素个数（基）</h4>
+<p><strong>命题／任务</strong>：用”极大线性无关子集”定义线性空间的维数。</p>
+<p><strong>思路</strong>：取一个线性无关、且不能再往里加向量的子集（极大线性无关组），其元素个数即维数；这样的子集称为空间的一组<strong>基</strong>。</p>
+<p><strong>逐步推导</strong>： 1.
+在线性空间中取一个线性无关子集，且不存在比它更大仍线性无关的子集，称为<strong>极大线性无关组</strong>。
+2.
+将该子集的元素个数定义为该线性空间的<strong>维数</strong>；该子集即空间的一组<strong>基</strong>。</p>
+<p><strong>结论</strong>：维数是由极大线性无关组（基）的元素个数给出的。但需回答两个问题（留待下节课）：
+- 极大线性无关组是否一定存在？（一般无穷维情形需借助<strong>Zorn
+引理</strong>——它等价于选择公理，是集合论中的公理，无法从更基本的原理证明；本课程的线性空间将主要考虑有限维情形。）
+-
+不同的极大线性无关组元素个数是否相同？（由替换定理可保证有限维时一致。）</p>
+<p>老师说明：今天到此结束，请大家交上周作业；存在性的严格证明（Zorn
+引理等）将在下节课介绍。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

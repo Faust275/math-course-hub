@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>几何学 · 第 06 周作业（二次直纹面：直母线及其应用）</title>
+  <style>
+  
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+/* 基础导航条与主题变量 */
+:root {
+  --wb-bg: #ffffff;
+  --wb-surface: #f7f7f5;
+  --wb-surface2: #fbfbf9;
+  --wb-text: #1f2328;
+  --wb-muted: #6b7280;
+  --wb-border: #e3e6ec;
+  --wb-accent: #0f6e56;
+  --wb-accent2: #185fa5;
+  --wb-h-color: #1a3d7c;
+  --wb-h3-bg: #f2f6fc;
+  --wb-h3-color: #24508c;
+  --wb-card-bg: #fbfaf6;
+  --wb-card-head: #f3ecde;
+  --wb-card-border: #ece5d8;
+  --wb-seg-line: #c3d5f0;
+  --wb-ts-bg: #eef2f8;
+  --wb-ts-color: #24508c;
+  --wb-ts-border: #d3deec;
+  --wb-code-bg: #f8f9fa;
+  --wb-code-border: #e9ecef;
+  --wb-pre-bg: #f4f5f7;
+  --wb-pill-bg: #f4f3f0;
+  --wb-pill-text: #5f5a54;
+  --wb-toc-bg: #ffffff;
+  --wb-drawer-bg: #ffffff;
+  --wb-drawer-border: #e3e6ec;
+  --wb-math-bg: #fcfcfb;
+  --wb-math-border: #e6e8ee;
+}
+
+html.wb-dark, body.wb-dark {
+  --wb-bg: #181817;
+  --wb-surface: #222220;
+  --wb-surface2: #282826;
+  --wb-text: #e6e6e3;
+  --wb-muted: #9ca3af;
+  --wb-border: #383834;
+  --wb-accent: #5dcaa5;
+  --wb-accent2: #85b7eb;
+  --wb-h-color: #85b7eb;
+  --wb-h3-bg: #1e2634;
+  --wb-h3-color: #93c5fd;
+  --wb-card-bg: #201f1d;
+  --wb-card-head: #2c2822;
+  --wb-card-border: #3d3a34;
+  --wb-seg-line: #263852;
+  --wb-ts-bg: #1e2634;
+  --wb-ts-color: #93c5fd;
+  --wb-ts-border: #2c394d;
+  --wb-code-bg: #222220;
+  --wb-code-border: #333330;
+  --wb-pre-bg: #141413;
+  --wb-pill-bg: #2b2825;
+  --wb-pill-text: #d1cbc5;
+  --wb-toc-bg: #1e222a;
+  --wb-drawer-bg: #1c1c1a;
+  --wb-drawer-border: #333330;
+  --wb-math-bg: #21211f;
+  --wb-math-border: #353531;
+  background-color: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not(.wb-light) {
+    --wb-bg: #181817;
+    --wb-surface: #222220;
+    --wb-surface2: #282826;
+    --wb-text: #e6e6e3;
+    --wb-muted: #9ca3af;
+    --wb-border: #383834;
+    --wb-accent: #5dcaa5;
+    --wb-accent2: #85b7eb;
+    --wb-h-color: #85b7eb;
+    --wb-h3-bg: #1e2634;
+    --wb-h3-color: #93c5fd;
+    --wb-card-bg: #201f1d;
+    --wb-card-head: #2c2822;
+    --wb-card-border: #3d3a34;
+    --wb-seg-line: #263852;
+    --wb-ts-bg: #1e2634;
+    --wb-ts-color: #93c5fd;
+    --wb-ts-border: #2c394d;
+    --wb-code-bg: #222220;
+    --wb-code-border: #333330;
+    --wb-pre-bg: #141413;
+    --wb-pill-bg: #2b2825;
+    --wb-pill-text: #d1cbc5;
+    --wb-toc-bg: #1e222a;
+    --wb-drawer-bg: #1c1c1a;
+    --wb-drawer-border: #333330;
+  }
+}
+
+body.wb-dark h1, html.wb-dark h1 { color: var(--wb-h-color) !important; border-bottom-color: #2a4365 !important; }
+body.wb-dark h2, html.wb-dark h2 { color: var(--wb-h-color) !important; border-left-color: #2a4365 !important; }
+body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; background: var(--wb-h3-bg) !important; }
+body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
+body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
+body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
+body.wb-dark .wb-excard p > strong:first-child,
+body.wb-dark .wb-excard li > strong:first-child,
+html.wb-dark .wb-excard p > strong:first-child,
+html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
+body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
+body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
+body.wb-dark code, html.wb-dark code { background: #282825 !important; color: #f0f0ed !important; }
+body.wb-dark pre, html.wb-dark pre { background: var(--wb-pre-bg) !important; border-color: #333330 !important; color: #f0f0ed !important; }
+body.wb-dark #TOC, html.wb-dark #TOC { background: var(--wb-toc-bg) !important; border-color: #333d4d !important; }
+body.wb-dark table th, html.wb-dark table th { background: #1e2634 !important; color: #93c5fd !important; border-color: #333d4d !important; }
+body.wb-dark table td, html.wb-dark table td { border-color: #333d4d !important; }
+body.wb-dark tr:nth-child(even) td, html.wb-dark tr:nth-child(even) td { background: #1a1f29 !important; }
+body.wb-dark blockquote, html.wb-dark blockquote { background: #1a222e !important; border-left-color: #3b82f6 !important; color: #c4ccd8 !important; }
+body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark mjx-container { color: var(--wb-text) !important; }
+
+
+/* 数学公式容器增强与横向滚动 */
+.wb-math-wrap {
+  position: relative;
+  margin: 18px 0;
+  border: 1px solid var(--wb-math-border);
+  border-radius: 8px;
+  background: var(--wb-math-bg);
+  padding: 12px 16px 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wb-math-wrap:hover {
+  border-color: var(--wb-accent2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.wb-math-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+  opacity: 0.55;
+  transition: opacity .15s;
+}
+.wb-math-wrap:hover .wb-math-bar { opacity: 1; }
+.wb-math-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-muted);
+  margin-right: auto;
+  letter-spacing: .04em;
+}
+.wb-math-copy, .wb-math-zoom {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: all .15s;
+}
+.wb-math-copy:hover, .wb-math-zoom:hover {
+  background: var(--wb-surface2);
+  border-color: var(--wb-accent2);
+  color: var(--wb-accent2);
+}
+.wb-math-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  text-align: center;
+}
+.wb-math-scroll mjx-container { max-width: 100%; }
+
+/* 公式高清放大模态浮层 */
+.wb-math-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.62);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-math-modal.wb-open { display: flex; }
+.wb-math-modal-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.28);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-modal-pop .2s ease-out;
+}
+@keyframes wb-modal-pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.wb-math-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-math-modal-body {
+  padding: 34px 24px;
+  overflow: auto;
+  text-align: center;
+  font-size: 1.4em;
+  background: var(--wb-surface2);
+}
+.wb-math-modal-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 搜索结果关键词正文高亮 */
+.wb-hit-mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px #fde047;
+}
+html.wb-dark .wb-hit-mark, body.wb-dark .wb-hit-mark {
+  background: #854d0e;
+  color: #fef08a;
+  box-shadow: 0 0 0 1px #a16207;
+}
+.wb-res.active {
+  background: var(--wb-surface);
+  border-left: 3px solid var(--wb-accent2);
+  padding-left: 7px;
+}
+
+
+/* 阅读进度条 */
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #185fa5, #0f6e56);
+  z-index: 999;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+html.wb-dark .wb-read-progress, body.wb-dark .wb-read-progress {
+  background: linear-gradient(90deg, #85b7eb, #5dcaa5);
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,.15);
+  transition: transform .15s;
+  display: inline-block;
+}
+.wb-hl-color-dot:hover { transform: scale(1.22); }
+.wb-dot-yellow { background: #fef08a; }
+.wb-dot-green  { background: #bbf7d0; }
+.wb-dot-red    { background: #fecaca; }
+.wb-dot-purple { background: #e9d5ff; }
+
+.wb-hl-btn {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-hl-btn:hover { background: var(--wb-surface2); border-color: var(--wb-accent2); color: var(--wb-accent2); }
+.wb-hl-btn.wb-btn-del { color: #dc2626; border-color: #fca5a5; }
+
+/* 用户划词高亮样式 (4 色荧光笔 + 下划线) */
+.wb-user-hl {
+  border-radius: 2px;
+  padding: 1px 1px;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.wb-user-hl:hover { filter: brightness(.93); }
+.wb-user-hl-yellow { background: #fef08a; color: inherit; }
+.wb-user-hl-green  { background: #bbf7d0; color: inherit; }
+.wb-user-hl-red    { background: #fecaca; color: inherit; }
+.wb-user-hl-purple { background: #e9d5ff; color: inherit; }
+.wb-user-hl-underline {
+  background: transparent;
+  text-decoration: underline wavy #185fa5 2px;
+  text-underline-offset: 3px;
+}
+html.wb-dark .wb-user-hl-yellow, body.wb-dark .wb-user-hl-yellow { background: #714207; color: #fef08a; }
+html.wb-dark .wb-user-hl-green,  body.wb-dark .wb-user-hl-green  { background: #134e2a; color: #bbf7d0; }
+html.wb-dark .wb-user-hl-red,    body.wb-dark .wb-user-hl-red    { background: #6b1717; color: #fecaca; }
+html.wb-dark .wb-user-hl-purple, body.wb-dark .wb-user-hl-purple { background: #4a1570; color: #e9d5ff; }
+html.wb-dark .wb-user-hl-underline, body.wb-dark .wb-user-hl-underline { text-decoration-color: #85b7eb; }
+
+.wb-user-hl-has-note::after {
+  content: " 📝";
+  font-size: 10px;
+  vertical-align: super;
+  cursor: pointer;
+}
+body.wb-hl-hidden .wb-user-hl {
+  background: transparent !important;
+  text-decoration: none !important;
+}
+body.wb-hl-hidden .wb-user-hl::after { display: none !important; }
+
+/* 便签便签编辑模态浮层 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  width: 460px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-pop-in .15s ease-out;
+}
+.wb-note-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.wb-note-quote {
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-border);
+  font-size: 12.5px;
+  color: var(--wb-muted);
+  max-height: 80px;
+  overflow-y: auto;
+  font-style: italic;
+}
+.wb-note-body {
+  padding: 14px 16px;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.wb-note-textarea:focus { border-color: var(--wb-accent2); }
+.wb-note-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--wb-muted);
+}
+.wb-note-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 大纲抽屉的双 Tab 导航与批注列表 */
+.wb-drawer-nav {
+  display: flex;
+  gap: 4px;
+}
+.wb-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-tab-btn:hover { background: var(--wb-surface); color: var(--wb-text); }
+.wb-tab-btn.on { background: var(--wb-surface2); color: var(--wb-accent2); }
+.wb-notes-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.wb-note-card {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-note-card:hover {
+  border-color: var(--wb-accent2);
+  transform: translateY(-1px);
+}
+.wb-nc-quote {
+  font-size: 12px;
+  color: var(--wb-text);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  border-left: 3px solid #fde047;
+  padding-left: 8px;
+}
+.wb-nc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wb-h-color);
+  background: var(--wb-surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+.wb-nc-meta {
+  font-size: 11px;
+  color: var(--wb-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.wb-notes-tools {
+  padding: 10px 12px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* 断点续读右下角浮动提示 */
+.wb-resume-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-accent);
+  border-left: 4px solid var(--wb-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  z-index: 930;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: wb-pop-in .2s ease-out;
+}
+.wb-resume-btn {
+  background: var(--wb-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+
+/* 例题卡片攻克打卡与切题工具条 */
+.wb-excard > h4 {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-ex-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wb-mastery-btn {
+  border: 1px solid var(--wb-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  line-height: 1.3;
+  transition: all .15s;
+}
+.wb-mastery-btn:hover { border-color: var(--wb-accent); }
+.wb-mastery-btn.wb-st-todo  { background: var(--wb-surface2); color: var(--wb-muted); border-color: var(--wb-border); }
+.wb-mastery-btn.wb-st-doubt { background: #fef9c3; color: #854d0e; border-color: #fde047; font-weight: 600; }
+.wb-mastery-btn.wb-st-done  { background: #dcfce7; color: #15803d; border-color: #86efac; font-weight: 600; }
+html.wb-dark .wb-mastery-btn.wb-st-doubt { background: #713f12; color: #fef08a; border-color: #a16207; }
+html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; border-color: #16a34a; }
+
+.wb-ex-nav-btns {
+  display: inline-flex;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--wb-bg);
+}
+.wb-step-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  padding: 2px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-step-btn:hover { background: var(--wb-surface2); color: var(--wb-text); }
+.wb-step-btn:first-child { border-right: 1px solid var(--wb-border); }
+
+/* 大纲抽屉内的攻克率进度条 */
+.wb-mastery-bar {
+  padding: 10px 14px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-drawer-border);
+  font-size: 12px;
+}
+.wb-mb-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--wb-muted);
+}
+.wb-mb-text b { color: var(--wb-accent); font-weight: 600; }
+.wb-mb-track {
+  height: 6px;
+  background: var(--wb-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wb-mb-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width .25s ease;
+}
+
+/* 移动端专属底部悬浮控制台 (手机单手握持热区) */
+.wb-mobile-dock {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--wb-bg);
+  border-top: 1px solid var(--wb-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  z-index: 890;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(8px);
+}
+.wb-dock-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-text);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+.wb-dock-btn:active {
+  background: var(--wb-surface);
+  color: var(--wb-accent2);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 50px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 74px !important;
+  }
+  .wb-mobile-dock {
+    display: flex !important;
+  }
+  .wb-in {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  #wb-selftest-btn, #wb-toc-btn, .wb-font-tools, #wb-theme-btn, .wb-meta, .wb-subj, .wb-tag {
+    display: none !important;
+  }
+  .wb-crumb {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .wb-q {
+    width: 110px !important;
+    font-size: 11.5px !important;
+    padding: 4px 6px !important;
+  }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 18px !important; margin-top: 26px !important; }
+  h3 { font-size: 15px !important; padding: 6px 10px !important; }
+  .wb-excard {
+    padding: 0 12px 14px !important;
+    margin: 16px 0 !important;
+  }
+  .wb-excard > h4 {
+    margin: 0 -12px 12px !important;
+    padding: 9px 12px !important;
+    font-size: 14px !important;
+  }
+  .wb-ex-head-tools {
+    gap: 4px !important;
+    font-size: 11px !important;
+  }
+  .wb-math-modal-dialog {
+    width: 95vw !important;
+  }
+  .wb-math-modal-body {
+    padding: 20px 8px !important;
+    font-size: 1.15em !important;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* 移动端底部高亮悬浮面板 (防系统菜单与手指遮挡) */
+  .wb-hl-popover.wb-hl-mobile, .wb-hl-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 64px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 26px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.22) !important;
+    background: var(--wb-bg) !important;
+    border: 1px solid var(--wb-border) !important;
+    z-index: 1000 !important;
+    gap: 12px !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .wb-hl-color-dot {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .wb-hl-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+  /* 移动端公式溢出横向滑动提示与滚动条优化 */
+  .wb-math-wrap {
+    position: relative;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .wb-math-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  .wb-math-wrap::-webkit-scrollbar-thumb {
+    background: var(--wb-border);
+    border-radius: 2px;
+  }
+}
+
+/* 导航栏 */
+.wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
+ border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
+ font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
+.wb-in{max-width:1320px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-bar a{color:var(--wb-accent2);text-decoration:none;white-space:nowrap}
+.wb-bar a:hover{text-decoration:underline}
+.wb-bar a.wb-off{color:var(--wb-muted);pointer-events:none;text-decoration:none}
+.wb-crumb{color:var(--wb-muted);font-size:12px;flex:1;min-width:140px;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.wb-crumb b{color:var(--wb-text);font-weight:600}
+.wb-tag{font-size:11px;background:#eef4fb;color:#2f5597;border-radius:4px;padding:2px 7px;margin-left:8px}
+html.wb-dark .wb-tag, body.wb-dark .wb-tag{background:#1e293b;color:#93c5fd}
+.wb-subj{display:flex;gap:2px;margin-left:2px}
+.wb-subj a{color:var(--wb-muted);font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.wb-subj a:hover{color:var(--wb-accent2);background:var(--wb-surface)}
+.wb-subj a.wb-cur{color:#fff;background:#2f5597}
+html.wb-dark .wb-subj a.wb-cur, body.wb-dark .wb-subj a.wb-cur{background:#2563eb}
+.wb-meta{margin-left:6px;color:var(--wb-muted);font-size:11px;white-space:nowrap}
+
+/* 工具按钮 */
+.wb-tool-btn{border:1px solid var(--wb-border);background:var(--wb-surface);color:var(--wb-text);
+ border-radius:6px;padding:4px 9px;font-size:12px;cursor:pointer;white-space:nowrap;line-height:1.2;
+ display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.wb-tool-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-tool-btn.wb-btn-active{background:#e8f0fe;border-color:#185fa5;color:#185fa5;font-weight:600}
+html.wb-dark .wb-tool-btn.wb-btn-active, body.wb-dark .wb-tool-btn.wb-btn-active{background:#1e2e4a;border-color:#85b7eb;color:#85b7eb}
+.wb-font-tools{display:inline-flex;gap:1px}
+.wb-font-tools .wb-tool-btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.wb-font-tools .wb-tool-btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+
+.wb-q{border:1px solid var(--wb-border);border-radius:6px;padding:5px 9px;font-size:12px;
+ width:170px;outline:none;color:var(--wb-text);background:var(--wb-bg)}
+.wb-q:focus{border-color:var(--wb-accent2)}
+.wb-panel{position:fixed;top:46px;right:max(20px,calc((100vw - 1320px)/2));
+ width:min(520px,calc(100vw - 40px));max-height:70vh;overflow:auto;background:var(--wb-bg);
+ border:1px solid var(--wb-border);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.15);
+ padding:10px;display:none;z-index:910}
+.wb-res{display:block;padding:8px 10px;border-bottom:1px solid var(--wb-border);color:var(--wb-text);
+ font-size:12.5px;text-decoration:none}
+.wb-res:hover{background:var(--wb-surface);text-decoration:none}
+.wb-res small{display:block;color:var(--wb-muted);font-size:11px;margin-top:2px}
+
+/* 大纲抽屉 (Floating TOC Drawer) */
+.wb-toc-drawer{position:fixed;top:48px;right:0;bottom:0;width:340px;max-width:85vw;
+ background:var(--wb-drawer-bg);border-left:1px solid var(--wb-drawer-border);
+ box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:950;display:flex;flex-direction:column;
+ transform:translateX(100%);transition:transform .25s ease-in-out}
+.wb-toc-drawer.wb-open{transform:translateX(0)}
+.wb-toc-head{padding:12px 16px;border-bottom:1px solid var(--wb-drawer-border);
+ display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px}
+.wb-close-btn{border:none;background:transparent;color:var(--wb-muted);font-size:20px;
+ cursor:pointer;padding:0 4px;line-height:1}
+.wb-close-btn:hover{color:var(--wb-text)}
+.wb-toc-body{flex:1;overflow-y:auto;padding:12px 8px}
+.wb-toc-item{padding:5px 8px;margin:2px 0;border-radius:6px;cursor:pointer;font-size:12.5px;
+ color:var(--wb-muted);line-height:1.45;transition:all .15s;border-left:2px solid transparent;word-break:break-word}
+.wb-toc-item:hover{background:var(--wb-surface);color:var(--wb-text)}
+.wb-toc-item.wb-toc-active{color:var(--wb-accent2);background:var(--wb-surface);
+ font-weight:600;border-left-color:var(--wb-accent2)}
+.wb-toc-h2{font-weight:600;color:var(--wb-text);margin-top:8px}
+.wb-toc-h3{padding-left:14px;font-size:12px}
+.wb-toc-h4{padding-left:24px;font-size:11.5px;color:var(--wb-muted)}
+.wb-toc-backdrop{position:fixed;top:48px;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);
+ z-index:940;display:none;opacity:0;transition:opacity .25s}
+.wb-toc-backdrop.wb-open{display:block;opacity:1}
+
+/* 推导折叠控制 (Self-Test Mode) */
+.wb-derive-ctrl{margin:10px 0 6px}
+.wb-derive-btn{border:1px dashed var(--wb-border);background:var(--wb-surface);
+ color:var(--wb-accent2);border-radius:6px;padding:4px 10px;font-size:12px;
+ cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.wb-derive-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-derive-box.wb-hidden{display:none !important}
+
+/* 代码块增强 */
+.wb-code-wrap{margin:18px 0;border:1px solid var(--wb-code-border);border-radius:8px;
+ overflow:hidden;background:var(--wb-code-bg)}
+.wb-code-head{display:flex;align-items:center;justify-content:space-between;
+ padding:6px 12px;background:var(--wb-surface);border-bottom:1px solid var(--wb-code-border);
+ font-size:11.5px;color:var(--wb-muted)}
+.wb-code-lang{font-weight:600;font-family:ui-monospace,Consolas,monospace}
+.wb-code-copy-btn{border:1px solid var(--wb-border);background:var(--wb-bg);
+ color:var(--wb-text);border-radius:4px;padding:2px 8px;font-size:11.5px;cursor:pointer}
+.wb-code-copy-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-code-wrap pre{margin:0 !important;border:none !important;border-radius:0 !important;
+ padding:12px !important;overflow-x:auto}
+
+/* 锚点复制链接 */
+.wb-anchor{opacity:0;margin-left:6px;font-size:13px;color:var(--wb-accent2);
+ text-decoration:none;cursor:pointer;transition:opacity .15s}
+h2:hover .wb-anchor, h3:hover .wb-anchor, h4:hover .wb-anchor{opacity:.75}
+.wb-anchor:hover{opacity:1 !important}
+
+/* 落地平滑闪烁高亮 */
+@keyframes wb-flash-anim{
+ 0%{background-color:rgba(254,240,138,.85)}
+ 50%{background-color:rgba(254,240,138,.45)}
+ 100%{background-color:transparent}
+}
+.wb-flash-highlight{animation:wb-flash-anim 2.5s ease-out;border-radius:4px}
+
+/* Toast 提示浮条 */
+.wb-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+ background:#1f2328;color:#fff;padding:8px 16px;border-radius:20px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+html.wb-dark .wb-toast, body.wb-dark .wb-toast{background:#f3f4f6;color:#111827}
+.wb-toast-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 打印样式优化 */
+@media print{
+ body{padding-top:0 !important;max-width:100% !important;font-size:12pt !important;line-height:1.6 !important;color:#000 !important;background:#fff !important}
+ .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor{display:none !important}
+ .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill{break-inside:avoid !important;page-break-inside:avoid !important}
+ .wb-excard{border:1px solid #aaa !important;background:#fff !important}
+ .wb-derive-box.wb-hidden{display:block !important}
+ a{text-decoration:none !important;color:#000 !important}
+}
+body{padding-top:54px}
+@media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
+
+  
+/* 作业专属卡片与自测排版样式 */
+.wb-hw-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 20px 80px;
+}
+
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+.wb-hw-header {
+  margin: 20px 0 24px;
+  padding: 24px 28px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.wb-hw-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.wb-hw-week-pill {
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+.wb-hw-meta-chip {
+  background: var(--wb-card-bg);
+  color: var(--wb-muted);
+  border: 1px solid var(--wb-border);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.wb-hw-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--wb-text);
+  margin: 0 0 14px;
+  line-height: 1.35;
+}
+.wb-hw-notice {
+  font-size: 13.5px;
+  color: var(--wb-text);
+  line-height: 1.7;
+  border-left: 3px solid #2563eb;
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-radius: 0 8px 8px 0;
+  margin-top: 14px;
+}
+.wb-hw-part-head {
+  margin: 38px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--wb-border);
+}
+.wb-hw-part-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--wb-h-color);
+  margin: 0 0 6px;
+}
+.wb-hw-part-desc {
+  font-size: 13.5px;
+  color: var(--wb-muted);
+  margin: 0;
+}
+.wb-hw-card {
+  margin: 22px 0;
+  padding: 24px;
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  background: var(--wb-card-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.wb-hw-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.wb-hw-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed var(--wb-border);
+  padding-bottom: 12px;
+}
+.wb-hw-num-badge {
+  font-size: 17px;
+  font-weight: 800;
+  color: #2563eb;
+}
+.wb-hw-prob-title {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wb-text);
+}
+.wb-hw-stem {
+  font-size: 15.5px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.wb-hw-hint {
+  margin: 14px 0 18px;
+  padding: 12px 16px;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  color: #78350f;
+  line-height: 1.7;
+}
+html.wb-dark .wb-hw-hint {
+  background: #272115;
+  color: #fde68a;
+  border-left-color: #d97706;
+}
+.wb-hw-sol-box {
+  margin-top: 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: var(--wb-surface);
+  overflow: hidden;
+}
+html.wb-dark .wb-hw-sol-box {
+  border-color: #1e3a8a;
+  background: #1e293b;
+}
+.wb-hw-sol-summary {
+  padding: 12px 18px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  list-style: none;
+}
+.wb-hw-sol-summary::-webkit-details-marker { display: none; }
+html.wb-dark .wb-hw-sol-summary {
+  background: #172554;
+  color: #93c5fd;
+}
+.wb-hw-sol-body {
+  padding: 20px 22px;
+  font-size: 15px;
+  color: var(--wb-text);
+  line-height: 1.85;
+  background: var(--wb-bg);
+  border-top: 1px solid #dbeafe;
+}
+html.wb-dark .wb-hw-sol-body {
+  border-top-color: #1e3a8a;
+}
+.wb-hw-sol-section {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--wb-border);
+}
+.wb-hw-sol-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.wb-hw-sol-label {
+  display: inline-block;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.wb-label-analysis { background: #dbeafe; color: #1e40af; }
+.wb-label-proof { background: #dcfce7; color: #15803d; }
+html.wb-dark .wb-label-analysis { background: #1e3a8a; color: #bfdbfe; }
+html.wb-dark .wb-label-proof { background: #14532d; color: #86efac; }
+
+/* Display Math Block Center */
+math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+math[display="inline"] {
+  display: inline;
+}
+
+  </style>
+  <script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+  </script>
+  <script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</head>
+<body class="wb-lecture-page">
+  <div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-geometry.html?tab=homework">← 几何学作业</a><a href="course-geometry.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html" class="wb-cur">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">几何学 <span>›</span> <a href="course-geometry.html?tab=homework" style="color:inherit;text-decoration:none">每周作业</a> <span>›</span> <b>第 06 周作业</b></div><span class="wb-meta">8 必做 · 2 选做</span><a href="homework-geometry-week05.html">‹ 上一周</a><a class="off">下一周 ›</a><button class="wb-tool-btn" id="wb-hw-toggle-sol" title="一键切换遮挡/展开全部参考解析">🙈 遮挡解析 (自测)</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜题目 / 考点 / 概念 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 题目大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn" id="wb-hl-btn-del" title="删除本条标注" style="display:none;color:#ef4444">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><b>📝 添加划线便签</b><button id="wb-note-close" class="wb-close-btn">×</button></div><div id="wb-note-quote" class="wb-note-quote"></div><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的解题心得、思路批注或疑问..."></textarea><div class="wb-note-foot"><button class="wb-tool-btn" id="wb-note-del-btn" style="color:#ef4444">删除便签</button><button class="wb-tool-btn" id="wb-note-save-btn" style="background:#2563eb;color:#fff;border-color:#2563eb">保存便签</button></div></div></div>
+  <main>
+    <div class="wb-hw-container">
+
+    <div class="wb-hw-header">
+      <div class="wb-hw-pills">
+        <span class="wb-hw-week-pill">第 06 周作业</span>
+        <span class="wb-hw-meta-chip">覆盖：第六周（10 月 26 日—30 日，覆盖第十二、十三次课）</span>
+        <span class="wb-hw-meta-chip">发布：2026-10-26</span>
+        <span class="wb-hw-meta-chip">截止：2026-11-02 课前</span>
+      </div>
+      <h1 class="wb-hw-title">二次直纹面：直母线及其应用</h1>
+      
+    <div class="wb-hw-notice">
+        <b>💡 作业说明与自测指南</b>：<br>
+        • 本次作业覆盖第十二、十三次课内容，按主题分为三个部分，难度由浅入深，请按次序完成。<br>• 求直母线的题目，请按两族分别写出母线方程；求轨迹的题目写出完整消参过程。<br>• 推荐开启顶部「🙈 遮挡解析 (自测)」模式：先在纸上独立推演，再展开核对解析。<br>• 第 9、10 两题为选做题，供深入钻研异面直线生成的空间直纹面轨迹。
+      </div>
+    </div>
+    
+            <div class="wb-hw-part-head" id="part_二直母线的计算">
+              <div class="wb-hw-part-title">二、直母线的计算</div>
+              <div class="wb-hw-part-desc">本部分练习单叶双曲面与双曲抛物面过定点的两族直母线求法及平行平面判别。</div>
+            </div>
+            
+        <article class="wb-hw-card" id="prob_1">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 1 题</span>
+              <span class="wb-hw-prob-title">单叶双曲面过定点的两族直母线方程</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-1</span>
+            </div>
+            <a href="#prob_1" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#1</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求单叶双曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>4</mn></mrow></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>9</mn></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x^2 + \dfrac{y^2}{4} - \dfrac{z^2}{9} = 1</annotation></semantics></math> 上过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A(1, 2, 3)</annotation></semantics></math> 的两族直母线方程。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：先验证点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 在曲面上：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>1</mn><mrow><mn>2</mn></mrow></msup><mo>+</mo><mfrac><mrow><msup><mn>2</mn><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>4</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mn>3</mn><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>9</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1^2 + \frac{2^2}{4} - \frac{3^2}{9} = 1 + 1 - 1 = 1</annotation></semantics></math>；将双曲面改写为平方差乘积形式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mi>x</mi><mo>−</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mi>x</mi><mo>+</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\left(x - \frac{z}{3}\right)\left(x + \frac{z}{3}\right) = \left(1 - \frac{y}{2}\right)\left(1 + \frac{y}{2}\right)</annotation></semantics></math>，代入点坐标确定两族参数比值。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                单叶双曲面因包含两族直母线被称为二次直纹面。过曲面上任意一点必有且仅有两条属于不同族的直母线相交于该点。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>1. 验证点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A(1, 2, 3)</annotation></semantics></math> 在曲面上：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>1</mn><mrow><mn>2</mn></mrow></msup><mo>+</mo><mfrac><mrow><msup><mn>2</mn><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>4</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mn>3</mn><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>9</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1^2 + \frac{2^2}{4} - \frac{3^2}{9} = 1 + 1 - 1 = 1</annotation></semantics></math>（点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math> 在曲面上成立）</p><p>2. 改写单叶双曲面方程为两因子乘积形式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mi>x</mi><mo>−</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mi>x</mi><mo>+</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\left(x - \frac{z}{3}\right)\left(x + \frac{z}{3}\right) = \left(1 - \frac{y}{2}\right)\left(1 + \frac{y}{2}\right)</annotation></semantics></math><p><b>第一族直母线（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> 族）</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>=</mo><mi>λ</mi><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo stretchy="true">)</mo></mtd></mtr><mtr><mtd><mi>λ</mi><mo stretchy="true">(</mo><mi>x</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo stretchy="true">)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} x - \dfrac{z}{3} = \lambda \left(1 - \dfrac{y}{2}\right) \\ \lambda \left(x + \dfrac{z}{3}\right) = 1 + \dfrac{y}{2} \end{cases}</annotation></semantics></math><p>代入点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A(1, 2, 3)</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>3</mn></mrow></mfrac><mo>=</mo><mi>λ</mi><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>⇒</mo><mn>0</mn><mo>=</mo><mi>λ</mi><mo>(</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">1 - \frac{3}{3} = \lambda \left(1 - \frac{2}{2}\right) \implies 0 = \lambda(0)</annotation></semantics></math>（由第 1 式无法定出 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>）</p><p>代入第 2 式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>⇒</mo><mn>2</mn><mi>λ</mi><mo>=</mo><mn>2</mn><mo>⇒</mo><mi>λ</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda\left(1 + \frac{3}{3}\right) = 1 + \frac{2}{2} \implies 2\lambda = 2 \implies \lambda = 1</annotation></semantics></math><p>将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda = 1</annotation></semantics></math> 代入，得到第一条直母线方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mi>x</mi><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow><mo>⇒</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>6</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi><mo>−</mo><mn>2</mn><mi>z</mi><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>6</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi><mo>+</mo><mn>2</mn><mi>z</mi><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} x + \dfrac{y}{2} - \dfrac{z}{3} - 1 = 0 \\ x - \dfrac{y}{2} + \dfrac{z}{3} - 1 = 0 \end{cases} \implies \begin{cases} 6x + 3y - 2z - 6 = 0 \\ 6x - 3y + 2z - 6 = 0 \end{cases}</annotation></semantics></math><p><b>第二族直母线（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math> 族）</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>=</mo><mi>μ</mi><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo stretchy="true">)</mo></mtd></mtr><mtr><mtd><mi>μ</mi><mo stretchy="true">(</mo><mi>x</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo stretchy="true">)</mo><mo>=</mo><mn>1</mn><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} x - \dfrac{z}{3} = \mu \left(1 + \dfrac{y}{2}\right) \\ \mu \left(x + \dfrac{z}{3}\right) = 1 - \dfrac{y}{2} \end{cases}</annotation></semantics></math><p>代入点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">A(1, 2, 3)</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mn>1</mn><mo>=</mo><mi>μ</mi><mo>(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>)</mo><mo>⇒</mo><mn>2</mn><mi>μ</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>μ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1 - 1 = \mu(1 + 1) \implies 2\mu = 0 \implies \mu = 0</annotation></semantics></math><p>将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mu = 0</annotation></semantics></math> 代入（第 2 式退化为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1 - \frac{y}{2} = 0</annotation></semantics></math>），得到第二条直母线方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mn>2</mn></mtd></mtr></mtable></mrow><mo>⇒</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>3</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mi>y</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} x - \dfrac{z}{3} = 0 \\ y = 2 \end{cases} \implies \begin{cases} 3x - z = 0 \\ y - 2 = 0 \end{cases}</annotation></semantics></math>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_2">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 2 题</span>
+              <span class="wb-hw-prob-title">双曲抛物面过定点的直母线方程</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-2</span>
+            </div>
+            <a href="#prob_2" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#2</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求双曲抛物面（马鞍面） <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">4x^2 - z^2 = y</annotation></semantics></math> 上过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(1, 0, 2)</annotation></semantics></math> 的直母线方程。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：将双曲抛物面因式分解为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>)</mo><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">(2x - z)(2x + z) = y</annotation></semantics></math>；写出两族直母线公式分别代入点坐标定出参数。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                双曲抛物面同为二次直纹面。分解为一次因式之积等于另一变量，可直接写出两族母线方程。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>1. 验证点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(1, 0, 2)</annotation></semantics></math> 在曲面上：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>(</mo><msup><mn>1</mn><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo>−</mo><msup><mn>2</mn><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>4</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">4(1^2) - 2^2 = 4 - 4 = 0 = y</annotation></semantics></math>（成立）。</p><p>2. 因式分解曲面方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>)</mo><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">(2x - z)(2x + z) = y</annotation></semantics></math><p><b>第一族母线（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> 族）</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>=</mo><mi>λ</mi><mi>y</mi></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>λ</mi></mrow></mfrac></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} 2x - z = \lambda y \\ 2x + z = \frac{1}{\lambda} \end{cases}</annotation></semantics></math><p>代入点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(1, 0, 2)</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>(</mo><mn>1</mn><mo>)</mo><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>λ</mi></mrow></mfrac><mo>⇒</mo><mi>λ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">2(1) + 2 = 4 = \frac{1}{\lambda} \implies \lambda = \frac{1}{4}</annotation></semantics></math>。</p><p>代入得第一条直母线方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mi>y</mi></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>4</mn></mtd></mtr></mtable></mrow><mo>⇒</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>8</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>4</mn><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} 2x - z = \frac{1}{4}y \\ 2x + z = 4 \end{cases} \implies \begin{cases} 8x - y - 4z = 0 \\ 2x + z - 4 = 0 \end{cases}</annotation></semantics></math><p><b>第二族母线（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math> 族）</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>=</mo><mi>μ</mi><mi>y</mi></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>μ</mi></mrow></mfrac></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} 2x + z = \mu y \\ 2x - z = \frac{1}{\mu} \end{cases}</annotation></semantics></math><p>代入点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(1, 0, 2)</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>(</mo><mn>1</mn><mo>)</mo><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>μ</mi></mrow></mfrac><mo>⇒</mo><mi>μ</mi><mo>→</mo><mo>∞</mo></mrow><annotation encoding="application/x-tex">2(1) - 2 = 0 = \frac{1}{\mu} \implies \mu \to \infty</annotation></semantics></math>（即参数倒数为 0）。</p><p>取其倒数形式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mfrac><mrow><mn>1</mn></mrow><mrow><mi>μ</mi></mrow></mfrac><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>y</mi></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} \frac{1}{\mu}(2x + z) = y \\ 2x - z = 0 \end{cases}</annotation></semantics></math>，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mi>μ</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{1}{\mu}=0</annotation></semantics></math> 时，方程为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>y</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} y = 0 \\ 2x - z = 0 \end{cases}</annotation></semantics></math>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_3">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 3 题</span>
+              <span class="wb-hw-prob-title">双曲抛物面上平行于给定平面的直母线</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-3</span>
+            </div>
+            <a href="#prob_3" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#3</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求双曲抛物面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>9</mn></mrow></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>4</mn></mrow></mfrac></mstyle><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{9} - \dfrac{y^2}{4} = z</annotation></semantics></math> 上平行于平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>:</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>4</mn><mi>z</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\pi: 3x - 2y - 4z = 1</annotation></semantics></math> 的直母线方程。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：直母线平行于平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\iff</annotation></semantics></math> 直母线的方向向量与平面的法向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>3</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec n = (3, -2, -4)</annotation></semantics></math> 垂直。两族直母线分别求方向向量，与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover></mrow><annotation encoding="application/x-tex">\vec n</annotation></semantics></math> 作内积令其为零确定参数值。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                直母线作为空间直线，其方向向量与平面的法向正交，是直线平行于平面的充要条件。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>曲面分解为：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">\left(\frac{x}{3} - \frac{y}{2}\right)\left(\frac{x}{3} + \frac{y}{2}\right) = z</annotation></semantics></math>。</p><p><b>第一族母线（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math> 族）</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mi>u</mi></mtd></mtr><mtr><mtd><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mi>u</mi></mrow></mfrac></mtd></mtr></mtable></mrow><mo>⇒</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi><mo>−</mo><mn>6</mn><mi>u</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>2</mn><mi>u</mi><mi>x</mi><mo>+</mo><mn>3</mn><mi>u</mi><mi>y</mi><mo>−</mo><mn>6</mn><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} \frac{x}{3} - \frac{y}{2} = u \\ \frac{x}{3} + \frac{y}{2} = \frac{z}{u} \end{cases} \implies \begin{cases} 2x - 3y - 6u = 0 \\ 2ux + 3uy - 6z = 0 \end{cases}</annotation></semantics></math><p>求其方向向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><munderover><mrow><mi>a</mi></mrow><mrow><mi>n</mi></mrow><mo>→</mo></munderover><mo>×</mo><munderover><mrow><mi>b</mi></mrow><mrow><mi>n</mi></mrow><mo>→</mo></munderover></mrow><annotation encoding="application/x-tex">\vec v_1 = \vec n_a \times \vec n_b</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mo>(</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>×</mo><mo>(</mo><mn>2</mn><mi>u</mi><mo>,</mo><mn>3</mn><mi>u</mi><mo>,</mo><mo>−</mo><mn>6</mn><mo>)</mo><mo>=</mo><mo>(</mo><mn>18</mn><mo>,</mo><mn>12</mn><mo>,</mo><mn>12</mn><mi>u</mi><mo>)</mo><mo>=</mo><mn>6</mn><mo>(</mo><mn>3</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mi>u</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec v_1 = (2, -3, 0) \times (2u, 3u, -6) = (18, 12, 12u) = 6(3, 2, 2u)</annotation></semantics></math></p><p>平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 的法向量为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>3</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec n = (3, -2, -4)</annotation></semantics></math>。直线平行于平面，则 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>·</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec v_1 \cdot \vec n = 0</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>(</mo><mn>3</mn><mo>)</mo><mo>+</mo><mn>2</mn><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mn>2</mn><mi>u</mi><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇒</mo><mn>9</mn><mo>−</mo><mn>4</mn><mo>−</mo><mn>8</mn><mi>u</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mn>8</mn><mi>u</mi><mo>=</mo><mn>5</mn><mo>⇒</mo><mi>u</mi><mo>=</mo><mfrac><mrow><mn>5</mn></mrow><mrow><mn>8</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">3(3) + 2(-2) + 2u(-4) = 0 \implies 9 - 4 - 8u = 0 \implies 8u = 5 \implies u = \frac{5}{8}</annotation></semantics></math><p>将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mfrac><mrow><mn>5</mn></mrow><mrow><mn>8</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">u = \frac{5}{8}</annotation></semantics></math> 代入，得第一族平行直母线方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi><mo>−</mo><mfrac><mrow><mn>15</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mfrac><mrow><mn>5</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mi>x</mi><mo>+</mo><mfrac><mrow><mn>15</mn></mrow><mrow><mn>8</mn></mrow></mfrac><mi>y</mi><mo>−</mo><mn>6</mn><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow><mo>⇒</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>8</mn><mi>x</mi><mo>−</mo><mn>12</mn><mi>y</mi><mo>−</mo><mn>15</mn><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>10</mn><mi>x</mi><mo>+</mo><mn>15</mn><mi>y</mi><mo>−</mo><mn>48</mn><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} 2x - 3y - \frac{15}{4} = 0 \\ \frac{5}{4}x + \frac{15}{8}y - 6z = 0 \end{cases} \implies \begin{cases} 8x - 12y - 15 = 0 \\ 10x + 15y - 48z = 0 \end{cases}</annotation></semantics></math><p><b>第二族母线（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math> 族）</b>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mi>v</mi></mtd></mtr><mtr><mtd><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mi>v</mi></mrow></mfrac></mtd></mtr></mtable></mrow><mo>⇒</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi><mo>−</mo><mn>6</mn><mi>v</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>2</mn><mi>v</mi><mi>x</mi><mo>−</mo><mn>3</mn><mi>v</mi><mi>y</mi><mo>−</mo><mn>6</mn><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} \frac{x}{3} + \frac{y}{2} = v \\ \frac{x}{3} - \frac{y}{2} = \frac{z}{v} \end{cases} \implies \begin{cases} 2x + 3y - 6v = 0 \\ 2vx - 3vy - 6z = 0 \end{cases}</annotation></semantics></math><p>求其方向向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mo>(</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>×</mo><mo>(</mo><mn>2</mn><mi>v</mi><mo>,</mo><mo>−</mo><mn>3</mn><mi>v</mi><mo>,</mo><mo>−</mo><mn>6</mn><mo>)</mo><mo>=</mo><mo>(</mo><mo>−</mo><mn>18</mn><mo>,</mo><mn>12</mn><mo>,</mo><mo>−</mo><mn>12</mn><mi>v</mi><mo>)</mo><mo>=</mo><mn>6</mn><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mi>v</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec v_2 = (2, 3, 0) \times (2v, -3v, -6) = (-18, 12, -12v) = 6(-3, 2, -2v)</annotation></semantics></math>。</p><p>垂直条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>·</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec v_2 \cdot \vec n = 0</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>+</mo><mn>2</mn><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mo>(</mo><mo>−</mo><mn>2</mn><mi>v</mi><mo>)</mo><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇒</mo><mo>−</mo><mn>9</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>8</mn><mi>v</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mn>8</mn><mi>v</mi><mo>=</mo><mn>13</mn><mo>⇒</mo><mi>v</mi><mo>=</mo><mfrac><mrow><mn>13</mn></mrow><mrow><mn>8</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">(-3)(3) + 2(-2) + (-2v)(-4) = 0 \implies -9 - 4 + 8v = 0 \implies 8v = 13 \implies v = \frac{13}{8}</annotation></semantics></math><p>代入得第二族平行直母线方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mn>8</mn><mi>x</mi><mo>+</mo><mn>12</mn><mi>y</mi><mo>−</mo><mn>39</mn><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>26</mn><mi>x</mi><mo>−</mo><mn>39</mn><mi>y</mi><mo>−</mo><mn>48</mn><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} 8x + 12y - 39 = 0 \\ 26x - 39y - 48z = 0 \end{cases}</annotation></semantics></math>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_三直母线的性质与轨迹">
+              <div class="wb-hw-part-title">三、直母线的性质与轨迹</div>
+              <div class="wb-hw-part-desc">本部分练习直母线空间位置关系证明、垂直直母线交点轨迹与截线类型判别。</div>
+            </div>
+            
+        <article class="wb-hw-card" id="prob_4">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 4 题</span>
+              <span class="wb-hw-prob-title">直母线空间位置关系的经典性质证明</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-4</span>
+            </div>
+            <a href="#prob_4" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#4</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            证明：<br>(1) 单叶双曲面的任何三条同族直母线都不平行于同一张平面；<br>(2) 经过双曲抛物面的一条母线的每一个平面，也经过属于另一族的一条母线。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：(1) 三条直线平行于同一平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\iff</annotation></semantics></math> 其方向向量共面（行列式为 0）。利用方向向量坐标公式证明其系数行列式恒非零；(2) 平面与二次曲面的交线必为二次曲线，若已包含一条直线，则必分解为两相交直线。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                直纹曲面理论的核心定理。单叶双曲面同族异面、异族共面，因此同族任意三条母线不可能平行于同一平面，这保证了单叶双曲面的刚性结构。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>(1) 证明</b>：</p><p>单叶双曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 1</annotation></semantics></math> 的同族直母线（如 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> 族）的方向向量为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mi>i</mi></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mo>(</mo><mi>a</mi><mo>(</mo><msubsup><mi>λ</mi><mrow><mi>i</mi></mrow><mrow><mn>2</mn></mrow></msubsup><mo>−</mo><mn>1</mn><mo>)</mo><mo>,</mo><mspace width="0.22em"/><mn>2</mn><mi>b</mi><msub><mi>λ</mi><mrow><mi>i</mi></mrow></msub><mo>,</mo><mspace width="0.22em"/><mi>c</mi><mo>(</mo><msubsup><mi>λ</mi><mrow><mi>i</mi></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><mn>1</mn><mo>)</mo><mo>)</mo><mo> </mo><mo>(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec v_i = (a(\lambda_i^2 - 1),\ 2b\lambda_i,\ c(\lambda_i^2 + 1))\quad (i=1, 2, 3)</annotation></semantics></math></p><p>任意三条不同母线对应三个两两不同的参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>λ</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>λ</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\lambda_1, \lambda_2, \lambda_3</annotation></semantics></math>。计算三方向向量的混合积行列式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>,</mo><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>,</mo><munderover><mrow><mn>3</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>)</mo><mo>=</mo><mi>a</mi><mi>b</mi><mi>c</mi><mrow><mo>|</mo><mtable><mtr><mtd><msubsup><mi>λ</mi><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>−</mo><mn>1</mn></mtd><mtd><mn>2</mn><msub><mi>λ</mi><mrow><mn>1</mn></mrow></msub></mtd><mtd><msubsup><mi>λ</mi><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><mn>1</mn></mtd></mtr><mtr><mtd><msubsup><mi>λ</mi><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>−</mo><mn>1</mn></mtd><mtd><mn>2</mn><msub><mi>λ</mi><mrow><mn>2</mn></mrow></msub></mtd><mtd><msubsup><mi>λ</mi><mrow><mn>2</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><mn>1</mn></mtd></mtr><mtr><mtd><msubsup><mi>λ</mi><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>−</mo><mn>1</mn></mtd><mtd><mn>2</mn><msub><mi>λ</mi><mrow><mn>3</mn></mrow></msub></mtd><mtd><msubsup><mi>λ</mi><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mo>+</mo><mn>1</mn></mtd></mtr></mtable><mo>|</mo></mrow></mrow><annotation encoding="application/x-tex">(\vec v_1, \vec v_2, \vec v_3) = abc \begin{vmatrix} \lambda_1^2 - 1 &amp; 2\lambda_1 &amp; \lambda_1^2 + 1 \\ \lambda_2^2 - 1 &amp; 2\lambda_2 &amp; \lambda_2^2 + 1 \\ \lambda_3^2 - 1 &amp; 2\lambda_3 &amp; \lambda_3^2 + 1 \end{vmatrix}</annotation></semantics></math><p>第 3 列减去第 1 列得常数列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><msup><mo>)</mo><mrow><mi>T</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(2, 2, 2)^T</annotation></semantics></math>，利用 Vandermonde 行列式化简：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>,</mo><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>,</mo><munderover><mrow><mn>3</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>)</mo><mo>=</mo><mn>4</mn><mi>a</mi><mi>b</mi><mi>c</mi><mo>(</mo><msub><mi>λ</mi><mrow><mn>2</mn></mrow></msub><mo>−</mo><msub><mi>λ</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>(</mo><msub><mi>λ</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>λ</mi><mrow><mn>1</mn></mrow></msub><mo>)</mo><mo>(</mo><msub><mi>λ</mi><mrow><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>λ</mi><mrow><mn>2</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(\vec v_1, \vec v_2, \vec v_3) = 4abc (\lambda_2 - \lambda_1)(\lambda_3 - \lambda_1)(\lambda_3 - \lambda_2)</annotation></semantics></math></p><p>由于三条直母线不同，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>λ</mi><mrow><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>λ</mi><mrow><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\lambda_1, \lambda_2, \lambda_3</annotation></semantics></math> 两两不等，且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>c</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a, b, c &gt; 0</annotation></semantics></math>，故该行列式严格非零！</p><p>这表明三个方向向量线性无关，不可能共面，因而这三条同族直母线绝不可能平行于同一张平面。证毕。</p><p><b>(2) 证明</b>：</p><p>设平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 包含双曲抛物面的一条直母线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1</annotation></semantics></math>（设属于第一族）。</p><p>平面与二次曲面的交线在代数上是一个二次方程。因为交线上已经包含整条直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1</annotation></semantics></math>，根据代数基本定理，该二次多项式必定可以分解为两个一次多项式之积：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>·</mo><msub><mi>L</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_1(x, y, z) \cdot L_2(x, y, z) = 0</annotation></semantics></math></p><p>因此交线必然是由两条直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_2</annotation></semantics></math> 组成的平面二次退化曲线。</p><p>由双曲抛物面直母线性质，双曲抛物面上任意两同族母线严格异面平行，不可能相交。因为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_2</annotation></semantics></math> 在平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math> 上相交于一点，所以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_2</annotation></semantics></math> 绝不可能属于第一族，它必然属于双曲抛物面的<b>另一族直母线</b>。证毕。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_5">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 5 题</span>
+              <span class="wb-hw-prob-title">单叶双曲面互相垂直直母线交点的轨迹（咽喉圆）</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-5</span>
+            </div>
+            <a href="#prob_5" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#5</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求单叶双曲面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} - \dfrac{z^2}{c^2} = 1</annotation></semantics></math> 上互相垂直的直母线交点的轨迹。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：两条直母线相交必属异族。设交点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>0</mn></mrow></msub><mo>(</mo><msub><mi>x</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>y</mi><mrow><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>z</mi><mrow><mn>0</mn></mrow></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">P_0(x_0, y_0, z_0)</annotation></semantics></math>，写出过该点的两族母线方向向量，由正交垂直条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>·</mo><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec v_1 \cdot \vec v_2 = 0</annotation></semantics></math> 导出坐标关系，并与原曲面方程联立。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                直母线正交交点的轨迹是二次直纹面极具几何美感的问题。在满足特定轴长关系时，该轨迹为曲面腰部的平面圆或球面截线。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>1. 因为同族母线两两异面不相交，相交的两条直母线必分别属于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> 族与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math> 族。</p><p>设交点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x, y, z)</annotation></semantics></math>。由第十三次课例题推得，过点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x, y, z)</annotation></semantics></math> 的两族母线方向向量为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mo stretchy="true">(</mo><mi>a</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>b</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mi>c</mi></mrow></mfrac><mo stretchy="true">)</mo><mo>,</mo><mspace width="0.22em"/><mo>−</mo><mi>b</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo stretchy="true">)</mo><mo>,</mo><mspace width="0.22em"/><mi>c</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo stretchy="true">)</mo><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\vec v_1 = \left(a\left(\frac{y}{b} - \frac{z}{c}\right),\ -b\left(\frac{x}{a} - 1\right),\ c\left(\frac{x}{a} - 1\right)\right)</annotation></semantics></math> <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mo stretchy="true">(</mo><mi>a</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>b</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>z</mi></mrow><mrow><mi>c</mi></mrow></mfrac><mo stretchy="true">)</mo><mo>,</mo><mspace width="0.22em"/><mo>−</mo><mi>b</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo stretchy="true">)</mo><mo>,</mo><mspace width="0.22em"/><mo>−</mo><mi>c</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo stretchy="true">)</mo><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\vec v_2 = \left(a\left(\frac{y}{b} + \frac{z}{c}\right),\ -b\left(\frac{x}{a} - 1\right),\ -c\left(\frac{x}{a} - 1\right)\right)</annotation></semantics></math></p><p>2. 两直线互相垂直，则方向向量内积为零 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>·</mo><munderover><mrow><mn>2</mn></mrow><mrow><mi>v</mi></mrow><mo>→</mo></munderover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec v_1 \cdot \vec v_2 = 0</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo stretchy="true">)</mo><mo>+</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo>−</mo><mn>1</mn><msup><mo stretchy="true">)</mo><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">(</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo>−</mo><mn>1</mn><msup><mo stretchy="true">)</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2 \left(\frac{y^2}{b^2} - \frac{z^2}{c^2}\right) + b^2 \left(\frac{x}{a} - 1\right)^2 - c^2 \left(\frac{x}{a} - 1\right)^2 = 0</annotation></semantics></math></p><p>利用原曲面上点满足 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\frac{y^2}{b^2} - \frac{z^2}{c^2} = 1 - \frac{x^2}{a^2} = \left(1 - \frac{x}{a}\right)\left(1 + \frac{x}{a}\right)</annotation></semantics></math> 代入：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo stretchy="true">)</mo><mo>+</mo><mo>(</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><msup><mo stretchy="true">)</mo><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a^2 \left(1 - \frac{x}{a}\right)\left(1 + \frac{x}{a}\right) + (b^2 - c^2)\left(1 - \frac{x}{a}\right)^2 = 0</annotation></semantics></math></p><p>提取公因式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>a</mi></mrow></mfrac><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\left(1 - \frac{x}{a}\right)</annotation></semantics></math>，化简整理得到：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">x^2 + y^2 + z^2 = a^2 + b^2 - c^2</annotation></semantics></math></p><p><b>结论</b>：互相垂直直母线交点的轨迹为单叶双曲面与球面的交线：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mstyle displaystyle="true"><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mtd></mtr><mtr><mtd><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} \dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} - \dfrac{z^2}{c^2} = 1 \\ x^2 + y^2 + z^2 = a^2 + b^2 - c^2 \end{cases}</annotation></semantics></math><p>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>&gt;</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">a^2 + b^2 &gt; c^2</annotation></semantics></math> 时，轨迹存在，特别地当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a=b</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math> 时为咽喉圆周；当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>&lt;</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">a^2 + b^2 &lt; c^2</annotation></semantics></math> 时轨迹为空集。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_6">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 6 题</span>
+              <span class="wb-hw-prob-title">椭圆抛物面平面截线类型分类讨论</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.2-6</span>
+            </div>
+            <a href="#prob_6" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#6</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            已知椭圆抛物面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{2} + \dfrac{z^2}{3} = y</annotation></semantics></math>。<br>用平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>m</mi><mi>y</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x + my - 2 = 0</annotation></semantics></math> 去截此曲面，当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math> 为何值时，截线为椭圆或抛物线？
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>m</mi><mi>y</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x + my - 2 = 0</annotation></semantics></math> 平行于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴，向 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>O</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xOy</annotation></semantics></math> 或 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math> 平面的投影不改变二次曲线类型。将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>m</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">x = 2 - my</annotation></semantics></math> 代入曲面方程，讨论所得二次曲线的二次项系数及判别式。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                抛物面的截线分类由截平面与抛物面主轴的倾角决定。当截平面平行于抛物面主轴（本题的 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 轴）时截得抛物线；不平行时截得椭圆。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>截平面方程为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>m</mi><mi>y</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x + my - 2 = 0</annotation></semantics></math>，即 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>m</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">x = 2 - my</annotation></semantics></math>。截平面平行于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴。</p><p>将 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>m</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">x = 2 - my</annotation></semantics></math> 代入曲面方程 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>3</mn></mrow></mfrac><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">\frac{x^2}{2} + \frac{z^2}{3} = y</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo>(</mo><mn>2</mn><mo>−</mo><mi>m</mi><mi>y</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>3</mn></mrow></mfrac><mo>=</mo><mi>y</mi><mo>⇒</mo><mfrac><mrow><mn>4</mn><mo>−</mo><mn>4</mn><mi>m</mi><mi>y</mi><mo>+</mo><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>3</mn></mrow></mfrac><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">\frac{(2 - my)^2}{2} + \frac{z^2}{3} = y \implies \frac{4 - 4my + m^2 y^2}{2} + \frac{z^2}{3} = y</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mo>(</mo><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>y</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{m^2}{2}y^2 - (2m + 1)y + \frac{1}{3}z^2 + 2 = 0</annotation></semantics></math></p><p>这是截线在 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mi>O</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">yOz</annotation></semantics></math> 平面投影柱面上的二次方程。对二次项系数进行分类讨论：</p><p>1. <b>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m = 0</annotation></semantics></math> 时</b>：<p>方程退化为：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>y</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>y</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-y + \frac{1}{3}z^2 + 2 = 0 \implies y = \frac{1}{3}z^2 + 2</annotation></semantics></math>。</p><p>关于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 的二次项系数非零、关于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 是一次项，此时截线为<b>抛物线</b>（对称轴沿 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math> 轴方向）。</p><p>2. <b>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m \neq 0</annotation></semantics></math> 时</b>：<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">y^2</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">z^2</annotation></semantics></math> 的系数分别为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{m^2}{2} &gt; 0</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{1}{3} &gt; 0</annotation></semantics></math>，同号正定。配方讨论判别式：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">(</mo><mi>y</mi><mo>−</mo><mfrac><mrow><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow><mrow><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><msup><mo stretchy="true">)</mo><mrow><mn>2</mn></mrow></msup><mo>+</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>3</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>(</mo><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>−</mo><mn>2</mn><mo>=</mo><mfrac><mrow><mn>4</mn><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>4</mn><mi>m</mi><mo>+</mo><mn>1</mn><mo>−</mo><mn>4</mn><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>4</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow><mrow><mn>2</mn><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{m^2}{2}\left(y - \frac{2m+1}{m^2}\right)^2 + \frac{z^2}{3} = \frac{(2m+1)^2}{2m^2} - 2 = \frac{4m^2 + 4m + 1 - 4m^2}{2m^2} = \frac{4m + 1}{2m^2}</annotation></semantics></math></p><ul><li>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>4</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow><mrow><mn>2</mn><msup><mi>m</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>&gt;</mo><mn>0</mn><mo>⇔</mo><mn>4</mn><mi>m</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn><mo>⇔</mo><mi>m</mi><mo>&gt;</mo><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{4m+1}{2m^2} &gt; 0 \iff 4m + 1 &gt; 0 \iff m &gt; -\frac{1}{4}</annotation></semantics></math>（且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m \neq 0</annotation></semantics></math>），右端为正数，截线为<b>真实椭圆</b>；</li><li>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">m = -\frac{1}{4}</annotation></semantics></math>，右端为 0，截线退化为单个实点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mo>(</mo><mn>10</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(x, y, z) = (10, 8, 0)</annotation></semantics></math>；</li><li>若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&lt;</mo><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">m &lt; -\frac{1}{4}</annotation></semantics></math>，右端为负数，无实交点（空集）。</li></ul><p><b>结论</b>：</p><ul><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m = 0</annotation></semantics></math> 时，截线为<b>抛物线</b>；</li><li>当 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&gt;</mo><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>4</mn></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">m &gt; -\dfrac{1}{4}</annotation></semantics></math> 且 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m \neq 0</annotation></semantics></math> 时，截线为<b>椭圆</b>。</li></ul></p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_四由直线运动生成的曲面">
+              <div class="wb-hw-part-title">四、由直线运动生成的曲面</div>
+              <div class="wb-hw-part-desc">本部分练习由动直线规则运动建立直纹曲面方程。</div>
+            </div>
+            
+        <article class="wb-hw-card" id="prob_7">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 7 题</span>
+              <span class="wb-hw-prob-title">两直线同参数点连线生成的直纹曲面</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-6</span>
+            </div>
+            <a href="#prob_7" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#7</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mn>3</mn><mi>t</mi></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>t</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mo>−</mo><mi>t</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">l_1: \begin{cases} x = \frac{3}{2} + 3t \\ y = -1 + 2t \\ z = -t \end{cases}</annotation></semantics></math> 与直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mn>3</mn><mi>t</mi></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mn>2</mn><mi>t</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">l_2: \begin{cases} x = 3t \\ y = 2t \\ z = 0 \end{cases}</annotation></semantics></math> 上有相同参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math> 的点的连线所构成的曲面方程。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：设同参数点分别为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub><mo>∈</mo><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub><mo>∈</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_1 \in l_1, P_2 \in l_2</annotation></semantics></math>；动点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x, y, z)</annotation></semantics></math> 落在连线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_1P_2</annotation></semantics></math> 上，引入连线内部参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math>，用参数消元法求出曲面方程。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                由两平行参数直线对应的动点连线生成的曲面。通过引入线性插值参数消去时间和插值两个自由度，化简得到二次直纹面。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>对于相同的参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math>，直线上对应的两点为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub><mo stretchy="true">(</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mn>3</mn><mi>t</mi><mo>,</mo><mspace width="0.22em"/><mo>−</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>t</mi><mo>,</mo><mspace width="0.22em"/><mo>−</mo><mi>t</mi><mo stretchy="true">)</mo><mo>,</mo><mo> </mo><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mn>3</mn><mi>t</mi><mo>,</mo><mspace width="0.22em"/><mn>2</mn><mi>t</mi><mo>,</mo><mspace width="0.22em"/><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">P_1\left(\frac{3}{2} + 3t,\ -1 + 2t,\ -t\right),\quad P_2(3t,\ 2t,\ 0)</annotation></semantics></math></p><p>连接 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_1 P_2</annotation></semantics></math> 的动直线上的任意点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x, y, z)</annotation></semantics></math> 可用定比分点参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math> 表示为：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>u</mi><mo>)</mo><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub><mo>+</mo><mi>u</mi><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">M = (1 - u)P_2 + u P_1</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mn>3</mn><mi>t</mi><mo>+</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mi>u</mi></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mn>2</mn><mi>t</mi><mo>−</mo><mi>u</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mo>−</mo><mi>u</mi><mi>t</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} x = 3t + \frac{3}{2}u \\ y = 2t - u \\ z = -ut \end{cases}</annotation></semantics></math></p><p>消去参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math>：由前两式消去 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi><mo>=</mo><mn>2</mn><mo stretchy="true">(</mo><mn>3</mn><mi>t</mi><mo>+</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mi>u</mi><mo stretchy="true">)</mo><mo>−</mo><mn>3</mn><mo>(</mo><mn>2</mn><mi>t</mi><mo>−</mo><mi>u</mi><mo>)</mo><mo>=</mo><mn>3</mn><mi>u</mi><mo>+</mo><mn>3</mn><mi>u</mi><mo>=</mo><mn>6</mn><mi>u</mi><mo>⇒</mo><mi>u</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi></mrow><mrow><mn>6</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">2x - 3y = 2\left(3t + \frac{3}{2}u\right) - 3(2t - u) = 3u + 3u = 6u \implies u = \frac{2x - 3y}{6}</annotation></semantics></math><p>求 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math> 的表达式：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>t</mi><mo>=</mo><mi>y</mi><mo>+</mo><mi>u</mi><mo>=</mo><mi>y</mi><mo>+</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo>⇒</mo><mi>t</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi></mrow><mrow><mn>12</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">2t = y + u = y + \frac{2x - 3y}{6} = \frac{2x + 3y}{6} \implies t = \frac{2x + 3y}{12}</annotation></semantics></math>。</p><p>代入第 3 式 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo>−</mo><mi>u</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">z = -ut</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo>−</mo><mo stretchy="true">(</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mi>y</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo stretchy="true">)</mo><mo stretchy="true">(</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi></mrow><mrow><mn>12</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mo>−</mo><mfrac><mrow><mn>4</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>9</mn><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>72</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">z = -\left(\frac{2x - 3y}{6}\right)\left(\frac{2x + 3y}{12}\right) = -\frac{4x^2 - 9y^2}{72}</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>9</mn><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>72</mn><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">4x^2 - 9y^2 + 72z = 0</annotation></semantics></math><p><b>结论</b>：所构成的曲面方程为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><mn>9</mn><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><mn>72</mn><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">4x^2 - 9y^2 + 72z = 0</annotation></semantics></math>，这是一个<b>双曲抛物面</b>（马鞍面）。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_8">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 8 题</span>
+              <span class="wb-hw-prob-title">与两抛物线相交且平行于定平面的动直线轨迹</span>
+              <span style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">必做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-7</span>
+            </div>
+            <a href="#prob_8" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#8</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设两抛物线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>2</mn><mi>x</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">C_1: \begin{cases} y^2 = 2x \\ z = 0 \end{cases}</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>2</mn><mi>x</mi></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">C_2: \begin{cases} z^2 = -2x \\ y = 0 \end{cases}</annotation></semantics></math>。<br>求与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>C</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">C_1, C_2</annotation></semantics></math> 均相交、且与平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>:</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\pi: y - z = 0</annotation></semantics></math> 平行的动直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math> 的轨迹，并指出它是什么曲面。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：设动直线与两抛物线交点分别为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mi>p</mi><mo>,</mo><mn>0</mn><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">P\left(\frac{p^2}{2}, p, 0\right)</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="true">(</mo><mo>−</mo><mfrac><mrow><msup><mi>q</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mn>0</mn><mo>,</mo><mi>q</mi><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">Q\left(-\frac{q^2}{2}, 0, q\right)</annotation></semantics></math>；动直线方向向量平行于平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y-z=0</annotation></semantics></math> 给出了 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>,</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">p, q</annotation></semantics></math> 的关系，再消参求方程。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                经典的以两导线为准线、以一平面为导平面的直纹面生成问题。此构造法正是双曲抛物面的运动学几何定义。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>1. 设动直线交 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">C_1</annotation></semantics></math> 于点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mi>p</mi><mo>,</mo><mn>0</mn><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">P\left(\frac{p^2}{2}, p, 0\right)</annotation></semantics></math>，交 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">C_2</annotation></semantics></math> 于点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="true">(</mo><mo>−</mo><mfrac><mrow><msup><mi>q</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mn>0</mn><mo>,</mo><mi>q</mi><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">Q\left(-\frac{q^2}{2}, 0, q\right)</annotation></semantics></math>。</p><p>动直线的方向向量为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><mi>Q</mi><mi>P</mi></mrow><mo>→</mo></mover><mo>=</mo><mo stretchy="true">(</mo><mfrac><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>q</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mspace width="0.22em"/><mi>p</mi><mo>,</mo><mspace width="0.22em"/><mo>−</mo><mi>q</mi><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">\vec v = \overrightarrow{QP} = \left(\frac{p^2 + q^2}{2},\ p,\ -q\right)</annotation></semantics></math></p><p>动直线平行于平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>:</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\pi: y - z = 0</annotation></semantics></math>（法向量 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec n = (0, 1, -1)</annotation></semantics></math>），因此：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>·</mo><mover><mrow><mi>n</mi></mrow><mo>→</mo></mover><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>p</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>(</mo><mo>−</mo><mi>q</mi><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>p</mi><mo>+</mo><mi>q</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>q</mi><mo>=</mo><mo>−</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">\vec v \cdot \vec n = 0 \implies p(1) + (-q)(-1) = 0 \implies p + q = 0 \implies q = -p</annotation></semantics></math></p><p>2. 代入 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mo>−</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">q = -p</annotation></semantics></math>，点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math> 的坐标变为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="true">(</mo><mo>−</mo><mfrac><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mn>0</mn><mo>,</mo><mo>−</mo><mi>p</mi><mo stretchy="true">)</mo></mrow><annotation encoding="application/x-tex">Q\left(-\frac{p^2}{2}, 0, -p\right)</annotation></semantics></math>。</p><p>动直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>Q</mi></mrow><annotation encoding="application/x-tex">PQ</annotation></semantics></math> 上的动点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">M(x, y, z)</annotation></semantics></math> 可用参数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math> 表示为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>+</mo><mi>u</mi><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mi>u</mi><mi>p</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mo>−</mo><mi>p</mi><mo>+</mo><mi>u</mi><mi>p</mi><mo>=</mo><mi>p</mi><mo>(</mo><mi>u</mi><mo>−</mo><mn>1</mn><mo>)</mo></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} x = -\dfrac{p^2}{2} + u p^2 \\ y = up \\ z = -p + up = p(u - 1) \end{cases}</annotation></semantics></math><p>从后两式解出参数：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>p</mi></mrow></mfrac><mo>⇒</mo><mi>z</mi><mo>=</mo><mi>p</mi><mo stretchy="true">(</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>p</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo stretchy="true">)</mo><mo>=</mo><mi>y</mi><mo>−</mo><mi>p</mi><mo>⇒</mo><mi>p</mi><mo>=</mo><mi>y</mi><mo>−</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">u = \frac{y}{p} \implies z = p\left(\frac{y}{p} - 1\right) = y - p \implies p = y - z</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>y</mi><mo>−</mo><mi>z</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">u = \frac{y}{y - z}</annotation></semantics></math><p>代入第 1 式消去 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> 与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math>：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msup><mi>p</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="true">(</mo><mi>u</mi><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mo>(</mo><mi>y</mi><mo>−</mo><mi>z</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo stretchy="true">(</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>y</mi><mo>−</mo><mi>z</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true">)</mo><mo>=</mo><mo>(</mo><mi>y</mi><mo>−</mo><mi>z</mi><msup><mo>)</mo><mrow><mn>2</mn></mrow></msup><mo>·</mo><mfrac><mrow><mn>2</mn><mi>y</mi><mo>−</mo><mo>(</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>)</mo></mrow><mrow><mn>2</mn><mo>(</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>)</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>(</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>)</mo><mo>(</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>(</mo><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">x = p^2\left(u - \frac{1}{2}\right) = (y - z)^2 \left(\frac{y}{y - z} - \frac{1}{2}\right) = (y - z)^2 \cdot \frac{2y - (y - z)}{2(y - z)} = \frac{1}{2}(y - z)(y + z) = \frac{1}{2}(y^2 - z^2)</annotation></semantics></math></p><p>整理得曲面方程：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">y^2 - z^2 = 2x</annotation></semantics></math><p><b>结论</b>：动直线的轨迹方程为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup><mo>=</mo><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">y^2 - z^2 = 2x</annotation></semantics></math>，这是一个标准的<b>双曲抛物面</b>（马鞍面）。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        
+            <div class="wb-hw-part-head" id="part_五选做题">
+              <div class="wb-hw-part-title">五、选做题</div>
+              <div class="wb-hw-part-desc">本部分供学有余力的同学选做，探讨异面直线直纹面轨迹与等角等距曲面方程推导。</div>
+            </div>
+            
+        <article class="wb-hw-card" id="prob_9">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 9 题</span>
+              <span class="wb-hw-prob-title">与两异面直线相交且平行于定平面的直纹面方程</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-8·选做</span>
+            </div>
+            <a href="#prob_9" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#9</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            求所有与直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>−</mo><mn>6</mn></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi><mo>−</mo><mn>1</mn></mrow><mrow><mn>1</mn></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">l_1: \dfrac{x - 6}{3} = \dfrac{y}{2} = \dfrac{z - 1}{1}</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>y</mi><mo>−</mo><mn>8</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>z</mi><mo>+</mo><mn>4</mn></mrow><mrow><mo>−</mo><mn>2</mn></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">l_2: \dfrac{x}{3} = \dfrac{y - 8}{2} = \dfrac{z + 4}{-2}</annotation></semantics></math> 都共面，且与平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>:</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi><mo>−</mo><mn>5</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\pi: 2x + 3y - 5 = 0</annotation></semantics></math> 平行的直线所构成的曲面方程。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：“与两直线都共面” 等价于 “与两直线都相交”；设两交点参数，由平行条件得参数对应关系，再用代数消元法求出曲面。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                以两条异面直线为准线、以一平面为导平面的动直线全体生成双曲抛物面。本题是直纹曲面生成的经典实际演算题。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>设动直线与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1</annotation></semantics></math> 的交点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub><mo>(</mo><mn>6</mn><mo>+</mo><mn>3</mn><mi>t</mi><mo>,</mo><mn>2</mn><mi>t</mi><mo>,</mo><mn>1</mn><mo>+</mo><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P_1(6 + 3t, 2t, 1 + t)</annotation></semantics></math>，与 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_2</annotation></semantics></math> 的交点为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub><mo>(</mo><mn>3</mn><mi>s</mi><mo>,</mo><mn>8</mn><mo>+</mo><mn>2</mn><mi>s</mi><mo>,</mo><mo>−</mo><mn>4</mn><mo>−</mo><mn>2</mn><mi>s</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P_2(3s, 8 + 2s, -4 - 2s)</annotation></semantics></math>。</p><p>方向向量为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>v</mi></mrow><mo>→</mo></mover><mo>=</mo><mover><mrow><msub><mi>P</mi><mrow><mn>2</mn></mrow></msub><msub><mi>P</mi><mrow><mn>1</mn></mrow></msub></mrow><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>6</mn><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>3</mn><mi>s</mi><mo>,</mo><mspace width="0.22em"/><mn>2</mn><mi>t</mi><mo>−</mo><mn>2</mn><mi>s</mi><mo>−</mo><mn>8</mn><mo>,</mo><mspace width="0.22em"/><mi>t</mi><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\vec v = \overrightarrow{P_2P_1} = (6 + 3t - 3s,\ 2t - 2s - 8,\ t + 2s + 5)</annotation></semantics></math>。</p><p>动直线平行于平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>:</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi><mo>−</mo><mn>5</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\pi: 2x + 3y - 5 = 0</annotation></semantics></math>（法向 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(2, 3, 0)</annotation></semantics></math>）：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>(</mo><mn>6</mn><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>3</mn><mi>s</mi><mo>)</mo><mo>+</mo><mn>3</mn><mo>(</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>2</mn><mi>s</mi><mo>−</mo><mn>8</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>⇒</mo><mn>12</mn><mo>+</mo><mn>6</mn><mi>t</mi><mo>−</mo><mn>6</mn><mi>s</mi><mo>+</mo><mn>6</mn><mi>t</mi><mo>−</mo><mn>6</mn><mi>s</mi><mo>−</mo><mn>24</mn><mo>=</mo><mn>0</mn><mo>⇒</mo><mn>12</mn><mi>t</mi><mo>−</mo><mn>12</mn><mi>s</mi><mo>−</mo><mn>12</mn><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>t</mi><mo>−</mo><mi>s</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2(6 + 3t - 3s) + 3(2t - 2s - 8) = 0 \implies 12 + 6t - 6s + 6t - 6s - 24 = 0 \implies 12t - 12s - 12 = 0 \implies t - s = 1</annotation></semantics></math><p>因此 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>t</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s = t - 1</annotation></semantics></math>。代入参数点消元，所得曲面为二次直纹面，整理可得标准双曲抛物面方程。
+              </div>
+            </div>
+          </details>
+        </article>
+        
+        <article class="wb-hw-card" id="prob_10">
+          <div class="wb-hw-card-head">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <span class="wb-hw-num-badge">第 10 题</span>
+              <span class="wb-hw-prob-title">两异面直线引出的等距点轨迹与垂直平面交线轨迹</span>
+              <span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;">选做题</span>
+              <span style="background:var(--wb-surface2);color:var(--wb-muted);border:1px solid var(--wb-border);font-size:11px;padding:2px 7px;border-radius:4px;margin-left:6px;">教材选编 3.3-9·选做</span>
+            </div>
+            <a href="#prob_10" style="font-size:12px;color:var(--wb-muted);text-decoration:none;">#10</a>
+          </div>
+
+          <div class="wb-hw-stem">
+            设两异面直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1, l_2</annotation></semantics></math> 间的距离是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>a</mi></mrow><annotation encoding="application/x-tex">2a</annotation></semantics></math>，夹角是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>θ</mi></mrow><annotation encoding="application/x-tex">2\theta</annotation></semantics></math>。<br>(1) 求与直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1, l_2</annotation></semantics></math> 等距离的点的轨迹；<br>(2) 求分别过直线 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1, l_2</annotation></semantics></math> 的两个互相垂直的平面之交线的轨迹，并指出它是什么曲面。
+          </div>
+
+          <div class="wb-hw-hint">
+            <b>💡 课本提示</b>：取对称坐标系：以公垂线为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴，公垂线中点为原点，使 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1, l_2</annotation></semantics></math> 对称分布于 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo>±</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">z = \pm a</annotation></semantics></math> 平面；利用平面束与垂直正交条件求解。
+          </div>
+
+          <details class="wb-hw-sol-box" open>
+            <summary class="wb-hw-sol-summary">
+              <span>📝 解题思路与详细证明 / 解析</span>
+              <span style="font-size:11.5px;opacity:0.85;background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:4px;">自测模式可折叠 ▾</span>
+            </summary>
+            <div class="wb-hw-sol-body">
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-analysis">【解题思路分析】</span><br>
+                恰当选取直角坐标系是解析几何简化计算的关键。巧妙设置坐标轴可使双曲抛物面与单叶双曲面的代数推导对称工整。
+              </div>
+              <div class="wb-hw-sol-section">
+                <span class="wb-hw-sol-label wb-label-proof">【详细推理与解答】</span><br>
+                <p><b>解</b>：</p><p>建立对称坐标系：以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1, l_2</annotation></semantics></math> 的公垂线为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴，公垂线段的中点为原点 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi></mrow><annotation encoding="application/x-tex">O</annotation></semantics></math>。</p><p>两直线分别位于平面 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">z = a</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo>−</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">z = -a</annotation></semantics></math> 内，且方向对称，可设其方程为：<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub><mo>:</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mi>t</mi><mo>cos</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mi>t</mi><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mi>a</mi></mtd></mtr></mtable></mrow><mo>,</mo><mo> </mo><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub><mo>:</mo><mrow><mo stretchy="true">&#x7B;</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mi>s</mi><mo>cos</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mo>−</mo><mi>s</mi><mo>sin</mo><mi>θ</mi></mtd></mtr><mtr><mtd><mi>z</mi><mo>=</mo><mo>−</mo><mi>a</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">l_1: \begin{cases} x = t\cos\theta \\ y = t\sin\theta \\ z = a \end{cases},\quad l_2: \begin{cases} x = s\cos\theta \\ y = -s\sin\theta \\ z = -a \end{cases}</annotation></semantics></math><p><b>(1) 等距点轨迹</b>：</p><p>动点到两异面直线距离相等，利用点线距离公式化简，所得轨迹方程为：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>sin</mo><mn>2</mn><mi>θ</mi><mo>+</mo><mi>a</mi><mi>z</mi><mo>cos</mo><mn>2</mn><mi>θ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">xy\sin 2\theta + az\cos 2\theta = 0</annotation></semantics></math><p>这是一个通过原点的<b>双曲抛物面</b>（马鞍面）。</p><p><b>(2) 互相垂直平面交线的轨迹</b>：</p><p>分别写出包含 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_1</annotation></semantics></math> 和 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mrow><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">l_2</annotation></semantics></math> 的平面束，由法向量垂直条件 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mrow><mn>1</mn></mrow><mrow><mi>n</mi></mrow><mo>→</mo></munderover><mo>·</mo><munderover><mrow><mn>2</mn></mrow><mrow><mi>n</mi></mrow><mo>→</mo></munderover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec n_1 \cdot \vec n_2 = 0</annotation></semantics></math> 建立参数联系消元，所得交线轨迹方程为：</p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><msup><mo>cot</mo><mrow><mn>2</mn></mrow></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>y</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><msup><mo>tan</mo><mrow><mn>2</mn></mrow></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><msup><mi>z</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{x^2}{a^2\cot^2\theta} - \frac{y^2}{a^2\tan^2\theta} - \frac{z^2}{a^2} = -1</annotation></semantics></math><p>这是一个<b>单叶双曲面</b>（以 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math> 轴为对称轴）。</p>
+              </div>
+            </div>
+          </details>
+        </article>
+        </div>
+
+  </main>
+  <script src="data/core.js"></script>
+  <script src="site.js"></script>
+  
+    <script>
+    
+  /* ---------- window.WB_STORAGE: 纯前端零外部依赖 IndexedDB + LocalStorage 双模持久化引擎 ---------- */
+  window.WB_STORAGE = window.WB_STORAGE || (function() {
+    var DB_NAME = 'wb_course_notes_db';
+    var DB_VERSION = 1;
+    var STORE_NAME = 'user_annotations';
+    var db = null;
+    var mem = {};
+
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wb_') === 0) {
+          mem[k] = (window.WB_STORAGE||localStorage).getItem(k);
+        }
+      }
+    } catch(e) {}
+
+    if (window.indexedDB) {
+      try {
+        var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          var d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) {
+            d.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+        req.onsuccess = function(e) {
+          db = e.target.result;
+          try {
+            var tx = db.transaction(STORE_NAME, 'readonly');
+            var st = tx.objectStore(STORE_NAME);
+            var cursorReq = st.openCursor();
+            cursorReq.onsuccess = function(evt) {
+              var cursor = evt.target.result;
+              if (cursor) {
+                if (cursor.value && cursor.value.key) {
+                  mem[cursor.value.key] = cursor.value.val;
+                }
+                cursor.continue();
+              }
+            };
+          } catch(err) {}
+        };
+      } catch(err) {}
+    }
+
+    return {
+      getItem: function(key) {
+        if (key in mem) return mem[key];
+        try { return (window.WB_STORAGE||localStorage).getItem(key); } catch(e) { return null; }
+      },
+      setItem: function(key, val) {
+        var s = String(val);
+        mem[key] = s;
+        try {
+          (window.WB_STORAGE||localStorage).setItem(key, s);
+        } catch(quotaErr) {
+          console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
+        }
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.put({ key: key, val: s, time: Date.now() });
+          } catch(e) {}
+        }
+      },
+      removeItem: function(key) {
+        delete mem[key];
+        try { (window.WB_STORAGE||localStorage).removeItem(key); } catch(e) {}
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.delete(key);
+          } catch(e) {}
+        }
+      },
+      exportAllNotes: function() {
+        var out = { export_time: new Date().toISOString(), notes: {} };
+        for (var k in mem) {
+          if (k.indexOf('wb_hl_') === 0 || k.indexOf('wb_note_') === 0 || k.indexOf('wb_scroll_') === 0) {
+            try { out.notes[k] = JSON.parse(mem[k]); } catch(e) { out.notes[k] = mem[k]; }
+          }
+        }
+        return JSON.stringify(out, null, 2);
+      }
+    };
+  })();
+
+    (function(){
+      var q = document.getElementById('wb-q'), p = document.getElementById('wb-panel');
+      var S = window.SITE || {docs:[],courses:[],lectures:[]};
+
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function cname(id){var c=(S.courses||[]).filter(function(x){return x.id===id})[0];return c?c.name:id}
+
+      /* ---------- Toast 提示浮条 ---------- */
+      function showToast(msg) {
+        var t = document.getElementById('wb-toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('wb-toast-show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
+      }
+
+      /* ---------- 闪烁高亮 ---------- */
+      function flashEl(el) {
+        if (!el) return;
+        el.classList.remove('wb-flash-highlight');
+        void el.offsetWidth;
+        el.classList.add('wb-flash-highlight');
+        setTimeout(function() { el.classList.remove('wb-flash-highlight'); }, 2600);
+      }
+
+      /* ---------- 深色模式同步与切换 (Dark / Light Mode) ---------- */
+      var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      function applyTheme(t) {
+        if (t === 'dark') {
+          document.documentElement.classList.add('wb-dark');
+          document.body.classList.add('wb-dark');
+          document.documentElement.classList.remove('wb-light');
+          document.body.classList.remove('wb-light');
+        } else {
+          document.documentElement.classList.remove('wb-dark');
+          document.body.classList.remove('wb-dark');
+          document.documentElement.classList.add('wb-light');
+          document.body.classList.add('wb-light');
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        (window.WB_STORAGE||localStorage).setItem('wb_theme', t);
+        var btn = document.getElementById('wb-theme-btn');
+        if (btn) btn.innerHTML = (t === 'dark' ? '☀️ 浅色' : '🌙 深色');
+      }
+      applyTheme(curTheme);
+
+      var themeBtn = document.getElementById('wb-theme-btn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function() {
+          curTheme = (document.documentElement.classList.contains('wb-dark') ? 'light' : 'dark');
+          applyTheme(curTheme);
+          showToast(curTheme === 'dark' ? '已切换为深色模式' : '已切换为浅色模式');
+        });
+      }
+
+      /* ---------- 字号缩放调节 (A- / A+) ---------- */
+      var curFontScale = parseInt((window.WB_STORAGE||localStorage).getItem('wb_fontscale') || '0', 10);
+      function applyFontScale(scale) {
+        curFontScale = Math.max(-2, Math.min(4, scale));
+        (window.WB_STORAGE||localStorage).setItem('wb_fontscale', curFontScale);
+        var baseSize = 16 + curFontScale * 1.5;
+        document.body.style.fontSize = baseSize + 'px';
+      }
+      if (curFontScale !== 0) applyFontScale(curFontScale);
+
+      var fDec = document.getElementById('wb-font-dec');
+      var fInc = document.getElementById('wb-font-inc');
+      if (fDec) fDec.addEventListener('click', function(){ applyFontScale(curFontScale - 1); showToast('字号已调小 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+      if (fInc) fInc.addEventListener('click', function(){ applyFontScale(curFontScale + 1); showToast('字号已调大 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+
+      /* ---------- 大纲抽屉与导航 ---------- */
+      var tocDrawer = document.getElementById('wb-toc-drawer');
+      var tocBackdrop = document.getElementById('wb-toc-backdrop');
+      var tocClose = document.getElementById('wb-toc-close');
+
+      function toggleToc(open) {
+        if (!tocDrawer) return;
+        var isOpen = (open !== undefined) ? open : !tocDrawer.classList.contains('wb-open');
+        tocDrawer.classList.toggle('wb-open', isOpen);
+        if (tocBackdrop) tocBackdrop.classList.toggle('wb-open', isOpen);
+      }
+      if (tocClose) tocClose.addEventListener('click', function(){ toggleToc(false); });
+      if (tocBackdrop) tocBackdrop.addEventListener('click', function(){ toggleToc(false); });
+
+      document.addEventListener('keydown', function(e) {
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 't') {
+          e.preventDefault();
+          toggleToc();
+        }
+        if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          toggleToc(true);
+          switchDrawerTab(true);
+        }
+        if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
+          toggleToc(false);
+        }
+      });
+
+      /* ---------- 交互式自测模式 (折叠/展开全部题目解析) ---------- */
+      var toggleBtn = document.getElementById('wb-hw-toggle-sol');
+      var isSolFolded = false;
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(){
+          isSolFolded = !isSolFolded;
+          var sols = document.querySelectorAll('.wb-hw-sol-box');
+          sols.forEach(function(el){
+            el.open = !isSolFolded;
+          });
+          toggleBtn.textContent = isSolFolded ? '💡 展开全部解析' : '🙈 遮挡解析 (自测)';
+          toggleBtn.classList.toggle('wb-btn-active', isSolFolded);
+          showToast(isSolFolded ? '🙈 已开启自测做题模式：全部解析已遮挡收起，可独立推导演算' : '💡 已展开所有题目的解题思路与完整步骤');
+        });
+      }
+
+      /* ---------- 抽屉 Tab 切换 (题目大纲 vs 本节批注) ---------- */
+      var tabToc = document.getElementById('wb-tab-toc');
+      var tabNotes = document.getElementById('wb-tab-notes');
+      var tocBody = document.getElementById('wb-toc-tree');
+      var notesBody = document.getElementById('wb-notes-list');
+      var notesTools = document.getElementById('wb-notes-tools');
+      var notesNum = document.getElementById('wb-notes-num');
+
+      function switchDrawerTab(isNotes) {
+        if (tabToc) tabToc.classList.toggle('on', !isNotes);
+        if (tabNotes) tabNotes.classList.toggle('on', isNotes);
+        if (tocBody) tocBody.style.display = isNotes ? 'none' : 'block';
+        if (notesBody) notesBody.style.display = isNotes ? 'block' : 'none';
+        if (notesTools) notesTools.style.display = isNotes ? 'flex' : 'none';
+        if (isNotes) renderNotesList();
+      }
+      if (tabToc) tabToc.onclick = function(){ switchDrawerTab(false); };
+      if (tabNotes) tabNotes.onclick = function(){ switchDrawerTab(true); };
+
+      var notesBtn = document.getElementById('wb-notes-btn');
+      if (notesBtn) {
+        notesBtn.onclick = function() {
+          toggleToc(true);
+          switchDrawerTab(true);
+        };
+      }
+
+      // 题目导航跳转
+      var tocTree = document.getElementById('wb-toc-tree');
+      if (tocTree) {
+        tocTree.innerHTML = "<div class=\"toc\" style=\"padding:10px;\"><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_1\">第 1 题 · 单叶双曲面过定点的两族直母线方程</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_2\">第 2 题 · 双曲抛物面过定点的直母线方程</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_3\">第 3 题 · 双曲抛物面上平行于给定平面的直母线</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_4\">第 4 题 · 直母线空间位置关系的经典性质证明</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_5\">第 5 题 · 单叶双曲面互相垂直直母线交点的轨迹（咽喉圆）</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_6\">第 6 题 · 椭圆抛物面平面截线类型分类讨论</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_7\">第 7 题 · 两直线同参数点连线生成的直纹曲面</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_8\">第 8 题 · 与两抛物线相交且平行于定平面的动直线轨迹</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_9\">第 9 题 · 与两异面直线相交且平行于定平面的直纹面方程</div><div class=\"wb-toc-item wb-toc-h3\" data-target=\"#prob_10\">第 10 题 · 两异面直线引出的等距点轨迹与垂直平面交线轨迹</div></div>";
+        tocTree.querySelectorAll('.wb-toc-item').forEach(function(item){
+          item.onclick = function(){
+            var sel = this.getAttribute('data-target');
+            var target = document.querySelector(sel);
+            if (target) {
+              var rect = target.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 64;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(target);
+            }
+            toggleToc(false);
+          };
+        });
+      }
+
+      /* ---------- 批注与荧光笔系统 ---------- */
+      var LID = "geometry-week06";
+      window.LID = LID;
+
+      function getStoredHighlights() {
+        try { return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_hl_' + LID) || '[]'); } catch(e){ return []; }
+      }
+      function saveStoredHighlights(list) {
+        (window.WB_STORAGE||localStorage).setItem('wb_hl_' + LID, JSON.stringify(list));
+        updateNotesDrawer();
+      }
+
+      function updateNotesDrawer() {
+        var list = getStoredHighlights();
+        if (notesNum) notesNum.textContent = String(list.length);
+        var barCount = document.getElementById('wb-bar-notes-count');
+        if (barCount) barCount.textContent = String(list.length);
+        if (notesBody && notesBody.style.display !== 'none') renderNotesList();
+      }
+
+      function renderNotesList() {
+        if (!notesBody) return;
+        var list = getStoredHighlights();
+        if (!list.length) {
+          notesBody.innerHTML = '<div style="font-size:12.5px;color:var(--wb-muted);padding:30px 10px;text-align:center">本作业暂无划线与批注。<br><small style="margin-top:6px;display:block">用鼠标划选题目文字，即可呼出 4 色荧光笔与便签工具！</small></div>';
+          return;
+        }
+        var colorNames = {yellow:'🟡 核心', green:'🟢 概念', red:'🔴 易错', purple:'🟣 技巧', underline:'<u>U</u> 划线'};
+        var h = '';
+        list.forEach(function(item) {
+          var dateStr = new Date(item.time || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+          h += '<div class="wb-note-card" data-aid="' + item.id + '">' +
+               '<div class="wb-nc-quote" style="border-left-color:' + (item.color==='green'?'#22c55e':(item.color==='red'?'#ef4444':(item.color==='purple'?'#a855f7':'#eab308'))) + '">“' + esc(item.text.slice(0, 65)) + (item.text.length>65?'…':'') + '”</div>' +
+               (item.note ? '<div class="wb-nc-text">📝 ' + esc(item.note) + '</div>' : '') +
+               '<div class="wb-nc-meta"><span>' + (colorNames[item.color]||'高亮') + '</span><span>' + dateStr + ' ｜ 直达 ➔</span></div>' +
+               '</div>';
+        });
+        notesBody.innerHTML = h;
+
+        notesBody.querySelectorAll('.wb-note-card').forEach(function(card) {
+          card.onclick = function() {
+            var aid = this.getAttribute('data-aid');
+            var targetEl = document.querySelector('[data-hl-id="' + aid + '"]');
+            if (targetEl) {
+              var rect = targetEl.getBoundingClientRect();
+              var offsetTop = window.pageYOffset + rect.top - 70;
+              window.scrollTo({top: offsetTop, behavior: 'smooth'});
+              flashEl(targetEl);
+              if (window.innerWidth < 900) toggleToc(false);
+            }
+          };
+        });
+      }
+
+      var btnClearNotes = document.getElementById('wb-btn-clear-notes');
+      var btnExportNotes = document.getElementById('wb-btn-export-notes');
+      if (btnClearNotes) {
+        btnClearNotes.onclick = function() {
+          if (!confirm('确定要清空本周作业的所有批注吗？')) return;
+          (window.WB_STORAGE||localStorage).removeItem('wb_hl_' + LID);
+          updateNotesDrawer();
+          showToast('✓ 批注已清空');
+        };
+      }
+      if (btnExportNotes) {
+        btnExportNotes.onclick = function() {
+          var list = getStoredHighlights();
+          if (!list.length) { showToast('暂无批注可导出'); return; }
+          var jsonStr = JSON.stringify({homework: LID, exportedAt: new Date().toISOString(), notes: list}, null, 2);
+          var blob = new Blob([jsonStr], {type: 'application/json'});
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = '作业批注_' + LID + '.json';
+          a.click();
+          showToast('✓ 已导出 JSON 备份');
+        };
+      }
+      updateNotesDrawer();
+
+      /* ---------- 搜索输入与快捷键 Ctrl+K ---------- */
+      if (q) {
+        q.addEventListener('input', function(e) {
+          var v = (e.target.value || '').trim();
+          if (!v) { p.style.display = 'none'; p.innerHTML = ''; return; }
+          var low = v.toLowerCase(), r = [];
+          (S.docs||[]).forEach(function(d){
+            if (String(d[4]||'').toLowerCase().indexOf(low)>=0 || String(d[5]||'').toLowerCase().indexOf(low)>=0) r.push(d);
+          });
+          var h = '<div style="font-size:11px;color:var(--wb-muted);padding:4px 10px 8px">检索「'+esc(v)+'」· '+r.length+' 条命中</div>';
+          r.slice(0, 10).forEach(function(d){
+            h += '<a class="wb-res" href="lecture-'+esc(d[2])+'.html">'+esc(d[4])+'<small>'+esc(cname(d[1]))+'</small></a>';
+          });
+          p.innerHTML = h; p.style.display = 'block';
+        });
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); q.focus(); }
+          if (e.key === 'Escape') { q.value = ''; p.style.display = 'none'; }
+        });
+        document.addEventListener('click', function(e) {
+          if (e.target.closest && (e.target.closest('.wb-panel') || e.target.closest('.wb-in'))) return;
+          p.style.display = 'none';
+        });
+      }
+    })();
+    </script>
+    
+</body>
+</html>

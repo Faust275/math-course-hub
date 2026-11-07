@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-10-13 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-10-13 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-10-13-课堂详解"
+id="toc-c-程序设计2026-10-13-课堂详解">《C 程序设计》2026-10-13
+课堂详解</a>
+<ul>
+<li><a href="#一循环嵌套收尾搬砖问题多重循环的效率000238000944"
+id="toc-一循环嵌套收尾搬砖问题多重循环的效率000238000944">一、循环嵌套收尾：搬砖问题（多重循环的效率）（00:02:38—00:09:44）</a>
+<ul>
+<li><a href="#问题引入45-人搬-45-块砖"
+id="toc-问题引入45-人搬-45-块砖">00:02:38—00:03:39 ｜ 问题引入：45 人搬
+45 块砖</a></li>
+<li><a href="#列方程与穷举法求解思路"
+id="toc-列方程与穷举法求解思路">00:03:39—00:05:50 ｜
+列方程与穷举法求解思路</a></li>
+<li><a href="#三重循环枚举程序"
+id="toc-三重循环枚举程序">00:05:50—00:07:08 ｜ 三重循环枚举程序</a></li>
+<li><a href="#效率分析与改进二重循环"
+id="toc-效率分析与改进二重循环">00:07:08—00:09:44 ｜
+效率分析与改进（二重循环）</a></li>
+</ul></li>
+<li><a href="#二函数的概念定义与圆柱体积例程000944003229"
+id="toc-二函数的概念定义与圆柱体积例程000944003229">二、函数的概念、定义与圆柱体积例程（00:09:44—00:32:29）</a>
+<ul>
+<li><a href="#函数的作用相对独立的程序模块"
+id="toc-函数的作用相对独立的程序模块">00:09:44—00:12:13 ｜
+函数的作用：相对独立的程序模块</a></li>
+<li><a href="#例程计算圆柱体积函数声明调用"
+id="toc-例程计算圆柱体积函数声明调用">00:12:25—00:15:02 ｜
+例程：计算圆柱体积（函数声明、调用）</a></li>
+<li><a href="#函数定义函数头函数体与-return-语句"
+id="toc-函数定义函数头函数体与-return-语句">00:15:02—00:20:00 ｜
+函数定义：函数头、函数体与 return 语句</a></li>
+<li><a href="#函数名形式参数表与-void-类型"
+id="toc-函数名形式参数表与-void-类型">00:20:00—00:23:46 ｜
+函数名、形式参数表与 void 类型</a></li>
+<li><a href="#可变参数函数printf-scanf"
+id="toc-可变参数函数printf-scanf">00:23:46—00:26:27 ｜
+可变参数函数（printf / scanf）</a></li>
+<li><a href="#函数体的构成与无返回值的-return"
+id="toc-函数体的构成与无返回值的-return">00:26:27—00:29:06 ｜
+函数体的构成与无返回值的 return</a></li>
+<li><a href="#函数声明作用可省形参名先声明后调用"
+id="toc-函数声明作用可省形参名先声明后调用">00:29:06—00:32:29 ｜
+函数声明：作用、可省形参名、先声明后调用</a></li>
+</ul></li>
+<li><a href="#三函数声明调用与值传递机制003229010421"
+id="toc-三函数声明调用与值传递机制003229010421">三、函数声明、调用与值传递机制（00:32:29—01:04:21）</a>
+<ul>
+<li><a href="#函数调用语法与函数声明的作用"
+id="toc-函数调用语法与函数声明的作用">00:32:29—00:36:34 ｜
+函数调用语法与函数声明的作用</a></li>
+<li><a href="#函数调用的几种形式"
+id="toc-函数调用的几种形式">00:36:34—00:37:48 ｜
+函数调用的几种形式</a></li>
+<li><a href="#参数传递值传递实参形参"
+id="toc-参数传递值传递实参形参">00:37:48—00:46:00 ｜
+参数传递：值传递（实参→形参）</a></li>
+<li><a href="#内存分区代码区静态存储区与动态存储区"
+id="toc-内存分区代码区静态存储区与动态存储区">00:46:00—00:52:22 ｜
+内存分区：代码区、静态存储区与动态存储区</a></li>
+<li><a href="#形式参数的内存创建与值传递回顾"
+id="toc-形式参数的内存创建与值传递回顾">00:52:22—01:04:21 ｜
+形式参数的内存创建与值传递回顾</a></li>
+</ul></li>
+<li><a href="#四函数应用例程010614012933"
+id="toc-四函数应用例程010614012933">四、函数应用例程（01:06:14—01:29:33）</a>
+<ul>
+<li><a href="#例程-5-2计算五边形面积海伦公式"
+id="toc-例程-5-2计算五边形面积海伦公式">01:06:14—01:08:56 ｜ 例程
+5-2：计算五边形面积（海伦公式）</a></li>
+<li><a href="#例程-5-3完全平方数判断-issquare"
+id="toc-例程-5-3完全平方数判断-issquare">01:08:56—01:13:01 ｜ 例程
+5-3：完全平方数判断 IsSquare</a></li>
+<li><a href="#例程-5-4最大公约数-gcd辗转相除法与优化"
+id="toc-例程-5-4最大公约数-gcd辗转相除法与优化">01:13:01—01:22:52 ｜
+例程 5-4：最大公约数 gcd（辗转相除法与优化）</a></li>
+<li><a href="#例程-5-5素数判断-prime"
+id="toc-例程-5-5素数判断-prime">01:22:52—01:25:07 ｜ 例程 5-5：素数判断
+prime</a></li>
+<li><a href="#例程-5-6数字金字塔-pyramidvoid-函数"
+id="toc-例程-5-6数字金字塔-pyramidvoid-函数">01:25:07—01:29:33 ｜ 例程
+5-6：数字金字塔 pyramid（void 函数）</a></li>
+</ul></li>
+<li><a href="#五结构化程序设计思想012933013535"
+id="toc-五结构化程序设计思想012933013535">五、结构化程序设计思想（01:29:33—01:35:35）</a>
+<ul>
+<li><a href="#结构化程序设计自顶向下逐步细化"
+id="toc-结构化程序设计自顶向下逐步细化">01:29:33—01:32:12 ｜
+结构化程序设计：自顶向下、逐步细化</a></li>
+<li><a href="#模块划分内部紧凑之间松散"
+id="toc-模块划分内部紧凑之间松散">01:32:12—01:35:35 ｜
+模块划分：内部紧凑、之间松散</a></li>
+</ul></li>
+<li><a href="#六局部变量与全局变量013535015358"
+id="toc-六局部变量与全局变量013535015358">六、局部变量与全局变量（01:35:35—01:53:58）</a>
+<ul>
+<li><a href="#局部变量函数内与复合语句内"
+id="toc-局部变量函数内与复合语句内">01:35:35—01:37:16 ｜
+局部变量：函数内与复合语句内</a></li>
+<li><a href="#作用范围重名规则与变量定义位置"
+id="toc-作用范围重名规则与变量定义位置">01:37:16—01:42:34 ｜
+作用范围、重名规则与变量定义位置</a></li>
+<li><a href="#全局变量定义创建时机与作用范围"
+id="toc-全局变量定义创建时机与作用范围">01:42:34—01:46:18 ｜
+全局变量：定义、创建时机与作用范围</a></li>
+<li><a href="#全局变量的利弊" id="toc-全局变量的利弊">01:46:18—01:50:51
+｜ 全局变量的利弊</a></li>
+</ul></li>
+<li><a href="#七变量生命周期与静态变量015358021250"
+id="toc-七变量生命周期与静态变量015358021250">七、变量生命周期与静态变量（01:53:58—02:12:50）</a>
+<ul>
+<li><a href="#现金记账例程详解异常检测与全局变量封装"
+id="toc-现金记账例程详解异常检测与全局变量封装">01:53:58—01:57:48 ｜
+现金记账例程详解：异常检测与全局变量封装</a></li>
+<li><a href="#变量的生命周期创建与销毁"
+id="toc-变量的生命周期创建与销毁">01:57:48—02:01:25 ｜
+变量的生命周期：创建与销毁</a></li>
+<li><a href="#静态变量-static静态局部-静态全局"
+id="toc-静态变量-static静态局部-静态全局">02:01:25—02:07:40 ｜ 静态变量
+static（静态局部 / 静态全局）</a></li>
+<li><a href="#变量的初值全局静态为-0局部不确定"
+id="toc-变量的初值全局静态为-0局部不确定">02:07:40—02:10:05 ｜
+变量的初值：全局/静态为 0，局部不确定</a></li>
+<li><a href="#作用范围与同名屏蔽规则"
+id="toc-作用范围与同名屏蔽规则">02:10:05—02:12:50 ｜
+作用范围与同名屏蔽规则</a></li>
+</ul></li>
+<li><a href="#八变量作用范围源文件布局与外部变量021250021800"
+id="toc-八变量作用范围源文件布局与外部变量021250021800">八、变量作用范围、源文件布局与外部变量（02:12:50—02:18:00）</a>
+<ul>
+<li><a href="#源文件-.c-的一般布局头文件全局外部声明定义"
+id="toc-源文件-.c-的一般布局头文件全局外部声明定义">02:12:50—02:15:46 ｜
+源文件 .c 的一般布局（头文件、全局、外部、声明、定义）</a></li>
+<li><a href="#外部变量-extern声明与定义的区别"
+id="toc-外部变量-extern声明与定义的区别">02:15:46—02:18:00 ｜ 外部变量
+extern：声明与定义的区别</a></li>
+</ul></li>
+<li><a href="#九课后练习判断各位数字是否从小到大排列021800022634"
+id="toc-九课后练习判断各位数字是否从小到大排列021800022634">九、课后练习：判断各位数字是否从小到大排列（02:18:00—02:26:34）</a>
+<ul>
+<li><a href="#练习变量的初值和作用范围代码走读"
+id="toc-练习变量的初值和作用范围代码走读">02:18:00—02:20:21 ｜
+练习：变量的初值和作用范围（代码走读）</a></li>
+<li><a href="#课后练习判断各位数字是否从小到大排列"
+id="toc-课后练习判断各位数字是否从小到大排列">02:20:21—02:26:34 ｜
+课后练习：判断各位数字是否从小到大排列</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-10-13-课堂详解">《C 程序设计》2026-10-13
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:28:23 ｜ 逐条字幕：1250 条 ｜ 时间段小节：36
+｜ 例题 / 证明：15</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件，不以字幕为准；课件原文留档在
+content/cprog/_slides/ 下对应章节。**</p>
+</blockquote>
+<h2
+id="一循环嵌套收尾搬砖问题多重循环的效率000238000944">一、循环嵌套收尾：搬砖问题（多重循环的效率）（00:02:38—00:09:44）</h2>
+<h3 id="问题引入45-人搬-45-块砖">00:02:38—00:03:39 ｜ 问题引入：45 人搬
+45 块砖</h3>
+<p>上节课循环（循环嵌套）的尾巴还没讲完，先把最后一个例子收掉，再进入第五章函数。</p>
+<p>问题（书上的「搬砖问题」）：男人、女人、小孩共 45 人搬 45
+块砖。男人每人搬 3 块，女人每人搬 2 块，小孩两人抬 1 块（即一个小孩搬
+0.5 块）。问有多少种组合，需要几个男人、几个女人、几个小孩才能正好把 45
+块砖搬完。</p>
+<h3 id="列方程与穷举法求解思路">00:03:39—00:05:50 ｜
+列方程与穷举法求解思路</h3>
+<p>设男人的个数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>、女人的个数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>、小孩的个数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>，则有不定方程组：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>45</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>z</mi><mo>=</mo><mn>45</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+x + y + z = 45 \\
+3x + 2y + \dfrac{1}{2}z = 45
+\end{cases}</annotation></semantics></math></p>
+<p>其中
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
+均为正整数。这是<strong>不定方程</strong>（两个方程、三个未知数），理论上解可能很多，无法用中学那种解析法直接求出所有解。</p>
+<p>工程中大量方程组（尤其是非线性方程组）无法解析求解，只能用<strong>数值求解</strong>：在已知的取值范围里「搜索」解。其中一种基本方法就是<strong>穷举法</strong>——把所有可能都试一遍，凡是满足两个方程的就是一组解。</p>
+<h3 id="三重循环枚举程序">00:05:50—00:07:08 ｜ 三重循环枚举程序</h3>
+<p>总共有 45 个人，因此男人、女人、小孩的个数各自都从 0 到
+45。用三重循环枚举所有可能，逐一检验两个方程是否同时成立，成立就
+<code>printf</code>
+打印出来。这是最「笨」但也最「健壮、鲁棒」的方法——它保证不漏解。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> child<span class="op">,</span> men<span class="op">,</span> women<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> men <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> men <span class="op">&lt;=</span><span class="dv">45</span><span class="op">;</span> men<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> women <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> women <span class="op">&lt;=</span><span class="dv">45</span><span class="op">;</span> women<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> child <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> child <span class="op">&lt;=</span><span class="dv">45</span><span class="op">;</span> child<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> men <span class="op">+</span> women <span class="op">+</span> child <span class="op">==</span> <span class="dv">45</span> <span class="op">&amp;&amp;</span> men<span class="op">*</span><span class="dv">3</span> <span class="op">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>women<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> child<span class="op">*</span><span class="fl">0.5</span> <span class="op">==</span> <span class="dv">45</span> <span class="op">)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;men=</span><span class="sc">%d</span><span class="st">, women=</span><span class="sc">%d</span><span class="st">, child=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> men</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">,</span> women<span class="op">,</span> child<span class="op">);</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04（1）.txt（例程 4-11）。</p>
+<h4 id="例题证明-1000550-搬砖问题三重循环枚举全部组合">例题/证明
+1（00:05:50）｜ 搬砖问题：三重循环枚举全部组合</h4>
+<ul>
+<li><strong>题目</strong>：男人、女人、小孩共 45 人搬 45 块砖，男人每人
+3 块、女人每人 2 块、小孩两人 1 块，求所有组合。</li>
+<li><strong>思路</strong>：三重循环枚举
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>45</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x,y,z\in[0,45]</annotation></semantics></math>，用
+<code>if</code> 同时检验
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>45</mn></mrow><annotation encoding="application/x-tex">x+y+z=45</annotation></semantics></math>
+与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>0.5</mn><mi>z</mi><mo>=</mo><mn>45</mn></mrow><annotation encoding="application/x-tex">3x+2y+0.5z=45</annotation></semantics></math>。</li>
+<li><strong>代码</strong>：见上方代码块（来自课件）。</li>
+<li><strong>编译运行</strong>：<code>gcc brick.c -o brick</code>
+后运行，屏幕依次打印出每一组满足方程的
+<code>men / women / child</code>（如
+<code>men=0, women=15, child=30</code>、<code>men=3, women=12, child=30</code>
+等，共 9 组解）。</li>
+<li><strong>易错点</strong>：循环变量范围是 <code>0</code> 到
+<code>45</code>（含 45），共 46 个取值；浮点比较 <code>child*0.5</code>
+要写对；三重 <code>for</code> 后面直接跟 <code>if</code> 与
+<code>printf</code>，无大括号时只有 <code>if</code>
+这一句属于最内层循环（此处 <code>printf</code> 紧跟 <code>if</code>
+是其语句体）。</li>
+</ul>
+<h3 id="效率分析与改进二重循环">00:07:08—00:09:44 ｜
+效率分析与改进（二重循环）</h3>
+<p>三重循环总次数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46</mn><mo>×</mo><mn>46</mn><mo>×</mo><mn>46</mn><mo>=</mo><msup><mn>46</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">46\times46\times46 = 46^3</annotation></semantics></math>，数量很大。略作分析即可大幅降低计算量：</p>
+<ul>
+<li>男人每人搬 3 块，45 块砖最多 15 个男人，故 <code>men</code> 只需
+<code>0..15</code>；</li>
+<li>女人每人搬 2 块，最多 22 个女人，故 <code>women</code> 只需
+<code>0..22</code>；</li>
+<li>小孩个数由总数确定：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>45</mn><mo>−</mo><mi>x</mi><mo>−</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">z = 45 - x - y</annotation></semantics></math>，无需再循环。</li>
+</ul>
+<p>于是三重循环降为二重循环，总次数仅
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>23</mn><mo>=</mo><mn>368</mn></mrow><annotation encoding="application/x-tex">16\times23 = 368</annotation></semantics></math>，约为原来的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>46</mn><mn>3</mn></msup><mi>/</mi><mn>368</mn><mo>≈</mo><mn>277</mn></mrow><annotation encoding="application/x-tex">46^3 / 368 \approx 277</annotation></semantics></math>
+倍差距，效率提升巨大。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> men <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> men <span class="op">&lt;=</span><span class="dv">15</span><span class="op">;</span> men<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> women <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> women <span class="op">&lt;=</span><span class="dv">22</span><span class="op">;</span> women<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>child <span class="op">=</span> <span class="dv">45</span> <span class="op">-</span> men <span class="op">-</span> women<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> men<span class="op">*</span><span class="dv">3</span> <span class="op">+</span> women<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> child<span class="op">*</span><span class="fl">0.5</span> <span class="op">==</span><span class="dv">45</span> <span class="op">)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;men = </span><span class="sc">%d</span><span class="st">, women = </span><span class="sc">%d</span><span class="st">, child = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>men<span class="op">,</span> women<span class="op">,</span> child<span class="op">);</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch04（1）.txt（例程 4-11 改进程序）。</p>
+<ul>
+<li><strong>老师提醒</strong>：平时写程序要养成两个习惯——（1）正确建模、正确编码；（2）主动分析并优化效率。看似简单的问题，也能施展聪明才智把效率大幅提升。多重循环要谨慎使用。</li>
+</ul>
+<h2
+id="二函数的概念定义与圆柱体积例程000944003229">二、函数的概念、定义与圆柱体积例程（00:09:44—00:32:29）</h2>
+<h3 id="函数的作用相对独立的程序模块">00:09:44—00:12:13 ｜
+函数的作用：相对独立的程序模块</h3>
+<p>前面已学过 <code>main</code> 函数、库函数（如随机数
+<code>rand</code>、设种子 <code>srand</code>、时间
+<code>time</code>），也自己定义过求阶乘的 <code>factorial</code>
+函数。今天正式讲函数的定义、调用、参数传递，以及结构化程序设计思想。</p>
+<p>函数的作用：</p>
+<ul>
+<li>完成特定工作的<strong>相对独立的程序模块</strong>（如
+<code>printf</code> 输出字符串与变量值，<code>factorial</code> 计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>!</mi></mrow><annotation encoding="application/x-tex">n!</annotation></semantics></math>）；</li>
+<li>写好后可在多处<strong>反复调用</strong>；</li>
+<li>把复杂程序拆成一个个较简单的函数集合，使程序更清晰、易维护、易模块化。</li>
+</ul>
+<h3 id="例程计算圆柱体积函数声明调用">00:12:25—00:15:02 ｜
+例程：计算圆柱体积（函数声明、调用）</h3>
+<p>教材例程：输入圆柱半径与高，计算体积（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>r</mi><mn>2</mn></msup><mi>h</mi></mrow><annotation encoding="application/x-tex">V=\pi r^2 h</annotation></semantics></math>）。若每次都手算
+<code>3.1415926 * r * r * h</code>，容易出现不一致（有人写 3.14、有人写
+3.1415）。通过函数调用统一计算，既准确又简洁。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cylinder<span class="op">(</span><span class="dt">double</span> r<span class="op">,</span> <span class="dt">double</span> h<span class="op">);</span><span class="co">// 函数申明</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> height <span class="op">,</span> radius <span class="op">,</span> volume<span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入半径和高度：&quot;</span><span class="op">);</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%lf%lf</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>radius <span class="op">,</span> <span class="op">&amp;</span>height<span class="op">);</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>volume <span class="op">=</span> cylinder<span class="op">(</span>radius <span class="op">,</span> height<span class="op">);</span> <span class="co">// 函数调用</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;圆柱体积是：</span><span class="sc">%f\n</span><span class="st">&quot;</span><span class="op">,</span> volume<span class="op">);</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt。</p>
+<p><strong>为什么要先「声明」再「调用」？</strong>
+编译器从上往下编译。当它编译到
+<code>volume = cylinder(radius, height);</code>
+这一句时，如果之前从未见过 <code>cylinder</code>
+这个名字，它就不认识这是个什么——不像 <code>double</code>、<code>=</code>
+这些语法元素它天生认识。函数声明
+<code>double cylinder(double r, double h);</code>
+等于先告诉编译器：「这是一个叫 <code>cylinder</code> 的函数，返回
+<code>double</code>，有两个 <code>double</code>
+参数」。编译器据此在调用处做<strong>类型检查</strong>：实际参数
+<code>radius</code>、<code>height</code> 都是
+<code>double</code>，与声明一致，于是放心通过、不报警告；若类型不符则提出警告或错误。</p>
+<h3 id="函数定义函数头函数体与-return-语句">00:15:02—00:20:00 ｜
+函数定义：函数头、函数体与 return 语句</h3>
+<p>仅有声明还不够——老师打了比方：声明像「我说我有一辆法拉利」，但若根本没有这辆车，办活动时就进行不下去；程序里若只有函数声明、没有函数实现，编译不会成功。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数cylinder , 计算圆柱体体积</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cylinder<span class="op">(</span><span class="dt">double</span> r<span class="op">,</span> <span class="dt">double</span> h<span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> result<span class="op">;</span> <span class="co">// 定义局部变量</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="fl">3.14159265</span> <span class="op">*</span> r <span class="op">*</span> r <span class="op">*</span> h<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// 计算</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> result<span class="op">;</span> <span class="co">// 函数返回语句</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt。</p>
+<p><strong>函数定义的结构</strong>（函数首部 +
+函数体，首部末尾<strong>不能</strong>有分号，否则就变成函数声明了）：</p>
+<pre><code>函数类型
+函数名(形式参数表)
+// --- 函数首部
+{
+// -\
+函数实现语句
+//
+|- 函数体
+}</code></pre>
+<ul>
+<li><strong>函数类型</strong>＝函数返回值的类型（<code>int</code>、<code>float</code>、<code>double</code>、<code>char</code>、指针、结构等）。若<strong>没有返回值</strong>，类型写
+<code>void</code>。<code>void</code> 是 C 语言关键字，表示「空」。省略
+<code>void</code> 时，C 默认返回值为
+<code>int</code>（这是历史原因：早期大量函数返回
+<code>int</code>）。</li>
+<li><strong>函数名</strong>：满足标识符规则（字母、数字、下划线构成，以字母或下划线开头，不能以数字开头）。好的名字应「既简短又含义丰富」，采用<strong>动词或动名词</strong>结构（如
+<code>print</code>、<code>cylinder</code>），让人顾名思义；像
+<code>cd</code> 这种名词不好，看不出是求体积还是求表面积。</li>
+<li><strong>return 语句的两大作用</strong>：① 结束本函数的运行；②
+设置函数的返回值。高中函数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y=f(x)</annotation></semantics></math>
+中，自变量是参数，函数值由 <code>return</code> 设定。</li>
+</ul>
+<h3 id="函数名形式参数表与-void-类型">00:20:00—00:23:46 ｜
+函数名、形式参数表与 void 类型</h3>
+<ul>
+<li><strong>形式参数表</strong>：规定函数有哪些参数，用逗号隔开，每个参数单独给出「类型
+名字」。参数个数可以是 0 到多个，如 <code>getchar()</code>
+无参数，可写成 <code>()</code> 或 <code>(void)</code>（<code>void</code>
+在此表示「空/无」）。</li>
+<li><strong>可变参数函数</strong>：普通函数参数个数固定；但有一类函数参数个数不固定，例如
+<code>printf</code>、<code>scanf</code>——我们一上来就学了最难的函数之一。这类「变参函数」本课程<strong>不介绍</strong>，感兴趣可自行学习（很少用）。</li>
+<li><strong>无返回值的函数</strong>：类型必须写
+<code>void</code>，<code>return;</code>
+后不带表达式，仅用于结束函数运行。</li>
+</ul>
+<h3 id="可变参数函数printf-scanf">00:23:46—00:26:27 ｜
+可变参数函数（printf / scanf）</h3>
+<p>进一步强调 <code>printf</code>
+是参数个数不固定的典型：<code>printf("Hello");</code>
+只有字符串一个参数；<code>printf("%d", x);</code> 多一个
+<code>x</code>；<code>printf("%d %d %d", a, b, c);</code>
+又多两个。它们的格式串 <code>%d</code>
+之后的实际参数个数完全可变。老师说这正是 C
+里「最难的」函数形式，本课程不讲其实现。</p>
+<h3 id="函数体的构成与无返回值的-return">00:26:27—00:29:06 ｜
+函数体的构成与无返回值的 return</h3>
+<p>函数体由一对大括号括起，一般由三部分组成：</p>
+<ol type="1">
+<li>变量的定义；</li>
+<li>实现功能的语句；</li>
+<li>返回语句 <code>return</code>。</li>
+</ol>
+<p>无返回值的函数可以没有 <code>return</code> 语句。<code>return</code>
+语句形式：</p>
+<ul>
+<li>无返回值：<code>return;</code></li>
+<li>有返回值：<code>return 表达式;</code>（表达式可以是常量、变量，或运算结果；甚至可以是另一个函数调用，如
+<code>return g(x) + h(y);</code>）</li>
+</ul>
+<p><code>return</code>
+执行后：被调函数结束；若有表达式，先算其值再返回，作为函数值带回主调函数。<code>return</code>
+只能返回一个值（C 语言函数只有一个返回值；与 Python
+可返回多个值不同）。</p>
+<h3 id="函数声明作用可省形参名先声明后调用">00:29:06—00:32:29 ｜
+函数声明：作用、可省形参名、先声明后调用</h3>
+<p>声明就是把「函数头 +
+分号」写出来，函数体可省。形参名在声明中可省：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cylinder<span class="op">(</span><span class="dt">double</span> r<span class="op">,</span> <span class="dt">double</span> h<span class="op">);</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cylinder<span class="op">(</span><span class="dt">double</span> <span class="op">,</span> <span class="dt">double</span><span class="op">);</span> <span class="co">// 可省略形参名称</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> prime<span class="op">(</span><span class="dt">int</span> n<span class="op">);</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> pyramid<span class="op">(</span><span class="dt">int</span> n<span class="op">);</span></span></code></pre></div>
+<p><strong>声明的作用与意义</strong>：告诉编译器函数的接口（名字、参数类型、参数个数），从而在调用时做语法/类型检查——函数是否存在、实参个数与类型是否匹配。若调用前既未定义也未声明，编译器报错。</p>
+<ul>
+<li>形参名在声明里可省（编译不需要名字），但老师<strong>建议不要省</strong>——写上
+<code>r</code>、<code>h</code>
+能让调用者知道第一参是「半径」、第二参是「高」，避免传反。</li>
+<li>声明可写在 <code>main</code> 外（全局可见），也可写在
+<code>main</code>
+内（仅该函数内可见，存在「可见性」区别），后面讲函数应用时会再遇到。</li>
+<li>也可先定义函数、后调用，编译器同样认识，不强制先声明。总之要让编译器在调用处「认识」这个函数。</li>
+</ul>
+<h4 id="例题证明-1001225-计算圆柱体积函数定义声明与调用">例题/证明
+1（00:12:25）｜ 计算圆柱体积：函数定义、声明与调用</h4>
+<ul>
+<li><strong>题目</strong>：输入圆柱半径与高，计算并输出体积
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>r</mi><mn>2</mn></msup><mi>h</mi></mrow><annotation encoding="application/x-tex">V=\pi r^2 h</annotation></semantics></math>。</li>
+<li><strong>代码</strong>：见上方「计算圆柱体积」主函数与
+<code>cylinder</code> 函数实现（取自课件 ch05.txt）。</li>
+<li><strong>编译运行</strong>：编译运行后，屏幕提示「输入半径和高度：」，例如输入
+<code>2 3</code>（半径 2、高 3），输出
+<code>圆柱体积是：37.699112</code>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>⋅</mo><msup><mn>2</mn><mn>2</mn></msup><mo>⋅</mo><mn>3</mn><mo>≈</mo><mn>37.70</mn></mrow><annotation encoding="application/x-tex">\pi\cdot 2^2\cdot 3\approx 37.70</annotation></semantics></math>）。</li>
+<li><strong>易错点</strong>：① 声明末尾必须带分号；②
+函数定义首部<strong>不能</strong>带分号；③ <code>double</code> 输入用
+<code>%lf</code>、输出用 <code>%f</code>；④
+若把声明漏掉、又未先定义，编译器会报「未声明的标识符」类错误。</li>
+</ul>
+<h2
+id="三函数声明调用与值传递机制003229010421">三、函数声明、调用与值传递机制（00:32:29—01:04:21）</h2>
+<h3 id="函数调用语法与函数声明的作用">00:32:29—00:36:34 ｜
+函数调用语法与函数声明的作用</h3>
+<p>调用函数：写函数名，把实际参数放进圆括号，如数学式
+<code>f(2, 1)</code>、<code>g(11, 20)</code>。调用前必须先声明/定义，目的是让编译器知道「这是个函数，不是变量」。</p>
+<ul>
+<li>可以先声明后调用，也可以先定义后调用（如把被调函数写在
+<code>main</code> 之前）。</li>
+<li>若事先「既没定义也没声明」，编译器报错。</li>
+</ul>
+<h3 id="函数调用的几种形式">00:36:34—00:37:48 ｜ 函数调用的几种形式</h3>
+<p>（课件列出）赋值形式、直接调用（返回值被抛弃）、实参形式（作为其他函数调用的实参）、表达式形式（作为操作数）。例如：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>volume <span class="op">=</span> cylinder<span class="op">(</span>radius<span class="op">,</span> height<span class="op">);</span>              <span class="co">// 赋值形式</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cylinder<span class="op">(</span>radius<span class="op">,</span> height<span class="op">);</span>                        <span class="co">// 直接调用</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;The answer is </span><span class="sc">%f\n</span><span class="st">&quot;</span><span class="op">,</span> cylinder<span class="op">(</span>radius<span class="op">,</span> height<span class="op">));</span> <span class="co">// 实参形式</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sum <span class="op">=</span> cylinder<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">)</span> <span class="op">+</span> cylinder<span class="op">(</span><span class="dv">3</span><span class="op">,</span><span class="dv">4</span><span class="op">);</span>            <span class="co">// 表达式形式</span></span></code></pre></div>
+<h3 id="参数传递值传递实参形参">00:37:48—00:46:00 ｜
+参数传递：值传递（实参→形参）</h3>
+<p>函数调用时，实际参数（如
+<code>a</code>、<code>b</code>、<code>c</code>）的值被<strong>复制</strong>给形式参数（如
+<code>r</code>、<code>h</code>）。这种传递方式叫<strong>值传递</strong>（不是引用传递）。引用传递是给实参「取个别名」，形参和实参是同一个东西；而值传递是<strong>复制一份</strong>，函数内对形参的修改<strong>不会影响</strong>外部实参。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x<span class="op">*</span>x<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> x<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">3</span><span class="op">,</span> b<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> f<span class="op">(</span>a<span class="op">);</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span>a<span class="op">,</span>b<span class="op">);</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（值传递例程），输出为 <code>3,9</code>：形参
+<code>x</code> 被改成 9，但实参 <code>a</code> 仍是 3。</p>
+<h4
+id="例题证明-1003846-函数调用过程与内存变化以-cylinder-为例">例题/证明
+1（00:38:46）｜ 函数调用过程与内存变化（以 cylinder 为例）</h4>
+<p>结合课件图 5-3（教材 116 页）分析
+<code>volume = cylinder(radius, height);</code> 的执行过程：</p>
+<ol type="1">
+<li>从 <code>main</code> 开始往下执行，依次创建局部变量
+<code>height</code>、<code>radius</code>、<code>volume</code>，执行
+<code>printf</code>、<code>scanf</code>；</li>
+<li>执行到 <code>cylinder</code> 调用：暂停 <code>main</code>，为
+<code>cylinder</code> 分配内存、创建它的局部变量（含形式参数
+<code>r</code>、<code>h</code>）；</li>
+<li>把实参 <code>radius</code>、<code>height</code>
+的值<strong>复制</strong>给形参 <code>r</code>、<code>h</code>；</li>
+<li>执行 <code>cylinder</code> 内部语句，算得
+<code>result = 3.14159265 * r * r * h</code>；</li>
+<li>遇到 <code>return result;</code>：先计算表达式值，结束
+<code>cylinder</code>，把该值作为函数返回值带回；</li>
+<li>回到 <code>main</code> 暂停处，把返回值赋给
+<code>volume</code>，继续执行。</li>
+</ol>
+<ul>
+<li><strong>内存要点</strong>：形式参数在调用时变成被调函数内部的局部变量；实参值被复制进去，二者是<strong>不同的内存单元</strong>。函数返回后，被调函数的内存资源被释放，可被下次调用重新分配。</li>
+</ul>
+<h3 id="内存分区代码区静态存储区与动态存储区">00:46:00—00:52:22 ｜
+内存分区：代码区、静态存储区与动态存储区</h3>
+<p>计算机内存由操作系统管理，粗略划分为：</p>
+<ul>
+<li><strong>系统存储区</strong>：操作系统、语言系统自身；</li>
+<li><strong>用户存储区</strong>（我们的程序所在）：
+<ul>
+<li><strong>程序区（代码区）</strong>：<code>main</code>
+及所有自定义函数的二进制指令，固定不变，CPU 逐条取指执行；</li>
+<li><strong>数据区</strong>：
+<ul>
+<li><strong>静态存储区</strong>：全局变量、静态变量（程序一运行就创建，一直存在）；</li>
+<li><strong>动态存储区</strong>：函数的局部变量区（先 <code>main</code>
+的变量区，再被调函数的变量区，层层嵌套；函数返回后该区被撤销、内存归还）。</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>变量数目在运行中随函数调用/返回而动态增减，故称「动态存储区」。</p>
+<h3 id="形式参数的内存创建与值传递回顾">00:52:22—01:04:21 ｜
+形式参数的内存创建与值传递回顾</h3>
+<p>继续用 <code>cylinder</code> 在黑板演示内存变化：进入
+<code>main</code> 后创建
+<code>height</code>/<code>radius</code>/<code>volume</code>（共 24
+字节，各 8 字节 <code>double</code>）；调用 <code>cylinder</code>
+时创建形参 <code>r</code>、<code>h</code> 及局部变量
+<code>result</code>；把实参值复制进 <code>r</code>、<code>h</code>（如
+<code>radius=5→r=5</code>、<code>height=10→h=10</code>）；计算
+<code>result</code>；<code>return result</code>
+把值放到约定位置带回；回到 <code>main</code>，函数值赋给
+<code>volume</code>。函数结束后 <code>cylinder</code>
+的局部内存释放、可再分配。</p>
+<h4 id="例题证明-2010402-函数-fxxx-演示值传递实参不被修改">例题/证明
+2（01:04:02）｜ 函数 f(x)=x*x 演示值传递（实参不被修改）</h4>
+<ul>
+<li><strong>题目</strong>：用 <code>f(int x){ x=x*x; return x; }</code>
+演示值传递。</li>
+<li><strong>代码</strong>：见上方值传递例程（取自课件 ch05.txt）。</li>
+<li><strong>编译运行</strong>：输入无（直接 <code>a=3</code>），输出
+<code>3,9</code>。</li>
+<li><strong>分析</strong>：<code>main</code> 中 <code>a=3</code>，调用
+<code>f(a)</code> 时创建形参 <code>x</code> 并把 <code>a</code> 的值 3
+复制给 <code>x</code>；<code>x=x*x</code> 使 <code>x</code> 变成 9
+并返回；但 <code>a</code> 与 <code>x</code> 是不同单元，<code>a</code>
+始终为 3，所以打印 <code>a=3, b=9</code>。</li>
+<li><strong>易错点</strong>：误以为「函数里改了 <code>x</code>，外面的
+<code>a</code> 也跟着变」。C 是值传递，形参被改不影响实参——这是 C
+与引用传递语言的关键区别。</li>
+</ul>
+<h2
+id="四函数应用例程010614012933">四、函数应用例程（01:06:14—01:29:33）</h2>
+<h3 id="例程-5-2计算五边形面积海伦公式">01:06:14—01:08:56 ｜ 例程
+5-2：计算五边形面积（海伦公式）</h3>
+<p>不知五边形面积公式，但会求三角形面积。把五边形拆成三个三角形（边长已知），用函数
+<code>area(x,y,z)</code> 求每个三角形面积再相加。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> a1<span class="op">,</span>a2<span class="op">,</span>a3<span class="op">,</span>a4<span class="op">,</span>a5<span class="op">,</span>a6<span class="op">,</span>a7<span class="op">,</span> s<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> area<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">,</span> <span class="dt">double</span> z<span class="op">);</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter 7 edge lengths:&quot;</span><span class="op">);</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%lf%lf%lf%lf%lf%lf%lf</span><span class="st">&quot;</span><span class="op">,&amp;</span>a1<span class="op">,&amp;</span>a2<span class="op">,&amp;</span>a3<span class="op">,&amp;</span>a4<span class="op">,&amp;</span>a5</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="op">,&amp;</span>a6<span class="op">,&amp;</span>a7<span class="op">);</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> area<span class="op">(</span>a1<span class="op">,</span>a5<span class="op">,</span>a6<span class="op">)+</span>area<span class="op">(</span>a6<span class="op">,</span>a4<span class="op">,</span>a7<span class="op">)+</span>area<span class="op">(</span>a7<span class="op">,</span>a3<span class="op">,</span>a2<span class="op">);</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;The area is: </span><span class="sc">%.2f\n</span><span class="st">&quot;</span><span class="op">,</span> s<span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> area<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">,</span> <span class="dt">double</span> z<span class="op">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> p <span class="op">=</span> <span class="op">(</span>x<span class="op">+</span>y<span class="op">+</span>z<span class="op">)/</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> sqrt<span class="op">(</span>p<span class="op">*(</span>p<span class="op">-</span>x<span class="op">)*(</span>p<span class="op">-</span>y<span class="op">)*(</span>p<span class="op">-</span>z<span class="op">));</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（例程 5-2）。</p>
+<h4 id="例题证明-1010630-五边形面积area-函数与海伦公式">例题/证明
+1（01:06:30）｜ 五边形面积：area 函数与海伦公式</h4>
+<ul>
+<li><strong>题目</strong>：输入五边形 7 条边长
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>∼</mo><msub><mi>a</mi><mn>7</mn></msub></mrow><annotation encoding="application/x-tex">a_1\sim a_7</annotation></semantics></math>，计算面积（拆成三个三角形）。</li>
+<li><strong>思路</strong>：用海伦公式
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><msqrt><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">S=\sqrt{p(p-x)(p-y)(p-z)}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">p=(x+y+z)/2</annotation></semantics></math>
+求三角形面积；五边形面积 =
+<code>area(a1,a5,a6) + area(a6,a4,a7) + area(a7,a3,a2)</code>。</li>
+<li><strong>运行结果</strong>（课件示例输入）：依次输入
+<code>2.5 2.5 2.5 2.5 2.5 3.6 3.6</code>，输出
+<code>The area is: 10.47</code>。</li>
+<li><strong>易错点</strong>：<code>area</code> 的声明写在
+<code>main</code> 内部，仅 <code>main</code> 内可见（可见性区别）；注意
+<code>#include &lt;math.h&gt;</code> 才能用
+<code>sqrt</code>（课件此处略去头文件，编译时需补上）。</li>
+</ul>
+<h3 id="例程-5-3完全平方数判断-issquare">01:08:56—01:13:01 ｜ 例程
+5-3：完全平方数判断 IsSquare</h3>
+<p>一个完全平方数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n=m^2</annotation></semantics></math>
+等于从 1
+开始的连续奇数之和：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>5</mn><mo>+</mo><mi>⋯</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">1+3+5+\cdots+(2m-1)</annotation></semantics></math>。因此不断从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+减去奇数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">1,3,5,\dots</annotation></semantics></math>，若最终减到正好
+0，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+是完全平方数。</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// n = m*m = 1 + 3 + ... + (2m-1)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> IsSquare<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i<span class="op">=</span><span class="dv">1</span><span class="op">;</span> n<span class="op">&gt;</span><span class="dv">0</span><span class="op">;</span> i<span class="op">=</span>i<span class="op">+</span><span class="dv">2</span> <span class="op">)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> n<span class="op">-</span>i<span class="op">;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> n<span class="op">==</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（例程 5-3）。</p>
+<h4 id="例题证明-2010921-完全平方数判断函数-issquare">例题/证明
+2（01:09:21）｜ 完全平方数判断函数 IsSquare</h4>
+<ul>
+<li><strong>题目</strong>：定义 <code>IsSquare(n)</code>，判断
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+是否为完全平方数（是返回 1，否返回 0）。</li>
+<li><strong>思路</strong>：<code>for(i=1; n&gt;0; i=i+2) n = n - i;</code>
+依次减 1、3、5…；循环条件是 <code>n&gt;0</code>（不是
+<code>i&lt;=某值</code>），只要还能减就继续；退出循环时若
+<code>n==0</code> 则是平方数，<code>n&lt;0</code> 则不是。</li>
+<li><strong>返回值</strong>：<code>return n==0;</code>
+是关系表达式，结果为逻辑值——C 中逻辑真为 1、逻辑假为 0（C
+的逻辑值就是整数）。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>9</mn></mrow><annotation encoding="application/x-tex">n=9</annotation></semantics></math>：9−1=8,
+8−3=5, 5−5=0，退出后 <code>n==0</code> 为真，返回 1。</li>
+<li><strong>易错点</strong>：循环条件写成「<code>i&lt;=某上限</code>」是错的——这里循环控制变量（<code>i</code>）与判断对象（<code>n</code>）是两回事；若
+<code>n</code> 不是平方数，某次会减成负数，<code>n&gt;0</code>
+不成立退出，<code>n==0</code> 为假返回 0。</li>
+</ul>
+<h3 id="例程-5-4最大公约数-gcd辗转相除法与优化">01:13:01—01:22:52 ｜
+例程 5-4：最大公约数 gcd（辗转相除法与优化）</h3>
+<p>给定两正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m,n</annotation></semantics></math>，求最大公约数。用<strong>辗转相除法</strong>。</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> gcd<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> r<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> m<span class="op">&lt;</span>n <span class="op">)</span> <span class="co">// 交换，保证m &gt;= n</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> m<span class="op">,</span> m <span class="op">=</span> n<span class="op">,</span> n <span class="op">=</span> r<span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> m <span class="op">%</span> n<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> r <span class="op">)</span> <span class="op">{</span> <span class="co">//while( r!=0 ) // 辗转相除法</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> r<span class="op">;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> m <span class="op">%</span> n<span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（例程 5-4）。</p>
+<h4 id="例题证明-3011329-最大公约数计算函数-gcd含优化">例题/证明
+3（01:13:29）｜ 最大公约数计算函数 gcd（含优化）</h4>
+<ul>
+<li><strong>题目</strong>：定义 <code>gcd(m,n)</code>
+返回两正整数最大公约数。</li>
+<li><strong>思路（辗转相除法）</strong>：先保证
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≥</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\ge n</annotation></semantics></math>（用逗号表达式
+<code>r=m, m=n, n=r;</code> 一次交换）；<code>r = m % n</code>；当
+<code>r!=0</code> 时，令 <code>m=n, n=r, r=m%n</code>
+继续；<code>r==0</code> 时 <code>n</code> 即为最大公约数。</li>
+<li><strong>老师课堂讨论与优化</strong>：
+<ul>
+<li><code>if(m&lt;n) r=m, m=n, n=r;</code>
+这是<strong>逗号表达式</strong>（三句话用逗号连成一句，作用同分号分隔的三句），第六章会正式讲，这里先「挖个坑」。</li>
+<li><code>while(r)</code> 等价于
+<code>while(r!=0)</code>；<code>if(!m)</code> 等价于
+<code>if(m==0)</code>。逻辑值：非 0 即真、0 即假。</li>
+<li>优化版（课件）：先特判
+<code>if(!m) return n; else if(!n) return m;</code>，再把
+<code>r=m%n</code> 放进循环条件
+<code>while(r = m % n){ m=n; n=r; } return n;</code>。这里
+<code>r = m % n</code>
+是<strong>赋值</strong>（不是关系表达式），先算余数再判非零。</li>
+<li><strong>Bug 讨论</strong>：若 <code>m</code>、<code>n</code> 同时为
+0，则没有最大公约数，本函数不处理这种非正常情况（属于调用者责任）。优化版中
+<code>if(!m) return n;</code> 当 <code>m==0</code> 时
+<code>r=m%n=0</code> 直接返回 <code>n</code>，已被包含。</li>
+</ul></li>
+<li><strong>易错点</strong>：把 <code>while(r = m % n)</code> 误写成
+<code>while(r == m % n)</code>——那是关系比较而非赋值，逻辑全错（老师特意对比了作业中
+<code>if(x=0)</code> 这种「故意写错」的赋值陷阱）。</li>
+</ul>
+<h3 id="例程-5-5素数判断-prime">01:22:52—01:25:07 ｜ 例程 5-5：素数判断
+prime</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 素数，返回1；否则，返回0</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> prime<span class="op">(</span> <span class="dt">int</span> n <span class="op">)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> k<span class="op">,</span> m<span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> n<span class="op">&lt;</span><span class="dv">2</span> <span class="op">)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// 非素数</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span> sqrt<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> k<span class="op">&lt;=</span>m<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> n <span class="op">%</span> k <span class="op">==</span> <span class="dv">0</span> <span class="op">)</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span><span class="co">// 非素数</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 是素数</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> m<span class="op">;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> m <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> m<span class="op">&lt;=</span><span class="dv">100</span><span class="op">;</span> m <span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> prime<span class="op">(</span>m<span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%6d</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>count <span class="op">++;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span>count <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（例程 5-5）。</p>
+<h4 id="例题证明-4012331-素数判断函数-prime-与素数表">例题/证明
+4（01:23:31）｜ 素数判断函数 prime 与素数表</h4>
+<ul>
+<li><strong>题目</strong>：定义 <code>prime(n)</code>
+判断整数是否为素数（是返回 1，否返回 0）；并调用它打印 2–100
+素数表。</li>
+<li><strong>思路</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&lt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n&lt;2</annotation></semantics></math>
+非素数；否则只需试除到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌊</mo><msqrt><mi>n</mi></msqrt><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor\sqrt{n}\rfloor</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">int</mtext><mo stretchy="false" form="postfix">)</mo><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">m=(\text{int})\sqrt{n}</annotation></semantics></math>）；<code>for(k=2;k&lt;=m;k++)</code>
+中若 <code>n%k==0</code>
+则非素数（<code>return 0</code>）；循环正常结束则返回 1。主函数每打印 10
+个素数换一行。</li>
+<li><strong>易错点</strong>：① <code>return 0;</code>
+提前返回，天然实现「找到因子就判定非素数、跳过后续」（<code>return</code>
+与循环中的 <code>continue</code> 一样能简化逻辑）；② 试除上界用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>n</mi></msqrt><annotation encoding="application/x-tex">\sqrt{n}</annotation></semantics></math>
+而非
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">n/2</annotation></semantics></math>，效率更高；③
+用函数封装后，主函数无需关心「怎么判素数」的内部细节，逻辑干净。</li>
+</ul>
+<h3 id="例程-5-6数字金字塔-pyramidvoid-函数">01:25:07—01:29:33 ｜ 例程
+5-6：数字金字塔 pyramid（void 函数）</h3>
+<p>打印数字金字塔（第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行打印
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个 <code>i</code>）。无需返回值，定义为 <code>void</code>。</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> pyramid<span class="op">(</span><span class="dt">int</span> n<span class="op">);</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter n:&quot;</span><span class="op">);</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>pyramid<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> pyramid<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> k<span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">1</span><span class="op">;</span> i<span class="op">&lt;=</span>n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>k<span class="op">=</span><span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;=</span>n<span class="op">-</span>i<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot; &quot;</span><span class="op">);</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>k<span class="op">=</span><span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;=</span>i<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> &quot;</span><span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>putchar<span class="op">(</span><span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">);</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（例程 5-6）。</p>
+<h4 id="例题证明-5012518-数字金字塔打印函数-pyramid">例题/证明
+5（01:25:18）｜ 数字金字塔打印函数 pyramid</h4>
+<ul>
+<li><p><strong>题目</strong>：输入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，打印
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+行数字金字塔（第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个 <code>i</code>）。</p></li>
+<li><p><strong>思路</strong>：外层 <code>for(i=1;i&lt;=n;i++)</code>
+主循环；内嵌<strong>两个并列（兄弟）循环</strong>而非嵌套：第一个循环打印前导空格
+<code>n-i</code> 个，第二个循环打印 <code>i</code> 这个数字
+<code>i</code> 次。最后 <code>putchar('\n')</code> 换行。</p></li>
+<li><p><strong>编译运行</strong>：输入 <code>5</code>，输出：</p>
+<pre><code>    1
+   2 2
+  3 3 3
+ 4 4 4 4
+5 5 5 5 5</code></pre></li>
+<li><p><strong>易错点</strong>：这是「外层一个主循环 +
+内层两个兄弟循环」的结构（不同于之前「一个套一个」的嵌套循环）；循环变量的起点/终点需精确计算（空格数随
+<code>i</code> 递减、数字数随 <code>i</code> 递增）；<code>void</code>
+函数无 <code>return</code> 值，调用不能出现在 <code>=</code>
+右边。</p></li>
+</ul>
+<h2
+id="五结构化程序设计思想012933013535">五、结构化程序设计思想（01:29:33—01:35:35）</h2>
+<h3 id="结构化程序设计自顶向下逐步细化">01:29:33—01:32:12 ｜
+结构化程序设计：自顶向下、逐步细化</h3>
+<p>有了函数就能实现结构化程序设计（Dijkstra,
+1969）：把复杂问题求解划分为若干阶段，每个阶段易理解、易处理。基本步骤是<strong>自顶向下</strong>：问题
+→ 子问题 → 孙子问题 → … →
+易解问题，每一次分解都是<strong>逐步求精、逐步细化</strong>。</p>
+<p>例如判断素数：上层只把它当作「一个已解决的自问题」来用（<code>prime(m)</code>），而不必在主线里纠结判定细节——主线因而简洁。</p>
+<h3 id="模块划分内部紧凑之间松散">01:32:12—01:35:35 ｜
+模块划分：内部紧凑、之间松散</h3>
+<p>以「学生成绩统计程序」为例：先分解为「成绩输入 /
+数据计算（含课程平均分、学生平均分、分布统计）/ 数据查找 /
+输出成绩」等模块，每个模块由一个函数完成。</p>
+<ul>
+<li>模块划分讲究「<strong>内部联系紧密、模块之间联系尽量简单</strong>」——就像把一块形状「在最窄处」分割，边界最少、耦合最低。</li>
+<li>模块可独立编码、方便多人合作；合作前要对变量/常量/函数命名风格统一。</li>
+<li>程序要有适当注释，利于维护扩展；缩进、一行一句、层次清楚。</li>
+<li><strong>可读性第一，效率第二</strong>：在保证功能与合理性能前提下，可读性优先；不要为一点点效率把代码改得无法阅读。</li>
+</ul>
+<h2
+id="六局部变量与全局变量013535015358">六、局部变量与全局变量（01:35:35—01:53:58）</h2>
+<h3 id="局部变量函数内与复合语句内">01:35:35—01:37:16 ｜
+局部变量：函数内与复合语句内</h3>
+<ul>
+<li><strong>函数内部定义的变量</strong>叫局部变量，作用范围是所在函数内，函数外不可用。</li>
+<li><strong>复合语句内部定义的变量</strong>（如循环体里）也叫局部变量，作用范围是所在复合语句内；函数内局部变量在循环体可用，但循环体里的局部变量在循环体外不可用。</li>
+<li>鉴定标准：一对大括号 <code>{}</code>
+界定了一个范围（函数体、循环体都是）。</li>
+<li>函数内部的局部变量定义必须在函数<strong>开始</strong>处；复合语句的局部变量也要在复合语句<strong>开始</strong>处定义。</li>
+</ul>
+<h3 id="作用范围重名规则与变量定义位置">01:37:16—01:42:34 ｜
+作用范围、重名规则与变量定义位置</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数的局部变量</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> b<span class="op">;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 复合语句的局部变量</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 重名的局部变量</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> c<span class="op">;</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">// 定义的位置错误！</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">);</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt。</p>
+<ul>
+<li>不同函数、不同复合语句、不同范围的局部变量<strong>可以重名</strong>；重名时内部变量屏蔽外部变量（小范围屏蔽大范围）。</li>
+<li><strong>变量定义位置</strong>：标准 C
+要求先定义变量、再做运算，不能在运算中途再定义新变量。<code>int c;</code>
+写在复合语句 <code>}</code> 之后、执行语句 <code>printf</code>
+之前，已属「函数开始之后、执行语句之中」，是错误写法（标
+<code>// 定义的位置错误！</code>）。</li>
+<li><strong><code>.cpp</code> 与 <code>.c</code>
+区别</strong>：若文件后缀是
+<code>.cpp</code>（C++），中途定义变量是允许的；但本课程是
+<code>.c</code>，一般不允许。务必养成「变量定义在前面」的好习惯。</li>
+<li>不同范围的同名 <code>A</code>
+在内存中位置不同、是不同单元，同名只是代号，互不影响。</li>
+</ul>
+<h4 id="例题证明-1014243-局部变量重名与复合语句代码演示">例题/证明
+1（01:42:43）｜ 局部变量重名与复合语句（代码演示）</h4>
+<ul>
+<li><strong>题目</strong>：演示函数内局部变量与复合语句内局部变量重名时的屏蔽规则。</li>
+<li><strong>代码</strong>：见上方代码块（取自课件 ch05.txt）。</li>
+<li><strong>分析</strong>：外层
+<code>a=1</code>；进入复合语句后定义了另一个
+<code>int a</code>，<code>a=2</code> 改的是<strong>内层</strong>的
+<code>a</code>，外层的 <code>a</code> 不受影响；复合语句结束后内层
+<code>a</code> 销毁。最后 <code>printf("%d\n", a)</code> 打印的是外层
+<code>a</code>，输出 <code>1</code>。<code>int c;</code> 在标准 C
+下位置错误（<code>[?]</code>
+具体报错取决于编译器，教学强调「先定义后使用」）。</li>
+<li><strong>易错点</strong>：误以为复合语句里的 <code>a=2</code>
+改了外层 <code>a</code>；混淆 <code>.c</code> 与 <code>.cpp</code>
+的变量定义规则。</li>
+</ul>
+<h3 id="全局变量定义创建时机与作用范围">01:42:34—01:46:18 ｜
+全局变量：定义、创建时机与作用范围</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x<span class="op">;</span> <span class="co">// 全局变量x</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> y<span class="op">;</span> <span class="co">// 全局变量y</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt。</p>
+<ul>
+<li><strong>全局变量</strong>：不在任何函数内、也不在复合语句内（复合语句本就在函数内）定义的变量。</li>
+<li>C 程序的基本单位是函数，从 <code>main</code>
+开始执行，按调用关系串起所有函数。函数外定义的变量即全局变量。</li>
+<li><strong>创建时机</strong>：程序一运行就创建（不是调用某函数时才创建），程序结束才销毁；创建区域在<strong>静态存储区</strong>。</li>
+<li><strong>作用范围</strong>：所有函数都可使用（像「社会公共资源」，如西湖边公园谁都能去），增加了函数间的联系与依赖，削弱了独立性，故<strong>不能滥用</strong>。</li>
+<li>在函数中用全局变量时，若定义在该函数之后（编译器从上往下编译尚未见到），需在前面加
+<code>extern</code> 声明（见第八章）。</li>
+</ul>
+<h3 id="全局变量的利弊">01:46:18—01:50:51 ｜ 全局变量的利弊</h3>
+<p>所有函数都可用全局变量，好处是方便函数间交换信息。但滥用会让程序变复杂——出错时难以定位「是谁改错了这个全局变量」。老师用「杭州公园
+vs 私家花园」比喻：全局变量像公共公园谁都能进，局部变量像私家花园。</p>
+<h4 id="例题证明-2015051-复数加乘与现金记账全局变量保存结果">例题/证明
+2（01:50:51）｜ 复数加、乘与现金记账（全局变量保存结果）</h4>
+<p><strong>（1）复数运算</strong>：复数相加/相乘结果都有「实部 +
+虚部」两个数，但函数只有一个返回值，故用两个全局变量
+<code>res_re</code>、<code>res_im</code> 保存结果。</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 全部变量，存储计算结果</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> res_re <span class="op">,</span> res_im<span class="op">;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数申明</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> mul<span class="op">(</span><span class="dt">float</span> re1<span class="op">,</span><span class="dt">float</span> im1<span class="op">,</span><span class="dt">float</span> re2<span class="op">,</span><span class="dt">float</span> im2<span class="op">);</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> add<span class="op">(</span><span class="dt">float</span> re1<span class="op">,</span><span class="dt">float</span> im1<span class="op">,</span><span class="dt">float</span> re2<span class="op">,</span><span class="dt">float</span> im2<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> d<span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Input 1st complex:&quot;</span><span class="op">);</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Input 2nd complex:&quot;</span><span class="op">);</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>c<span class="op">,</span> <span class="op">&amp;</span>d<span class="op">);</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>add<span class="op">(</span>a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> d<span class="op">);</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Sum = </span><span class="sc">%.2f</span><span class="st"> + </span><span class="sc">%.2f</span><span class="st">i</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> res_re <span class="op">,</span> res_im<span class="op">);</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>mul<span class="op">(</span>a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> d<span class="op">);</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;mul = </span><span class="sc">%.2f</span><span class="st"> + </span><span class="sc">%.2f</span><span class="st">i</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> res_re <span class="op">,</span> res_im<span class="op">);</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> add<span class="op">(</span><span class="dt">float</span> re1<span class="op">,</span> <span class="dt">float</span> im1<span class="op">,</span> <span class="dt">float</span> re2<span class="op">,</span> <span class="dt">float</span> im2<span class="op">)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>res_re <span class="op">=</span> re1 <span class="op">+</span> re2<span class="op">;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>res_im <span class="op">=</span> im1 <span class="op">+</span> im2<span class="op">;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> mul<span class="op">(</span><span class="dt">float</span> re1<span class="op">,</span> <span class="dt">float</span> im1<span class="op">,</span> <span class="dt">float</span> re2<span class="op">,</span> <span class="dt">float</span> im2<span class="op">)</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>res_re <span class="op">=</span> re1 <span class="op">*</span> re2 <span class="op">-</span> im1 <span class="op">*</span> im2<span class="op">;</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>res_im <span class="op">=</span> re1 <span class="op">*</span> im2 <span class="op">+</span> re2 <span class="op">*</span> im1<span class="op">;</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（复数运算例程）。</p>
+<ul>
+<li><strong>要点</strong>：<code>(a+bi)+(c+di)=(a+c)+(b+d)i</code>，<code>(a+bi)*(c+di)=(ac−bd)+(ad+bc)i</code>。结果存入全局变量，<strong>要及时提取</strong>，否则后面再做运算会被覆盖（如先
+<code>add</code> 取 <code>Sum</code> 再 <code>mul</code> 取
+<code>mul</code>，中间不能插入别的运算）。</li>
+</ul>
+<p><strong>（2）现金记账</strong>（引子，完整代码见第七章）：全局变量
+<code>cash</code> 存余额，用 <code>income</code>/<code>expend</code>
+函数操作它，体现「用函数封装全局变量、降低其负面效果」。</p>
+<ul>
+<li><strong>易错点</strong>：全局变量用法要有<strong>克制</strong>；多个函数都直接改全局变量时，出错难查。</li>
+</ul>
+<h2
+id="七变量生命周期与静态变量015358021250">七、变量生命周期与静态变量（01:53:58—02:12:50）</h2>
+<h3 id="现金记账例程详解异常检测与全局变量封装">01:53:58—01:57:48 ｜
+现金记账例程详解：异常检测与全局变量封装</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cash <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// 现金余额</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> income<span class="op">(</span><span class="dt">double</span> number<span class="op">);</span> <span class="co">// 收入函数</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> expend<span class="op">(</span><span class="dt">double</span> number<span class="op">);</span> <span class="co">// 开销函数</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 收入现金处理</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> income<span class="op">(</span> <span class="dt">double</span> n <span class="op">)</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>cash <span class="op">+=</span> n<span class="op">;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">// 开销现金处理</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> expend<span class="op">(</span> <span class="dt">double</span> n <span class="op">)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>cash <span class="op">-=</span> n<span class="op">;</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> cash <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Over expend!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>cash <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> choice<span class="op">;</span> <span class="dt">double</span> value<span class="op">;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> <span class="dv">1</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter Operation</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;  1--income</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;  2--expend</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;  0--exit</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>choice<span class="op">);</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> choice <span class="op">!=</span><span class="dv">1</span> <span class="op">&amp;&amp;</span> choice <span class="op">!=</span><span class="dv">2</span> <span class="op">)</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter amount: &quot;</span><span class="op">);</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%lf</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>value<span class="op">);</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> choice <span class="op">==</span> <span class="dv">1</span> <span class="op">)</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>income<span class="op">(</span> value <span class="op">);</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>expend<span class="op">(</span> value <span class="op">);</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;current cash: </span><span class="sc">%.2f\n\n</span><span class="st">&quot;</span><span class="op">,</span> cash<span class="op">);</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（现金记账例程）。</p>
+<h4 id="例题证明-1015358-现金记账函数-income-expend含超支处理">例题/证明
+1（01:53:58）｜ 现金记账函数 income / expend（含超支处理）</h4>
+<ul>
+<li><strong>题目</strong>：用函数实现现金记账。操作类型
+1=收入、2=支出、0=结束；输入金额，计算余额；支出超支时提示
+<code>Over expend!</code> 并清零。</li>
+<li><strong>思路</strong>：全局 <code>cash</code> 初值
+0（全局变量默认初值 0）；<code>income</code> 用
+<code>cash += n</code>；<code>expend</code> 用
+<code>cash -= n</code>，若 <code>cash&lt;0</code> 打印超支并
+<code>cash=0</code>。主函数用 <code>while(1)</code> 死循环配合
+<code>break</code> 减少逻辑层次与代码右移。</li>
+<li><strong>老师强调——为何用函数操作全局变量</strong>：若在各处直接写
+<code>cash = cash - 20</code>，那么「超支检测」要在很多地方重复写；封装成
+<code>expend</code> 函数后，调用即自动完成异常检测与处理，主函数只需
+<code>expend(value)</code>，干净且不易漏。</li>
+<li><strong>易错点</strong>：<code>+=</code>、<code>-=</code>
+复合赋值；<code>cash -= n</code> 后 <code>cash</code>
+可能为负（本来没钱又消费），必须检测；<code>while(1)+break</code>
+是常用控制结构。</li>
+</ul>
+<h3 id="变量的生命周期创建与销毁">01:57:48—02:01:25 ｜
+变量的生命周期：创建与销毁</h3>
+<p>变量对应若干存储单元，计算机会按变量类型适时<strong>创建</strong>（分配单元）与<strong>销毁</strong>（回收单元）。从创建到销毁的整个过程即<strong>生命周期</strong>。</p>
+<ul>
+<li><strong>全局变量</strong>：程序运行时创建，程序结束后销毁 → 生命周期
+= 整个程序执行期间。</li>
+<li><strong>局部变量（函数内）</strong>：函数被调用时创建（含形式参数），函数返回后销毁
+→ 生命周期 = 函数执行期间。</li>
+<li><strong>复合语句内的局部变量</strong>：进入复合语句时创建，退出时销毁。</li>
+<li><strong>特别强调（循环体里的局部变量）</strong>：每次进入循环体都<strong>重新创建</strong>该变量（并初始化），循环结束就销毁；两次循环之间变量是<strong>不同的单元</strong>。例如
+<code>while(...){ int a=0; a++; }</code> 循环 100 次，<code>a</code>
+始终是 1——因为每次进入都新建 <code>a</code> 并置 0，退出即销毁。</li>
+<li><strong>作用范围（空间）</strong> 与
+<strong>生命周期（时间）</strong> 是两个不同维度。</li>
+</ul>
+<h3 id="静态变量-static静态局部-静态全局">02:01:25—02:07:40 ｜ 静态变量
+static（静态局部 / 静态全局）</h3>
+<p>用 <code>static</code> 修饰变量即静态变量：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">double</span> f <span class="op">=</span> <span class="dv">1</span><span class="op">;</span>   <span class="co">// 静态局部变量示例（见下例）</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">int</span> g<span class="op">;</span>          <span class="co">// 静态全局变量</span></span></code></pre></div>
+<ul>
+<li><strong>静态局部变量</strong>：改变了局部变量的<strong>生命周期</strong>——不再在「进入时创建、退出时销毁」，而是程序一运行就在<strong>静态存储区</strong>创建，生命周期变为整个程序执行期间。例如
+<code>static double f = 1;</code>
+只在程序启动时初始化一次，之后调用不再重新创建。</li>
+<li><strong>静态全局变量</strong>：全局变量生命周期本就是全程，故
+<code>static</code>
+<strong>不改变其生命周期</strong>，而是改变<strong>作用范围</strong>——从「整个程序」缩小为「从定义开始到本文件结束」，不能被其他
+<code>.c</code> 文件使用，也不能声明为外部变量。</li>
+<li><strong>多文件好处</strong>：合作编程序时，甲写 a.c、乙写
+b.c，各自把只在本文件内部使用的全局变量加
+<code>static</code>，互不干扰；若确需跨文件共享，则那个变量用真正的全局变量（不加
+<code>static</code>），并事先约定。</li>
+</ul>
+<h4 id="例题证明-2020155-静态变量阶乘-fact_s生命周期演示">例题/证明
+2（02:01:55）｜ 静态变量阶乘 fact_s（生命周期演示）</h4>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> fact_s<span class="op">(</span> <span class="dt">int</span> n <span class="op">);</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> n <span class="op">=</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i <span class="op">++</span> <span class="op">)</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%3d</span><span class="st">! = </span><span class="sc">%.0f\n</span><span class="st">&quot;</span><span class="op">,</span> i<span class="op">,</span>fact_s<span class="op">(</span>i<span class="op">));</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> fact_s<span class="op">(</span> <span class="dt">int</span> n <span class="op">)</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">double</span> f <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> f <span class="op">*</span> n<span class="op">;</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> f<span class="op">;</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（例程 5-9 阶乘计算）。</p>
+<ul>
+<li><strong>题目/演示</strong>：用静态局部变量 <code>f</code>
+累计阶乘。</li>
+<li><strong>分析</strong>：<code>f</code>
+是静态局部变量，程序启动时创建并初始化为 1，之后每次调用
+<code>fact_s</code> 都<strong>复用同一单元</strong>，不清零。故
+<code>fact_s(1)=1, fact_s(2)=2, fact_s(3)=6, …</code> 连续算出阶乘。若把
+<code>main</code> 的循环改为「连续 3 次调用
+<code>fact_s(3)</code>」，则返回值为
+<code>6, 18, 54</code>（在上一结果上继续乘 3）。</li>
+<li><strong>易错点</strong>：误以为静态局部变量每次调用都重新初始化；它与自动（auto）局部变量「进入创建、退出销毁」截然不同。</li>
+</ul>
+<h3 id="变量的初值全局静态为-0局部不确定">02:07:40—02:10:05 ｜
+变量的初值：全局/静态为 0，局部不确定</h3>
+<p>定义变量时可同时赋初值
+<code>类型名 变量名 = 初值;</code>。若未赋初值：</p>
+<ul>
+<li><strong>全局变量与静态变量</strong>：初值为「0」（程序启动时所有 bit
+清 0），直到程序退出才销毁。</li>
+<li><strong>局部变量</strong>：初值<strong>不确定</strong>（垃圾值/随机数，是之前程序留下的残留），进入时分配内存但不做任何清理，可能被创建多次、每次内存单元与初值都不同。</li>
+</ul>
+<p>为何局部变量不自动清零？因为它频繁创建/销毁，每次都清零效率低；而全局/静态变量整个程序只创建一次，清零开销小。当然全局变量也可在定义时赋初值。</p>
+<h3 id="作用范围与同名屏蔽规则">02:10:05—02:12:50 ｜
+作用范围与同名屏蔽规则</h3>
+<ul>
+<li><strong>作用范围</strong>：全局变量→整个程序；静态全局变量→本文件（定义处到文件尾）；函数局部变量→所在函数；复合语句局部变量→所在复合语句。</li>
+<li><strong>同名屏蔽规则</strong>：允许不同范围变量重名；重名时<strong>内部变量屏蔽外部变量</strong>，小范围屏蔽大范围（复合语句局部屏蔽外层复合语句局部、屏蔽函数局部；函数局部屏蔽全局）。复合语句可嵌套，内部总是屏蔽外部。</li>
+<li><strong>全局变量不能重名</strong>（静态全局变量除外）；同一文件里「一个全局变量
+A + 一个静态全局变量
+A」也不行；但<strong>不同文件</strong>可各有一个全局 <code>A</code>
+与一个静态全局
+<code>A</code>（静态全局屏蔽其他文件的同名全局，且不影响本文件使用）。规则核心：<strong>这样做若不影响使用、不产生歧义，就允许；若导致奇异，就不允许</strong>。</li>
+</ul>
+<h2
+id="八变量作用范围源文件布局与外部变量021250021800">八、变量作用范围、源文件布局与外部变量（02:12:50—02:18:00）</h2>
+<h3 id="源文件-.c-的一般布局头文件全局外部声明定义">02:12:50—02:15:46 ｜
+源文件 .c 的一般布局（头文件、全局、外部、声明、定义）</h3>
+<p>一个 <code>.c</code> 源文件的一般布局：</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 包含头文件</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isGameOver<span class="op">;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 定义全局变量</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">extern</span> <span class="dt">double</span> remainValue<span class="op">;</span> <span class="co">// 申明外部变量</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> save<span class="op">();</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数申明</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数定义和实现</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>save<span class="op">();</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> save<span class="op">()</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt。</p>
+<p>顺序通常为：包含头文件 → 定义全局变量 →
+声明外部变量（<code>extern</code>）→ 函数声明 → 函数定义与实现。</p>
+<h4 id="例题证明-1021306-.c-文件布局与-extern-外部变量声明">例题/证明
+1（02:13:06）｜ .c 文件布局与 extern 外部变量声明</h4>
+<ul>
+<li><strong>题目/演示</strong>：展示标准 <code>.c</code>
+文件布局，重点是 <code>extern</code> 声明外部变量。</li>
+<li><strong>代码</strong>：见上方代码块（取自课件 ch05.txt）。</li>
+<li><strong>分析</strong>：<code>extern double remainValue;</code> 声明
+<code>remainValue</code>
+是「外部变量」——它<strong>不是本文件定义</strong>的，而是<strong>其他
+<code>.c</code> 文件定义的</strong>全局变量。<code>extern</code>
+告诉编译器：「这个变量的类型和名字我知道，它在别处定义。」这样本文件就能使用它。</li>
+<li><strong>易错点</strong>：<code>extern</code>
+是<strong>声明不是定义</strong>；<code>int save();</code>
+是函数声明（可加 <code>extern</code>，但函数声明加不加
+<code>extern</code> 意义相同，都可省略）；只有带函数体的
+<code>int save(){...}</code> 才是定义。</li>
+</ul>
+<h3 id="外部变量-extern声明与定义的区别">02:15:46—02:18:00 ｜ 外部变量
+extern：声明与定义的区别</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 外部变量申明</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extern</span> <span class="dt">int</span> a<span class="op">;</span></span></code></pre></div>
+<ul>
+<li>外部变量即「定义在其他文件中的全局变量」。要用它，须在使用前用
+<code>extern</code> 声明。</li>
+<li><strong>声明不能代替定义</strong>：声明只告诉编译器类型与名字，并不分配存储；该变量必须在某个
+<code>.c</code>
+文件里<strong>有且仅有一个</strong>定义（<code>int a;</code>）。</li>
+<li>老师比喻：10 个同学野炊，9
+个人都「声明」要带一口锅，但若<strong>没人真正带锅</strong>（都只是声明、无定义），到了目的地大眼瞪小眼、做不成饭。全局变量同理——可以有多个文件声明它，但必须有且仅有一个文件定义它，否则链接阶段报错（找不到定义）。</li>
+</ul>
+<h2
+id="九课后练习判断各位数字是否从小到大排列021800022634">九、课后练习：判断各位数字是否从小到大排列（02:18:00—02:26:34）</h2>
+<h3 id="练习变量的初值和作用范围代码走读">02:18:00—02:20:21 ｜
+练习：变量的初值和作用范围（代码走读）</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x<span class="op">;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">();</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> f<span class="op">();</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span>a<span class="op">,</span>x<span class="op">);</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">()</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> x<span class="op">;</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch05.txt（练习：变量的初值和作用范围）。</p>
+<h4 id="例题证明-1021807-变量初值与作用范围练习xab-的运行结果">例题/证明
+1（02:18:07）｜ 变量初值与作用范围练习（x、a、b 的运行结果）</h4>
+<ul>
+<li><strong>题目</strong>：走读上方代码，求
+<code>printf("%d %d\n", a, x);</code> 的输出。</li>
+<li><strong>逐步分析</strong>：
+<ol type="1">
+<li>全局 <code>int x;</code>（初值 0，在静态存储区）。</li>
+<li><code>main</code> 局部 <code>a = 1</code>。</li>
+<li><code>x = a;</code> → 全局 <code>x = 1</code>。</li>
+<li><code>a = f();</code> → 进入 <code>f</code>：其局部
+<code>int x = 4</code>（屏蔽全局），<code>return x</code> 返回
+4；<code>a = 4</code>。<strong>全局 <code>x</code> 不受影响，仍为
+1</strong>（值传递/作用范围屏蔽）。</li>
+<li>复合语句：局部
+<code>b = 2</code>；<code>b = a + b = 4 + 2 = 6</code>；<code>x = x + b</code>
+→ 这里的 <code>x</code> 是<strong>全局</strong>
+<code>x</code>，<code>x = 1 + 6 = 7</code>。</li>
+<li>打印 <code>a</code> 与全局
+<code>x</code>：<code>a=4, x=7</code>。</li>
+</ol></li>
+<li><strong>输出</strong>：<code>4 7</code>。</li>
+<li><strong>易错点</strong>：以为 <code>f</code> 里的 <code>x=4</code>
+改了全局 <code>x</code>（实际是局部屏蔽）；以为复合语句里的
+<code>x</code> 是别处——它引用的是全局
+<code>x</code>（内部无定义时向外层找）。</li>
+</ul>
+<h3 id="课后练习判断各位数字是否从小到大排列">02:20:21—02:26:34 ｜
+课后练习：判断各位数字是否从小到大排列</h3>
+<p>教材 120 页一般习题第 2
+题：判断一个整数的各位数字是否按从小到大排列（如 12345、1279 是，132
+不是）。老师带领填空还原算法，要点如下：</p>
+<ul>
+<li>主函数里：定义全局变量用于结果、定义局部变量、调用判断函数（函数声明写在前，因为函数在
+<code>main</code> 之后定义）；复合语句内可再定义局部变量参与计算。</li>
+<li>判断函数逻辑（按老师口述补全，<code>[补全]</code>：课件仅展示填空讨论、未给完整书码，以下为按讲解还原的标准实现）：</li>
+</ul>
+<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">// [补全] 按课堂讲解还原：判断 n 的各位数字是否从小到大排列</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 思路：从个位起，每位都应 &gt;= 高一位（即左读递增，右读递减）</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isOrder<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span>            <span class="co">// 函数名按学科习惯补全</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> current <span class="op">=</span> n <span class="op">%</span> <span class="dv">10</span><span class="op">;</span>        <span class="co">// 个位（最小权值位）</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> n <span class="op">/</span> <span class="dv">10</span><span class="op">;</span>                  <span class="co">// 去掉个位</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>n <span class="op">&gt;=</span> <span class="dv">10</span><span class="op">)</span> <span class="op">{</span>            <span class="co">// 老师强调应为 &gt;= 10（原书/讨论中曾写 &gt; 10，漏掉 m==10）</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> old <span class="op">=</span> n <span class="op">%</span> <span class="dv">10</span><span class="op">;</span>        <span class="co">// 当前更高一位</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>old <span class="op">&gt;</span> current<span class="op">)</span>       <span class="co">// 高位比低位大 → 非升序</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>current <span class="op">=</span> old<span class="op">;</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> n <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul>
+<li><strong>老师重点纠正</strong>：循环条件应为
+<code>m &gt;= 10</code>（或 <code>m &gt; 9</code>）。若写成
+<code>m &gt; 10</code>，当数字恰为
+10（各位「1」「0」）时会漏判——<code>m</code> 先 <code>m/10</code> 变
+1，循环不进，直接 <code>return 1</code>，错误。应为
+<code>&gt;= 10</code> 才能正确处理两数位情形。</li>
+<li><strong>关系表达式返回逻辑值</strong>：类似前面
+<code>IsSquare</code> 的 <code>return n==0;</code>，这里
+<code>old &gt; current</code> 是关系表达式，真为 1、假为 0，作为
+<code>if</code> 条件。</li>
+<li><strong>注</strong>：上段 <code>main</code> 输出「从小到大排列」时走
+<code>if</code> 分支、否则走 <code>else</code>；具体书本填空代码以教材
+120 页为准（课件未完整给出）。</li>
+</ul>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

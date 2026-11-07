@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-10-20 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-10-20 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-10-20-课堂详解"
+id="toc-c-程序设计2026-10-20-课堂详解">《C 程序设计》2026-10-20
+课堂详解</a>
+<ul>
+<li><a href="#一第6章-数据类型和表达式000043022506"
+id="toc-一第6章-数据类型和表达式000043022506">一、第6章
+数据类型和表达式（00:00:43—02:25:06）</a>
+<ul>
+<li><a href="#上课第6章与期中考试说明"
+id="toc-上课第6章与期中考试说明">00:00:43—00:01:54 ｜
+上课、第6章与期中考试说明</a></li>
+<li><a href="#c-语言数据类型总览基本类型构造类型与指针类型"
+id="toc-c-语言数据类型总览基本类型构造类型与指针类型">00:01:54—00:03:27
+｜ C 语言数据类型总览：基本类型、构造类型与指针类型</a></li>
+<li><a href="#整数的二进制表示原码反码补码"
+id="toc-整数的二进制表示原码反码补码">00:03:27—00:09:00 ｜
+整数的二进制表示：原码、反码、补码</a></li>
+<li><a href="#补码的特性表示范围与整数溢出"
+id="toc-补码的特性表示范围与整数溢出">00:09:00—00:16:04 ｜
+补码的特性、表示范围与整数溢出</a></li>
+<li><a href="#平均数函数与整数溢出面试例题"
+id="toc-平均数函数与整数溢出面试例题">00:17:04—00:19:18 ｜
+平均数函数与整数溢出（面试例题）</a></li>
+<li><a href="#整数类型家族shortintlonglong-long-与无符号类型"
+id="toc-整数类型家族shortintlonglong-long-与无符号类型">00:19:18—00:25:53
+｜ 整数类型家族：short、int、long、long long 与无符号类型</a></li>
+<li><a href="#sizeof-运算符与类型转换运算符的区别"
+id="toc-sizeof-运算符与类型转换运算符的区别">00:25:22—00:28:33 ｜ sizeof
+运算符与类型转换运算符的区别</a></li>
+<li><a href="#无符号整数与整数常量的进制表示"
+id="toc-无符号整数与整数常量的进制表示">00:28:44—00:34:48 ｜
+无符号整数与整数常量的进制表示</a></li>
+<li><a href="#八进制十六进制与二进制的互相转换"
+id="toc-八进制十六进制与二进制的互相转换">00:34:48—00:38:14 ｜
+八进制、十六进制与二进制的互相转换</a></li>
+<li><a href="#整数常量的后缀" id="toc-整数常量的后缀">00:38:14—00:41:02
+｜ 整数常量的后缀</a></li>
+<li><a href="#短整数溢出截断short-n-123456789"
+id="toc-短整数溢出截断short-n-123456789">00:41:02—00:52:11 ｜
+短整数溢出截断：short n = 123456789</a></li>
+<li><a href="#有符号整数与无符号整数的赋值内存拷贝"
+id="toc-有符号整数与无符号整数的赋值内存拷贝">00:52:11—01:06:56 ｜
+有符号整数与无符号整数的赋值（内存拷贝）</a></li>
+<li><a href="#浮点数的存储小数二进制与-ieee-754-表示"
+id="toc-浮点数的存储小数二进制与-ieee-754-表示">01:07:15—01:13:39 ｜
+浮点数的存储：小数二进制与 IEEE 754 表示</a></li>
+<li><a href="#浮点数的范围精度与实数常量"
+id="toc-浮点数的范围精度与实数常量">01:13:39—01:24:49 ｜
+浮点数的范围、精度与实数常量</a></li>
+<li><a href="#字符类型ascii-码与转义字符"
+id="toc-字符类型ascii-码与转义字符">01:24:49—01:31:49 ｜ 字符类型、ASCII
+码与转义字符</a></li>
+<li><a href="#转义字符-与-及字符常量示例"
+id="toc-转义字符-与-及字符常量示例">01:31:49—01:44:56 ｜ 转义字符 与
+及字符常量示例</a></li>
+<li><a href="#整数实数字符的输入输出格式符与宽度控制"
+id="toc-整数实数字符的输入输出格式符与宽度控制">01:44:56—01:54:49 ｜
+整数、实数、字符的输入输出格式符与宽度控制</a></li>
+<li><a href="#例程6-1大小写字母转换"
+id="toc-例程6-1大小写字母转换">01:54:49—01:56:22 ｜
+例程6-1：大小写字母转换</a></li>
+<li><a href="#键盘缓冲区与标准输入流-stdin"
+id="toc-键盘缓冲区与标准输入流-stdin">01:56:26—02:01:15 ｜
+键盘缓冲区与标准输入流 stdin</a></li>
+<li><a href="#scanf-的格式字符-d-f-lf-c-n"
+id="toc-scanf-的格式字符-d-f-lf-c-n">02:01:15—02:03:57 ｜ scanf
+的格式字符 %d %f %lf %c %n</a></li>
+<li><a href="#scanf-的普通字符与读取四则运算表达式"
+id="toc-scanf-的普通字符与读取四则运算表达式">02:03:57—02:11:18 ｜ scanf
+的普通字符与读取四则运算表达式</a></li>
+<li><a href="#数据类型转换强制类型转换与自动类型转换"
+id="toc-数据类型转换强制类型转换与自动类型转换">02:11:30—02:22:04 ｜
+数据类型转换：强制类型转换与自动类型转换</a></li>
+<li><a href="#有符号与无符号混合运算例题"
+id="toc-有符号与无符号混合运算例题">02:22:04—02:25:06 ｜
+有符号与无符号混合运算例题</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-10-20-课堂详解">《C 程序设计》2026-10-20
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:31:54 ｜ 逐条字幕：1177 条 ｜ 时间段小节：23
+｜ 例题 / 证明：20</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件，不以字幕为准；课件原文留档在
+content/cprog/_slides/ 下对应章节。**</p>
+</blockquote>
+<h2 id="一第6章-数据类型和表达式000043022506">一、第6章
+数据类型和表达式（00:00:43—02:25:06）</h2>
+<h3 id="上课第6章与期中考试说明">00:00:43—00:01:54 ｜
+上课、第6章与期中考试说明</h3>
+<p>上课铃响后开始正式授课。本节课进入<strong>第 6 章</strong>的学习（第
+6 章讲完之后就到<strong>期中考试</strong>）。</p>
+<ul>
+<li>期中考试比较简单，在<strong>机房</strong>里进行；具体时间会再在钉钉群里发消息通知，不用着急。</li>
+<li>第 6 章内容比较多，今天可能讲不完，但尽量多讲一些。</li>
+<li>本节内容里很多是以前已经接触过的，今天再综合地讲一遍；之前重点讲过的就略过去。</li>
+</ul>
+<h3 id="c-语言数据类型总览基本类型构造类型与指针类型">00:01:54—00:03:27
+｜ C 语言数据类型总览：基本类型、构造类型与指针类型</h3>
+<p>先回顾 C
+语言的数据类型。我们已经学过的基本数据类型有：<strong>整型、字符型、实数（单精度
+<code>float</code>、双精度 <code>double</code>）</strong>。</p>
+<ul>
+<li><strong>构造类型</strong>：第 7 章学数组，第 9
+章学结构（<code>struct</code>）；还有<strong>联合（<code>union</code>）</strong>和<strong>枚举（<code>enum</code>）</strong>这两种，课时有限，不专门讲——只要掌握了结构，联合很容易自学；枚举也比较简单，用到时很快就掌握。</li>
+<li>此外还有<strong>指针类型</strong>、<strong>空类型（<code>void</code>）</strong>。</li>
+</ul>
+<p>C 语言的数据类型划分（依据课件第 3 页）：</p>
+<ul>
+<li>基本数据类型：整型（<code>int</code>）、字符型（<code>char</code>）、实型（浮点型：单精度
+<code>float</code>、双精度 <code>double</code>）。</li>
+<li>构造数据类型：数组、结构（<code>struct</code>）、联合（<code>union</code>）、枚举（<code>enum</code>）。</li>
+<li>指针类型。</li>
+<li>空类型（<code>void</code>）。</li>
+</ul>
+<h3 id="整数的二进制表示原码反码补码">00:03:27—00:09:00 ｜
+整数的二进制表示：原码、反码、补码</h3>
+<p>计算机用二进制码（<code>0</code>、<code>1</code>）表示所有数据。以 16
+个 bit 的正整数为例，右起第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+位的权重为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>n</mi></msup><annotation encoding="application/x-tex">2^n</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+是
+<code>0000 0000 0000 0000</code>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+是
+<code>0000 0000 0000 0001</code>，……，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>15</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{15}-1</annotation></semantics></math>
+是 <code>0111 1111 1111 1111</code>。</p>
+<p>但整数既要表示正的、也要表示负的。和浮点数一样，<strong>最高位（最左边的
+bit）用作符号位</strong>：最高位为 <code>0</code> 表示正数，为
+<code>1</code> 表示负数。</p>
+<p>整数的表示有三种形式：</p>
+<ol type="1">
+<li><strong>原码</strong>：最高位是符号位，其余表示数值。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+的原码是
+<code>1000 0000 0000 0001</code>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math>
+是 <code>1000 0000 0000 0010</code>。正负数之间只差一个符号位。</li>
+<li><strong>反码</strong>：正数的反码与其原码相同；负数的反码是对其原码<strong>逐位取反，但符号位除外</strong>。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">-5</annotation></semantics></math>
+原码 <code>1000 0000 0000 0101</code>，反码
+<code>1111 1111 1111 1010</code>。</li>
+<li><strong>补码</strong>：正数补码 = 反码 = 原码；负数补码 = 反码 +
+1（符号位保持不变）。例如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+补码是
+<code>1111 1111 1111 1111</code>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math>
+补码是 <code>1111 1111 1111 1110</code>。</li>
+</ol>
+<p>老师强调：先把这些当成”变戏法”一样记住，不必追问为什么这样定义（后面学了位运算再解释）。</p>
+<h3 id="补码的特性表示范围与整数溢出">00:09:00—00:16:04 ｜
+补码的特性、表示范围与整数溢出</h3>
+<p>补码的关键特点（以 16 位为例，从上到下递增 1）：</p>
+<pre><code>0111 1111 1111 1111   2^15-1     最大正数
+...
+0000 0000 0000 0010   2
+0000 0000 0000 0001   1
+0000 0000 0000 0000   0
+1111 1111 1111 1111  -1
+1111 1111 1111 1110  -2
+...
+1000 0000 0000 0001  -(2^15-1)
+1000 0000 0000 0000  -2^15      最小负数</code></pre>
+<ul>
+<li>从上到下递增
+1，与数值关系一致、<strong>与符号无关</strong>；把正数、负数的计算统一起来了，运算时无需区分正负数。</li>
+<li>对于正整数：符号位为 0，数值部分补码 = 反码 = 原码。</li>
+<li>对于负数：符号位为 1，数值部分补码 = 反码 + 1。</li>
+</ul>
+<p><strong>表示范围</strong>（假设整数的 bit 数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>，采用补码）：</p>
+<ul>
+<li>最大正整数：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{N-1}-1</annotation></semantics></math>（二进制
+<code>0111…1111</code>）。</li>
+<li>最小负整数：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">-2^{N-1}</annotation></semantics></math>（二进制
+<code>1000…0000</code>）。</li>
+<li>被表示的整数总数：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^{N-1}-1+1+2^{N-1}=2^N</annotation></semantics></math>，没有浪费任何
+bit（因为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个 bit 最多只能表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>N</mi></msup><annotation encoding="application/x-tex">2^N</annotation></semantics></math>
+个不同状态）。</li>
+</ul>
+<p>对 C 语言 32 位 <code>int</code>：最大值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn><mo>≈</mo><mn>21</mn></mrow><annotation encoding="application/x-tex">2^{31}-1\approx 21</annotation></semantics></math>
+亿 4784 万，最小值
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msup><mn>2</mn><mn>31</mn></msup><mo>≈</mo><mi>−</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">-2^{31}\approx -21</annotation></semantics></math>
+亿 4784 万。</p>
+<p><strong>溢出</strong>：最大正整数再加 1，会”逢二进一”变成
+<code>1000…0000</code>，即从最大正数变成最小负数——结果完全错了。因此做整数运算时务必防止越界。</p>
+<h3 id="平均数函数与整数溢出面试例题">00:17:04—00:19:18 ｜
+平均数函数与整数溢出（面试例题）</h3>
+<p>老师提到一道面试/考题：写一个函数求两个整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+的平均值。如果直接 <code>return (a+b)/2;</code>，当
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+都接近最大正整数时，<code>a+b</code>
+会先溢出变成负数，结果就错了。老师保留了更优写法（用位运算）作为悬念，提醒大家：做整数运算要小心加起来以后溢出。</p>
+<h4 id="例题证明-1001704-平均数函数与整数溢出陷阱">例题/证明
+1（00:17:04）｜ 平均数函数与整数溢出陷阱</h4>
+<p><strong>题目／任务</strong>：写函数
+<code>int average(int a, int b)</code> 求
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+的平均整数值。</p>
+<p><strong>思路</strong>：要求整数平均值（不是浮点）。直接
+<code>(a+b)/2</code> 在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+都接近 <code>INT_MAX</code>
+时会先发生加法溢出。当堂只报名字、未展示完整代码，下面按标准 C 补出
+<code>[补全]</code>，<strong>不是当堂讲的，仅作自学参照</strong>：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> average<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="op">(</span>a <span class="op">+</span> b<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码为整理者按标准 C
+补出（<code>[补全]</code>），当堂只口述/报名字，课件未给出此程序。</p>
+<ul>
+<li>输入：例如
+<code>a = 2147483647</code>，<code>b = 2147483647</code>。</li>
+<li>预期：平均值应为 <code>2147483647</code>。</li>
+<li>实际运行结果：<code>a + b</code> 溢出为负数，得到错误结果（并非
+<code>2147483647</code>）。</li>
+</ul>
+<p><strong>结论</strong>：两个很大的正整数相加可能越过补码边界变成负数。求平均值不能简单地先加后除；稳妥做法（当堂留下悬念，未展开）是改用不会溢出的写法，如先各自右移再处理。</p>
+<p><strong>易错点</strong>：以为 <code>(a+b)/2</code>
+总是安全；忽略整数加法本身就可能溢出。</p>
+<h3
+id="整数类型家族shortintlonglong-long-与无符号类型">00:19:18—00:25:53 ｜
+整数类型家族：short、int、long、long long 与无符号类型</h3>
+<p>C 语言里整数类型不止一种：</p>
+<ul>
+<li><code>short [int]</code>（短整型）：16 位，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">\pm 3</annotation></semantics></math>
+万（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mspace width="-0.167em"></mspace><msup><mn>2</mn><mn>15</mn></msup><mo>∼</mo><msup><mn>2</mn><mn>15</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-\!2^{15}\sim 2^{15}-1</annotation></semantics></math>）。</li>
+<li><code>int</code>：32 位（现代 64 位计算机上），范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">\pm 21</annotation></semantics></math>
+亿。注意 C 标准只规定 <code>int</code> 最多 32 位、最少 16
+位，但现在计算机上都是 32 位。</li>
+<li><code>long [int]</code>（长整型）：C 标准规定<strong>一定 32
+位</strong>，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">\pm 21</annotation></semantics></math>
+亿（注意：不是 64 位）。</li>
+<li><code>long long [int]</code>（大长整型）：64 位，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>900</mn></mrow><annotation encoding="application/x-tex">\pm 900</annotation></semantics></math>
+亿亿（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mspace width="-0.167em"></mspace><msup><mn>2</mn><mn>63</mn></msup><mo>∼</mo><msup><mn>2</mn><mn>63</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-\!2^{63}\sim 2^{63}-1</annotation></semantics></math>）。</li>
+<li>在 64 位计算机系统上，<code>long</code> 也是 64 位；若想明确 64
+位，应使用 <code>long long</code>。</li>
+</ul>
+<p><code>short</code>、<code>int</code>、<code>long</code>、<code>long long</code>
+都可以写成省略 <code>int</code>
+的形式（<code>short</code>、<code>long</code>、<code>long long</code>）。<code>char</code>
+也是整数类型（8 位，一个字节）。</p>
+<p><strong>无符号整数</strong>：很多整数没有负值意义（如个数、长度），可用<strong>无符号整数</strong>（<code>unsigned</code>）。它没有符号位，全部
+bit 用来存正整数的原码，所以补码与原码相同。</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+个 bit
+的无符号整数范围：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mspace width="0.167em"></mspace><msup><mn>2</mn><mi>N</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,\,2^N-1]</annotation></semantics></math>，共
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>N</mi></msup><annotation encoding="application/x-tex">2^N</annotation></semantics></math>
+个。</li>
+<li>每种有符号整数都有对应的无符号类型：<code>unsigned short [int]</code>、<code>unsigned [int]</code>、<code>unsigned long [int]</code>、<code>unsigned long long [int]</code>。</li>
+</ul>
+<h3 id="sizeof-运算符与类型转换运算符的区别">00:25:22—00:28:33 ｜ sizeof
+运算符与类型转换运算符的区别</h3>
+<p>想知道一个类型占多少字节，用 <strong><code>sizeof</code>
+运算符</strong>（不是函数，写法像函数）。课件第 13 页给出：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;int 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;long 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">long</span><span class="op">));</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;long long 字节数 = </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">long</span> <span class="dt">long</span><span class="op">));</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 13 页</p>
+<p><code>sizeof</code> 也可作用于常量、变量，如
+<code>sizeof 4.5</code>、<code>sizeof x</code>；若 <code>x</code> 是
+<code>int</code> 则等价于 <code>sizeof(int)</code>，若是
+<code>float</code> 则等价于 <code>sizeof(float)</code>。</p>
+<p><strong>注意区分两种”把类型括起来”的写法</strong>：</p>
+<ul>
+<li><strong>类型转换运算符</strong>：<code>(类型名)表达式</code>，如
+<code>(int)1.999</code> 得到
+<code>1</code>（把值转成该类型，只转”值”，不转变量）。</li>
+<li><strong><code>sizeof</code>
+运算符</strong>：<code>sizeof(类型名)</code> 或
+<code>sizeof 表达式</code>。</li>
+<li>二者都把类型名用括号括起来，但含义完全不同：一个是”转换值的类型”，一个是”求占用字节数”。</li>
+</ul>
+<h3 id="无符号整数与整数常量的进制表示">00:28:44—00:34:48 ｜
+无符号整数与整数常量的进制表示</h3>
+<p>计算机内部用二进制存整数，但 <strong>C
+语言语法不支持用二进制写整型常量</strong>。C
+语言支持的整型常量写法：</p>
+<ul>
+<li><strong>十进制常量</strong>：不能以 <code>0</code> 开头（数字
+<code>0</code>～<code>9</code> 组成）。</li>
+<li><strong>八进制常量</strong>：以 <code>0</code> 开头，由数字
+<code>0</code>～<code>7</code> 组成；右起第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+位权重为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>8</mn><mi>k</mi></msup><annotation encoding="application/x-tex">8^k</annotation></semantics></math>。</li>
+<li><strong>十六进制常量</strong>：以 <code>0x</code> 或 <code>0X</code>
+开头，由
+<code>0</code>～<code>9</code>、<code>a</code>～<code>f</code>（或
+<code>A</code>～<code>F</code>）组成；右起第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+位权重为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>16</mn><mi>k</mi></msup><annotation encoding="application/x-tex">16^k</annotation></semantics></math>。</li>
+<li>进制数值前面都可加 <code>+</code>、<code>-</code> 表示正负。</li>
+</ul>
+<p>例：<code>010</code> 是八进制，等于十进制 8；<code>10</code> 是十进制
+10；<code>-023</code> 是八进制负常量，等于十进制
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>19</mn></mrow><annotation encoding="application/x-tex">-19</annotation></semantics></math>；<code>0x16</code>
+是十六进制，等于十进制 22；<code>0x12</code> 等于十进制
+18；<code>0xFF</code> 等于十进制 255。</p>
+<p>十六进制与二进制互相转换很方便：<strong>每 4 个二进制位对应 1
+个十六进制位</strong>（如 <code>0xABCF</code> →
+<code>1010 1011 1100 1101</code>）。</p>
+<h3 id="八进制十六进制与二进制的互相转换">00:34:48—00:38:14 ｜
+八进制、十六进制与二进制的互相转换</h3>
+<ul>
+<li>十六进制 → 二进制：把每个十六进制数字展开成 4 位二进制（如
+<code>0xABCF</code>：<code>A</code>→<code>1010</code>，<code>B</code>→<code>1011</code>，<code>C</code>→<code>1100</code>，<code>F</code>→<code>1111</code>）。</li>
+<li>二进制 → 十六进制：从右往左每 4 位一组拼成十六进制数字。</li>
+<li>二进制 → 八进制：每 3 位一组；八进制 → 二进制：每个八进制数字展开成
+3 位。</li>
+<li>十进制 → 二进制/八进制/十六进制：不断除以对应基数（除 2、除 8、除
+16），比一直除 2 更快。</li>
+</ul>
+<h3 id="整数常量的后缀">00:38:14—00:41:02 ｜ 整数常量的后缀</h3>
+<p>给整型常量加后缀表示它的类型：</p>
+<ul>
+<li>无符号：<code>U</code>/<code>u</code>（<code>unsigned</code>）。</li>
+<li>长整型：<code>L</code>/<code>l</code>（<code>long</code>）。</li>
+<li>无符号长整型：<code>UL</code>/<code>LU</code>、<code>ul</code>/<code>lu</code>（<code>unsigned long</code>）。</li>
+<li>大长整型：<code>LL</code>（<code>long long</code>）。</li>
+</ul>
+<p>例：<code>-12L</code>、<code>12u</code>、<code>034U</code>、<code>12LU</code>、<code>0X567LU</code>。</p>
+<h3 id="短整数溢出截断short-n-123456789">00:41:02—00:52:11 ｜
+短整数溢出截断：short n = 123456789</h3>
+<p>若定义 <code>short n = 123456789;</code>，<code>n</code>
+得不到真实值，而是得到
+<code>-13035</code>。原因：<code>123456789 = 0x75bcd15</code>（占 4
+个字节），而 <code>short</code> 只有 2
+个字节，超出部分被<strong>截断</strong>，只保留低位的 2 个字节
+<code>cd15</code>。<code>cd15</code> 的第一个 bit 为
+1（符号位为负），按补码还原得到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>13035</mn></mrow><annotation encoding="application/x-tex">-13035</annotation></semantics></math>。</p>
+<h4
+id="例题证明-2004102-短整数溢出截断short-n-123456789-13035">例题/证明
+2（00:41:02）｜ 短整数溢出截断：short n = 123456789 → −13035</h4>
+<p><strong>题目／任务</strong>：解释 <code>short n = 123456789;</code>
+为什么 <code>n = -13035</code>。</p>
+<p><strong>思路</strong>：常数 <code>123456789</code> 是 4
+字节（<code>0x75bcd15</code>），赋给 2 字节的 <code>short</code>
+时，<strong>保留低位的 2 个字节
+<code>cd15</code></strong>，高位字节被舍弃。</p>
+<p>下面这段程序当堂只口述了赋值与结果，课件第 20
+页给出的是分析过程（非完整可运行程序），下面按标准 C 补出一个可运行版本
+<code>[补全]</code>，<strong>不是当堂展示的代码，仅作自学参照</strong>：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   <span class="dt">short</span> n <span class="op">=</span> <span class="dv">123456789</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   printf<span class="op">(</span><span class="st">&quot;n = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码为整理者按标准 C
+补出（<code>[补全]</code>），当堂只口述结果，课件未给出此程序。</p>
+<p><strong>输入</strong>：无（<code>123456789</code> 是字面常量）。</p>
+<p><strong>输出／运行结果</strong>：</p>
+<pre><code>n = -13035</code></pre>
+<p><strong>逐步推导（依据课件第 20 页）</strong>：</p>
+<ol type="1">
+<li><code>123456789 = 0x75bcd15</code>，对应 4
+个字节：<code>07 5b cd 15</code>（高位在前）。</li>
+<li><code>short</code> 只保留低 2 字节 <code>cd 15</code>，即
+<code>cd15</code>（二进制 <code>1100 1101 0001 0101</code>）。</li>
+<li>最高 bit 为 1 → 负数（补码）。数值部分：反码 =
+<code>100 1101 0001 0100</code>，原码 =
+<code>011 0010 1110 1011</code>。</li>
+<li>原码写成十进制：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><msup><mn>16</mn><mn>3</mn></msup><mo>+</mo><mn>2</mn><mo>×</mo><msup><mn>16</mn><mn>2</mn></msup><mo>+</mo><mn>14</mn><mo>×</mo><mn>16</mn><mo>+</mo><mn>11</mn><mo>=</mo><mn>13035</mn></mrow><annotation encoding="application/x-tex">3\times16^3+2\times16^2+14\times16+11 = 13035</annotation></semantics></math>，故
+<code>n = -13035</code>。</li>
+</ol>
+<p><strong>结论</strong>：从长整型到短整型，规则是<strong>保留低位字节、丢弃高位超出的字节</strong>（即截断）；如果原值较大，截断后可能变负。</p>
+<p><strong>易错点</strong>：以为 <code>short</code>
+会自动”缩小”为你想要的值；忘记截断是按字节、从低位保留。</p>
+<h3 id="有符号整数与无符号整数的赋值内存拷贝">00:52:11—01:06:56 ｜
+有符号整数与无符号整数的赋值（内存拷贝）</h3>
+<p><strong>整数与无符号整数之间运算、赋值要特别小心</strong>。看一个例子（完整代码在课件第
+22 页，逐字符照抄）：</p>
+<h4 id="例题证明-3005447-有符号与无符号整数赋值int-m-1-n-1">例题/证明
+3（00:54:47）｜ 有符号与无符号整数赋值（int m = 1, n = −1）</h4>
+<p><strong>题目／任务</strong>：把有符号整数
+<code>m=1</code>、<code>n=-1</code> 分别赋值给无符号变量
+<code>um</code>、<code>un</code>，并用
+<code>%d</code>、<code>%u</code>、<code>%x</code> 观察输出。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 22 页）：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> m <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> um<span class="op">,</span> un<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>um <span class="op">=</span> m<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>un <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot; m = </span><span class="sc">%d</span><span class="st">,  n = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;um = </span><span class="sc">%u</span><span class="st">, un = </span><span class="sc">%u\n</span><span class="st">&quot;</span><span class="op">,</span> um<span class="op">,</span> un<span class="op">);</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot; m = 0x</span><span class="sc">%08X</span><span class="st">,  n = 0x</span><span class="sc">%08X\n</span><span class="st">&quot;</span><span class="op">,</span> m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;um = 0x</span><span class="sc">%08X</span><span class="st">, un = 0x</span><span class="sc">%08X\n</span><span class="st">&quot;</span><span class="op">,</span> um<span class="op">,</span> un<span class="op">);</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 22 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 22
+页）：</p>
+<pre><code> m = 1,  n = -1
+um = 1, un = 4294967295
+ m = 0x00000001,  n = 0xFFFFFFFF
+um = 0x00000001, un = 0xFFFFFFFF</code></pre>
+<p><strong>原理讲解</strong>：</p>
+<ul>
+<li>整数类型之间的赋值，做的是<strong>内存拷贝</strong>——把右边变量（或值）的二进制
+bit
+<strong>直接复制</strong>到左边变量的内存中，不管它是有符号还是无符号、是长是短。</li>
+<li><code>n = -1</code> 在内存里是 32 个
+<code>1</code>（<code>0xFFFFFFFF</code>）。把它拷贝给
+<code>un</code>（无符号）后，<code>un</code> 里的 bit 仍是 32 个
+<code>1</code>；用 <code>%u</code>
+解释成无符号整数，就得到最大的无符号整数 <code>4294967295</code>。</li>
+<li>用 <code>%d</code> 解释这 32 个 <code>1</code>，则按有符号补码得到
+<code>-1</code>。所以<strong>同一个 bit
+模式，怎么解读就得到什么结果</strong>。</li>
+<li><code>%08X</code> 中的 <code>08</code> 表示最少 8 位、不足左侧补
+<code>0</code>；<code>X</code> 表示十六进制大写字母。</li>
+</ul>
+<p>老师点出的意义：<strong>混合使用 <code>int</code> 与
+<code>unsigned int</code>
+时要特别小心</strong>——它们在内存里可能是完全相同的
+bit，但按不同格式解读会得到天差地别的值。</p>
+<blockquote>
+<p>题外话（学习方法提醒，属于有效信息）：大学里没人盯着你学，要主动学、靠作业检验自己是否真掌握；老师借游戏与含糖饮料类比——若只”被游戏消费”或只靠糖获得短暂兴奋，长期无益；若能思考”游戏画面是怎么做出来的”，就会变成学习动力。这部分是励志与学习方法提醒，非知识点。</p>
+</blockquote>
+<h3 id="浮点数的存储小数二进制与-ieee-754-表示">01:07:15—01:13:39 ｜
+浮点数的存储：小数二进制与 IEEE 754 表示</h3>
+<p><strong>十进制小数转二进制</strong>：整数部分”除以 2
+取余数”，小数部分”乘以 2 取整数”。</p>
+<p>例：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.625</mn><annotation encoding="application/x-tex">6.625</annotation></semantics></math>
+转二进制。</p>
+<ul>
+<li>整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math>：除以
+2 取余 → <code>110</code>。</li>
+<li>小数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.625</mn><annotation encoding="application/x-tex">0.625</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.625</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.25</mn></mrow><annotation encoding="application/x-tex">0.625\times2=1.25</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.25</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">0.25\times2=0.5</annotation></semantics></math>
+取整
+<code>0</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.5</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.0</mn></mrow><annotation encoding="application/x-tex">0.5\times2=1.0</annotation></semantics></math>
+取整 <code>1</code>，结束。得到 <code>0.101</code>。</li>
+<li>故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.625</mn><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>110.101</mn><msub><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">6.625 = (110.101)_2</annotation></semantics></math>。</li>
+</ul>
+<p>例：把
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.7</mn><annotation encoding="application/x-tex">1.7</annotation></semantics></math>
+转二进制。</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.7</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.4</mn></mrow><annotation encoding="application/x-tex">0.7\times2=1.4</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.4</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0.8</mn></mrow><annotation encoding="application/x-tex">0.4\times2=0.8</annotation></semantics></math>
+取整
+<code>0</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.8</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.6</mn></mrow><annotation encoding="application/x-tex">0.8\times2=1.6</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.6</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>1.2</mn></mrow><annotation encoding="application/x-tex">0.6\times2=1.2</annotation></semantics></math>
+取整
+<code>1</code>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.2</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">0.2\times2=0.4</annotation></semantics></math>
+取整
+<code>0</code>；……一直循环，得到二进制的<strong>无限循环小数</strong>
+<code>1.10110…</code>。</li>
+</ul>
+<p>这说明：简单如
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.7</mn><annotation encoding="application/x-tex">1.7</annotation></semantics></math>
+在计算机里<strong>无法精确表示</strong>（会截断）。而
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.625</mn><annotation encoding="application/x-tex">6.625</annotation></semantics></math>
+没有误差。</p>
+<p><strong>IEEE 浮点数表示</strong>（课件第 26 页）：一个浮点数由
+<strong>符号 S（1 bit）＋ 阶码 E ＋ 尾数 M</strong> 组成。</p>
+<ul>
+<li><code>float</code>：1 + 8 + 23 位。尾数默认隐藏一个前导
+<code>1</code>（尾数 = <code>1.M</code>，当阶码不全为 0 时），故有效位约
+7～8 位十进制。</li>
+<li><code>double</code>：1 + 11 + 52 位。尾数有效位约 15～16
+位十进制。</li>
+<li>阶码采用移码：对
+<code>float</code>，<code>E = 阶码 − 127</code>（阶码 8 位，范围
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>∼</mo><mn>255</mn></mrow><annotation encoding="application/x-tex">0\sim255</annotation></semantics></math>，故
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">min</mi></msub><mo>=</mo><mi>−</mi><mn>127</mn></mrow><annotation encoding="application/x-tex">E_{\min}=-127</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mn>128</mn></mrow><annotation encoding="application/x-tex">E_{\max}=128</annotation></semantics></math>）；对
+<code>double</code>，<code>E = 阶码 − 1023</code>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">min</mi></msub><mo>=</mo><mi>−</mi><mn>1023</mn></mrow><annotation encoding="application/x-tex">E_{\min}=-1023</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mn>1024</mn></mrow><annotation encoding="application/x-tex">E_{\max}=1024</annotation></semantics></math>）。</li>
+<li>数值 =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>×</mo><msup><mn>2</mn><mi>E</mi></msup><mo>×</mo><mn>1</mn><mi>.</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">S \times 2^{E} \times 1.M</annotation></semantics></math>（或阶码全
+0 时为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>×</mo><msup><mn>2</mn><mi>E</mi></msup><mo>×</mo><mn>0</mn><mi>.</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">S\times2^{E}\times0.M</annotation></semantics></math>）。</li>
+</ul>
+<h3 id="浮点数的范围精度与实数常量">01:13:39—01:24:49 ｜
+浮点数的范围、精度与实数常量</h3>
+<p><strong>取值范围</strong>：<code>float</code> 约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mo stretchy="false" form="prefix">[</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>38</mn></mrow></msup><mo>,</mo><mspace width="0.167em"></mspace><msup><mn>10</mn><mn>38</mn></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\pm[10^{-38},\,10^{38}]</annotation></semantics></math>；<code>double</code>
+约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mo stretchy="false" form="prefix">[</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>308</mn></mrow></msup><mo>,</mo><mspace width="0.167em"></mspace><msup><mn>10</mn><mn>308</mn></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\pm[10^{-308},\,10^{308}]</annotation></semantics></math>。</p>
+<ul>
+<li><code>float</code> 的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>
+怎么来：最大
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>128</mn></mrow><annotation encoding="application/x-tex">E=128</annotation></semantics></math>，再乘
+<code>1.…</code>≈<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>128</mn></msup><mo>≈</mo><msup><mn>10</mn><mn>38.4</mn></msup></mrow><annotation encoding="application/x-tex">2^{128}\approx 10^{38.4}</annotation></semantics></math>，故约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>。</li>
+<li><code>double</code> 的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>308</mn></msup><annotation encoding="application/x-tex">10^{308}</annotation></semantics></math>
+同理：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>1024</mn></msup><mo>≈</mo><msup><mn>10</mn><mn>307.2</mn></msup></mrow><annotation encoding="application/x-tex">2^{1024}\approx 10^{307.2}</annotation></semantics></math>，约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>308</mn></msup><annotation encoding="application/x-tex">10^{308}</annotation></semantics></math>。</li>
+</ul>
+<p><strong>精度与取值范围是两个不同概念</strong>：</p>
+<ul>
+<li><code>float x = 1234567.89;</code> 虽在取值范围内，但
+<code>float</code> 只有 7 个有效数字，无法精确表达。</li>
+<li><code>float y = 1.2e55;</code>
+精度要求不高，但超出取值范围（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>），也无法精确表示。</li>
+</ul>
+<p>并非所有实数都能精确表示：<code>float</code> 最多表示
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>32</mn></msup><annotation encoding="application/x-tex">2^{32}</annotation></semantics></math>
+个浮点数，<code>double</code> 最多
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>64</mn></msup><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math>
+个——相对连续实数几乎是”九牛一毛”，且数值越大误差越大。</p>
+<p><strong>实数常量的表示</strong>：</p>
+<ul>
+<li>普通表示：符号 + 整数部分 + 小数点 + 小数部分，如
+<code>-12345.678</code>。</li>
+<li>科学计数法：符号 + 尾数 <code>e/E</code> 指数，如
+<code>-1.2345678E5</code>；普朗克常量
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.026</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>27</mn></mrow></msup></mrow><annotation encoding="application/x-tex">6.026\times10^{-27}</annotation></semantics></math>
+可写成 <code>6.026E-27</code> 或 <code>60.26E-28</code>。</li>
+<li><strong>实型常量的类型都是 <code>double</code></strong>；要表示
+<code>float</code> 常量，加后缀 <code>f</code>，如
+<code>3.14f</code>、<code>5f</code>。</li>
+</ul>
+<h3 id="字符类型ascii-码与转义字符">01:24:49—01:31:49 ｜ 字符类型、ASCII
+码与转义字符</h3>
+<p><code>char</code> 也是整数：占 1 个字节，存的是该字符的 <strong>ASCII
+码值</strong>（如 <code>'A'</code> 的 ASCII 是 65）。所以
+<code>char</code> 本质上是长度为 1
+字节的短整数，可以像整数那样做四则运算、用于 <code>switch</code>
+等。其取值范围是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>128</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>127</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-128,\,127]</annotation></semantics></math>（<code>0</code>～<code>127</code>
+可作 ASCII 字符，负的部分是负整数）。</p>
+<p><strong>转义字符</strong>：C 语言把反斜杠 <code>\</code>
+定义为转义字符，用来把”正常字符”变成”特殊字符”，或把”特殊字符”变成普通字符（课件第
+34 页）：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\\</code></td>
+<td>反斜杠字符本身 <code>\</code></td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>换行符</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>横向跳格符（制表符）</td>
+</tr>
+<tr>
+<td><code>\"</code></td>
+<td>双引号字符本身 <code>"</code></td>
+</tr>
+<tr>
+<td><code>\'</code></td>
+<td>单引号字符本身 <code>'</code></td>
+</tr>
+<tr>
+<td><code>\ddd</code></td>
+<td>1～3 位八进制数作为 ASCII 码所代表的字符</td>
+</tr>
+<tr>
+<td><code>\xhh</code></td>
+<td>1～2 位十六进制数作为 ASCII 码所代表的字符</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>：不要把转义字符的反斜杠和 <code>printf</code>
+里的 <code>%</code> 混为一谈。<code>%</code> 是
+<code>printf</code>/<code>scanf</code> 约定的格式控制字符；在
+<code>printf</code>/<code>scanf</code> 里用 <code>%%</code>
+表示一个百分号，和用 <code>\\</code>
+表示反斜杠方法雷同；而在其他时候直接用 <code>'%'</code>
+表示百分号，不需要任何转义。</p>
+<h3 id="转义字符-与-及字符常量示例">01:31:49—01:44:56 ｜ 转义字符 与
+及字符常量示例</h3>
+<p>字符常量 <code>'A'</code> 与整数 <code>65</code>
+是同一个东西；<code>'\101'</code>（八进制 ASCII 转义）和
+<code>'\x41'</code>（十六进制 ASCII 转义）也都表示
+<code>'A'</code>。课件第 36 页给出完整示例（逐字符照抄）：</p>
+<h4 id="例题证明-4014114-字符常量与转义字符示例">例题/证明
+4（01:41:14）｜ 字符常量与转义字符示例</h4>
+<p><strong>题目／任务</strong>：用 5 种等价方式给 <code>char</code>
+变量赋字符 <code>'A'</code>，并演示在字符串中使用 ASCII 转义。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 36 页）：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> a <span class="op">=</span> <span class="ch">&#39;A&#39;</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符常量&#39;A&#39;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> b <span class="op">=</span> <span class="dv">65</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符的ASCII 码</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> c <span class="op">=</span> <span class="bn">0101</span><span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符的8进制ASCII 码</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> d <span class="op">=</span> <span class="ch">&#39;\</span><span class="er">101</span><span class="ch">&#39;</span><span class="op">;</span> <span class="co">// 字符的8进制ASCII 码转义</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> e <span class="op">=</span> <span class="ch">&#39;</span><span class="sc">\x41</span><span class="ch">&#39;</span><span class="op">;</span> <span class="co">// 字符的16 进制ASCII 码转义</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%c\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> d<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%c</span><span class="st">, 65=</span><span class="sc">%c</span><span class="st">, </span><span class="sc">\&#39;\\</span><span class="st">101</span><span class="sc">\&#39;</span><span class="st">=</span><span class="sc">%c</span><span class="st">, 0101=</span><span class="sc">%c\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>a<span class="op">,</span> <span class="dv">65</span><span class="op">,</span> <span class="ch">&#39;\</span><span class="er">101</span><span class="ch">&#39;</span><span class="op">,</span> <span class="bn">0101</span><span class="op">);</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">// 若在字符串中使用ASCII 码，必须转义</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="er">\1</span><span class="st">01</span><span class="er">\1</span><span class="st">02</span><span class="er">\1</span><span class="st">03</span><span class="er">\1</span><span class="st">04</span><span class="er">\1</span><span class="st">05</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 36 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 36
+页）：</p>
+<pre><code>A A A A A
+a=A, 65=A, ’\101’=A, 0101=A
+ABCDE</code></pre>
+<p><strong>讲解</strong>：</p>
+<ul>
+<li><code>a='A'</code>、<code>b=65</code>、<code>c=0101</code>（八进制
+65）、<code>d='\101'</code>、<code>e='\x41'</code> 五种写法都得到字符
+<code>'A'</code>，因为字符值就是 ASCII
+值（65），字符常量与整型常量在数值上等价。</li>
+<li>在<strong>字符串</strong>中使用 ASCII 码必须转义（如
+<code>"\101\102\103\104\105"</code> →
+<code>ABCDE</code>）；而在字符常量里 <code>0101</code>
+这种八进制整数形式可直接写（如 <code>c = 0101</code>）。</li>
+<li><code>printf</code> 第二行里 <code>\'\\101\'</code>
+是为了在字符串中打印出 <code>'\101'</code>
+字样而做的转义（<code>\'</code> 表示单引号，<code>\\</code>
+表示反斜杠）。</li>
+</ul>
+<p><strong>易错点</strong>：把字符 <code>'A'</code> 与字符串
+<code>"A"</code> 混淆（<code>'A'</code> 是单个字符，<code>"A"</code>
+是含一个字符加结束符的字符串）；在字符串里忘记对 ASCII 码做转义。</p>
+<h3 id="整数实数字符的输入输出格式符与宽度控制">01:44:56—01:54:49 ｜
+整数、实数、字符的输入输出格式符与宽度控制</h3>
+<p><code>printf</code>/<code>scanf</code>
+的格式符（<code>%+格式</code>）必须与数据类型一致，否则结果错误。</p>
+<p><strong>整数格式符</strong>（课件第 38 页）：<code>int</code> 用
+<code>%d</code>（十进制）、<code>%o</code>（八进制）、<code>%x</code>（十六进制小写）/
+<code>%X</code>（大写）；<code>unsigned</code> 用
+<code>%u</code>（十进制）、<code>%o</code>、<code>%x</code>；<code>long</code>
+用
+<code>%ld</code>/<code>%lo</code>/<code>%lx</code>，<code>unsigned long</code>
+用 <code>%lu</code> 等。以下逐字符照抄课件里几个演示程序。</p>
+<h4 id="例题证明-5014723-输出整数d-o-x课件第-39-页">例题/证明
+5（01:47:23）｜ 输出整数：%d %o %x（课件第 39 页）</h4>
+<p><strong>题目／任务</strong>：观察同一个数值在不同进制格式下的输出，以及十进制/八进制/十六进制常量在
+<code>%d</code> 下的显示。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 39 页）：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, </span><span class="sc">%o</span><span class="st">, </span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">10</span><span class="op">);</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, </span><span class="sc">%d</span><span class="st">, </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="bn">010</span><span class="op">,</span> <span class="bn">0x10</span><span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, </span><span class="sc">%x</span><span class="st">, </span><span class="sc">%X\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="bn">010</span><span class="op">,</span> <span class="bn">012</span><span class="op">,</span> <span class="dv">10</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 39 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 39
+页）：</p>
+<pre><code>10, 12, a
+10, 8, 16
+8, a, A</code></pre>
+<p><strong>讲解</strong>：输出八进制、十六进制时，<strong>不会</strong>自动加前导
+<code>0</code> /
+<code>0x</code>；想加就自己在格式串里写。<code>%x</code> 输出小写
+<code>a–f</code>，<code>%X</code> 输出大写 <code>A–F</code>。注意 C
+语言里写八进制常量要用 <code>0</code> 开头，但输出时不会给你加
+<code>0</code>。</p>
+<h4
+id="例题证明-6014850-输出负数时的意外uox-输出-1课件第-40-页">例题/证明
+6（01:48:50）｜ 输出负数时的意外：%u/%o/%x 输出 −1（课件第 40 页）</h4>
+<p><strong>题目／任务</strong>：观察用
+<code>%u</code>、<code>%o</code>、<code>%x</code> 输出 <code>-1</code>
+的结果。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 40 页）：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%u</span><span class="st">, </span><span class="sc">%o</span><span class="st">, </span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%u</span><span class="st">, </span><span class="sc">%o</span><span class="st">, </span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 40 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 40
+页）：</p>
+<pre><code>1
+1
+1
+4294967295
+37777777777
+f f f f f f f f</code></pre>
+<p><strong>原理</strong>：<code>-1</code> 的二进制是 32 个
+<code>1</code>，<code>printf</code> 拿到这 32 个 <code>1</code> 后按
+<code>%u</code>/<code>%o</code>/<code>%x</code>
+的要求把它解释成无符号数，于是得到
+<code>4294967295</code>（<code>0xFFFFFFFF</code>）、八进制
+<code>37777777777</code>、十六进制 <code>ffffffff</code>。3
+个二进制位一组变八进制、4 个一组变十六进制（共 8 个
+<code>f</code>）。理解规则后这些结果都是可以推出来的。</p>
+<h4 id="例题证明-7015121-输入整数d-o-x课件第-41-页">例题/证明
+7（01:51:21）｜ 输入整数：%d %o %x（课件第 41 页）</h4>
+<p><strong>题目／任务</strong>：用 <code>scanf</code>
+以十进制、八进制、十六进制读入，让三个变量都得到 100。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 41 页）：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%o%x</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="op">&amp;</span>c<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 41 页</p>
+<p><strong>输入</strong>：<code>100 144 64</code><br>
+<strong>说明</strong>：<code>100</code> 是十进制 100；<code>144</code>
+是八进制，等于十进制
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>64</mn><mo>+</mo><mn>4</mn><mo>×</mo><mn>8</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">1\times64+4\times8+4=100</annotation></semantics></math>；<code>64</code>
+是十六进制，等于十进制
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn><mo>×</mo><mn>16</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">6\times16+4=100</annotation></semantics></math>。输入八进制可带可不带前导
+<code>0</code>，十六进制可带可不带前导
+<code>0x</code>；<code>scanf</code> 的 <code>%x</code> 允许你前面写
+<code>0x</code> 或不写。</p>
+<h4 id="例题证明-8015234-输出宽度与填充n-0n--n课件第-4244-页">例题/证明
+8（01:52:34）｜ 输出宽度与填充：%n %0n %-n（课件第 42～44 页）</h4>
+<p><strong>题目／任务</strong>：观察输出宽度、补零、左对齐三种格式。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 42～44 页）：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%8d%8o%8X\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">);</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%3d</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12345</span><span class="op">);</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;|</span><span class="sc">%08d</span><span class="st">|</span><span class="sc">%08o</span><span class="st">|</span><span class="sc">%08X</span><span class="st">|</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">);</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;时间 = </span><span class="sc">%02d</span><span class="st">:</span><span class="sc">%02d</span><span class="st">:</span><span class="sc">%02d</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%-8d%-8o%-8X</span><span class="st">|</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">,</span> <span class="dv">47</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 42～44 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 42～44
+页）：</p>
+<pre><code>      47      57      2F
+12345
+|00000047|00000057|0000002F|
+时间 = 12:06:03
+47     57     2F      |</code></pre>
+<p><strong>讲解</strong>：</p>
+<ul>
+<li><code>%n</code>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+为整数）设置最小输出宽度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，不足左侧补空格（右对齐）；实际宽度超过
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+则按实际宽度（如 <code>%3d</code> 输出 <code>12345</code>
+不截断）。</li>
+<li><code>%0n</code>：不足左侧补 <code>0</code>（如
+<code>时间 = 12:06:03</code>）。</li>
+<li><code>%-n</code>：左对齐，不足右侧补空格（<code>%-08d</code>
+无意义）。</li>
+<li>八进制/十六进制输出默认也不带前导
+<code>0</code>/<code>0x</code>，想加就自己在格式串里写（如想输出
+<code>0X</code> 前缀就写 <code>0X%X</code>）。</li>
+</ul>
+<h4 id="例题证明-9015320-实数输入输出与宽度控制课件第-4647-页">例题/证明
+9（01:53:20）｜ 实数输入输出与宽度控制（课件第 46～47 页）</h4>
+<p><strong>题目／任务</strong>：观察实数以
+<code>%f</code>、<code>%e</code> 输出及宽度/小数位控制。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 46～47 页）：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> d <span class="op">=</span> <span class="fl">3.1415926</span><span class="op">;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f</span><span class="st">,</span><span class="sc">%e\n</span><span class="st">&quot;</span><span class="op">,</span> d<span class="op">,</span> d<span class="op">);</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%5.3f</span><span class="st">,</span><span class="sc">%5.2f</span><span class="st">,</span><span class="sc">%.2f\n</span><span class="st">&quot;</span><span class="op">,</span> d<span class="op">,</span> d<span class="op">,</span> d<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 46～47 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 46～47
+页）：</p>
+<pre><code>3.1415923 ,3.14159 e+00
+3.142 , ␣3.14 ,3.14</code></pre>
+<p><strong>讲解</strong>：<code>float</code> 用
+<code>%f</code>/<code>%e</code>，<code>double</code> 输入用
+<code>%lf</code>/<code>%le</code>、输出仍用
+<code>%f</code>/<code>%e</code>。<code>%n.mf</code> 表示总宽
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>、小数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+位；省略 <code>.m</code> 时小数默认 6
+位；省略总宽时按实际宽度；<code>%-n.mf</code>
+左对齐，<code>%0n.mf</code> 补零。</p>
+<h4 id="例题证明-10015444-字符输入输出与空白字符课件第-48-页">例题/证明
+10（01:54:44）｜ 字符输入输出与空白字符（课件第 48 页）</h4>
+<p><strong>题目／任务</strong>：观察 <code>scanf("%c")</code>
+是否读入空白字符。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 48 页）：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c%c%c</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="op">&amp;</span>c<span class="op">);</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c%c%c%c</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> <span class="ch">&#39;#&#39;</span><span class="op">,</span> b<span class="op">,</span> <span class="ch">&#39;#&#39;</span><span class="op">,</span> c<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 48 页</p>
+<p><strong>输入</strong>：<code>A bc</code><回车><br>
+<strong>输出／运行结果</strong>：<code>A#␣#b</code>（中间的空格被
+<code>%c</code> 读走，证明 <code>scanf</code>/<code>getchar</code>
+读字符时会读入任何字符，包括空格、回车、制表符；而读数值时空白字符会被跳过）。<code>printf</code>/<code>putchar</code>
+输出字符时两侧不加单引号。</p>
+<h3 id="例程6-1大小写字母转换">01:54:49—01:56:22 ｜
+例程6-1：大小写字母转换</h3>
+<p>大小写转换规则：小写转大写 <code>ch - 'a' + 'A'</code>；大写转小写
+<code>ch - 'A' + 'a'</code>。课件第 49
+页给出完整例程（逐字符照抄）：</p>
+<h4 id="例题证明-11015535-例程6-1大小写字母转换">例题/证明
+11（01:55:35）｜ 例程6-1：大小写字母转换</h4>
+<p><strong>题目／任务</strong>：从键盘循环读入字符，把小写转大写、大写转小写并输出，遇到回车结束。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 49 页）：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> ch<span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Input characters:&quot;</span><span class="op">);</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> <span class="dv">1</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c</span><span class="st">&quot;</span><span class="op">,&amp;</span>ch<span class="op">);</span> <span class="co">// ch=getchar();</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> ch<span class="op">==</span><span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span> <span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> ch <span class="op">&gt;=</span> <span class="ch">&#39;a&#39;</span> <span class="op">&amp;&amp;</span> ch <span class="op">&lt;=</span> <span class="ch">&#39;z&#39;</span> <span class="op">)</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>ch <span class="op">=</span> ch <span class="op">-</span> <span class="ch">&#39;a&#39;</span> <span class="op">+</span> <span class="ch">&#39;A&#39;</span><span class="op">;</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span><span class="op">(</span> ch<span class="op">&gt;=</span><span class="ch">&#39;A&#39;</span> <span class="op">&amp;&amp;</span> ch<span class="op">&lt;=</span><span class="ch">&#39;Z&#39;</span> <span class="op">)</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>ch <span class="op">=</span> ch <span class="op">-</span> <span class="ch">&#39;A&#39;</span> <span class="op">+</span> <span class="ch">&#39;a&#39;</span><span class="op">;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>putchar<span class="op">(</span>ch<span class="op">);</span> <span class="co">// printf(&quot;%c&quot;,ch);</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 49 页</p>
+<p><strong>输入</strong>：例如键入 <code>AbC</code><回车>。</p>
+<p><strong>输出／运行结果</strong>：<code>aBc</code>（<code>A</code>→<code>a</code>、<code>b</code>→<code>B</code>、<code>C</code>→<code>c</code>）。</p>
+<p><strong>原理</strong>：利用 ASCII 码连续的特性：先判断
+<code>ch</code>
+在小写区间还是大写区间，再减去该区间首字母加上目标区间首字母。注意
+<code>scanf("%c",&amp;ch)</code> 会读入回车，所以要用
+<code>if(ch=='\n') break;</code> 来结束循环。</p>
+<p><strong>易错点</strong>：用 <code>%c</code>
+读字符时不跳过空白字符，回车也会被读入；忘记处理 <code>\n</code>
+会导致循环无法终止。</p>
+<h3 id="键盘缓冲区与标准输入流-stdin">01:56:26—02:01:15 ｜
+键盘缓冲区与标准输入流 stdin</h3>
+<p>键盘输入与 <code>scanf</code> 的关系（课件第 51～52 页）：</p>
+<ul>
+<li><strong>键盘缓冲区</strong>：保存键入的字符序列。</li>
+<li><strong>标准输入流 <code>stdin</code></strong>（standard input）：为
+<code>scanf</code>、<code>getchar</code>
+等提供字符流；它可以对应键盘缓冲区，也可以对应某个文件。</li>
+</ul>
+<p>流程：</p>
+<ol type="1">
+<li>用户键入字符，存入键盘缓冲区。</li>
+<li>按下回车（<code>return</code>），产生一个换行符 <code>\n</code>
+存入缓冲区。</li>
+<li>缓冲区收到 <code>\n</code> 后，把字符序列（含
+<code>\n</code>）转移到 <code>stdin</code>。</li>
+<li><code>scanf</code>/<code>getchar</code> 从 <code>stdin</code>
+<strong>最前面</strong>的字符开始读取。</li>
+<li><code>scanf</code> 成功读取数据后，把<strong>已消耗的字符从
+<code>stdin</code>
+自动删除</strong>；遇到不满足格式要求的字符则<strong>终止运行</strong>，该字符仍留在
+<code>stdin</code>。</li>
+</ol>
+<p>若 <code>stdin</code> 为空，<code>scanf</code>/<code>getchar</code>
+会停下来<strong>等待用户输入</strong>——这就是程序”卡住等你输入”的原因。</p>
+<h3 id="scanf-的格式字符-d-f-lf-c-n">02:01:15—02:03:57 ｜ scanf
+的格式字符 %d %f %lf %c %n</h3>
+<p><code>scanf</code> 的格式字符（课件第 53 页）：</p>
+<ul>
+<li><code>%d</code>：读十进制整数（<code>int</code>）。</li>
+<li><code>%f</code>：读单精度浮点数（<code>float</code>）。</li>
+<li><code>%lf</code>：读双精度浮点数（<code>double</code>）。</li>
+<li><code>%c</code>：读一个字符（<code>char</code>）；<strong>不会跳过任何空白字符</strong>（空格、回车、制表符都有效）。</li>
+<li><code>%n</code>：记录到目前为止从 <code>stdin</code>
+消耗的字符个数（含读入和跳过的）。</li>
+</ul>
+<p>例外：读取 <code>%d</code>/<code>%f</code>/<code>%lf</code>
+等数值时，会<strong>自动跳过数据前面的空白字符</strong>（空格、换行、制表符）；但
+<code>%c</code> 读字符不跳过空白。普通字符中，一个空格或 <code>\n</code>
+可匹配 0～多个连续空白字符。</p>
+<h4
+id="例题证明-12020150-scanf-练习d-的自动跳空格与遇非法字符终止">例题/证明
+12（02:01:50）｜ scanf 练习：%d 的自动跳空格与遇非法字符终止</h4>
+<p><strong>题目／任务</strong>（课件第 55 页）：观察
+<code>scanf("%d%d", &amp;a, &amp;b);</code> 在两种输入下的行为。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 55 页）：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">=</span><span class="dv">1</span><span class="op">,</span> b<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">, b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 55 页</p>
+<p><strong>输入 1</strong>：<code>+12</code> <code>&lt;回车&gt;</code>
+<code>-34</code><br>
+<strong>输出</strong>：<code>a=12, b=-34</code>（读第二个
+<code>%d</code> 时自动跳过前面的空白字符）。</p>
+<p><strong>输入 2</strong>：<code>56x78</code><br>
+<strong>输出</strong>：<code>a=56, b=2</code>（读第二个 <code>%d</code>
+碰到非法字符 <code>x</code> 立即停止，<code>b</code> 保持原值 2）。</p>
+<p><strong>结论</strong>：数值转换会自动跳过前导空白；遇到不满足格式的字符就终止，尚未读入的变量保持原值。</p>
+<h4 id="例题证明-13020526-scanf-练习f-遇非法字符-f-终止">例题/证明
+13（02:05:26）｜ scanf 练习：%f 遇非法字符 f 终止</h4>
+<p><strong>题目／任务</strong>（课件第 56 页）：观察
+<code>scanf("%f%f", &amp;a, &amp;b);</code> 的行为。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 56 页）：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> a<span class="op">=</span><span class="dv">1</span><span class="op">,</span>b<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%.1f</span><span class="st">, b=</span><span class="sc">%.1f\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 56 页</p>
+<p><strong>输入 1</strong>：<code>1.</code> <code>&lt;回车&gt;</code>
+<code>5</code> <code>&lt;回车&gt;</code> <code>34</code><br>
+<strong>输出</strong>：<code>a=1.0, b=5.0</code>（多输了一个空格，实际变成两个数
+<code>1.</code> 和 <code>5</code>）。</p>
+<p><strong>输入 2</strong>：<code>56 f</code> <code>&lt;回车&gt;</code>
+<code>78</code><br>
+<strong>输出</strong>：<code>a=56.0, b=2.0</code>（读第二个
+<code>%f</code> 碰到非法字符 <code>f</code> 停止，<code>b</code>
+保持原值 2）。</p>
+<h4 id="例题证明-14020618-scanf-练习n-消耗字符数">例题/证明
+14（02:06:18）｜ scanf 练习：%n 消耗字符数</h4>
+<p><strong>题目／任务</strong>（课件第 57 页）：用 <code>%n</code>
+记录已消耗字符数。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 57 页）：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> na<span class="op">=</span><span class="dv">0</span><span class="op">,</span> nb<span class="op">=</span><span class="dv">0</span><span class="op">,</span> a<span class="op">=</span><span class="dv">0</span><span class="op">,</span> b<span class="op">=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">// %n获取目前为止从stdin 中消耗的字符数</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%n%d%n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>na<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="op">&amp;</span>nb<span class="op">);</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">, na=</span><span class="sc">%d</span><span class="st">, b=</span><span class="sc">%d</span><span class="st">, nb=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> na<span class="op">,</span> b<span class="op">,</span> nb<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 57 页</p>
+<p><strong>输入 1</strong>：<code>200 300</code><br>
+<strong>输出</strong>：<code>a=200, na=3, b=300, nb=7</code>（<code>%n</code>
+在对应位置记录已消耗的字符数：<code>200</code> 消耗 3 个，读完
+<code>300</code> 共消耗 7 个）。</p>
+<p><strong>输入 2</strong>：<code>200 x</code><br>
+<strong>输出</strong>：<code>a=200, na=3, b=0, nb=0</code>（读
+<code>b</code> 时遇 <code>x</code> 终止，<code>b</code> 与
+<code>nb</code> 均未变）。</p>
+<h4 id="例题证明-15020820-scanf-返回值练习">例题/证明 15（02:08:20）｜
+scanf 返回值练习</h4>
+<p><strong>题目／任务</strong>（课件第 58 页）：<code>scanf</code>
+返回<strong>正确读入的数据个数</strong>。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 58 页）：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">,</span> a<span class="op">=</span><span class="dv">0</span><span class="op">,</span> b<span class="op">=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span> <span class="co">// 返回正确读入的数据个数</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;n=</span><span class="sc">%d</span><span class="st">, a=</span><span class="sc">%d</span><span class="st">, b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> n<span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 58 页</p>
+<p><strong>输入 1</strong>：<code>200 300</code> →
+<code>n=2, a=200, b=300</code>。<br> <strong>输入
+2</strong>：<code>200 x</code> → <code>n=1, a=200, b=0</code>。</p>
+<h3 id="scanf-的普通字符与读取四则运算表达式">02:03:57—02:11:18 ｜ scanf
+的普通字符与读取四则运算表达式</h3>
+<p>格式控制串中的<strong>普通字符</strong>（无 <code>%</code> 前缀）在
+<code>stdin</code> 中逐个匹配；例外：空格或 <code>\n</code>
+作为普通字符可匹配 0～多个空白字符。</p>
+<h4 id="例题证明-16020928-scanf-普通字符匹配dd">例题/证明
+16（02:09:28）｜ scanf 普通字符匹配：%d+%d</h4>
+<p><strong>题目／任务</strong>（课件第 60 页）：格式串里写普通字符
+<code>+</code>，要求输入中也有 <code>+</code>。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 60 页）：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">+</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">，b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 60 页</p>
+<ul>
+<li>输入 <code>1+2</code> → <code>a=1, b=2</code>（<code>+</code>
+匹配成功）。</li>
+<li>输入 <code>1 + 2</code> → <code>a=1, b=0</code>（<code>+</code>
+前多了空格，匹配 <code>*</code> 失败，<code>scanf</code> 停止）。</li>
+<li>输入 <code>1+</code> <code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, b=2</code>（读 <code>b</code> 时自动跳过前面的空格）。</li>
+</ul>
+<h4 id="例题证明-17021008-scanf-空格匹配零到多个空白字符">例题/证明
+17（02:10:08）｜ scanf 空格匹配零到多个空白字符</h4>
+<p><strong>题目／任务</strong>（课件第 61
+页）：格式串里的空格可匹配任意数量的空白字符。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 61 页）：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> * </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,&amp;</span>a<span class="op">,&amp;</span>b<span class="op">);</span><span class="co">// 使用&quot;空格&quot; 匹配空白字符</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">，b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 61 页</p>
+<ul>
+<li>输入 <code>1*</code> <code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, b=2</code>。</li>
+<li>输入 <code>1</code> <code>&lt;回车&gt;</code> <code>*</code>
+<code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, b=2</code>（空格匹配了换行符）。</li>
+</ul>
+<p><code>scanf("%d\n*\n%d", &amp;a,&amp;b);</code>
+与上面等价（<code>\n</code> 与空格匹配功能相同）。</p>
+<h4 id="例题证明-18021044-scanf-读取四则运算表达式">例题/证明
+18（02:10:44）｜ scanf 读取四则运算表达式</h4>
+<p><strong>题目／任务</strong>（课件第 62 页）：读入”整数 运算符
+整数”形式的表达式，运算符两边允许任意多空白。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 62 页）：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="dt">char</span> ch <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%c</span><span class="st"> </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,&amp;</span>ch<span class="op">,&amp;</span>b<span class="op">);</span><span class="co">// 包含普通字符&quot;空格&quot;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;a=</span><span class="sc">%d</span><span class="st">，ch=</span><span class="sc">%c</span><span class="st">, b=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 62 页</p>
+<ul>
+<li>输入 <code>1+</code> <code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, ch=+, b=2</code>。</li>
+<li>输入 <code>1</code> <code>&lt;回车&gt;</code> <code>+</code>
+<code>&lt;回车&gt;</code> <code>2</code> →
+<code>a=1, ch=+, b=2</code>（空格匹配换行符）。</li>
+</ul>
+<p><strong>要点</strong>：想读入一个非空白字符（如运算符），在
+<code>%c</code> 左右留空格即可让它跳过前面的空白。</p>
+<h3 id="数据类型转换强制类型转换与自动类型转换">02:11:30—02:22:04 ｜
+数据类型转换：强制类型转换与自动类型转换</h3>
+<p><strong>强制类型转换</strong>（课件第 63～64
+页）：<code>(类型名)表达式</code>。它是<strong>单目运算符，优先级高于一切双目运算符</strong>。它把”值”转换成指定类型，得到新值——<strong>不能把变量本身变成另一种类型</strong>（变量在内存中的大小是固定的）。</p>
+<h4 id="例题证明-19021305-强制类型转换float-x-1.5-的四种输出">例题/证明
+19（02:13:05）｜ 强制类型转换：float x = 1.5 的四种输出</h4>
+<p><strong>题目／任务</strong>（课件第 65 页）：观察以下四条
+<code>printf</code> 的输出差异。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 65 页）：</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> x <span class="op">=</span> <span class="fl">1.5</span><span class="op">;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>x <span class="op">+</span> <span class="fl">1.8</span><span class="op">);</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)(</span>x<span class="op">+</span><span class="fl">1.8</span><span class="op">));</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>x<span class="op">);</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> x<span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 65 页</p>
+<p><strong>讲解与运行结果</strong>：</p>
+<ol type="1">
+<li><code>(int)x + 1.8</code>：<code>(int)x</code> 先把 <code>1.5</code>
+转成整数 <code>1</code>，再 <code>+1.8</code> 得 <code>2.8</code>，按
+<code>%f</code> 输出 <code>2.800000</code>。</li>
+<li><code>(int)(x+1.8)</code>：先算 <code>x+1.8 = 3.3</code>，再转
+<code>int</code> 得 <code>3</code>，按 <code>%f</code> 输出
+<code>3.000000</code>。</li>
+<li><code>(int)x</code> 得 <code>1</code>，按 <code>%d</code> 输出
+<code>1</code>。</li>
+<li><code>printf("%d", x);</code>：<strong>格式符 <code>%d</code>
+与参数类型 <code>float</code> 不一致</strong>——<code>printf</code>
+不会按 <code>%</code> 做类型转换，而是把 <code>x</code> 的 bit
+直接按整数解释，输出一个”怪怪的”无意义值。<strong>只有当 <code>%</code>
+格式与参数类型一致时输出才正确</strong>。</li>
+</ol>
+<p><strong>自动类型转换</strong>（课件第 66～67
+页）：不同类型混合运算时，系统按规则先转成相同类型再运算；无论哪种转换，<strong>转的都是”值的类型”，不是变量的类型</strong>。规则要点：</p>
+<ul>
+<li>赋值运算：右边类型转成左边类型再赋给左边；右边更长会丢失精度（产生警告）。</li>
+<li>函数调用：实参隐式转成形参类型；返回值隐式转成函数返回类型。</li>
+<li>浮点运算<strong>都以双精度 <code>double</code>
+进行</strong>（<code>float</code> 操作数先转
+<code>double</code>，结果再转回
+<code>float</code>）——保证精度、提高速度。</li>
+<li><code>char</code>、<code>short</code> 参与运算先转成
+<code>int</code>。</li>
+<li><strong>有符号整型与无符号整型混合运算：有符号型要转成无符号型，结果也是无符号的。</strong></li>
+</ul>
+<h3 id="有符号与无符号混合运算例题">02:22:04—02:25:06 ｜
+有符号与无符号混合运算例题</h3>
+<h4
+id="例题证明-20022204-有符号与无符号混合运算int-a-10-unsigned-b-5">例题/证明
+20（02:22:04）｜ 有符号与无符号混合运算：int a = −10, unsigned b =
+5</h4>
+<p><strong>题目／任务</strong>（课件第 67 页）：判断
+<code>if ((a+b) &gt; 0)</code> 是否成立并输出什么。</p>
+<p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 67 页）：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">10</span><span class="op">;</span> <span class="dt">unsigned</span> b <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">((</span>a<span class="op">+</span>b<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;Hello</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> printf<span class="op">(</span><span class="st">&quot;World</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span></code></pre></div>
+<p>代码取自课件 ch06.txt 第 67 页</p>
+<p><strong>输出／运行结果</strong>（逐字符取自课件 ch06.txt 第 67
+页）：</p>
+<pre><code>Hello</code></pre>
+<p><strong>讲解</strong>：<code>a</code>（<code>int</code>）与
+<code>b</code>（<code>unsigned</code>）运算时，<code>a</code>
+被转换成无符号整数——<code>-10</code> 的 32 个 <code>1</code>
+被解释成一个很大的无符号正整数，加上 <code>5</code>
+后仍是很大的正整数（远 &gt; 0）。所以 <code>(a+b) &gt; 0</code>
+为真，输出 <code>Hello</code>。这与数学上 <code>a+b = -5</code>
+的直觉完全相反。</p>
+<p><strong>易错点</strong>：<strong>有符号整数与无符号整数混合运算时，有符号的会被转成无符号</strong>，结果也是无符号；<code>a+b</code>
+不等于 0 时一定 &gt;
+0。这也是常考题目。类似地，<code>for(i=1; i&lt;=n; i++)</code> 中若
+<code>n</code> 是无符号整数、而 <code>i</code>
+是有符号整数，比较时也易出错，要特别小心。</p>
+<p>本节课在此结束，老师预告下一讲讲<strong>表达式</strong>（运算符与优先级）。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

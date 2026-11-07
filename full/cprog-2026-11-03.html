@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-11-03 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-11-03 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-11-03-课堂详解"
+id="toc-c-程序设计2026-11-03-课堂详解">《C 程序设计》2026-11-03
+课堂详解</a>
+<ul>
+<li><a href="#一位运算与补码回顾000022000802"
+id="toc-一位运算与补码回顾000022000802">一、位运算与补码回顾（00:00:22—00:08:02）</a>
+<ul>
+<li><a href="#位运算复习取位取字节取反与置-0"
+id="toc-位运算复习取位取字节取反与置-0">00:00:22—00:04:43 ｜
+位运算复习：取位、取字节、取反与置 0</a></li>
+<li><a href="#补码表示原理回顾"
+id="toc-补码表示原理回顾">00:04:43—00:08:02 ｜ 补码表示原理回顾</a></li>
+</ul></li>
+<li><a href="#二第七章-数组000802021950"
+id="toc-二第七章-数组000802021950">二、第七章
+数组（00:08:02—02:19:50）</a>
+<ul>
+<li><a href="#数组的概念与一维数组的定义"
+id="toc-数组的概念与一维数组的定义">00:08:02—00:11:41 ｜
+数组的概念与一维数组的定义</a></li>
+<li><a href="#数组元素的引用下标范围与运算符优先级"
+id="toc-数组元素的引用下标范围与运算符优先级">00:11:41—00:20:08 ｜
+数组元素的引用、下标范围与运算符优先级</a></li>
+<li><a href="#例-7-1-输出大于平均值的数与数组大小限制"
+id="toc-例-7-1-输出大于平均值的数与数组大小限制">00:20:08—00:25:32 ｜ 例
+7-1 输出大于平均值的数与数组大小限制</a></li>
+<li><a href="#一维数组的初始化长度推断与缺省初值"
+id="toc-一维数组的初始化长度推断与缺省初值">00:25:32—00:29:59 ｜
+一维数组的初始化（长度推断与缺省初值）</a></li>
+<li><a href="#局部变量数组的初值不确定垃圾值"
+id="toc-局部变量数组的初值不确定垃圾值">00:29:59—00:33:09 ｜
+局部变量数组的初值不确定（垃圾值）</a></li>
+<li><a href="#程序解析-7-2-用数组计算斐波那契数列"
+id="toc-程序解析-7-2-用数组计算斐波那契数列">00:33:09—00:39:07 ｜
+程序解析 7-2 用数组计算斐波那契数列</a></li>
+<li><a href="#顺序查找算法程序解析-7-3"
+id="toc-顺序查找算法程序解析-7-3">00:39:07—00:52:13 ｜
+顺序查找算法（程序解析 7-3）</a></li>
+<li><a href="#数组最小值问题程序解析-7-4"
+id="toc-数组最小值问题程序解析-7-4">00:52:13—00:57:12 ｜
+数组最小值问题（程序解析 7-4）</a></li>
+<li><a href="#选择法排序程序解析-7-5"
+id="toc-选择法排序程序解析-7-5">00:57:12—01:07:27 ｜
+选择法排序（程序解析 7-5）</a></li>
+<li><a href="#二分查找算法程序解析-7-6"
+id="toc-二分查找算法程序解析-7-6">01:07:27—01:17:09 ｜
+二分查找算法（程序解析 7-6）</a></li>
+<li><a href="#二维数组的定义下标范围与越界"
+id="toc-二维数组的定义下标范围与越界">01:17:09—01:20:24 ｜
+二维数组的定义、下标范围与越界</a></li>
+<li><a href="#程序解析-7-8-求矩阵的最大值"
+id="toc-程序解析-7-8-求矩阵的最大值">01:20:24—01:26:47 ｜ 程序解析 7-8
+求矩阵的最大值</a></li>
+<li><a href="#二维数组的初始化逐行-部分-省略行数-列数不可省"
+id="toc-二维数组的初始化逐行-部分-省略行数-列数不可省">01:26:47—01:36:18
+｜ 二维数组的初始化（逐行 / 部分 / 省略行数 / 列数不可省）</a></li>
+<li><a href="#二维数组的内存排列与数组的数组"
+id="toc-二维数组的内存排列与数组的数组">01:36:18—01:44:03 ｜
+二维数组的内存排列与”数组的数组”</a></li>
+<li><a href="#程序解析-7-9-矩阵转置"
+id="toc-程序解析-7-9-矩阵转置">01:44:03—01:47:06 ｜ 程序解析 7-9
+矩阵转置</a></li>
+<li><a href="#程序解析-7-10-用二维数组计算某年某月某日是第几天"
+id="toc-程序解析-7-10-用二维数组计算某年某月某日是第几天">01:47:06—01:58:28
+｜ 程序解析 7-10 用二维数组计算某年某月某日是第几天</a></li>
+<li><a href="#字符数组读入-n-个字符读入一行"
+id="toc-字符数组读入-n-个字符读入一行">01:58:28—02:03:33 ｜
+字符数组（读入 n 个字符、读入一行）</a></li>
+<li><a href="#字符串结束标志存储初始化s-输出与风险"
+id="toc-字符串结束标志存储初始化s-输出与风险">02:03:33—02:14:41 ｜
+字符串（结束标志、存储、初始化、%s 输出与风险）</a></li>
+<li><a href="#程序解析-7-11-判断回文字符串"
+id="toc-程序解析-7-11-判断回文字符串">02:14:41—02:19:50 ｜ 程序解析 7-11
+判断回文字符串</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-11-03-课堂详解">《C 程序设计》2026-11-03
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:23:20 ｜ 逐条字幕：1054 条 ｜ 时间段小节：21
+｜ 例题 / 证明：11</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件，不以字幕为准；课件原文留档在
+content/cprog/_slides/ 下对应章节。**</p>
+</blockquote>
+<h2
+id="一位运算与补码回顾000022000802">一、位运算与补码回顾（00:00:22—00:08:02）</h2>
+<h3 id="位运算复习取位取字节取反与置-0">00:00:22—00:04:43 ｜
+位运算复习：取位、取字节、取反与置 0</h3>
+<p>本时段是上新课前的热身，复习前一章（位运算）的内容，全部为口头推演，没有在屏幕上给出完整程序，只讲清几条按位操作的套路。</p>
+<ul>
+<li><strong>取 <code>N</code> 的第 <code>k</code> 位的值</strong>：把
+<code>N</code> 向右移 <code>k</code> 位，使这一位落到最低位，再跟
+<code>1</code>
+做一次按位与（<code>&amp;</code>）即可把其余位抹掉，只留下这一位（<code>0</code>
+或 <code>1</code>）。</li>
+<li><strong>取 <code>N</code> 的第 0
+个字节（或第几个字节）</strong>：一个字节有 8 个比特，取第 0 个字节就是
+<code>N &amp; 0xff</code>；取第几个字节就先把 <code>N</code>
+向右移若干个 16 位（每 16 位两个字节），再
+<code>&amp; 0xff</code>。</li>
+<li><strong>将 <code>N</code> 的第 <code>k</code> 到第 <code>k+3</code>
+位取反</strong>：先造出一个只有这 4 位为 <code>1</code>、其余全
+<code>0</code> 的掩码，即 <code>0xf &lt;&lt; k</code>，再让它跟
+<code>N</code> 做按位异或（<code>^</code>），异或 <code>1</code>
+就达到取反的效果。</li>
+<li><strong>将这几位设置为 0（不是取反）</strong>：先把掩码取反，再跟
+<code>N</code> 做按位与（<code>&amp;</code>）。</li>
+</ul>
+<p>老师说这些方法很多，核心是”用掩码 + 与 / 或 /
+异或”去精确定位并改写某几个比特；并提到有兴趣可以去问 AI
+要一些位运算的高级题目。</p>
+<h3 id="补码表示原理回顾">00:04:43—00:08:02 ｜ 补码表示原理回顾</h3>
+<p>老师重讲”为什么整数运算在补码上进行，而不是原码上”。</p>
+<ul>
+<li>原码的麻烦：做加法要先判断符号位，异号相加要另做减法，硬件实现复杂。</li>
+<li>补码定义视角：把整数 <code>X</code> 当作无符号数看待。<code>X</code>
+的反码 <code>~X</code> 与 <code>X</code> 相加等于”全 1”；“全 1”再加
+<code>1</code> 等于 <code>0</code>。于是
+<code>X + (~X + 1) = 0</code>，即 <code>~X + 1</code> 正是
+<code>-X</code> 的补码表示，所以”负 <code>X</code> 等于把 <code>X</code>
+按位取反再加 <code>1</code>“。</li>
+<li>意义：补码下，加减法统一成同一个加法器，不需要单独判断符号位，逢二进一、进位自然丢弃即可。这一段是概念复习，没有屏幕代码。</li>
+</ul>
+<h2 id="二第七章-数组000802021950">二、第七章
+数组（00:08:02—02:19:50）</h2>
+<h3 id="数组的概念与一维数组的定义">00:08:02—00:11:41 ｜
+数组的概念与一维数组的定义</h3>
+<p>老师宣布”今天开始上第七章”，第七章是<strong>数组</strong>，分三大块：一维数组、二维数组、以及由字符数组引出的字符串。</p>
+<p><strong>数组是什么</strong>：一组相同类型数据的有序集合，元素在内存中<strong>连续存放</strong>，每个元素占同样大小的空间（例如一个
+<code>int</code> 占 4
+个字节，数组里就一个挨一个地放）。老师特意纠正了”有序集合”这个词在数学上的不严谨——数学里集合要求元素互异，而数组允许存放相同元素，只是”有序”（按下标顺序）而已。</p>
+<p>一维数组的定义形式（课件 ch07.txt）：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> f<span class="op">[</span>n<span class="op">];</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">/* 非法定义，长度不能包含变量*/</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">/* 长度为10 的整数数组*/</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>c<span class="op">[</span><span class="dv">20</span><span class="op">*</span><span class="dv">10</span><span class="op">];</span><span class="co">/* 长度为200 的字符数组*/</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li><code>类型名 数组名[数组长度]</code>：必须给出元素的类型、数组名、数组长度。</li>
+<li><strong>数组长度必须是整数类型的常量表达式</strong>（如
+<code>10</code>、<code>20*10</code>），编译时就要能算出来。</li>
+<li><strong>长度里不能出现变量</strong>：因为数组占用多大空间是在编译阶段就定好的；包含变量（如
+<code>float f[n];</code>）在 C 语言标准里是非法的（某些编译器如 gcc
+的扩展允许，但那不是标准 C）。</li>
+</ul>
+<h3 id="数组元素的引用下标范围与运算符优先级">00:11:41—00:20:08 ｜
+数组元素的引用、下标范围与运算符优先级</h3>
+<p><strong>元素引用</strong>：<code>数组名[下标表达式]</code>。下标从
+<strong>0</strong> 开始，<code>a[0]</code>
+是首元素，<code>a[长度-1]</code>
+是最后一个元素；下标可以是变量，不限于常量。</p>
+<p>课件给出的引用与读入示例（ch07.txt）：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="dv">5</span><span class="op">;</span> <span class="co">/* 将5赋值给a[0], 即首元素*/</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> a<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">+</span> a<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%f%c</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span><span class="dv">0</span><span class="op">],</span> <span class="op">&amp;</span>c<span class="op">[</span><span class="dv">0</span><span class="op">]);</span> <span class="co">/* 取地址*/</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> n<span class="op">&lt;</span><span class="dv">10</span><span class="op">;</span> n<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> n<span class="op">*</span><span class="dv">100</span><span class="op">;</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>下标范围</strong>：<code>[0, 长度-1]</code>，不能越界；<code>a[k]</code>
+即”第 <code>k</code> 个元素”。</p>
+<p><strong>运算符优先级（本节课重点复习）</strong>：老师把书上运算符附录复习了一遍，关键结论——</p>
+<ul>
+<li>圆括号 <code>()</code>、方括号
+<code>[]</code>（下标运算符）优先级最高，高于所有单目运算符。</li>
+<li>单目运算符（取地址 <code>&amp;</code>、按位取反
+<code>~</code>、正号负号、<code>++</code>/<code>--</code>、<code>sizeof</code>
+等）优先级相同，且<strong>从右向左结合</strong>。</li>
+<li>双目运算符内部顺序：算术（先乘除后加减）→
+移位（<code>&lt;&lt;</code>/<code>&gt;&gt;</code>，夹在算术与关系之间，因为它效果像乘
+2、除 2）→ 关系比较 → 相等比较 → 位运算（<code>&amp;</code> →
+<code>^</code> → <code>|</code>）→ 逻辑运算（<code>&amp;&amp;</code> →
+<code>||</code>）→ 三目 <code>?:</code> → 赋值 → 逗号。</li>
+</ul>
+<p>由于方括号 <code>[]</code> 优先级高于取地址 <code>&amp;</code>，像
+<code>scanf("%d", &amp;a[i]);</code> 这种写法<strong>不需要给
+<code>&amp;a[i]</code> 额外加括号</strong>：先结合出数组元素
+<code>a[i]</code>（它本身就是普通变量），再对它取地址。</p>
+<h3 id="例-7-1-输出大于平均值的数与数组大小限制">00:20:08—00:25:32 ｜ 例
+7-1 输出大于平均值的数与数组大小限制</h3>
+<h4 id="例题证明-1002008-例-7-1-输出所有大于平均值的数">例题/证明
+1（00:20:08）｜ 例 7-1 输出所有大于平均值的数</h4>
+<p><strong>题目／任务</strong>：读入
+<code>n</code>（<code>n&lt;=10</code>）个整数，计算并输出平均值，再输出其中大于平均值的数。</p>
+<p><strong>思路</strong>：只算平均值用不着数组（读一个加一个再除以总个数即可）；但算完平均值后还要回头比较”哪些数大于平均值”，所以必须把读进来的数据全部保存起来——用数组。需要两次扫描：第
+1 次求和算平均，第 2 次遍历比较并输出。</p>
+<p><strong>代码</strong>（课件 ch07.txt，第 6—8 页，逐字符照抄）：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">,</span> i<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> average <span class="op">,</span> sum <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">10</span><span class="op">];</span> <span class="co">// 定义数组，用于存储数据</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 读入元素个数</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter n:&quot;</span><span class="op">);</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> n<span class="op">&lt;</span><span class="dv">1</span> <span class="op">||</span> n<span class="op">&gt;</span><span class="dv">10</span> <span class="op">)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// 不合理输入</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">// 读取数据元素，保存到数组中</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter </span><span class="sc">%d</span><span class="st"> integers:&quot;</span><span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="co">// 读取数据</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">// 计算平均值</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="co">// 求和</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>sum <span class="op">+=</span> a<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>average <span class="op">=</span> sum <span class="op">/</span> n<span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">// 计算平均值</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Average = </span><span class="sc">%f\n</span><span class="st">&quot;</span><span class="op">,</span> average<span class="op">);</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">// 处理大于平均值的数据</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;&gt; average:&quot;</span><span class="op">);</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]&gt;</span>average <span class="op">)</span> <span class="co">// 大于均值</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot; </span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>输入示例</strong>（假设输入 5 个数）：</p>
+<pre><code>5
+3 7 2 8 5</code></pre>
+<p><strong>输出／运行结果</strong>：程序先打印平均值，再打印大于平均值的那些数（上面这组输入平均值为
+5.0，大于 5 的是 7 和 8）：</p>
+<pre><code>Average = 5.000000
+&gt; average: 7 8</code></pre>
+<p><strong>老师点出的要点与易错点</strong>：</p>
+<ul>
+<li><code>a[i]</code>
+就是一个普通变量，凡是普通变量能出现的地方它都能出现；正因为下标
+<code>i</code> 可以是循环变量，才能用一个 <code>for</code>
+循环遍历整个数组（比起写 <code>a0,a1,…,a10</code>
+十个变量，数组配合循环威力巨大）。</li>
+<li>两个 <code>for</code>
+循环可以合并成一个（读入的同时累加求和）。</li>
+<li><strong>数组大小限制</strong>：数组大小有上限，取决于编译器和机器的动态存储区大小，一般几千几万没问题，但定义成”11
+亿”肯定不行。老师回忆自己当年定义 <code>1000×1000</code>
+的二维数组就被拒。原因见下一点的”动态存储区”。</li>
+<li><strong>为何有大小限制</strong>：数组若是函数内的局部变量，存放在<strong>动态存储区</strong>（栈）。函数调用越深，局部变量越多，这块区域耗尽程序就崩溃；而且
+C
+语言函数调用深度也是有限的（几百层左右），根源都是动态存储区内存有限。等到第八章会学”动态内存分配”来突破这个限制。</li>
+</ul>
+<h3 id="一维数组的初始化长度推断与缺省初值">00:25:32—00:29:59 ｜
+一维数组的初始化（长度推断与缺省初值）</h3>
+<p>和普通变量一样，定义数组时可以同时赋初值（课件 ch07.txt）：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">10</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">};</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> b<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">4</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">10</span><span class="op">};</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 初值个数为4，所以b的长度为4</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li>初值用花括号 <code>{}</code> 括起来，各值用逗号隔开。</li>
+<li><strong>给定了初值表但省略长度时，长度由初值个数决定</strong>：如
+<code>float b[] = {4,6,8,10};</code> 长度为 4。</li>
+<li>老师强调：“随机”是严格的数学概念，数组没初始化时的值<strong>不是随机值</strong>，而是”不确定的值”（垃圾值）。</li>
+</ul>
+<h3 id="局部变量数组的初值不确定垃圾值">00:29:59—00:33:09 ｜
+局部变量数组的初值不确定（垃圾值）</h3>
+<p>课件 ch07.txt 给出数组元素的初值规律：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> a<span class="op">[</span><span class="dv">10</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">};</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">double</span> b<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> c<span class="op">[</span><span class="dv">20</span><span class="op">];</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<ul>
+<li><strong>部分初始化的数组</strong>：没给初值的元素，其缺省初值全为
+<code>0</code>（<code>a[3]…a[9]</code> 全为 0）。</li>
+<li><strong>未给任何初值的静态数组 /
+全局变量数组</strong>：所有元素初值为 <code>0</code>。</li>
+<li><strong>未给任何初值的局部变量数组</strong>：元素初值是<strong>不确定的</strong>（垃圾值），不能用。老师反复强调：这个值”不可预测”，只是”你前一次程序运行留在内存里的残留”，绝不是”随机值”。</li>
+</ul>
+<h3 id="程序解析-7-2-用数组计算斐波那契数列">00:33:09—00:39:07 ｜
+程序解析 7-2 用数组计算斐波那契数列</h3>
+<h4
+id="例题证明-2003309-程序解析-7-2-用数组计算和输出斐波那契数列">例题/证明
+2（00:33:09）｜ 程序解析 7-2 用数组计算和输出斐波那契数列</h4>
+<p><strong>题目／任务</strong>：利用数组计算斐波那契数列的前
+<code>n</code> 项并输出（每行 5 个）。</p>
+<p><strong>思路</strong>：上次没用数组时，用三个变量
+<code>x1,x2,x</code>
+像”滑动窗口”一样推，比较绕；现在用数组存，下标直接就是第几项，算法更直观。老师称这种”多用一点内存、少绕一点弯”的做法叫<strong>“用空间换时间”</strong>。</p>
+<p><strong>代码（课件片段，ch07.txt，第 11 页）</strong>：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">64</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 宏定义</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">,</span> i<span class="op">,</span> fib<span class="op">[</span>MAXN<span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">};</span> <span class="co">/* 部分初始化*/</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 计算</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>fib<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">[</span>i<span class="op">-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> fib<span class="op">[</span>i<span class="op">-</span><span class="dv">2</span><span class="op">];</span></span></code></pre></div>
+<p>代码取自课件
+ch07.txt。课件此处只给出到计算部分，下标可以是变量、也可以是表达式（<code>fib[i-1]</code>、<code>fib[i-2]</code>）。下面给出完整可运行版本，<code>[补全]</code>
+部分非当堂所讲，仅作自学参照：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [补全] 课件未给出输出部分，按标准 C 补出，非当堂所讲 */</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">64</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">int</span> n<span class="op">,</span> i<span class="op">,</span> fib<span class="op">[</span>MAXN<span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">};</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      fib<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">[</span>i<span class="op">-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> fib<span class="op">[</span>i<span class="op">-</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> fib<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span><span class="op">(</span> <span class="op">(</span>i<span class="op">+</span><span class="dv">1</span><span class="op">)</span> <span class="op">%</span> <span class="dv">5</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">)</span> printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> printf<span class="op">(</span><span class="st">&quot; &quot;</span><span class="op">);</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>运行结果</strong>：<code>fib[0]=1, fib[1]=1</code>，之后每项等于前两项之和，例如前
+10 项为 <code>1 1 2 3 5 8 13 21 34 55</code>。</p>
+<p><strong>易错点</strong>：斐波那契前两项已知、无需计算，循环从
+<code>i=2</code> 开始；用数组后下标可直接是表达式
+<code>i-1</code>、<code>i-2</code>。</p>
+<h3 id="顺序查找算法程序解析-7-3">00:39:07—00:52:13 ｜
+顺序查找算法（程序解析 7-3）</h3>
+<p>（00:39:55—00:44:51 为课间休息，无实质内容，00:44:51 继续。）</p>
+<h4 id="例题证明-3003915-程序解析-7-3-顺序查找算法">例题/证明
+3（00:39:15）｜ 程序解析 7-3 顺序查找算法</h4>
+<p><strong>题目／任务</strong>：输入 <code>N</code> 个数据存入数组
+<code>a[]</code>，再输入一个 <code>x</code>，在数组中查找
+<code>x</code>；若找到输出其最小下标，否则输出 “Not Found”。</p>
+<p><strong>思路</strong>：数组内容无序，只能”从第一个找到最后一个”（就像在抽屉里找袜子）。找到就
+<code>break</code>，然后根据循环是否正常结束来判断找没找到：若循环因
+<code>break</code> 退出，<code>i&lt;n</code>
+仍成立；若一直没找到，<code>i</code> 会走到
+<code>n</code>，<code>i&lt;n</code> 不成立。</p>
+<p><strong>代码</strong>（课件 ch07.txt，第 12—13 页，逐字符照抄）：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">10</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span> <span class="dt">void</span> <span class="op">)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span>MAXN<span class="op">],</span> i<span class="op">,</span> n<span class="op">,</span> x<span class="op">;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Entern n, x:&quot;</span><span class="op">);</span> <span class="co">// 提示输入n 和x</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">,</span> <span class="op">&amp;</span>x<span class="op">);</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter </span><span class="sc">%d</span><span class="st"> numbers:&quot;</span><span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="co">// 读取数据</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="co">// 查找x</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]==</span>x <span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> i<span class="op">&lt;</span>n <span class="op">)</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;The index of </span><span class="sc">%d</span><span class="st"> is </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> x<span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> is Not Found!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> x<span class="op">);</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>输入示例</strong>：</p>
+<pre><code>5 8
+3 7 2 8 5</code></pre>
+<p><strong>输出／运行结果</strong>：<code>x=8</code> 在第 3
+个位置（下标从 0 计），输出 <code>The index of 8 is 3</code>。</p>
+<p><strong>老师点出的要点与易错点</strong>：</p>
+<ul>
+<li><strong>不要将循环变量 <code>i</code> 定义在 <code>for</code>
+语句内部</strong>：写成 <code>for(int i=0; i&lt;n; i++)</code>
+后，<code>i</code> 的作用域只在 <code>for</code> 复合语句内，循环一结束
+<code>i</code> 就不存在了，后面 <code>if(i&lt;n)</code>
+就无法使用——老师说他本人也犯过这个错。必须把 <code>i</code>
+定义在外面。</li>
+<li><strong>平均复杂度
+O(n)</strong>：每次查找位置等概率时，平均比较次数约 <code>n/2</code>，与
+<code>n</code> 成线性关系（一阶），是”大
+O(n)“的好算法。老师顺带对比：两个 <code>n×n</code> 矩阵相乘是
+O(n³)，所以大模型的矩阵运算量巨大，算力（GPU、并行）才重要；百度的快速搜索靠的是索引和排序，而不是从头线性找。</li>
+<li><strong><code>for</code> 循环专为数组场景设计</strong>：所有
+<code>while</code> 循环都能改写成 <code>for</code>，但处理数组时
+<code>for( i=0; i&lt;n; i++ )</code> 更简洁，所以 C
+语言专门提供它。</li>
+</ul>
+<h3 id="数组最小值问题程序解析-7-4">00:52:13—00:57:12 ｜
+数组最小值问题（程序解析 7-4）</h3>
+<h4
+id="例题证明-4005317-程序解析-7-4-数组最小值及其与首元素交换">例题/证明
+4（00:53:17）｜ 程序解析 7-4 数组最小值及其与首元素交换</h4>
+<p><strong>题目／任务</strong>：找到数组 <code>a</code>
+的最小值，记录其下标；若最小值不在首元素位置，则把它与 <code>a[0]</code>
+交换。</p>
+<p><strong>思路</strong>：定义变量 <code>index</code>
+记录最小值下标，先假设
+<code>index=0</code>（首元素最小），遍历数组，遇到更小的就更新
+<code>index</code>。遍历完后，若 <code>index != 0</code> 就交换
+<code>a[0]</code> 与 <code>a[index]</code>。</p>
+<p><strong>代码（课件片段，ch07.txt，第 15—16 页）</strong>：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> a<span class="op">[</span>index<span class="op">]</span> <span class="op">)</span> <span class="co">// 找到更小的值</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> i<span class="op">;</span> <span class="co">// 更新最小值下标</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;min = </span><span class="sc">%d</span><span class="st">, index=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">[</span>index<span class="op">],</span> index<span class="op">);</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> index<span class="op">!=</span><span class="dv">0</span> <span class="op">)</span> <span class="op">{</span> <span class="co">// 交换最小元素和a[0]</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> temp <span class="op">=</span> a<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>index<span class="op">];</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>index<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>课件还给出整数数组可用<strong>异或</strong>实现无临时变量交换（仍是”交换三行”的变体）：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">^=</span> a<span class="op">[</span>index<span class="op">]</span> <span class="op">^=</span> a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">^=</span> a<span class="op">[</span>index<span class="op">];</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>完整可运行版本</strong>（<code>[补全]</code>，课件只给关键片段，按标准
+C 补出，非当堂所讲）：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [补全] 课件未给出读入与main框架，按标准 C 补出 */</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">10</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">int</span> a<span class="op">[</span>MAXN<span class="op">],</span> i<span class="op">,</span> n<span class="op">,</span> index<span class="op">;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>   printf<span class="op">(</span><span class="st">&quot;Enter n:&quot;</span><span class="op">);</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>   scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>   index <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> a<span class="op">[</span>index<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>         index <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>   printf<span class="op">(</span><span class="st">&quot;min = </span><span class="sc">%d</span><span class="st">, index=</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">[</span>index<span class="op">],</span> index<span class="op">);</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span><span class="op">(</span> index <span class="op">!=</span> <span class="dv">0</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>index<span class="op">];</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      a<span class="op">[</span>index<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>举一反三</strong>：找最大值只需把 <code>&lt;</code> 改成
+<code>&gt;</code>；找绝对值最小的元素，把比较改成
+<code>fabs(a[i]) &lt; fabs(a[index])</code>（用 <code>fabs</code>
+函数）。交换的三部曲（临时变量）要非常熟练；异或交换只适用于整数数组，浮点数组不行，所以通用写法还是用临时变量。</p>
+<h3 id="选择法排序程序解析-7-5">00:57:12—01:07:27 ｜
+选择法排序（程序解析 7-5）</h3>
+<h4 id="例题证明-5005714-程序解析-7-5-选择法排序">例题/证明
+5（00:57:14）｜ 程序解析 7-5 选择法排序</h4>
+<p><strong>题目／任务</strong>：将数组 <code>a</code>（共 <code>n</code>
+个元素）按从小到大排序，结果仍存回原数组。</p>
+<p><strong>思路（自然语言描述的算法）</strong>：每次从”尚未排好”的那一段里挑出最小值，交换到这一段的最前面——</p>
+<ul>
+<li>第 0 次：在 <code>a[0]…a[n-1]</code> 中找最小，与 <code>a[0]</code>
+交换；</li>
+<li>第 1 次：在 <code>a[1]…a[n-1]</code> 中找最小，与 <code>a[1]</code>
+交换；</li>
+<li>……</li>
+<li>第 <code>k</code> 次：在 <code>a[k]…a[n-1]</code> 中找最小，与
+<code>a[k]</code> 交换；</li>
+<li>直到只剩 <code>a[n-2]</code> 与 <code>a[n-1]</code> 两个，挑小的与
+<code>a[n-2]</code> 交换；最后剩一个元素天然有序，不用再排。</li>
+</ul>
+<p>老师说这先用”伪代码 / 自然语言 + C
+循环结构”把<strong>算法框架</strong>搭好（大方向不能错），再把每一步”翻译”成真正的
+C 语句。</p>
+<p><strong>代码（课件片段，ch07.txt，第 18 页，即上述算法的 C
+翻译）</strong>：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> k<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 找到a[k],...,a[n-1] 的最小元素</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> index <span class="op">=</span> k<span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> k<span class="op">+</span><span class="dv">1</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> a<span class="op">[</span>index<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 交换a[index]与a[k]</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> index <span class="op">!=</span> k <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> temp <span class="op">=</span> a<span class="op">[</span>index<span class="op">];</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>index<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>k<span class="op">];</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>k<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>完整可运行版本</strong>（<code>[补全]</code>，课件只给核心双重循环，按标准
+C 补出）：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [补全] 课件未给出读入与main框架，按标准 C 补出 */</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">10</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">int</span> a<span class="op">[</span>MAXN<span class="op">],</span> i<span class="op">,</span> k<span class="op">,</span> n<span class="op">,</span> index<span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>   printf<span class="op">(</span><span class="st">&quot;Enter n:&quot;</span><span class="op">);</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>   scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> k<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> i<span class="op">,</span> index <span class="op">=</span> k<span class="op">;</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> k<span class="op">+</span><span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> a<span class="op">[</span>index<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>            index <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span><span class="op">(</span> index <span class="op">!=</span> k <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>         <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">[</span>index<span class="op">];</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>         a<span class="op">[</span>index<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>k<span class="op">];</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>         a<span class="op">[</span>k<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>      printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> &quot;</span><span class="op">,</span> a<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>   printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>老师点出的变体与要点</strong>：</p>
+<ul>
+<li>改成”从大到小”：把 <code>&lt;</code> 改成 <code>&gt;</code>。</li>
+<li>按绝对值排序：比较处加 <code>fabs</code>。</li>
+<li>若元素是字符串（按拼音排），或复数（先比实部再比虚部），核心排序框架<strong>不变</strong>，只变”比较”那一句话——所以需要写一个”比较函数”（返回
+<code>&lt;0</code>、<code>0</code>、<code>&gt;0</code>）。选择法排序的程序结构不随比较规则改变。</li>
+<li>老师要求三个算法（顺序查找、选择法排序、二分查找）回去后<strong>关上书自己写出来</strong>，不能抄。</li>
+</ul>
+<h3 id="二分查找算法程序解析-7-6">01:07:27—01:17:09 ｜
+二分查找算法（程序解析 7-6）</h3>
+<h4 id="例题证明-6010727-程序解析-7-6-二分查找算法">例题/证明
+6（01:07:27）｜ 程序解析 7-6 二分查找算法</h4>
+<p><strong>题目／任务</strong>：给定一个已按从小到大排好序的整数数组
+<code>a</code>，输入 <code>x</code>，查找值为 <code>x</code>
+的元素并输出其下标；找不到则报告未找到。</p>
+<p><strong>思路（翻书的比方）</strong>：书页是有序的，你不会从第 1
+页挨着翻到 150
+页，而是随手翻到中间，判断目标在前半还是后半，再继续折半——这就是二分查找。</p>
+<ul>
+<li>维护查找区间
+<code>[low, high]</code>（闭区间）；<code>mid = (low + high)/2</code>（整数除法，差
+0.5 无所谓，就像翻书偶尔偏一点不影响）。</li>
+<li>若 <code>a[mid]==x</code>：找到，<code>break</code>。</li>
+<li>若
+<code>x &lt; a[mid]</code>：目标在左半，<code>high = mid-1</code>。</li>
+<li>若
+<code>x &gt; a[mid]</code>：目标在右半，<code>low = mid+1</code>。</li>
+<li>区间不为空的条件是 <code>low &lt;= high</code>；一旦
+<code>low &gt; high</code> 区间为空，必找不到。</li>
+<li>循环结束后再判断：<code>low&lt;=high</code> 成立说明是
+<code>break</code> 出来的（找到了），否则是区间耗尽（没找到）。</li>
+</ul>
+<p><strong>代码</strong>（课件 ch07.txt，第 19、22、23
+页，逐字符照抄）：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">,</span><span class="dv">4</span><span class="op">,</span><span class="dv">5</span><span class="op">,</span><span class="dv">6</span><span class="op">,</span><span class="dv">7</span><span class="op">,</span><span class="dv">8</span><span class="op">,</span><span class="dv">9</span><span class="op">,</span><span class="dv">10</span><span class="op">},</span> x<span class="op">;</span> <span class="co">// 有序数组</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">10</span><span class="op">,</span> low<span class="op">,</span> high<span class="op">,</span> mid<span class="op">;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter x: &quot;</span><span class="op">);</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>x<span class="op">);</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>low <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>high <span class="op">=</span> n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// 查找区间：[low, high]</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> low<span class="op">&lt;=</span>high <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 区间不为空</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>mid <span class="op">=</span> <span class="op">(</span>low <span class="op">+</span> high<span class="op">)/</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> x <span class="op">==</span> a<span class="op">[</span>mid<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span> <span class="co">// 找到了！</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span> x <span class="op">&lt;</span> a<span class="op">[</span>mid<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>high <span class="op">=</span> mid<span class="op">-</span><span class="dv">1</span><span class="op">;</span><span class="co">// 到左侧继续查找</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>low <span class="op">=</span> mid<span class="op">+</span><span class="dv">1</span><span class="op">;</span> <span class="co">// 到右侧继续查找</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> low<span class="op">&lt;=</span>high <span class="op">)</span> <span class="co">// 查找范围不为空，必然找到了</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Found! index is </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> mid<span class="op">);</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co">// 查找范围为空，未找到</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Not found!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>输入示例</strong>：<code>Enter x: 7</code> → 输出
+<code>Found! index is 6</code>（7 在下标 6）。</p>
+<p><strong>老师点出的要点与易错点</strong>：</p>
+<ul>
+<li>循环<strong>必终止</strong>：要么 <code>break</code>
+出来，要么每次至少排除 <code>mid</code>
+这个元素，区间严格缩小，最终变空。</li>
+<li>判断找没找到，同样靠”循环结束后 <code>low&lt;=high</code>
+是否成立”。</li>
+<li>和顺序查找一样，<strong>不要在 <code>while</code> 循环体内部定义
+<code>mid</code></strong>——因为循环外还要用它的下标判断结果，必须在外部定义。</li>
+<li>这三个算法（顺序查找、选择排序、二分查找）要求回去关书上手写，确保真懂。</li>
+</ul>
+<h3 id="二维数组的定义下标范围与越界">01:17:09—01:20:24 ｜
+二维数组的定义、下标范围与越界</h3>
+<p>二维数组也是”相同类型数据的有序集合、元素连续存放”，区别是逻辑上有<strong>行、列两个维度</strong>。</p>
+<p><strong>定义</strong>（课件 ch07.txt，第 25 页）：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">3</span><span class="op">][</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 3行2列的整数数组</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> f<span class="op">[</span>n<span class="op">][</span>n<span class="op">];</span> <span class="co">// 非法定义，长度必须由常量组成</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li>形式：<code>类型名 数组名[行数][列数]</code>；行数、列数都必须是整数常量表达式，不能含变量。</li>
+<li>元素表示：<code>数组名[行下标][列下标]</code>；行下标范围
+<code>[0, 行数-1]</code>，列下标范围
+<code>[0, 列数-1]</code>，<strong>不能越界</strong>。</li>
+<li>C 语言<strong>不检查下标是否越界</strong>：语法上写
+<code>a[12]</code>（总共才 10
+个元素）没问题，但运行时可能出错——越界可能跑到别的内存去。</li>
+<li><code>a[k]</code>（只给一个行下标）本身就是一个”第 <code>k</code>
+行的一维数组”，<code>a[k][j]</code> 才是它的第 <code>j</code>
+个元素。</li>
+</ul>
+<h3 id="程序解析-7-8-求矩阵的最大值">01:20:24—01:26:47 ｜ 程序解析 7-8
+求矩阵的最大值</h3>
+<h4 id="例题证明-7012024-程序解析-7-8-求矩阵的最大值">例题/证明
+7（01:20:24）｜ 程序解析 7-8 求矩阵的最大值</h4>
+<p><strong>题目／任务</strong>：用二维数组存储一个矩阵，读入行数、列数与各元素，求最大值及其行列坐标。</p>
+<p><strong>思路</strong>：读入时用<strong>二重循环</strong>（外循环走行、内循环走列）；找最大值时同样二重循环，用
+<code>row</code>、<code>col</code> 记录最大元素的行、列坐标。</p>
+<p><strong>代码</strong>（课件 ch07.txt，第 27—29 页，逐字符照抄）：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXM </span><span class="dv">64</span><span class="pp"> </span><span class="co">// 宏定义</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">64</span><span class="pp"> </span><span class="co">// 宏定义</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> col<span class="op">,</span> row<span class="op">,</span> m<span class="op">,</span> n<span class="op">,</span> i<span class="op">,</span> j<span class="op">;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span>MAXM<span class="op">][</span>MAXN<span class="op">];</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter maxtrix size m, n:&quot;</span><span class="op">);</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>m<span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span> <span class="co">// 读取矩阵的大小</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter </span><span class="sc">%d</span><span class="st">x</span><span class="sc">%d</span><span class="st"> matrix elements:&quot;</span><span class="op">,</span>m<span class="op">,</span>n<span class="op">);</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>m<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j<span class="op">&lt;</span>n<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span>i<span class="op">][</span>j<span class="op">]);</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>row <span class="op">=</span> col <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>m<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j<span class="op">&lt;</span>n<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">][</span>j<span class="op">]&gt;</span>a<span class="op">[</span>row<span class="op">][</span>col<span class="op">])</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>row <span class="op">=</span> i<span class="op">,</span> col <span class="op">=</span> j<span class="op">;</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;max = a[</span><span class="sc">%d</span><span class="st">][</span><span class="sc">%d</span><span class="st">] = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>row<span class="op">,</span> col<span class="op">,</span> a<span class="op">[</span>row<span class="op">][</span>col<span class="op">]);</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>输入示例</strong>（2×3 矩阵）：</p>
+<pre><code>2 3
+1 5 3
+4 2 9</code></pre>
+<p><strong>输出／运行结果</strong>：最大值为 9，位于第 1 行第 2 列 ——
+<code>max = a[1][2] = 9</code>。</p>
+<p><strong>易错点</strong>：两个 <code>scanf</code> 里
+<code>&amp;a[i][j]</code> 的方括号优先级高于取地址
+<code>&amp;</code>，所以先结合出二维数组元素，再取它的地址，不用额外加括号；最大值的行列坐标要用两个变量分别记。</p>
+<h3 id="二维数组的初始化逐行-部分-省略行数-列数不可省">01:26:47—01:36:18
+｜ 二维数组的初始化（逐行 / 部分 / 省略行数 / 列数不可省）</h3>
+<p>（01:29:52—01:35:46 为课间休息与点名，属课堂管理，无实质内容。）</p>
+<p>老师讲二维数组的初始化，强调”二维数组的每一行本身就是一个一维数组”。</p>
+<p><strong>逐行赋初值</strong>（课件 ch07.txt，第 30 页）：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">3</span><span class="op">][</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span> <span class="op">},</span> <span class="co">// 第0行初值</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span> <span class="op">},</span> <span class="co">// 第1行初值</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">9</span><span class="op">,</span><span class="dv">10</span><span class="op">,</span><span class="dv">11</span><span class="op">,</span> <span class="dv">12</span><span class="op">}</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 第2行初值</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p><strong>部分赋初值</strong>（没给初值的元素默认为 0）：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">3</span><span class="op">][</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="op">},</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 第0行, 末尾元素无初值</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="op">{},</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 第1行,全部无初值</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span> <span class="op">},</span> <span class="co">// 第2行初值</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 没给定初值的元素，默认为0</span></span></code></pre></div>
+<p><strong>省略行数（列数不能省）</strong>（课件 ch07.txt，第 31
+页）：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[][</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="op">},</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">{},</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span> <span class="op">},</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li>行数可以省略，由初值的行数推断；<strong>列数绝对不能省略</strong>（C
+语言规定）。老师解释：列数决定了”每行几个元素”，省略了就没法把一长串初值正确地切分成行。</li>
+<li>省略的初值元素一律补 <code>0</code>。</li>
+</ul>
+<h3 id="二维数组的内存排列与数组的数组">01:36:18—01:44:03 ｜
+二维数组的内存排列与”数组的数组”</h3>
+<p>老师说二维数组在逻辑上是二维的，但内存是”一条线”（地址只有一个维度），所以<strong>按行优先、逐行连续存放</strong>——把矩阵”拉直”。</p>
+<ul>
+<li>例如 <code>int a[3][2];</code>：先放第 0 行
+<code>a[0][0], a[0][1]</code>，再放第 1 行，再放第 2 行。</li>
+<li>更本质的理解：<strong>“二维数组是数组的数组”</strong>。例如
+<code>int a[8][4];</code> 是”8 个元素的一维数组，每个元素又是一个长度为
+4 的一维数组”。<code>a[k]</code> 是第 <code>k</code>
+行（一个一维数组），<code>a[k][j]</code> 是该行第 <code>j</code>
+个元素。这样内存排布就非常自然，不用死记。</li>
+<li>类比：<code>int a[10];</code> 每个 <code>int</code> 占 4
+字节，在内存里也是”4 字节、4
+字节……连续放”，逻辑下标与实际字节偏移是两回事，但存储都是连续的。</li>
+</ul>
+<h3 id="程序解析-7-9-矩阵转置">01:44:03—01:47:06 ｜ 程序解析 7-9
+矩阵转置</h3>
+<h4 id="例题证明-8014411-程序解析-7-9-矩阵转置">例题/证明
+8（01:44:11）｜ 程序解析 7-9 矩阵转置</h4>
+<p><strong>题目／任务</strong>：对 <code>n×n</code> 方阵 <code>a</code>
+做转置，即把 <code>a[i][j]</code> 与 <code>a[j][i]</code> 互换。</p>
+<p><strong>思路</strong>：沿主对角线翻转。遍历时第二个 <code>for</code>
+的循环变量 <code>j</code> 只走到 <code>i</code>（即
+<code>j&lt;i</code>），而不是
+<code>j&lt;n</code>——否则每个元素会被交换两次，等于没换。</p>
+<p><strong>代码（课件片段，ch07.txt，第 35 页）</strong>：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j<span class="op">&lt;</span>i<span class="op">;</span> j<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 交换a[i][j]和a[j][i]</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> temp<span class="op">=</span> a<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>j<span class="op">][</span>i<span class="op">];</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>j<span class="op">][</span>i<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>完整可运行版本</strong>（<code>[补全]</code>，课件只给核心双重循环，按标准
+C 补出）：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [补全] 课件未给出读入与main框架，按标准 C 补出 */</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">10</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">int</span> a<span class="op">[</span>MAXN<span class="op">][</span>MAXN<span class="op">],</span> i<span class="op">,</span> j<span class="op">,</span> n<span class="op">;</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>   scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>n<span class="op">);</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span><span class="op">(</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">;</span> j<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>         scanf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">&amp;</span>a<span class="op">[</span>i<span class="op">][</span>j<span class="op">]);</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span><span class="op">(</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> i<span class="op">;</span> j<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>         <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>         a<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>j<span class="op">][</span>i<span class="op">];</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>         a<span class="op">[</span>j<span class="op">][</span>i<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span><span class="op">(</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">;</span> j<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>         printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> &quot;</span><span class="op">,</span> a<span class="op">[</span>i<span class="op">][</span>j<span class="op">]);</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>      printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>易错点（老师强调的”经验”）</strong>：转置时第二个循环必须是
+<code>j&lt;i</code>，写成 <code>j&lt;n</code>
+会把每对元素交换两次、结果还原；用注释写清”交换 <code>a[i][j]</code> 与
+<code>a[j][i]</code>“便于自查。</p>
+<h3
+id="程序解析-7-10-用二维数组计算某年某月某日是第几天">01:47:06—01:58:28
+｜ 程序解析 7-10 用二维数组计算某年某月某日是第几天</h3>
+<h4
+id="例题证明-9014706-程序解析-7-10-用二维数组计算日期是该年的第几天">例题/证明
+9（01:47:06）｜ 程序解析 7-10 用二维数组计算日期是该年的第几天</h4>
+<p><strong>题目／任务</strong>：定义函数
+<code>day_of_year(year, month, day)</code>，计算
+<code>year-month-day</code> 是该年中的第几天（例：2026-11-03
+是第几天）。</p>
+<p><strong>思路</strong>：先把 1 到 <code>month-1</code>
+月的天数累加，再加上 <code>day</code>。每月天数有 31、30、28/29
+的规律但很琐碎，所以干脆<strong>用二维数组把”每个月的天数”直接存成一张表</strong>——第
+0 行是非闰年、第 1
+行是闰年。这就是”<strong>预计算</strong>”：用一点点空间，把复杂的条件判断变成”闭眼查表相加”，极大简化逻辑。</p>
+<p><strong>代码</strong>（课件 ch07.txt，第 36—37 页，逐字符照抄）：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> day_of_year<span class="op">(</span><span class="dt">int</span> year<span class="op">,</span> <span class="dt">int</span> month<span class="op">,</span> <span class="dt">int</span> day <span class="op">)</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> days<span class="op">[][</span><span class="dv">13</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="co">/* 每个月的天数*/</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">0</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">28</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">},</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">0</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">29</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">,</span><span class="dv">30</span><span class="op">,</span><span class="dv">31</span><span class="op">}};</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> leap <span class="op">=</span> year<span class="op">%</span><span class="dv">4</span><span class="op">==</span><span class="dv">0</span> <span class="op">&amp;&amp;</span> year<span class="op">%</span><span class="dv">100</span><span class="op">!=</span><span class="dv">0</span> <span class="op">||</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>year<span class="op">%</span><span class="dv">400</span><span class="op">==</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> k<span class="op">;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">/* 加上本月之前的每个月的天数*/</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;</span>month<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>day <span class="op">+=</span> days<span class="op">[</span>leap<span class="op">][</span>k<span class="op">];</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> day<span class="op">;</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>闰年表达式</strong>：<code>year%4==0 &amp;&amp; year%100!=0 || year%400==0</code>（真为
+1、假为 0），恰好当作 <code>days</code> 的行下标（0 或 1）。</p>
+<p><strong>运行示例</strong>：<code>day_of_year(2026, 11, 3)</code>：<code>leap=0</code>（2026
+不能被 4 整除），把 1—10 月天数累加
+<code>31+28+31+30+31+30+31+31+30+31 = 304</code>，再加
+<code>day=3</code>，得 <code>307</code>。即 2026-11-03 是 2026 年的第
+307 天。</p>
+<p><strong>老师点出的要点</strong>：这张表只占 26 个
+<code>int</code>（约一百多字节），却免去了”判断 2
+月、判断奇偶月、判断上下半年”等一大堆分支，程序逻辑清爽且绝不会算错。老师还引申到著名算法
+<strong>marching cubes</strong>（移动立方体）：立方体 8
+个顶点各有大小，共 <code>2^8=256</code> 种情况，与其写 256
+个分支，不如先”预计算”成一张表，运行时直接查表——和这里的”用数组存天数表”是同一个思想。</p>
+<p>若不用这张表，就要写成一堆条件判断（课件 ch07.txt，第 38
+页片段）：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;</span>month<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> k<span class="op">&gt;</span><span class="dv">7</span> <span class="op">)</span> day <span class="op">+=</span> <span class="dv">31</span> <span class="op">-</span> k<span class="op">%</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span><span class="op">(</span> k <span class="op">==</span> <span class="dv">2</span> <span class="op">)</span> day <span class="op">+=</span> <span class="dv">28</span> <span class="op">+</span> leap<span class="op">;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> day <span class="op">+=</span> <span class="dv">30</span> <span class="op">+</span> k<span class="op">%</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件
+ch07.txt。老师指出这种写法比”查表”复杂得多、容易出错。</p>
+<h3 id="字符数组读入-n-个字符读入一行">01:58:28—02:03:33 ｜
+字符数组（读入 n 个字符、读入一行）</h3>
+<p>字符数组就是元素类型为 <code>char</code>
+的数组，适用普通数组的定义、初始化、引用规则（课件 ch07.txt，第 39
+页）：</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> a<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> h<span class="op">[</span><span class="dv">20</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="ch">&#39;H&#39;</span><span class="op">,</span> <span class="ch">&#39;e&#39;</span><span class="op">,</span> <span class="ch">&#39;l&#39;</span><span class="op">,</span> <span class="ch">&#39;l&#39;</span><span class="op">,</span> <span class="ch">&#39;o&#39;</span><span class="op">,</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">};</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> str<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="ch">&#39;c&#39;</span><span class="op">,</span> <span class="ch">&#39;h&#39;</span><span class="op">,</span> <span class="ch">&#39;a&#39;</span><span class="op">,</span> <span class="ch">&#39;r&#39;</span><span class="op">};</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>读入 <code>n</code> 个字符</strong>：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> s<span class="op">[</span><span class="dv">80</span><span class="op">];</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">10</span><span class="op">,</span> k<span class="op">;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>n<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>s<span class="op">[</span>k<span class="op">]</span> <span class="op">=</span> getchar<span class="op">();</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>读入一行字符（读到换行符停止）</strong>（课件 ch07.txt，第 40
+页）：</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> line<span class="op">[</span><span class="dv">80</span><span class="op">];</span> <span class="dt">int</span> k<span class="op">;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span>k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span><span class="kw">sizeof</span><span class="op">(</span>line<span class="op">);</span> k<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> <span class="op">(</span>line<span class="op">[</span>k<span class="op">]=</span>getchar<span class="op">())</span> <span class="op">==</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span> <span class="op">)</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li><code>sizeof(line)</code> 是运算符，编译时获取 <code>line</code>
+的字节数（即数组长度 80），相当于常量；循环条件保证不会越界。</li>
+<li><code>if</code> 的条件 <code>(line[k]=getchar()) == '\n'</code>
+先调用 <code>getchar()</code> 读字符、赋值给
+<code>line[k]</code>、再判断是否换行；因赋值运算符优先级低，必须加括号让它先执行。</li>
+<li>老师提示：也可用宏定义代替 <code>80</code>，但 <code>sizeof</code>
+最”稳”——改了数组大小它自动跟着变。</li>
+</ul>
+<h3 id="字符串结束标志存储初始化s-输出与风险">02:03:33—02:14:41 ｜
+字符串（结束标志、存储、初始化、%s 输出与风险）</h3>
+<p><strong>字符串是什么</strong>：一个有序的字符序列。字符串常量用<strong>双引号</strong>括起来，如
+<code>"Happy"</code>、<code>"Hello world"</code>、<code>"Country"</code>。</p>
+<p><strong>存储方式</strong>（课件 ch07.txt，第 41
+页）：字符按顺序存在一块连续内存里，并以特殊字符
+<code>'\0'</code>（ASCII 值为
+0）结尾作<strong>结束标志</strong>；不存储双引号。例如
+<code>"Hello"</code> 在内存里是 <code>H e l l o \0</code>。</p>
+<p><strong>用字符数组存字符串</strong>（课件 ch07.txt，第 42 页）：</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> s<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>s<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;H&#39;</span><span class="op">;</span> s<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;e&#39;</span><span class="op">;</span> s<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;l&#39;</span><span class="op">;</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>s<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;l&#39;</span><span class="op">;</span> s<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;o&#39;</span><span class="op">;</span> s<span class="op">[</span><span class="dv">5</span><span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> s<span class="op">[</span><span class="dv">10</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="ch">&#39;H&#39;</span><span class="op">,</span> <span class="ch">&#39;e&#39;</span><span class="op">,</span> <span class="ch">&#39;l&#39;</span><span class="op">,</span> <span class="ch">&#39;l&#39;</span><span class="op">,</span> <span class="ch">&#39;o&#39;</span><span class="op">,</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span> <span class="op">};</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> s<span class="op">[</span><span class="dv">10</span><span class="op">]</span> <span class="op">=</span> <span class="st">&quot;Hello&quot;</span><span class="op">;</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li>想把它当字符串用，<strong>必须自己存一个 <code>'\0'</code>
+结束标志</strong>；否则 C 的字符串处理函数会一直往后找
+<code>'\0'</code>，容易越界。</li>
+<li><strong>可以省略长度</strong>：<code>char b[] = "Happy";</code>
+长度为 6（5 个可见字符 + 看不见的
+<code>'\0'</code>），编译器自动推断。</li>
+<li>逐个存字符也行：<code>s[0]='a'; s[1]='\0';</code>（注意字符
+<code>'a'</code> 与字符串 <code>"a"</code> 的区别，<code>"a"</code> 含
+<code>'a'</code> 和 <code>'\0'</code> 两个字符）。</li>
+</ul>
+<p><strong>字符串输出</strong>（课件 ch07.txt，第 45 页）：</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> s<span class="op">[]</span> <span class="op">=</span> <span class="st">&quot;Hello World&quot;</span><span class="op">;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 输出方法1：循环+ putchar</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> s<span class="op">[</span>i<span class="op">]!=</span><span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">;</span> i<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>putchar<span class="op">(</span>s<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 输出方法2：printf + %s</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%s</span><span class="st">&quot;</span><span class="op">,</span> s<span class="op">);</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 输出方法3：printf</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span>s<span class="op">);</span> <span class="co">// 此方法有风险</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>要点：</p>
+<ul>
+<li><code>%s</code> 是字符串的格式符：从首字符开始，逐个输出直到遇到
+<code>'\0'</code> 为止。</li>
+<li><strong>方法 3（<code>printf(s);</code>）有风险</strong>：因为
+<code>s</code> 被当作”格式控制串”。若字符串里含有 <code>%d</code>
+之类的格式符（如 <code>s</code> 内容是
+<code>"x=%d"</code>），<code>printf</code>
+会把它当成格式串、去要对应的参数，而后面的参数没有，就会输出错乱。所以确保字符串<strong>全是普通字符</strong>时才可直接当格式串；更稳妥的是用
+<code>%s</code>。这也是为什么第一节课就用
+<code>printf("Hello World\n");</code> 来输出。</li>
+</ul>
+<h3 id="程序解析-7-11-判断回文字符串">02:14:41—02:19:50 ｜ 程序解析 7-11
+判断回文字符串</h3>
+<h4 id="例题证明-10021441-程序解析-7-11-判断回文字符串">例题/证明
+10（02:14:41）｜ 程序解析 7-11 判断回文字符串</h4>
+<p><strong>题目／任务</strong>：输入一个以回车结束的字符串（少于 80
+字符），判断它是否为回文（正读、倒读都一样，如首尾相同、次首尾相同……）。</p>
+<p><strong>思路</strong>：读入字符串后，<code>i</code>
+从前往后、<code>k</code> 从后往前，逐对比较 <code>line[i]</code> 与
+<code>line[k]</code>；一旦不相等就
+<code>break</code>（不是回文）；若循环正常结束（<code>i&lt;k</code>
+不再成立）则通过所有检测（是回文）。</p>
+<p><strong>代码</strong>（课件 ch07.txt，第 46—48 页，逐字符照抄）：</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXLINE </span><span class="dv">80</span><span class="pp"> </span><span class="co">// 定义符号常量（宏）</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i<span class="op">,</span> k<span class="op">;</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> line<span class="op">[</span>MAXLINE<span class="op">];</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;Enter a string:&quot;</span><span class="op">);</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 输入字符串</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> <span class="op">(</span>line<span class="op">[</span>k<span class="op">]=</span>getchar<span class="op">())!=</span><span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span> <span class="op">)</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>k<span class="op">++;</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>line<span class="op">[</span>k<span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">;</span> <span class="co">// 别忘记\0</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="co">// 判断是否为回文</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k<span class="op">--;</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> i<span class="op">&lt;</span>k <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> line<span class="op">[</span>i<span class="op">]!=</span>line<span class="op">[</span>k<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span> <span class="co">// 不是回文</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>i<span class="op">++;</span> k<span class="op">--;</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> i<span class="op">&lt;</span>k <span class="op">)</span> <span class="co">// 检查循环出口</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;不是回文</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span><span class="co">// 没有通过所有检测</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;是回文</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="co">/* [补全] 课件此处未给出函数收尾，按标准 C 补出 */</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p><strong>输入示例</strong>：<code>Enter a string: level</code> → 输出
+<code>是回文</code>；输入 <code>hello</code> → 输出
+<code>不是回文</code>。</p>
+<p><strong>老师点出的要点</strong>：</p>
+<ul>
+<li>读入时 <code>while( (line[k]=getchar())!='\n' )</code>
+这一个循环条件里同时做了”读字符、存数组、判断是否换行”三件事；读完换行符后把它换成
+<code>'\0'</code>，字符串才完整。</li>
+<li><code>i&lt;k</code> 表明循环是因 <code>break</code>
+退出（没通过检测），不是回文；否则是正常走完（通过检测），是回文。</li>
+</ul>
+<h4
+id="随堂练习021920-把回文判断的-while-循环改写成-for-循环">随堂练习（02:19:20）｜
+把回文判断的 while 循环改写成 for 循环</h4>
+<p>老师让大家思考：把上面的 <code>while</code> 改成 <code>for</code>
+是否可行、哪个更简洁。课件 ch07.txt（第 49 页）给出等价的
+<code>for</code> 版本：</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 将while 循环改为for 循环</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k <span class="op">=</span> k<span class="op">-</span><span class="dv">1</span><span class="op">;</span> i<span class="op">&lt;</span>k<span class="op">;</span> i<span class="op">++,</span> k<span class="op">--</span> <span class="op">)</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span><span class="op">(</span> line<span class="op">[</span>i<span class="op">]!=</span>line<span class="op">[</span>k<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="cf">break</span><span class="op">;</span></span></code></pre></div>
+<p>代码取自课件 ch07.txt。</p>
+<p>老师认为 <code>for</code>
+版本更简洁，但语句相对更复杂一些；两种写法都正确，可自行选择。</p>
+<p>（02:19:50 老师宣布”今天上到这里，下次从 7-12
+开始上”，本节结束。）</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

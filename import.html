@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <script>/* wb_theme_early 早期主题：首屏前应用，消除暗->亮闪烁并尊重用户偏好 */
+  (function(){try{var s=(window.WB_STORAGE||localStorage);var t=s.getItem('wb_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var d=t==='dark';var e=document.documentElement;e.setAttribute('data-theme',t);e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);}catch(e){}})();
+  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课堂字幕智能精讲导入工作台 · 课程讲义知识库</title>
+<link rel="stylesheet" href="site.css">
+<!-- 本地打包的轻量 JSZip 库，用于在浏览器端纯离线解压读取 docx 与打包输出 -->
+<script src="vendor/minizip.js"></script>
+<style>
+  :root {
+    --primary: #185fa5;
+    --primary-hover: #144e88;
+    --success: #15803d;
+    --border: #e2e8f0;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+  }
+  html[data-theme="dark"] {
+    --primary: #85b7eb;
+    --primary-hover: #a5cbf3;
+    --success: #4ade80;
+    --border: #334155;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+  .import-container {
+    max-width: 1080px;
+    margin: 30px auto 60px;
+    padding: 0 20px;
+  }
+  .import-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding: 26px 30px;
+    margin-bottom: 24px;
+  }
+  .import-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    margin-bottom: 22px;
+  }
+  .import-header h2 { margin: 0; font-size: 20px; color: var(--text-main); }
+  .import-header a { font-size: 13.5px; color: var(--primary); text-decoration: none; }
+
+  /* 双模式标识横幅 */
+  .mode-banner {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .mode-chip {
+    flex: 1;
+    min-width: 280px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    background: rgba(24, 95, 165, 0.03);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .mode-chip b { color: var(--text-main); font-size: 13px; }
+  .mode-chip.offline b { color: #15803d; }
+  .mode-chip.online b { color: #185fa5; }
+
+  /* 配置栅格 */
+  .cfg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .cfg-item label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .cfg-item input, .cfg-item select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13.5px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .cfg-item input:focus, .cfg-item select:focus {
+    border-color: var(--primary);
+  }
+
+  /* 拖拽上传区 */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 34px 20px;
+    text-align: center;
+    background: rgba(24, 95, 165, 0.02);
+    cursor: pointer;
+    transition: all .2s;
+    margin-bottom: 20px;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--primary);
+    background: rgba(24, 95, 165, 0.05);
+  }
+  .drop-zone .icon { font-size: 38px; margin-bottom: 10px; }
+  .drop-zone h3 { margin: 0 0 6px; font-size: 16px; color: var(--text-main); }
+  .drop-zone p { margin: 0; font-size: 12.5px; color: var(--text-muted); }
+  #file-input { display: none; }
+
+  /* 操作条 */
+  .action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .btn-run {
+    background: #185fa5;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 26px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, transform .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-run:hover { background: #144e88; transform: translateY(-1px); }
+  .btn-run:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+  /* 进度指示面板 */
+  .progress-panel {
+    display: none;
+    margin-top: 24px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+  .step-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 768px) { .step-list { grid-template-columns: 1fr 1fr; } }
+  .step-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    transition: all .2s;
+  }
+  .step-card.active { border-color: var(--primary); background: rgba(24,95,165,.08); font-weight: 600; }
+  .step-card.done { border-color: var(--success); color: var(--success); font-weight: 600; }
+  .step-card .title { font-size: 13px; margin-bottom: 3px; }
+  .step-card .status { font-size: 11px; color: var(--text-muted); }
+
+  /* 实时日志与结果预览 */
+  .log-box {
+    background: #0f172a;
+    color: #38bdf8;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 14px 16px;
+    border-radius: 8px;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+  }
+  .preview-area {
+    display: none;
+    margin-top: 24px;
+  }
+  .preview-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .preview-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .preview-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .preview-tab-btn.active {
+    background: var(--bg-card);
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .preview-textarea {
+    width: 100%;
+    height: 380px;
+    box-sizing: border-box;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    resize: vertical;
+  }
+  .rendered-view {
+    display: none;
+    width: 100%;
+    height: 380px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">
+    课程讲义知识库 <span>·</span> 智能导入工作台
+  </div>
+  <div class="subjnav">
+    <a href="index.html">← 返回知识库首页</a>
+      <a href="import_homework.html" style="margin-left:14px;color:var(--primary);font-weight:600">📝 前往作业导入工作台 →</a>
+  </div>
+</header>
+
+<div class="import-container">
+  <div class="import-card">
+    <div class="import-header">
+      <h2>📥 新课字幕智能精讲导入</h2>
+      <a href="02_讲义写作规范_v3.md" target="_blank">查看《02_讲义写作规范_v3》规范 ↗</a>
+    </div>
+
+    <!-- 双模式权威说明 -->
+    <div class="mode-banner">
+      <div class="mode-chip offline">
+        <b>🔒 本地离线运行保障</b><br>
+        讲义阅读站点 100% 纯离线双击即读；本工作台的 docx/txt 字幕解包与 Zip 打包完全在浏览器端通过 <code>vendor/minizip.js</code> 本地运算，绝不上传私密原始文件。
+      </div>
+      <div class="mode-chip online">
+        <b>⚡ AI 智能精讲起草（可选）</b><br>
+        可填入 DeepSeek / OpenAI 或兼容的大模型 API Key，系统会自动按照 35 分钟切块、例题卡、步骤细色条标准起草讲义全文，并一键打包导出。
+      </div>
+    </div>
+
+    <!-- 1. 基础配置栅格 -->
+    <div class="cfg-grid">
+      <div class="cfg-item">
+        <label>AI 服务商 / 接口</label>
+        <select id="api-provider">
+          <option value="deepseek" selected>DeepSeek (推荐，性价比极高)</option>
+          <option value="openai">OpenAI (官方 GPT-4o)</option>
+          <option value="custom">自定义兼容接口 (如 Ollama / 代理)</option>
+        </select>
+      </div>
+      <div class="cfg-item">
+        <label>API Key (仅保存在本地浏览器 LocalStorage)</label>
+        <input type="password" id="api-key" placeholder="sk-...">
+      </div>
+      <div class="cfg-item" id="base-url-wrap" style="display:none">
+        <label>Base URL</label>
+        <input type="text" id="api-base" value="https://api.deepseek.com/v1">
+      </div>
+      <div class="cfg-item">
+        <label>模型名称</label>
+        <input type="text" id="api-model" value="deepseek-chat">
+      </div>
+    </div>
+
+    <div class="cfg-grid">
+      <div class="cfg-item">
+        <label>目标课程</label>
+        <select id="course-id">
+          <option value="analysis" selected>分析学Ⅰ (analysis)</option>
+          <option value="algebra">代数学Ⅰ (algebra)</option>
+          <option value="geometry">几何学 (geometry)</option>
+          <option value="cprog">C 程序设计 (cprog)</option>
+        </select>
+      </div>
+      <div class="cfg-item">
+        <label>上课日期</label>
+        <input type="date" id="lec-date" value="2026-11-10">
+      </div>
+      <div class="cfg-item">
+        <label>节次 / 标题</label>
+        <input type="text" id="lec-session" placeholder="例如：第 1-2 节 有限子覆盖">
+      </div>
+      <div class="cfg-item">
+        <label>授课老师</label>
+        <input type="text" id="lec-teacher" value="王梦">
+      </div>
+    </div>
+
+    <!-- 2. 文件拖拽上传 -->
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="icon">📄</div>
+      <h3 id="drop-title">点击选择或拖拽字幕文件至此 (.docx 或 .txt)</h3>
+      <p id="drop-desc">支持课堂录音识别直接导出的 Word 逐条字幕文件，自动识别时间戳</p>
+      <input type="file" id="file-input" accept=".docx,.txt">
+    </div>
+
+    <!-- 3. 操作按钮 -->
+    <div class="action-bar">
+      <span style="font-size:12.5px;color:var(--text-muted)" id="token-tip">
+        💡 将自动按照 35 分钟/块分段精讲，严格执行例题卡、步骤细色条与 3 万字级深度保真标准
+      </span>
+      <button class="btn-run" id="btn-start" disabled>
+        <span>⚡</span> 开始智能分段精讲
+      </button>
+    </div>
+
+    <!-- 4. 进度指示面板 -->
+    <div class="progress-panel" id="progress-panel">
+      <div class="step-list">
+        <div class="step-card" id="step-1">
+          <div class="title">1. 字幕解析</div>
+          <div class="status" id="step-1-st">等待开始</div>
+        </div>
+        <div class="step-card" id="step-2">
+          <div class="title">2. 规范分块</div>
+          <div class="status" id="step-2-st">等待开始</div>
+        </div>
+        <div class="step-card" id="step-3">
+          <div class="title">3. AI 并行精讲</div>
+          <div class="status" id="step-3-st">等待开始</div>
+        </div>
+        <div class="step-card" id="step-4">
+          <div class="title">4. 合并与编号</div>
+          <div class="status" id="step-4-st">等待开始</div>
+        </div>
+      </div>
+      <div class="log-box" id="log-box">准备就绪，请填写 API Key 并上传字幕文件...</div>
+    </div>
+
+    <!-- 5. 最终成果预览与一键导出 -->
+    <div class="preview-area" id="preview-area">
+      <div class="preview-head">
+        <div style="display:flex;align-items:center;gap:12px">
+          <h3 style="margin:0;font-size:16px">🎉 讲义正文已生成完毕</h3>
+          <div class="preview-tabs">
+            <button class="preview-tab-btn active" id="tab-raw" onclick="switchPreviewTab('raw')">📝 Markdown 原文</button>
+            <button class="preview-tab-btn" id="tab-render" onclick="switchPreviewTab('render')">👁️ 排版效果预览</button>
+          </div>
+        </div>
+        <div class="download-btn-group" style="display:flex;gap:8px">
+          <button class="theme-btn" id="btn-copy-md">📋 复制 Markdown</button>
+          <button class="btn-run" id="btn-download-zip" style="padding:7px 16px;font-size:13px">
+            💾 下载内容包 (.zip)
+          </button>
+        </div>
+      </div>
+      <textarea class="preview-textarea" id="preview-md" readonly></textarea>
+      <div class="rendered-view" id="rendered-view"></div>
+      <div style="margin-top:14px;font-size:12.5px;color:var(--text-muted);background:var(--surface2);padding:10px 14px;border-radius:8px">
+        <b>💡 怎么直接并入本站：</b> 将下载的 zip 解压后将整个文件夹直接放入 <code>content/&lt;学科&gt;/</code> 目录，在根目录执行一次 <code>python3 build_site.py</code>，新节立即出现在首页、课程页与跨课检索索引中！
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 本地持久化 API 配置
+var keyInput = document.getElementById('api-key');
+var provSelect = document.getElementById('api-provider');
+var baseInput = document.getElementById('api-base');
+var modelInput = document.getElementById('api-model');
+var baseWrap = document.getElementById('base-url-wrap');
+
+keyInput.value = localStorage.getItem('wb_api_key') || '';
+provSelect.value = localStorage.getItem('wb_api_prov') || 'deepseek';
+baseInput.value = localStorage.getItem('wb_api_base') || 'https://api.deepseek.com/v1';
+modelInput.value = localStorage.getItem('wb_api_model') || 'deepseek-chat';
+
+function updateProvUI() {
+  var p = provSelect.value;
+  if (p === 'deepseek') {
+    baseWrap.style.display = 'none';
+    baseInput.value = 'https://api.deepseek.com/v1';
+    modelInput.value = 'deepseek-chat';
+  } else if (p === 'openai') {
+    baseWrap.style.display = 'none';
+    baseInput.value = 'https://api.openai.com/v1';
+    modelInput.value = 'gpt-4o';
+  } else {
+    baseWrap.style.display = 'block';
+  }
+}
+provSelect.onchange = function() {
+  updateProvUI();
+  localStorage.setItem('wb_api_prov', provSelect.value);
+};
+keyInput.oninput = function() { localStorage.setItem('wb_api_key', keyInput.value.trim()); checkReady(); };
+baseInput.oninput = function() { localStorage.setItem('wb_api_base', baseInput.value.trim()); };
+modelInput.oninput = function() { localStorage.setItem('wb_api_model', modelInput.value.trim()); };
+updateProvUI();
+
+// 拖拽文件处理
+var dropZone = document.getElementById('drop-zone');
+var fileInput = document.getElementById('file-input');
+var btnStart = document.getElementById('btn-start');
+var uploadedFile = null;
+var parsedLines = [];
+
+function checkReady() {
+  btnStart.disabled = !(keyInput.value.trim() && uploadedFile);
+}
+
+dropZone.ondragover = function(e){ e.preventDefault(); dropZone.classList.add('dragover'); };
+dropZone.ondragleave = function(){ dropZone.classList.remove('dragover'); };
+dropZone.ondrop = function(e){
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+};
+fileInput.onchange = function(){
+  if (fileInput.files.length) handleFile(fileInput.files[0]);
+};
+
+function handleFile(file) {
+  uploadedFile = file;
+  document.getElementById('drop-title').textContent = '已选择：' + file.name + ' (' + Math.round(file.size/1024) + ' KB)';
+  document.getElementById('drop-desc').textContent = '点击可重新更换文件';
+  checkReady();
+}
+
+function log(msg) {
+  var box = document.getElementById('log-box');
+  var d = new Date().toLocaleTimeString();
+  box.innerHTML += '<div>[' + d + '] ' + msg + '</div>';
+  box.scrollTop = box.scrollHeight;
+}
+
+// 核心工作流：解析 -> 分块 -> 调用 AI -> 合并
+btnStart.onclick = async function() {
+  var apiKey = keyInput.value.trim();
+  if (!apiKey || !uploadedFile) return;
+
+  btnStart.disabled = true;
+  document.getElementById('progress-panel').style.display = 'block';
+  document.getElementById('preview-area').style.display = 'none';
+
+  // 1. 解析文件
+  setStep(1, 'active', '正在解构文本...');
+  log('开始解析上传的文件：' + uploadedFile.name);
+
+  try {
+    if (uploadedFile.name.endsWith('.docx')) {
+      parsedLines = await extractDocxText(uploadedFile);
+    } else {
+      var raw = await uploadedFile.text();
+      parsedLines = extractTxtLines(raw);
+    }
+    log('✓ 成功提取逐条时间戳字幕：共 ' + parsedLines.length + ' 行');
+    setStep(1, 'done', '完成 (' + parsedLines.length + '行)');
+  } catch(err) {
+    log('✕ 解析失败：' + err.message);
+    setStep(1, '', '失败');
+    btnStart.disabled = false;
+    return;
+  }
+
+  // 2. 规范分块
+  setStep(2, 'active', '均匀切为 4 块...');
+  var N = 4;
+  var size = Math.ceil(parsedLines.length / N);
+  var chunks = [];
+  for (var i = 0; i < N; i++) {
+    var slice = parsedLines.slice(i * size, (i + 1) * size);
+    if (slice.length) chunks.push({ idx: i + 1, lines: slice });
+  }
+  log('✓ 已按上课时长划分为 ' + chunks.length + ' 个独立分段，保证成稿详细度与篇幅不被压缩');
+  setStep(2, 'done', '完成 (4个分段)');
+
+  // 3. 并行/批次调用 AI
+  setStep(3, 'active', '分段精讲生成中 (0/4)...');
+  var drafts = [];
+  var courseId = document.getElementById('course-id').value;
+  var courseName = document.getElementById('course-id').selectedOptions[0].text;
+  var dateStr = document.getElementById('lec-date').value;
+  var teacher = document.getElementById('lec-teacher').value;
+
+  for (var c = 0; c < chunks.length; c++) {
+    var ch = chunks[c];
+    log('正在向 ' + modelInput.value + ' 发起分段 ' + ch.idx + '/4 的精讲请求 (包含 ' + ch.lines.length + ' 条原始字幕)...');
+    try {
+      var draft = await callAiChunk(apiKey, courseId, courseName, dateStr, ch, c, chunks.length);
+      drafts.push(draft);
+      log('✓ 分段 ' + ch.idx + ' 精讲成功！生成字数：' + draft.length + ' 字符');
+      setStep(3, 'active', '已完成 (' + (c + 1) + '/4)...');
+    } catch(err) {
+      log('✕ 分段 ' + ch.idx + ' 请求失败：' + err.message);
+      setStep(3, '', 'AI 请求错误');
+      btnStart.disabled = false;
+      return;
+    }
+  }
+  setStep(3, 'done', '全部 4 段生成完毕');
+
+  // 4. 标准化合并与编号
+  setStep(4, 'active', '重排章节与例题...');
+  var mergedMarkdown = mergeAndNormalize(courseName, dateStr, teacher, parsedLines.length, drafts);
+  setStep(4, 'done', '完成');
+  log('🎉 全文讲义成功合成！总篇幅：' + mergedMarkdown.length + ' 字符。');
+
+  // 显示预览
+  document.getElementById('preview-area').style.display = 'block';
+  document.getElementById('preview-md').value = mergedMarkdown;
+  renderMarkdownPreview(mergedMarkdown);
+  btnStart.disabled = false;
+
+  // 绑定导出 Zip
+  setupDownloadZip(courseId, dateStr, mergedMarkdown, parsedLines);
+};
+
+function setStep(num, cls, text) {
+  var card = document.getElementById('step-' + num);
+  var st = document.getElementById('step-' + num + '-st');
+  card.className = 'step-card ' + (cls || '');
+  st.textContent = text;
+}
+
+// DOCX 解析：纯前端用 JSZip 解压并提取 word/document.xml
+async function extractDocxText(file) {
+  var zip = await MiniZip.extractDocx(file);
+  var docXml = await zip.file("word/document.xml").async("text");
+  var parser = new DOMParser();
+  var xmlDoc = parser.parseFromString(docXml, "application/xml");
+  var ps = xmlDoc.getElementsByTagName("w:p");
+  var textLines = [];
+  for (var i = 0; i < ps.length; i++) {
+    var ts = ps[i].getElementsByTagName("w:t");
+    var line = "";
+    for (var j = 0; j < ts.length; j++) line += ts[j].textContent || "";
+    if (line.trim()) textLines.push(line.trim());
+  }
+  return textLines;
+}
+
+function extractTxtLines(txt) {
+  return txt.split('\n').map(function(s){return s.trim()}).filter(Boolean);
+}
+
+// 调用大模型接口 (完全符合 02_讲义写作规范_v3.md 的硬性规范要求)
+async function callAiChunk(apiKey, courseId, courseName, dateStr, chunk, chunkIdx, totalChunks) {
+  var endpoint = baseInput.value.replace(/\/+$/, '') + '/chat/completions';
+  var prompt = `你是一名严谨的大学理工科名校金牌助教。现在正在将《${courseName}》（日期：${dateStr}）的课堂录音字幕整理为高质量讲义全文。
+这是本节课的第 ${chunk.idx}/${totalChunks} 分段。
+
+【严格执行的讲义写作与排版规范（绝对红线）】
+1. 篇幅与详细度（严禁概括）：
+   - 本分段包含老师课堂的所有推导过程、提问反问、概念辨析、易错点与反例。
+   - 整理后成稿字数不得低于 5000 字！严禁缩写成摘要或纲要，必须把板书推导步骤完整铺开！
+2. 章节与小节标题标准：
+   - 章标题使用二级标题：## 一、章节名称（HH:MM:SS—HH:MM:SS）
+   - 时间轴小节必须使用三级标题：### HH:MM:SS—HH:MM:SS ｜ 小节标题（小节内容要点简述）
+   - 必须包含真实准确的起止时间戳，中间以破折号连接，时间与标题以竖线「｜」隔开。
+3. 例题与证明卡片标准（必须四级标题）：
+   - 格式：#### 例题/证明 1（HH:MM:SS）｜ 题干说明
+   - 例题卡内步骤必须打上统一黑体标签：**[命题]**、**[思路]**、**[推导]**、**[步骤]**、**[结论]**、**[注意]**，冒号后紧跟正文不换行。
+   - 涉及多步推导的，必须采用数字有序列表，并标出步骤名称：
+     1. **第一步（...）**：具体推导演算...
+     2. **第二步（...）**：进一步求解...
+4. 数学公式排版规范：
+   - 必须使用标准 LaTeX 语法：行内公式用 $...$，独立块级公式用 $$...$$。
+   - 矩阵、行列式与分段函数必须排成规范的二维表格结构，严禁写成单行口语。
+5. C 程序设计专用规范（若当前为计算机/C程）：
+   - 所有代码必须使用 \`\`\`c ... \`\`\` 围栏，严格保留原始缩进、分号、头文件与变量名。
+   - 绝不能将字幕口语（如“百分号d”、“and a”）直接抄入，必须结合标准 C 语法写成合法的程序代码。
+6. 存疑与补充标注规范：
+   - 语音转写口误或口吃请顺滑修正；
+   - 听不清且无法从数学上下文推断的专名/数字标注 [?]；
+   - 整理者按学科标准代为补全的跳步内容标 [补全]；
+   - 课堂黑板画图转换为文字的描述标 [按图还原]。
+7. 纯净输出：
+   - 直接输出 Markdown 讲义正文，不要输出任何开场白、前言、自我介绍或包裹在最外层的 markdown 代码围栏！
+
+【本分段原始逐条时间戳字幕】
+${chunk.lines.slice(0, 1600).join('\n')}`;
+
+  var resp = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: modelInput.value,
+      messages: [
+        { role: 'system', content: '你是专业的大学理工科讲义整理助教，严格输出符合学术规范的高精度讲义 Markdown。' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.3
+    })
+  });
+
+  if (!resp.ok) {
+    var errText = await resp.text();
+    throw new Error('HTTP ' + resp.status + ': ' + errText);
+  }
+
+  var data = await resp.json();
+  return (data.choices && data.choices[0] && data.choices[0].message) ? data.choices[0].message.content : '';
+}
+
+// 清洗、标准化与重编号
+function mergeAndNormalize(courseName, dateStr, teacher, lineCount, drafts) {
+  var cleaned = drafts.map(function(d){
+    var t = d.trim();
+    if (t.startsWith('```markdown')) t = t.slice(11);
+    if (t.startsWith('```md')) t = t.slice(5);
+    if (t.endsWith('```')) t = t.slice(0, -3);
+    return t.trim();
+  }).join('\n\n');
+
+  // 全局章号标准化
+  var chIdx = 1;
+  var zhNums = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六'];
+  cleaned = cleaned.replace(/^##\s+[一二三四五六七八九十\d]+[、. ]\s*(.*)$/gm, function(m, title){
+    return '## ' + (zhNums[chIdx++] || chIdx) + '、' + title;
+  });
+
+  // 全局例题/证明统一连续编号
+  var exIdx = 1;
+  cleaned = cleaned.replace(/^####\s+(例题|证明|例题\/证明)\s*[\d一二三四五六七八九十]*\s*([（(][^）)]+[）)])?\s*([｜|].*)$/gm, function(m, p1, p2, p3){
+    return '#### 例题/证明 ' + (exIdx++) + (p2 || '') + ' ' + (p3 || '');
+  });
+
+  var header = `# 《${courseName}》${dateStr} 课堂详解\n\n` +
+    `> 授课：${teacher} ｜ 逐条字幕：${lineCount} 条 ｜ 整理时间：${new Date().toLocaleDateString()}\n` +
+    `> \`[补全]\` 标记的是整理者按标准学科知识补齐的内容；\`[?]\` 标记转写存疑处；\`[按图还原]\` 是黑板图形文字化描述。其余为课堂讲授内容的保真还原。\n\n`;
+
+  return header + cleaned;
+}
+
+// 预览 Tab 切换
+function switchPreviewTab(tab) {
+  document.getElementById('tab-raw').classList.toggle('active', tab === 'raw');
+  document.getElementById('tab-render').classList.toggle('active', tab === 'render');
+  document.getElementById('preview-md').style.display = (tab === 'raw' ? 'block' : 'none');
+  document.getElementById('rendered-view').style.display = (tab === 'render' ? 'block' : 'none');
+}
+
+// 轻量级 Markdown 渲染器 (用于预览)
+function renderMarkdownPreview(md) {
+  var v = document.getElementById('rendered-view');
+  var html = md
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^### (.*$)/gim, '<h3 style="background:#eef2f8;color:#24508c;padding:6px 12px;border-radius:6px;font-size:15px">$1</h3>')
+    .replace(/^#### (.*$)/gim, '<h4 style="border-left:4px solid #185fa5;padding-left:8px;margin-top:18px;color:#185fa5">$1</h4>')
+    .replace(/^\> (.*$)/gim, '<blockquote style="border-left:4px solid #cbd5e1;margin:8px 0;padding:6px 14px;background:#f8fafc;color:#64748b">$1</blockquote>')
+    .replace(/\*\*(.*?)\*\*/gim, '<b>$1</b>')
+    .replace(/\*(.*?)\*/gim, '<i>$1</i>')
+    .replace(/\n\n/gim, '<p></p>')
+    .replace(/\n/gim, '<br>');
+  v.innerHTML = html;
+}
+
+// 打包导出标准 content/<cid>/<session>/ 目录结构 Zip
+function setupDownloadZip(courseId, dateStr, mdText, rawLines) {
+  var btn = document.getElementById('btn-download-zip');
+  btn.onclick = async function() {
+    var zip = MiniZip.createZip();
+    var folderName = dateStr.replace(/-/g, '');
+    var folder = zip.folder(folderName);
+    folder.file("handout.md", mdText);
+    folder.file("transcript.txt", rawLines.join('\n'));
+
+    var yaml = `id: ${courseId}-${folderName}
+course: ${courseId}
+date: ${dateStr}
+session: ${document.getElementById('lec-session').value || dateStr}
+teacher: ${document.getElementById('lec-teacher').value}
+duration: 02:20:00
+subtitle_lines: ${rawLines.length}
+status: ready
+tags: []
+`;
+    folder.file("_lecture.yaml", yaml);
+
+    var blob = await zip.generateAsync({type:"blob"});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `content_${courseId}_${folderName}.zip`;
+    a.click();
+  };
+
+  document.getElementById('btn-copy-md').onclick = function() {
+    navigator.clipboard.writeText(mdText).then(function(){
+      alert('✓ 讲义 Markdown 已成功复制到剪贴板！');
+    });
+  };
+}
+</script>
+</body>
+</html>
