@@ -285,10 +285,13 @@ function courseView(){
      '<br><b>字幕可信度</b>：'+esc(c.trust)+'</div>';
 
   var curTab = window._courseTab || (new URLSearchParams(location.search).get('tab')) || 'lectures';
+  var hwObjective = hw_mine.some(function(x){ return !!x.objective; });
+  var hwTabLabel = hwObjective ? ('📝 作业 (' + hw_mine.length + ' 次)')
+                               : ('📝 每周作业 (' + hw_mine.length + ' 周)');
   h += '<div class="wb-course-tabs" style="display:flex;gap:10px;margin:20px 0 16px;border-bottom:2px solid var(--border);padding-bottom:12px;flex-wrap:wrap;">' +
        '<button class="btn ' + (curTab==='textbook'?'on':'ghost') + '" data-tab="textbook" onclick="switchCourseTab(this.dataset.tab)">📖 核心教材 (' + tb_mine.length + ' 本)</button>' +
        '<button class="btn ' + (curTab==='lectures'?'on':'ghost') + '" data-tab="lectures" onclick="switchCourseTab(this.dataset.tab)">📑 课堂讲义 (' + mine.length + ' 节)</button>' +
-       '<button class="btn ' + (curTab==='homework'?'on':'ghost') + '" data-tab="homework" onclick="switchCourseTab(this.dataset.tab)">📝 每周作业 (' + hw_mine.length + ' 周)</button>' +
+       '<button class="btn ' + (curTab==='homework'?'on':'ghost') + '" data-tab="homework" onclick="switchCourseTab(this.dataset.tab)">' + hwTabLabel + '</button>' +
        '</div>';
 
   if (curTab === 'textbook') {
@@ -324,9 +327,15 @@ function courseView(){
       h += '<div class="placeholder">这一门课的每周作业还在整理录入中。<br>后续把作业文件放进 <code>content/' + esc(c.id) + '/homework/</code> 后重新运行构建，作业列表与自测解析会自动在此展示。</div>';
     } else {
       hw_mine.forEach(function(hw){
-        h += '<a class="lrow" href="homework-' + esc(hw.id) + '.html"><div class="lt"><div class="ln">第 ' + String(hw.week).padStart(2, '0') + ' 周作业 ｜ ' + esc(hw.title) +
-             '</div><div class="lm">' + esc(hw.coverage || '') + ' ｜ 题量：' + (hw.required_count||0) + ' 道必做 · ' + (hw.optional_count||0) + ' 道选做 ｜ 发布：' + esc(hw.publish_date || '—') + ' ｜ 截止：' + esc(hw.due_date || '—') + '</div></div>' +
-             '<span class="tag ok">含自测解析</span>' +
+        var isObj = !!hw.objective;
+        var ln = isObj ? (esc(hw.seq_label || ('第 ' + hw.seq + ' 次作业')) + ' ｜ ' + esc(hw.title))
+                       : ('第 ' + String(hw.week).padStart(2, '0') + ' 周作业 ｜ ' + esc(hw.title));
+        var lm = isObj
+          ? (esc(hw.coverage || '') + ' ｜ 共 ' + (hw.required_count||0) + ' 题 ｜ 判断/选择自测')
+          : (esc(hw.coverage || '') + ' ｜ 题量：' + (hw.required_count||0) + ' 道必做 · ' + (hw.optional_count||0) + ' 道选做 ｜ 发布：' + esc(hw.publish_date || '—') + ' ｜ 截止：' + esc(hw.due_date || '—'));
+        h += '<a class="lrow" href="homework-' + esc(hw.id) + '.html"><div class="lt"><div class="ln">' + ln +
+             '</div><div class="lm">' + lm + '</div></div>' +
+             '<span class="tag ok">' + (isObj ? '可自测' : '含自测解析') + '</span>' +
              '<span class="time">' + ((hw.required_count||0) + (hw.optional_count||0)) + ' 题</span></a>';
       });
     }

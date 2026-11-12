@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第四次作业 ｜ 循环结构 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.obj-wrap{max-width:920px;margin:0 auto;padding:22px 18px 60px;font:15px/1.75 -apple-system,'Microsoft YaHei',sans-serif;color:#243044}
+.obj-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#f7f9fd;border-bottom:1px solid #dbe3f0;font-size:13px}
+.obj-bar a{color:#185fa5;text-decoration:none}
+.obj-bar .obj-cur{font-weight:600;color:#243044}
+.obj-head{padding:18px 0 10px;border-bottom:2px solid #185fa5}
+.obj-head h1{font-size:24px;margin:0 0 6px;color:#143a75}
+.obj-head .obj-sub{color:#5f6b7d;font-size:13px}
+.obj-lecs{margin:10px 0 0;font-size:13px;color:#5f6b7d}
+.obj-lecs a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid #bcd3f0;border-radius:12px;background:#eef5ff;color:#185fa5;text-decoration:none}
+.obj-tools{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0 8px;background:#fff;border-bottom:1px solid #e3e8f0}
+.obj-tool{padding:6px 13px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;font-size:13px;cursor:pointer}
+.obj-tool:hover{background:#e8f1ff}
+.obj-tool.on{background:#185fa5;color:#fff;border-color:#185fa5}
+.obj-notice{padding:10px 14px;margin:8px 0 18px;background:#fff8e8;border:1px solid #ecd9a8;border-radius:8px;color:#7a5410;font-size:13px}
+.obj-part{margin:26px 0 12px;padding:7px 14px;background:#eef4fb;border-left:4px solid #185fa5;color:#143a75;font-weight:600;font-size:16px;border-radius:0 6px 6px 0}
+.obj-card{margin:12px 0;padding:16px 18px;border:1px solid #e1e7f0;border-radius:10px;background:#fff}
+.obj-card.obj-wrong-picked{border-color:#f0b4b4}
+.obj-chead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.obj-num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:7px;background:#185fa5;color:#fff;font-size:13px;font-weight:600}
+.obj-kind{font-size:12px;color:#6b7789}
+.obj-stem{margin:2px 0 10px;line-height:1.8}
+.obj-stem code,.obj-opt code,.obj-analysis code{font-family:Consolas,Monaco,monospace;background:#f1f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#a33}
+.obj-card pre{margin:8px 0;padding:12px 14px;background:#f6f8fb;border:1px solid #e1e7f0;border-radius:7px;overflow-x:auto;font:13px/1.7 Consolas,Monaco,monospace;color:#243044}
+.obj-card pre code{background:none;padding:0;color:inherit}
+.obj-options{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.obj-opt{display:flex;gap:9px;align-items:flex-start;width:100%;padding:9px 12px;border:1px solid #d7e0ee;border-radius:7px;background:#fbfcff;text-align:left;font:14px/1.6 inherit;color:#243044;cursor:pointer}
+.obj-opt:hover{background:#eef5ff;border-color:#9dc0ea}
+.obj-opt .obj-k{flex:0 0 22px;font-weight:600;color:#185fa5}
+.obj-card.obj-answered .obj-opt{cursor:default}
+.obj-opt.obj-picked{border-color:#185fa5;background:#e8f1ff}
+.obj-opt.obj-hit{border-color:#2e9e5b;background:#e7f7ed}
+.obj-opt.obj-miss{border-color:#d9534f;background:#fdecec}
+.obj-feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#f7f9fd;border:1px solid #e1e7f0;font-size:14px}
+.obj-card.obj-revealed .obj-feedback{display:block}
+.obj-verdict{font-weight:600;margin-bottom:6px}
+.obj-verdict.ok{color:#2e9e5b}
+.obj-verdict.no{color:#d9534f}
+.obj-answer{color:#143a75;margin-bottom:6px}
+.obj-analysis{color:#3c485c;line-height:1.8}
+.obj-nav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid #e3e8f0}
+.obj-nav a,.obj-nav span{padding:8px 14px;border:1px solid #c9d6ea;border-radius:7px;color:#185fa5;text-decoration:none;font-size:13px}
+.obj-nav .off{color:#9aa5b5;background:#f5f7fa}
+.obj-onlywrong .obj-card:not(.obj-iswrong){display:none}
+.obj-onlywrong .obj-part{display:none}
+.obj-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:#243044;color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+.obj-toast.on{opacity:1}
+.obj-notes{padding:10px 14px;margin-top:16px;border:1px solid #e1e7f0;border-radius:8px;background:#fbfcff}
+.obj-notes h3{margin:0 0 8px;font-size:14px;color:#143a75}
+.obj-note-item{padding:7px 0;border-bottom:1px dashed #e1e7f0;font-size:13px}
+.obj-note-item:last-child{border-bottom:none}
+#wb-hl-popover{position:absolute;display:none;z-index:80;padding:6px 9px;background:#fff;border:1px solid #d7e0ee;border-radius:9px;box-shadow:0 3px 14px rgba(20,50,90,.16)}
+#wb-hl-popover .wb-hl-color-dot{display:inline-block;width:18px;height:18px;margin:0 3px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.1)}
+#wb-hl-popover button{padding:3px 8px;border:1px solid #d7e0ee;border-radius:6px;background:#f7faff;cursor:pointer;font-size:12px}
+.wb-dot-yellow{background:#ffe066}.wb-dot-green{background:#9ae6b4}.wb-dot-red{background:#ffa8a8}.wb-dot-purple{background:#d0bfff}
+#wb-note-modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(20,35,60,.4)}
+#wb-note-modal.wb-open{display:flex;align-items:center;justify-content:center}
+.wb-note-dialog{width:min(460px,90vw);background:#fff;border-radius:12px;padding:18px}
+.wb-note-dialog textarea{width:100%;min-height:90px;padding:8px;border:1px solid #d7e0ee;border-radius:7px;font:14px/1.6 inherit}
+.wb-note-dialog .wb-note-quote{padding:8px;background:#f6f8fb;border-radius:6px;color:#5f6b7d;font-size:13px;margin:8px 0}
+.wb-note-dialog .wb-note-head{display:flex;justify-content:space-between;font-weight:600;color:#143a75}
+.wb-note-dialog .wb-note-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.wb-note-dialog button{padding:6px 12px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;cursor:pointer}
+.wb-user-hl{border-radius:3px;padding:0 1px}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body data-lid="cprog-04">
+<div class="obj-bar">
+  <a href="index.html">首页</a> <span>›</span>
+  <a href="course-cprog.html?tab=homework">C 程序设计 · 作业</a> <span>›</span>
+  <span class="obj-cur">第四次作业</span>
+  <span style="flex:1"></span>
+  <button class="obj-tool" id="obj-notes-toggle">🖍️ 批注 (<span id="obj-notes-count">0</span>)</button>
+</div>
+<div class="obj-wrap">
+  <header class="obj-head">
+    <h1>第四次作业 ｜ 循环结构</h1>
+    <div class="obj-sub">C 程序设计 · 判断题 9 道 · 单选题 10 道 · 共 19 题</div>
+    <div class="obj-lecs">相关讲义：<a href="lecture-cprog-2026-10-13.html">2026-10-13</a></div>
+  </header>
+  <div class="obj-tools">
+    <button class="obj-tool on" id="obj-btn-selftest">🙈 自测模式（答案已隐藏）</button>
+    <button class="obj-tool" id="obj-btn-showall">💡 显示全部答案</button>
+    <button class="obj-tool" id="obj-btn-wrong">🔴 只看错题</button>
+    <button class="obj-tool" id="obj-btn-reset">↺ 重做（清空本机作答）</button>
+  </div>
+  <div class="obj-notice">选择或判断后即时查看对错、正确答案与解析；可用「🙈 自测模式」先隐藏答案独立作答。作答记录只保存在本机浏览器，不计分、不上传。<br>说明：本页为纯静态自测，答案随页面一起下发（查看源码即可见），仅用于自查，不具备防作弊或计分功能。</div>
+  <h2 class="obj-part">一、判断题（9 题）</h2>
+<article class="obj-card" data-key="T-1" data-answer="√">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中 do-while 语句的循环体至少会执行一次，因为它是先执行循环体再判断条件。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。do-while 先执行循环体再判断条件，故至少执行一次。</div></div>
+</article>
+<article class="obj-card" data-key="T-2" data-answer="×">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言循环体中，break 语句的功能是跳过当前循环的剩余部分，直接开始下一次循环。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。跳过本次剩余语句进入下一次循环的是 continue，break 会终止循环。</div></div>
+</article>
+<article class="obj-card" data-key="T-3" data-answer="√">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">for 语句的三个表达式（初始化、条件判断、增量/减量）之间必须用分号 ; 分隔，否则会出现语法错误。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。for 的三个表达式之间必须用分号 ; 分隔。</div></div>
+</article>
+<article class="obj-card" data-key="T-4" data-answer="√">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">循环体中的 continue 语句只会终止当前一次循环的执行，不会影响整个循环的后续次数。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。continue 只结束当前一次迭代，不影响后续循环次数。</div></div>
+</article>
+<article class="obj-card" data-key="T-5" data-answer="×">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">do-while 语句的循环条件后面可以省略分号，编译器会自动补充，不会影响程序运行。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。do-while 的条件右括号后必须写分号，省略会编译报错。</div></div>
+</article>
+<article class="obj-card" data-key="T-6" data-answer="×">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在多层嵌套循环中，单个 break 语句可以一次性跳出所有嵌套层级的循环。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。break 只跳出最近的一层循环，不能一次跳出所有嵌套层。</div></div>
+</article>
+<article class="obj-card" data-key="T-7" data-answer="√">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">break 语句既可以用于跳出循环，也可以用于跳出 switch 语句，但作用范围仅限最近的循环或 switch。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。break 可用于循环和 switch，作用范围仅限最近的那个。</div></div>
+</article>
+<article class="obj-card" data-key="T-8" data-answer="√">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">while 循环中执行 continue 语句后，会跳过循环体剩余代码，直接重新判断循环条件。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。while 中执行 continue 会跳过剩余代码，直接重新判断条件。</div></div>
+</article>
+<article class="obj-card" data-key="T-9" data-answer="√">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">for 语句的三个表达式都可以省略，例如 for(;;) 表示无限循环，需在循环体内通过 break 控制结束。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。for(;;) 三个表达式全省略即无限循环，需在体内用 break 结束。</div></div>
+</article>
+<h2 class="obj-part">二、单选题（10 题）</h2>
+<article class="obj-card" data-key="C-1" data-answer="A">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">do-while 循环的核心特点是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>循环体至少会执行一次</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>先判断条件再执行循环体</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>循环条件必须是关系表达式</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>不能与 break 语句配合使用</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。do-while 先执行后判断，循环体至少执行一次。</div></div>
+</article>
+<article class="obj-card" data-key="C-2" data-answer="C">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">for 语句的初始化、条件判断、增量/减量三个表达式之间，必须使用哪种符号分隔？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>逗号（,）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>冒号（:）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>分号（;）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>空格</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。三个表达式用分号 ; 分隔。</div></div>
+</article>
+<article class="obj-card" data-key="C-3" data-answer="B">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下代码最终会输出多少个 *？</div>
+<pre><code>for (int i = 0;
+i &lt; 2;
+i++) {
+for (int j = 0;
+j &lt; 3;
+j++) {
+printf(&quot;*&quot;);
+}
+}</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>5 个</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>6 个</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>2 个</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>3 个</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。外层 2 次 × 内层 3 次，共输出 6 个星号。</div></div>
+</article>
+<article class="obj-card" data-key="C-4" data-answer="A">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">for 循环的三个表达式中，允许省略的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>任意一个或多个</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>只能省略初始化表达式</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>只能省略条件判断表达式</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>都不能省略</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。for 的初始化、条件、增量三个表达式都可省略。</div></div>
+</article>
+<article class="obj-card" data-key="C-5" data-answer="C">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">while 循环中执行 continue 语句后，程序会？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>跳出整个 while 循环</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>终止当前程序的运行</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>跳过循环体剩余代码，直接重新判断循环条件</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>重置循环变量为初始值</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。continue 跳过循环体剩余代码，直接重新判断循环条件。</div></div>
+</article>
+<article class="obj-card" data-key="C-6" data-answer="B">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">while(0) 对应的循环体执行情况是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>循环体无限次执行（死循环）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>循环体一次也不执行</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>循环体执行一次后自动结束</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>语法错误，无法通过编译</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。while(0) 条件恒假，循环体一次也不执行。</div></div>
+</article>
+<article class="obj-card" data-key="C-7" data-answer="B">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">for 循环的增量表达式中，能否同时修改多个变量？（如实现 i 递增、j 递减）</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>不能，增量表达式只能修改一个变量</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>能，需用逗号分隔多个变量操作，如 for(int i=0, j=5; i&lt;5; i++, j--)</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>能，需用分号分隔多个变量操作</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>能，需用空格分隔多个变量操作</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。增量表达式可用逗号运算符同时修改多个变量。</div></div>
+</article>
+<article class="obj-card" data-key="C-8" data-answer="D">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 while 循环中，若循环体中仅在 continue 语句后修改循环变量（如下所示），该循环会出现什么问题？</div>
+<pre><code>int i = 0;
+while (i &lt; 5) {
+continue;
+i++;
+}</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>循环正常执行 5 次后结束</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>编译器报错，无法通过编译</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>循环体执行 1 次后自动结束</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>进入死循环，永远无法结束</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。循环变量的修改写在 continue 之后永远执行不到，导致死循环。</div></div>
+</article>
+<article class="obj-card" data-key="C-9" data-answer="B">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在多层嵌套循环中，内层循环的 break 语句对上层循环的影响是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>会强制上层循环也终止</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>对上层循环无影响，上层循环继续执行剩余迭代</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>会重置上层循环的循环变量</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>会使上层循环跳过当前迭代，直接进入下一次迭代</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。内层 break 只结束内层循环，外层继续执行剩余迭代。</div></div>
+</article>
+<article class="obj-card" data-key="C-10" data-answer="D">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">break 语句的主要功能是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>跳过当前循环的剩余代码，直接开始下一次循环</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>终止整个程序的运行</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>一次性跳出所有嵌套层级的循环</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>跳出当前所在的循环或 <code>switch</code> 语句，执行后续代码</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。break 跳出当前所在的循环或 switch，继续执行其后的代码。</div></div>
+</article>
+  <nav class="obj-nav"><a href="homework-cprog-03.html">‹ 上一次作业</a><a href="course-cprog.html?tab=homework">📚 返回作业列表</a><a href="homework-cprog-05.html">下一次作业 ›</a></nav>
+  <div class="obj-notes" id="obj-notes" style="display:none">
+    <h3>📝 本节批注</h3>
+    <div id="obj-notes-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="obj-tool" id="obj-notes-export">📤 导出 JSON</button>
+      <button class="obj-tool" id="obj-notes-clear">🗑️ 清空批注</button>
+    </div>
+  </div>
+</div>
+
+<div id="wb-hl-popover">
+  <span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="核心考点"></span>
+  <span class="wb-hl-color-dot wb-dot-green" data-color="green" title="概念定义"></span>
+  <span class="wb-hl-color-dot wb-dot-red" data-color="red" title="易错反例"></span>
+  <span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="解题技巧"></span>
+  <button class="wb-hl-btn" data-color="underline" title="波浪下划线"><u>U</u></button>
+  <button id="wb-hl-add-note" title="添加便签批注">📝 便签</button>
+  <button id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button>
+</div>
+<div id="wb-note-modal">
+  <div class="wb-note-dialog">
+    <div class="wb-note-head"><span>📝 添加/编辑便签</span><button id="wb-note-close">×</button></div>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea id="wb-note-input" placeholder="写下你的疑问或思考..."></textarea>
+    <div class="wb-note-footer">
+      <button id="wb-note-del-btn" style="display:none">删除便签</button>
+      <button id="wb-note-save-btn">保存便签</button>
+    </div>
+  </div>
+</div>
+<div class="obj-toast" id="obj-toast"></div>
+
+<script>
+(function(){
+  var LID = "cprog-04";
+  window.LID = LID;
+  function S(){ return window.WB_STORAGE || localStorage; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var toastEl = document.getElementById('obj-toast'), toastTimer = null;
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1900);
+  }
+  window.showToast = showToast;
+
+  /* ---------- 客观题自测（不计分） ---------- */
+  var KEY = 'wb_quiz_' + LID;
+  var answers = {};
+  try { answers = JSON.parse(S().getItem(KEY) || '{}') || {}; } catch(e){ answers = {}; }
+  function saveAnswers(){ try { S().setItem(KEY, JSON.stringify(answers)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.obj-card'));
+  function paint(card){
+    var key = card.getAttribute('data-key');
+    var picked = answers[key];
+    var correct = card.getAttribute('data-answer');
+    var opts = Array.prototype.slice.call(card.querySelectorAll('.obj-opt'));
+    var fb = card.querySelector('.obj-feedback');
+    opts.forEach(function(b){
+      b.classList.remove('obj-picked','obj-hit','obj-miss');
+      var v = b.getAttribute('data-val');
+      if(picked && v === picked) b.classList.add('obj-picked');
+      if(v === correct) b.classList.add('obj-hit');
+      else if(picked && v === picked) b.classList.add('obj-miss');
+    });
+    card.classList.toggle('obj-answered', !!picked);
+    card.classList.toggle('obj-iswrong', !!picked && picked !== correct);
+    card.classList.toggle('obj-wrong-picked', !!picked && picked !== correct);
+    if(fb){
+      var v = fb.querySelector('.obj-verdict');
+      if(picked){
+        v.textContent = picked === correct ? '✓ 回答正确' : '✕ 回答错误，你选了 ' + picked;
+        v.className = 'obj-verdict ' + (picked === correct ? 'ok' : 'no');
+      } else {
+        v.textContent = '（未作答）'; v.className = 'obj-verdict';
+      }
+    }
+    if(picked) card.classList.add('obj-revealed');
+    else if(!document.body.classList.contains('obj-showall')) card.classList.remove('obj-revealed');
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.obj-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(document.body.classList.contains('obj-locked')) return;
+        answers[card.getAttribute('data-key')] = btn.getAttribute('data-val');
+        saveAnswers(); paint(card);
+      });
+    });
+    paint(card);
+  });
+  function setAll(on){
+    document.body.classList.toggle('obj-showall', on);
+    cards.forEach(function(c){ c.classList.toggle('obj-revealed', on); });
+    document.getElementById('obj-btn-showall').textContent = on ? '🙈 隐藏答案' : '💡 显示全部答案';
+    document.getElementById('obj-btn-showall').classList.toggle('on', on);
+  }
+  document.getElementById('obj-btn-showall').addEventListener('click', function(){
+    setAll(!document.body.classList.contains('obj-showall'));
+  });
+  document.getElementById('obj-btn-selftest').addEventListener('click', function(){
+    var on = !this.classList.contains('on');
+    this.classList.toggle('on', on);
+    this.textContent = on ? '🙈 自测模式（答案已隐藏）' : '📖 阅读模式（可直接看答案）';
+    document.body.classList.toggle('obj-locked', false);
+    if(on){ setAll(false); cards.forEach(function(c){ if(!answers[c.getAttribute('data-key')]) c.classList.remove('obj-revealed'); }); }
+    else { setAll(true); }
+    showToast(on ? '已开启自测：作答后才显示答案与解析' : '已切到阅读模式：答案全部展开');
+  });
+  document.getElementById('obj-btn-wrong').addEventListener('click', function(){
+    var on = !document.body.classList.contains('obj-onlywrong');
+    document.body.classList.toggle('obj-onlywrong', on);
+    this.classList.toggle('on', on);
+    showToast(on ? '只看答错的题' : '显示全部题目');
+  });
+  document.getElementById('obj-btn-reset').addEventListener('click', function(){
+    answers = {}; saveAnswers(); setAll(false);
+    cards.forEach(function(c){ c.classList.remove('obj-revealed','obj-answered','obj-iswrong','obj-wrong-picked'); paint(c); });
+    showToast('✓ 已清空本机作答记录');
+  });
+
+  /* ---------- 划词批注钩子（供 wb-hl.js 回连） ---------- */
+  function getHighlights(){
+    try { return JSON.parse(S().getItem('wb_hl_' + LID) || '[]') || []; } catch(e){ return []; }
+  }
+  function updateNotesDrawer(){
+    var list = getHighlights();
+    var n = document.getElementById('obj-notes-count');
+    if(n) n.textContent = String(list.length);
+    var box = document.getElementById('obj-notes-list');
+    if(!box) return;
+    if(!list.length){ box.innerHTML = '<div style="color:#8a94a6;font-size:13px">还没有批注。选中正文文字即可呼出荧光笔。</div>'; return; }
+    box.innerHTML = list.map(function(it){
+      return '<div class="obj-note-item"><b>' + esc(it.text) + '</b>' +
+             (it.note ? '<div style="color:#5f6b7d">💬 ' + esc(it.note) + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  window.updateNotesDrawer = updateNotesDrawer;
+  updateNotesDrawer();
+  document.getElementById('obj-notes-toggle').addEventListener('click', function(){
+    var box = document.getElementById('obj-notes');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    updateNotesDrawer();
+  });
+  document.getElementById('obj-notes-clear').addEventListener('click', function(){
+    if(window.WB_HL && window.WB_HL.saveList) window.WB_HL.saveList([]);
+    else S().setItem('wb_hl_' + LID, '[]');
+    updateNotesDrawer(); showToast('✓ 已清空批注，刷新后高亮也会消失');
+  });
+  document.getElementById('obj-notes-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(getHighlights(), null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'notes-' + LID + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✓ 已导出批注 JSON');
+  });
+})();
+</script>
+<script src="wb-hl.js"></script>
+</body>
+</html>

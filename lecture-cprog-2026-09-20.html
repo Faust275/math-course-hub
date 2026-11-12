@@ -372,6 +372,13 @@
     }
   </style>
 <style>
+ol.wb-steps{margin:10px 0 16px;padding-left:28px;line-height:1.85}
+ol.wb-steps>li{margin:8px 0;padding-left:4px}
+ol.wb-steps>li::marker{color:#1d4ed8;font-weight:600}
+math[display="inline"]{margin:0 .08em}
+mjx-container[jax="SVG"]{margin:0 .04em}
+</style>
+<style>
 /* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
    系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
    必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
@@ -1603,12 +1610,12 @@ printf 与分支语句 if–else（00:16:13—00:46:00）</h2>
 1（00:18:50）｜ printf 格式符数量对应（a=123, b=456）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-2" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">题目</strong>：理解格式字符与输出列表必须一一对应。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：通过三组对照实验观察「格式符多／少」的后果。</p>
-<p><strong class="wb-pill wb-pill-derive">步骤（代码见上）</strong>： 1. 两个 <code>%d</code> 配
-<code>a, b</code> → 正常输出 <code>123, 456;</code>； 2. 一个
+<p><strong class="wb-pill wb-pill-derive">步骤（代码见上）</strong>：</p><ol class="wb-steps"><li>两个 <code>%d</code> 配
+<code>a, b</code> → 正常输出 <code>123, 456;</code>；</li><li>一个
 <code>%d</code> 配 <code>a, b</code> → 只输出
-<code>a</code>，<code>b</code> 被忽略 → <code>123;</code>； 3. 两个
+<code>a</code>，<code>b</code> 被忽略 → <code>123;</code>；</li><li>两个
 <code>%d</code> 只配 <code>b</code> →
-第一个正常，第二个对应不到变量，输出不可测内容。</p>
+第一个正常，第二个对应不到变量，输出不可测内容。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：格式字符的个数决定了输出什么；变量多了不输出，变量少了则多余格式符输出不可测内容。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：「输出内容由格式字符串决定，不由变量决定」。不要以为把变量写在输出列表里就一定会打印出来。</p>
 </section><section class="wb-seg"><h3 id="浮点数输出宽度四舍五入与转义字符"><span class="wb-ts">00:20:54—00:28:14</span> ｜
@@ -1950,12 +1957,10 @@ Fahr celsius
 2（循环条件），真则执行循环体 → 算表达式 3（更新循环变量）→ 再判断表达式
 2，直至为假。循环体若有多条语句，必须用一对 <code>{}</code>
 包成复合语句。</p>
-<p><strong class="wb-pill">常见错误</strong>（老师特别强调）： 1. 在
+<p><strong class="wb-pill">常见错误</strong>（老师特别强调）：</p><ol class="wb-steps"><li>在
 <code>for(...)</code> 后多写分号：<code>for(...); 语句;</code> ——
-分号本身成了空语句（循环体），后面的语句不再是循环体； 2.
-表达式之间用<strong>逗号</strong>而非分号：<code>for(表达式1, 表达式2, 表达式3)</code>
-—— 逗号会被当成逗号运算符，编译器报「缺少表达式」； 3.
-循环体多条语句却<strong>没加大括号</strong>——只有第一条算循环体，其余跑到循环外。</p>
+分号本身成了空语句（循环体），后面的语句不再是循环体；</li><li>表达式之间用<strong>逗号</strong>而非分号：<code>for(表达式1, 表达式2, 表达式3)</code>
+—— 逗号会被当成逗号运算符，编译器报「缺少表达式」；</li><li>循环体多条语句却<strong>没加大括号</strong>——只有第一条算循环体，其余跑到循环外。</li></ol>
 <h2 id="五例题前-n-项级数求和与程序调试012205013959">五、例题：前 n
 项级数求和与程序调试（01:22:05—01:39:59）</h2>
 </section><section class="wb-seg"><h3 id="求前-n-项级数-1131517"><span class="wb-ts">01:22:05—01:35:46</span> ｜ 求前 n 项级数
@@ -2024,13 +2029,11 @@ Fahr celsius
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>代码取自课件 ch02.txt（第 47–48 页，例[2-8] 程序代码改错）</p>
-<p><strong class="wb-pill wb-pill-idea">错误分析</strong>： 1. <code>scanf("%d", n );</code> 漏了
-<code>&amp;</code> —— 读入的值没写进 <code>n</code>； 2.
-<code>item = flag * 1 / (2*i+1);</code> 中 <code>1</code> 和
+<p><strong class="wb-pill wb-pill-idea">错误分析</strong>：</p><ol class="wb-steps"><li><code>scanf("%d", n );</code> 漏了
+<code>&amp;</code> —— 读入的值没写进 <code>n</code>；</li><li><code>item = flag * 1 / (2*i+1);</code> 中 <code>1</code> 和
 <code>(2*i+1)</code> 都是整数，整数除法结果恒为
-<code>0</code>，<code>item</code> 永远为 <code>0</code>； 3.
-<code>double sum, item;</code> 未初始化
-<code>sum</code>，累加的是垃圾值。</p>
+<code>0</code>，<code>item</code> 永远为 <code>0</code>；</li><li><code>double sum, item;</code> 未初始化
+<code>sum</code>，累加的是垃圾值。</li></ol>
 <p>老师强调：这类「犯错却没立刻报错」最危险——就像开车超速一时没被抓，但养成坏习惯终会出事。编译器的语法错误能立刻发现，但<strong>逻辑错误和未初始化</strong>要自己靠规范规避。</p>
 <h2
 id="六自定义函数阶乘表函数声明与组合数014029015015">六、自定义函数：阶乘表、函数声明与组合数（01:40:29—01:50:15）</h2>
@@ -2238,21 +2241,17 @@ int 的值按 double 格式输出」会得到毫无意义的数——这解释�
 则左对齐（右补空格）。老师提醒：<strong>字符常量必须用单引号
 <code>'A'</code></strong>，写成双引号 <code>"A"</code>
 是错误的（那是字符串）。</p>
-<p><strong class="wb-pill">scanf 读字符的细节</strong>（老师重点）： 1.
-读整数／浮点数时，<code>scanf</code>
+<p><strong class="wb-pill">scanf 读字符的细节</strong>（老师重点）：</p><ol class="wb-steps"><li>读整数／浮点数时，<code>scanf</code>
 会<strong>自动跳过前导空白</strong>；但读字符 <code>%c</code>
-<strong>不会跳过空白</strong>——空格、回车都会被当成字符读入。 2.
-<code>scanf</code> 返回值表示「成功读取的数据项数」：两项都读成返回
+<strong>不会跳过空白</strong>——空格、回车都会被当成字符读入。</li><li><code>scanf</code> 返回值表示「成功读取的数据项数」：两项都读成返回
 <code>2</code>，只读成一项返回 <code>1</code>，一项都没读成返回
 <code>0</code>。例如输入 <code>123abc</code>，<code>%d</code> 读走
 <code>123</code>，<code>%f</code> 遇到 <code>a</code> 读失败，整体返回
-<code>1</code>。 3.
-格式串里的<strong>普通字符</strong>能匹配输入：<code>count=</code>
+<code>1</code>。</li><li>格式串里的<strong>普通字符</strong>能匹配输入：<code>count=</code>
 必须原样输入
 <code>count=</code>；<code>count=</code>（等号后带空格）也能匹配，因为空格可匹配任意多个空白；但
-<code>count =</code>（等号前带空格）会匹配失败。 4.
-若想读「非空白字符」，可用 <code>" %c"</code>（格式串里空格后跟
-<code>%c</code>），空格会吃掉前面的空白，从而读到真正的字符。</p>
+<code>count =</code>（等号前带空格）会匹配失败。</li><li>若想读「非空白字符」，可用 <code>" %c"</code>（格式串里空格后跟
+<code>%c</code>），空格会吃掉前面的空白，从而读到真正的字符。</li></ol>
 </section><section class="wb-seg"><h3 id="浮点数的相等比较误差与-epsilon"><span class="wb-ts">02:11:03—02:14:09</span> ｜
 浮点数的相等比较（误差与 epsilon）</h3>
 <p>数学上「<code>a == b</code>」有意义，但<strong>编程里比较两个浮点数是否相等要特别小心</strong>：浮点数在计算机里是近似表示的（如

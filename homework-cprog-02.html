@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第二次作业 ｜ 输入输出与格式控制 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.obj-wrap{max-width:920px;margin:0 auto;padding:22px 18px 60px;font:15px/1.75 -apple-system,'Microsoft YaHei',sans-serif;color:#243044}
+.obj-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#f7f9fd;border-bottom:1px solid #dbe3f0;font-size:13px}
+.obj-bar a{color:#185fa5;text-decoration:none}
+.obj-bar .obj-cur{font-weight:600;color:#243044}
+.obj-head{padding:18px 0 10px;border-bottom:2px solid #185fa5}
+.obj-head h1{font-size:24px;margin:0 0 6px;color:#143a75}
+.obj-head .obj-sub{color:#5f6b7d;font-size:13px}
+.obj-lecs{margin:10px 0 0;font-size:13px;color:#5f6b7d}
+.obj-lecs a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid #bcd3f0;border-radius:12px;background:#eef5ff;color:#185fa5;text-decoration:none}
+.obj-tools{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0 8px;background:#fff;border-bottom:1px solid #e3e8f0}
+.obj-tool{padding:6px 13px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;font-size:13px;cursor:pointer}
+.obj-tool:hover{background:#e8f1ff}
+.obj-tool.on{background:#185fa5;color:#fff;border-color:#185fa5}
+.obj-notice{padding:10px 14px;margin:8px 0 18px;background:#fff8e8;border:1px solid #ecd9a8;border-radius:8px;color:#7a5410;font-size:13px}
+.obj-part{margin:26px 0 12px;padding:7px 14px;background:#eef4fb;border-left:4px solid #185fa5;color:#143a75;font-weight:600;font-size:16px;border-radius:0 6px 6px 0}
+.obj-card{margin:12px 0;padding:16px 18px;border:1px solid #e1e7f0;border-radius:10px;background:#fff}
+.obj-card.obj-wrong-picked{border-color:#f0b4b4}
+.obj-chead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.obj-num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:7px;background:#185fa5;color:#fff;font-size:13px;font-weight:600}
+.obj-kind{font-size:12px;color:#6b7789}
+.obj-stem{margin:2px 0 10px;line-height:1.8}
+.obj-stem code,.obj-opt code,.obj-analysis code{font-family:Consolas,Monaco,monospace;background:#f1f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#a33}
+.obj-card pre{margin:8px 0;padding:12px 14px;background:#f6f8fb;border:1px solid #e1e7f0;border-radius:7px;overflow-x:auto;font:13px/1.7 Consolas,Monaco,monospace;color:#243044}
+.obj-card pre code{background:none;padding:0;color:inherit}
+.obj-options{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.obj-opt{display:flex;gap:9px;align-items:flex-start;width:100%;padding:9px 12px;border:1px solid #d7e0ee;border-radius:7px;background:#fbfcff;text-align:left;font:14px/1.6 inherit;color:#243044;cursor:pointer}
+.obj-opt:hover{background:#eef5ff;border-color:#9dc0ea}
+.obj-opt .obj-k{flex:0 0 22px;font-weight:600;color:#185fa5}
+.obj-card.obj-answered .obj-opt{cursor:default}
+.obj-opt.obj-picked{border-color:#185fa5;background:#e8f1ff}
+.obj-opt.obj-hit{border-color:#2e9e5b;background:#e7f7ed}
+.obj-opt.obj-miss{border-color:#d9534f;background:#fdecec}
+.obj-feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#f7f9fd;border:1px solid #e1e7f0;font-size:14px}
+.obj-card.obj-revealed .obj-feedback{display:block}
+.obj-verdict{font-weight:600;margin-bottom:6px}
+.obj-verdict.ok{color:#2e9e5b}
+.obj-verdict.no{color:#d9534f}
+.obj-answer{color:#143a75;margin-bottom:6px}
+.obj-analysis{color:#3c485c;line-height:1.8}
+.obj-nav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid #e3e8f0}
+.obj-nav a,.obj-nav span{padding:8px 14px;border:1px solid #c9d6ea;border-radius:7px;color:#185fa5;text-decoration:none;font-size:13px}
+.obj-nav .off{color:#9aa5b5;background:#f5f7fa}
+.obj-onlywrong .obj-card:not(.obj-iswrong){display:none}
+.obj-onlywrong .obj-part{display:none}
+.obj-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:#243044;color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+.obj-toast.on{opacity:1}
+.obj-notes{padding:10px 14px;margin-top:16px;border:1px solid #e1e7f0;border-radius:8px;background:#fbfcff}
+.obj-notes h3{margin:0 0 8px;font-size:14px;color:#143a75}
+.obj-note-item{padding:7px 0;border-bottom:1px dashed #e1e7f0;font-size:13px}
+.obj-note-item:last-child{border-bottom:none}
+#wb-hl-popover{position:absolute;display:none;z-index:80;padding:6px 9px;background:#fff;border:1px solid #d7e0ee;border-radius:9px;box-shadow:0 3px 14px rgba(20,50,90,.16)}
+#wb-hl-popover .wb-hl-color-dot{display:inline-block;width:18px;height:18px;margin:0 3px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.1)}
+#wb-hl-popover button{padding:3px 8px;border:1px solid #d7e0ee;border-radius:6px;background:#f7faff;cursor:pointer;font-size:12px}
+.wb-dot-yellow{background:#ffe066}.wb-dot-green{background:#9ae6b4}.wb-dot-red{background:#ffa8a8}.wb-dot-purple{background:#d0bfff}
+#wb-note-modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(20,35,60,.4)}
+#wb-note-modal.wb-open{display:flex;align-items:center;justify-content:center}
+.wb-note-dialog{width:min(460px,90vw);background:#fff;border-radius:12px;padding:18px}
+.wb-note-dialog textarea{width:100%;min-height:90px;padding:8px;border:1px solid #d7e0ee;border-radius:7px;font:14px/1.6 inherit}
+.wb-note-dialog .wb-note-quote{padding:8px;background:#f6f8fb;border-radius:6px;color:#5f6b7d;font-size:13px;margin:8px 0}
+.wb-note-dialog .wb-note-head{display:flex;justify-content:space-between;font-weight:600;color:#143a75}
+.wb-note-dialog .wb-note-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.wb-note-dialog button{padding:6px 12px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;cursor:pointer}
+.wb-user-hl{border-radius:3px;padding:0 1px}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body data-lid="cprog-02">
+<div class="obj-bar">
+  <a href="index.html">首页</a> <span>›</span>
+  <a href="course-cprog.html?tab=homework">C 程序设计 · 作业</a> <span>›</span>
+  <span class="obj-cur">第二次作业</span>
+  <span style="flex:1"></span>
+  <button class="obj-tool" id="obj-notes-toggle">🖍️ 批注 (<span id="obj-notes-count">0</span>)</button>
+</div>
+<div class="obj-wrap">
+  <header class="obj-head">
+    <h1>第二次作业 ｜ 输入输出与格式控制</h1>
+    <div class="obj-sub">C 程序设计 · 判断题 7 道 · 单选题 20 道 · 共 27 题</div>
+    <div class="obj-lecs">相关讲义：<a href="lecture-cprog-2026-09-20.html">2026-09-20</a><a href="lecture-cprog-2026-09-22.html">2026-09-22</a></div>
+  </header>
+  <div class="obj-tools">
+    <button class="obj-tool on" id="obj-btn-selftest">🙈 自测模式（答案已隐藏）</button>
+    <button class="obj-tool" id="obj-btn-showall">💡 显示全部答案</button>
+    <button class="obj-tool" id="obj-btn-wrong">🔴 只看错题</button>
+    <button class="obj-tool" id="obj-btn-reset">↺ 重做（清空本机作答）</button>
+  </div>
+  <div class="obj-notice">选择或判断后即时查看对错、正确答案与解析；可用「🙈 自测模式」先隐藏答案独立作答。作答记录只保存在本机浏览器，不计分、不上传。<br>说明：本页为纯静态自测，答案随页面一起下发（查看源码即可见），仅用于自查，不具备防作弊或计分功能。</div>
+  <h2 class="obj-part">一、判断题（7 题）</h2>
+<article class="obj-card" data-key="T-1" data-answer="×">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">使用 printf 输出 int 类型变量时，应使用格式控制符 %f。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。int 用 %d，%f 用于浮点，类型不匹配会输出错误结果。</div></div>
+</article>
+<article class="obj-card" data-key="T-2" data-answer="×">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">使用 scanf 读取 int 类型变量 num 时，语句 scanf(&quot;%d&quot;, num); 无需添加取地址符 &amp; 也能正确读值。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。scanf 需要变量地址，必须写 &amp;num，否则行为未定义。</div></div>
+</article>
+<article class="obj-card" data-key="T-3" data-answer="√">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">若定义 float pi = 3.14;，则 printf(&quot;pi = <code>%f\n&quot;,</code> pi); 能正确输出 pi 的值。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。float 在 printf 中提升为 double，用 %f 即可正确输出。</div></div>
+</article>
+<article class="obj-card" data-key="T-4" data-answer="×">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">使用 printf 输出 double 类型变量 pi 时，printf(&quot;pi = %lf&quot;, pi); 是符合标准的写法。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。printf 输出 double 用 %f；%lf 是 scanf 读取 double 的格式，printf 里不是标准写法。</div></div>
+</article>
+<article class="obj-card" data-key="T-5" data-answer="√">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">读取基本数据类型变量（如 int、float）时，scanf 语句中变量名前必须添加取地址符 &amp;。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。读取 int/float 等基本类型变量时，变量名前必须加取地址符 &amp;。</div></div>
+</article>
+<article class="obj-card" data-key="T-6" data-answer="√">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">若定义 float salary = 5000.0;，则 printf(&quot;Salary: %.1f&quot;, salary); 能以“保留 1 位小数”的格式输出 salary。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。%.1f 指定保留 1 位小数。</div></div>
+</article>
+<article class="obj-card" data-key="T-7" data-answer="×">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">使用 scanf 同时读取 int 变量 age 和 float 变量 height 时，正确语句为 scanf(&quot;%d %lf&quot;, &amp;age, &amp;height);。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。float 对应 %f；%lf 只用于 double，且 height 是 float。</div></div>
+</article>
+<h2 class="obj-part">二、单选题（20 题）</h2>
+<article class="obj-card" data-key="C-1" data-answer="A">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">若 x 是 double 型变量，n 是 int 型变量，执行以下语句（　），并输入 3  1.25 后，x 的值是 1.25，n 的值是 3。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>scanf(&quot;%d%lf&quot;, &amp;n, &amp;x);</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>scanf(&quot;%lf%d&quot;, &amp;x, &amp;n);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>scanf(&quot;%lf%d&quot;, &amp;n, &amp;x);</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>scanf(&quot;%d, %lf&quot;, &amp;n, &amp;x);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。n 是 int 用 %d，x 是 double 用 %lf，顺序要与输入 3 1.25 对应。</div></div>
+</article>
+<article class="obj-card" data-key="C-2" data-answer="B">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">语句 printf(&quot;%5.2f&quot;, 4321.5678); 的输出结果是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>432.16</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>4321.57</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>4321.6</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>43216</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。%5.2f 的最小宽度为 5，数值本身 7 字符不会被截断，四舍五入得 4321.57。</div></div>
+</article>
+<article class="obj-card" data-key="C-3" data-answer="C">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf(&quot;X=%f，y＝%f&quot;, ＆x, &amp;y)，要使 X、y 均为 1.25，正确的输入是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>1.25，1.25</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>1.25 1.25</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>X＝1.25，y＝1.25</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>X＝1.25 y＝1.25</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。scanf 格式串中的普通字符必须原样输入，故要写 X＝1.25，y＝1.25。</div></div>
+</article>
+<article class="obj-card" data-key="C-4" data-answer="A">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf(&quot;a=%d,b=%d&quot;, &amp;a, &amp;b) 要使 a、b 均为 50，正确的输入是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>a=50,b=50</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>50 50（空格分开）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>a=50 b=50（空格分开）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>50,50</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。格式串含 a= 与 ,b=，输入须原样匹配 a=50,b=50。</div></div>
+</article>
+<article class="obj-card" data-key="C-5" data-answer="D">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">若变量已定义为 float 类型，要通过赋值语句 scanf(&quot;%f,%f&quot;, &amp;a, &amp;b); 给 a 赋值为 11，给 b 赋值为 22，以下正确的输入形式是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>11 22</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>11&amp;22</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>11:22</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>11,22</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。%f,%f 以逗号为分隔符，输入应为 11,22。</div></div>
+</article>
+<article class="obj-card" data-key="C-6" data-answer="A">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf 读取 float 类型变量 weight 的值，正确的语句是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>scanf(&quot;%f&quot;, &amp;weight);</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>scanf(&quot;%lf&quot;, &amp;weight);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>scanf(&quot;%f&quot;, weight);</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>scanf(&quot;f&quot;, &amp;weight);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。float 用 %f，且必须传变量地址 &amp;weight。</div></div>
+</article>
+<article class="obj-card" data-key="C-7" data-answer="A">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列 scanf 语句中，能正确读取两个 double 类型变量 a 和 b 的是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>scanf(&quot;%lf %lf&quot;, &amp;a, &amp;b);</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>scanf(&quot;%f %f&quot;, &amp;a, &amp;b);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>scanf(&quot;%lf %lf&quot;, a, b);</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>scanf(&quot;lf lf&quot;, &amp;a, &amp;b);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。double 用 %lf，两个变量都要传地址。</div></div>
+</article>
+<article class="obj-card" data-key="C-8" data-answer="C">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 printf 输出 float 类型变量 salary（值为 5000.0），并保留 1 位小数，正确的语句是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>printf(&quot;Salary: %f&quot;, salary);</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>printf(&quot;Salary: %1f&quot;, salary);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>printf(&quot;Salary: %.1f&quot;, salary);</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>printf(&quot;Salary: %1lf&quot;, salary);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。%.1f 才是保留 1 位小数；%1f 表示最小宽度 1。</div></div>
+</article>
+<article class="obj-card" data-key="C-9" data-answer="B">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列 scanf 语句中，能正确读取 int 变量 age 和 float 变量 height 的是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>scanf(&quot;%d %lf&quot;, &amp;age, &amp;height);</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>scanf(&quot;%d %f&quot;, &amp;age, &amp;height);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>scanf(&quot;%f %d&quot;, &amp;age, &amp;height);</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>scanf(&quot;d f&quot;, &amp;age, &amp;height);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。int 用 %d、float 用 %f，两者顺序与地址都要正确。</div></div>
+</article>
+<article class="obj-card" data-key="C-10" data-answer="C">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf 读取该 int 类型变量，格式控制符可以是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>%f</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>%lf</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>%d</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>%c</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。读取 int 变量使用 %d。</div></div>
+</article>
+<article class="obj-card" data-key="C-11" data-answer="B">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf 读取该 double 类型变量，格式控制符应该是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>%f</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>%lf</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>%d</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>%c</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。读取 double 变量使用 %lf。</div></div>
+</article>
+<article class="obj-card" data-key="C-12" data-answer="D">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf 读取该 char 类型变量，格式控制符应该是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>%f</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>%lf</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>%d</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>%c</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。读取 char 变量使用 %c。</div></div>
+</article>
+<article class="obj-card" data-key="C-13" data-answer="A">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">使用 scanf 读取该 float 类型变量，格式控制符应当是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>%f</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>%lf</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>%d</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>%c</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。读取 float 变量使用 %f。</div></div>
+</article>
+<article class="obj-card" data-key="C-14" data-answer="D">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">执行语句 printf(&quot;%04d&quot;, 45); 的输出结果为（选项中的 □ 代表空格）</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>45</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>□□45</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>4500</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>0045</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。%04d 宽度 4、不足补零，45 输出为 0045。</div></div>
+</article>
+<article class="obj-card" data-key="C-15" data-answer="A">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">printf(&quot;%.3f&quot;, 3.14159); 的输出结果是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>3.142</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>3.141</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>3.141590</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>3.14</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。%.3f 保留三位小数并四舍五入，3.14159 得 3.142。</div></div>
+</article>
+<article class="obj-card" data-key="C-16" data-answer="C">
+<div class="obj-chead"><span class="obj-num">16</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下面关于 scanf 读取规则说法错误的是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>读取整数会自动跳过数值前面的空格、换行、Tab</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>读取字符时不会跳过空白字符</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>scanf(&quot;%d&quot;, &amp;a);</code> 输入 <code>123abc</code>，<code>a</code> 得到 123，<code>abc</code> 会被自动丢弃</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>scanf</code> 返回值代表成功读入的数据项个数</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。输入 123abc 时 abc 会留在输入缓冲区，不会被自动丢弃。</div></div>
+</article>
+<article class="obj-card" data-key="C-17" data-answer="B">
+<div class="obj-chead"><span class="obj-num">17</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">printf(&quot;%c&quot;, 65); 输出结果是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>65</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>A</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>&#x27;A&#x27;</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>a</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。%c 按字符输出，ASCII 65 对应字母 A。</div></div>
+</article>
+<article class="obj-card" data-key="C-18" data-answer="D">
+<div class="obj-chead"><span class="obj-num">18</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">想要 printf 输出一个百分号 %，写法正确的是</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>%</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>\%</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>&#x27;%&#x27;</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>%%</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。格式串中用 %% 才能输出一个百分号。</div></div>
+</article>
+<article class="obj-card" data-key="C-19" data-answer="C">
+<div class="obj-chead"><span class="obj-num">19</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">执行 printf(&quot;%-4d&quot;, 10); 输出结果是（选项中的 □ 代表空格）</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>□□10</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>-10□</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>10□□</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>0010</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。%-4d 左对齐、宽度 4，故为 10 后跟两个空格。</div></div>
+</article>
+<article class="obj-card" data-key="C-20" data-answer="D">
+<div class="obj-chead"><span class="obj-num">20</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">有 int a; scanf(&quot;%d&quot;, &amp;a); 输入 123abc，scanf 函数的返回值为</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>2</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>0</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>-1</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>1</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。成功读入一个数据项，scanf 返回 1。</div></div>
+</article>
+  <nav class="obj-nav"><a href="homework-cprog-01.html">‹ 上一次作业</a><a href="course-cprog.html?tab=homework">📚 返回作业列表</a><a href="homework-cprog-03.html">下一次作业 ›</a></nav>
+  <div class="obj-notes" id="obj-notes" style="display:none">
+    <h3>📝 本节批注</h3>
+    <div id="obj-notes-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="obj-tool" id="obj-notes-export">📤 导出 JSON</button>
+      <button class="obj-tool" id="obj-notes-clear">🗑️ 清空批注</button>
+    </div>
+  </div>
+</div>
+
+<div id="wb-hl-popover">
+  <span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="核心考点"></span>
+  <span class="wb-hl-color-dot wb-dot-green" data-color="green" title="概念定义"></span>
+  <span class="wb-hl-color-dot wb-dot-red" data-color="red" title="易错反例"></span>
+  <span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="解题技巧"></span>
+  <button class="wb-hl-btn" data-color="underline" title="波浪下划线"><u>U</u></button>
+  <button id="wb-hl-add-note" title="添加便签批注">📝 便签</button>
+  <button id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button>
+</div>
+<div id="wb-note-modal">
+  <div class="wb-note-dialog">
+    <div class="wb-note-head"><span>📝 添加/编辑便签</span><button id="wb-note-close">×</button></div>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea id="wb-note-input" placeholder="写下你的疑问或思考..."></textarea>
+    <div class="wb-note-footer">
+      <button id="wb-note-del-btn" style="display:none">删除便签</button>
+      <button id="wb-note-save-btn">保存便签</button>
+    </div>
+  </div>
+</div>
+<div class="obj-toast" id="obj-toast"></div>
+
+<script>
+(function(){
+  var LID = "cprog-02";
+  window.LID = LID;
+  function S(){ return window.WB_STORAGE || localStorage; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var toastEl = document.getElementById('obj-toast'), toastTimer = null;
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1900);
+  }
+  window.showToast = showToast;
+
+  /* ---------- 客观题自测（不计分） ---------- */
+  var KEY = 'wb_quiz_' + LID;
+  var answers = {};
+  try { answers = JSON.parse(S().getItem(KEY) || '{}') || {}; } catch(e){ answers = {}; }
+  function saveAnswers(){ try { S().setItem(KEY, JSON.stringify(answers)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.obj-card'));
+  function paint(card){
+    var key = card.getAttribute('data-key');
+    var picked = answers[key];
+    var correct = card.getAttribute('data-answer');
+    var opts = Array.prototype.slice.call(card.querySelectorAll('.obj-opt'));
+    var fb = card.querySelector('.obj-feedback');
+    opts.forEach(function(b){
+      b.classList.remove('obj-picked','obj-hit','obj-miss');
+      var v = b.getAttribute('data-val');
+      if(picked && v === picked) b.classList.add('obj-picked');
+      if(v === correct) b.classList.add('obj-hit');
+      else if(picked && v === picked) b.classList.add('obj-miss');
+    });
+    card.classList.toggle('obj-answered', !!picked);
+    card.classList.toggle('obj-iswrong', !!picked && picked !== correct);
+    card.classList.toggle('obj-wrong-picked', !!picked && picked !== correct);
+    if(fb){
+      var v = fb.querySelector('.obj-verdict');
+      if(picked){
+        v.textContent = picked === correct ? '✓ 回答正确' : '✕ 回答错误，你选了 ' + picked;
+        v.className = 'obj-verdict ' + (picked === correct ? 'ok' : 'no');
+      } else {
+        v.textContent = '（未作答）'; v.className = 'obj-verdict';
+      }
+    }
+    if(picked) card.classList.add('obj-revealed');
+    else if(!document.body.classList.contains('obj-showall')) card.classList.remove('obj-revealed');
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.obj-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(document.body.classList.contains('obj-locked')) return;
+        answers[card.getAttribute('data-key')] = btn.getAttribute('data-val');
+        saveAnswers(); paint(card);
+      });
+    });
+    paint(card);
+  });
+  function setAll(on){
+    document.body.classList.toggle('obj-showall', on);
+    cards.forEach(function(c){ c.classList.toggle('obj-revealed', on); });
+    document.getElementById('obj-btn-showall').textContent = on ? '🙈 隐藏答案' : '💡 显示全部答案';
+    document.getElementById('obj-btn-showall').classList.toggle('on', on);
+  }
+  document.getElementById('obj-btn-showall').addEventListener('click', function(){
+    setAll(!document.body.classList.contains('obj-showall'));
+  });
+  document.getElementById('obj-btn-selftest').addEventListener('click', function(){
+    var on = !this.classList.contains('on');
+    this.classList.toggle('on', on);
+    this.textContent = on ? '🙈 自测模式（答案已隐藏）' : '📖 阅读模式（可直接看答案）';
+    document.body.classList.toggle('obj-locked', false);
+    if(on){ setAll(false); cards.forEach(function(c){ if(!answers[c.getAttribute('data-key')]) c.classList.remove('obj-revealed'); }); }
+    else { setAll(true); }
+    showToast(on ? '已开启自测：作答后才显示答案与解析' : '已切到阅读模式：答案全部展开');
+  });
+  document.getElementById('obj-btn-wrong').addEventListener('click', function(){
+    var on = !document.body.classList.contains('obj-onlywrong');
+    document.body.classList.toggle('obj-onlywrong', on);
+    this.classList.toggle('on', on);
+    showToast(on ? '只看答错的题' : '显示全部题目');
+  });
+  document.getElementById('obj-btn-reset').addEventListener('click', function(){
+    answers = {}; saveAnswers(); setAll(false);
+    cards.forEach(function(c){ c.classList.remove('obj-revealed','obj-answered','obj-iswrong','obj-wrong-picked'); paint(c); });
+    showToast('✓ 已清空本机作答记录');
+  });
+
+  /* ---------- 划词批注钩子（供 wb-hl.js 回连） ---------- */
+  function getHighlights(){
+    try { return JSON.parse(S().getItem('wb_hl_' + LID) || '[]') || []; } catch(e){ return []; }
+  }
+  function updateNotesDrawer(){
+    var list = getHighlights();
+    var n = document.getElementById('obj-notes-count');
+    if(n) n.textContent = String(list.length);
+    var box = document.getElementById('obj-notes-list');
+    if(!box) return;
+    if(!list.length){ box.innerHTML = '<div style="color:#8a94a6;font-size:13px">还没有批注。选中正文文字即可呼出荧光笔。</div>'; return; }
+    box.innerHTML = list.map(function(it){
+      return '<div class="obj-note-item"><b>' + esc(it.text) + '</b>' +
+             (it.note ? '<div style="color:#5f6b7d">💬 ' + esc(it.note) + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  window.updateNotesDrawer = updateNotesDrawer;
+  updateNotesDrawer();
+  document.getElementById('obj-notes-toggle').addEventListener('click', function(){
+    var box = document.getElementById('obj-notes');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    updateNotesDrawer();
+  });
+  document.getElementById('obj-notes-clear').addEventListener('click', function(){
+    if(window.WB_HL && window.WB_HL.saveList) window.WB_HL.saveList([]);
+    else S().setItem('wb_hl_' + LID, '[]');
+    updateNotesDrawer(); showToast('✓ 已清空批注，刷新后高亮也会消失');
+  });
+  document.getElementById('obj-notes-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(getHighlights(), null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'notes-' + LID + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✓ 已导出批注 JSON');
+  });
+})();
+</script>
+<script src="wb-hl.js"></script>
+</body>
+</html>

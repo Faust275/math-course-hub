@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第六次作业 ｜ 运算符、表达式与数据类型 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.obj-wrap{max-width:920px;margin:0 auto;padding:22px 18px 60px;font:15px/1.75 -apple-system,'Microsoft YaHei',sans-serif;color:#243044}
+.obj-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#f7f9fd;border-bottom:1px solid #dbe3f0;font-size:13px}
+.obj-bar a{color:#185fa5;text-decoration:none}
+.obj-bar .obj-cur{font-weight:600;color:#243044}
+.obj-head{padding:18px 0 10px;border-bottom:2px solid #185fa5}
+.obj-head h1{font-size:24px;margin:0 0 6px;color:#143a75}
+.obj-head .obj-sub{color:#5f6b7d;font-size:13px}
+.obj-lecs{margin:10px 0 0;font-size:13px;color:#5f6b7d}
+.obj-lecs a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid #bcd3f0;border-radius:12px;background:#eef5ff;color:#185fa5;text-decoration:none}
+.obj-tools{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0 8px;background:#fff;border-bottom:1px solid #e3e8f0}
+.obj-tool{padding:6px 13px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;font-size:13px;cursor:pointer}
+.obj-tool:hover{background:#e8f1ff}
+.obj-tool.on{background:#185fa5;color:#fff;border-color:#185fa5}
+.obj-notice{padding:10px 14px;margin:8px 0 18px;background:#fff8e8;border:1px solid #ecd9a8;border-radius:8px;color:#7a5410;font-size:13px}
+.obj-part{margin:26px 0 12px;padding:7px 14px;background:#eef4fb;border-left:4px solid #185fa5;color:#143a75;font-weight:600;font-size:16px;border-radius:0 6px 6px 0}
+.obj-card{margin:12px 0;padding:16px 18px;border:1px solid #e1e7f0;border-radius:10px;background:#fff}
+.obj-card.obj-wrong-picked{border-color:#f0b4b4}
+.obj-chead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.obj-num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:7px;background:#185fa5;color:#fff;font-size:13px;font-weight:600}
+.obj-kind{font-size:12px;color:#6b7789}
+.obj-stem{margin:2px 0 10px;line-height:1.8}
+.obj-stem code,.obj-opt code,.obj-analysis code{font-family:Consolas,Monaco,monospace;background:#f1f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#a33}
+.obj-card pre{margin:8px 0;padding:12px 14px;background:#f6f8fb;border:1px solid #e1e7f0;border-radius:7px;overflow-x:auto;font:13px/1.7 Consolas,Monaco,monospace;color:#243044}
+.obj-card pre code{background:none;padding:0;color:inherit}
+.obj-options{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.obj-opt{display:flex;gap:9px;align-items:flex-start;width:100%;padding:9px 12px;border:1px solid #d7e0ee;border-radius:7px;background:#fbfcff;text-align:left;font:14px/1.6 inherit;color:#243044;cursor:pointer}
+.obj-opt:hover{background:#eef5ff;border-color:#9dc0ea}
+.obj-opt .obj-k{flex:0 0 22px;font-weight:600;color:#185fa5}
+.obj-card.obj-answered .obj-opt{cursor:default}
+.obj-opt.obj-picked{border-color:#185fa5;background:#e8f1ff}
+.obj-opt.obj-hit{border-color:#2e9e5b;background:#e7f7ed}
+.obj-opt.obj-miss{border-color:#d9534f;background:#fdecec}
+.obj-feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#f7f9fd;border:1px solid #e1e7f0;font-size:14px}
+.obj-card.obj-revealed .obj-feedback{display:block}
+.obj-verdict{font-weight:600;margin-bottom:6px}
+.obj-verdict.ok{color:#2e9e5b}
+.obj-verdict.no{color:#d9534f}
+.obj-answer{color:#143a75;margin-bottom:6px}
+.obj-analysis{color:#3c485c;line-height:1.8}
+.obj-nav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid #e3e8f0}
+.obj-nav a,.obj-nav span{padding:8px 14px;border:1px solid #c9d6ea;border-radius:7px;color:#185fa5;text-decoration:none;font-size:13px}
+.obj-nav .off{color:#9aa5b5;background:#f5f7fa}
+.obj-onlywrong .obj-card:not(.obj-iswrong){display:none}
+.obj-onlywrong .obj-part{display:none}
+.obj-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:#243044;color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+.obj-toast.on{opacity:1}
+.obj-notes{padding:10px 14px;margin-top:16px;border:1px solid #e1e7f0;border-radius:8px;background:#fbfcff}
+.obj-notes h3{margin:0 0 8px;font-size:14px;color:#143a75}
+.obj-note-item{padding:7px 0;border-bottom:1px dashed #e1e7f0;font-size:13px}
+.obj-note-item:last-child{border-bottom:none}
+#wb-hl-popover{position:absolute;display:none;z-index:80;padding:6px 9px;background:#fff;border:1px solid #d7e0ee;border-radius:9px;box-shadow:0 3px 14px rgba(20,50,90,.16)}
+#wb-hl-popover .wb-hl-color-dot{display:inline-block;width:18px;height:18px;margin:0 3px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.1)}
+#wb-hl-popover button{padding:3px 8px;border:1px solid #d7e0ee;border-radius:6px;background:#f7faff;cursor:pointer;font-size:12px}
+.wb-dot-yellow{background:#ffe066}.wb-dot-green{background:#9ae6b4}.wb-dot-red{background:#ffa8a8}.wb-dot-purple{background:#d0bfff}
+#wb-note-modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(20,35,60,.4)}
+#wb-note-modal.wb-open{display:flex;align-items:center;justify-content:center}
+.wb-note-dialog{width:min(460px,90vw);background:#fff;border-radius:12px;padding:18px}
+.wb-note-dialog textarea{width:100%;min-height:90px;padding:8px;border:1px solid #d7e0ee;border-radius:7px;font:14px/1.6 inherit}
+.wb-note-dialog .wb-note-quote{padding:8px;background:#f6f8fb;border-radius:6px;color:#5f6b7d;font-size:13px;margin:8px 0}
+.wb-note-dialog .wb-note-head{display:flex;justify-content:space-between;font-weight:600;color:#143a75}
+.wb-note-dialog .wb-note-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.wb-note-dialog button{padding:6px 12px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;cursor:pointer}
+.wb-user-hl{border-radius:3px;padding:0 1px}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body data-lid="cprog-06">
+<div class="obj-bar">
+  <a href="index.html">首页</a> <span>›</span>
+  <a href="course-cprog.html?tab=homework">C 程序设计 · 作业</a> <span>›</span>
+  <span class="obj-cur">第六次作业</span>
+  <span style="flex:1"></span>
+  <button class="obj-tool" id="obj-notes-toggle">🖍️ 批注 (<span id="obj-notes-count">0</span>)</button>
+</div>
+<div class="obj-wrap">
+  <header class="obj-head">
+    <h1>第六次作业 ｜ 运算符、表达式与数据类型</h1>
+    <div class="obj-sub">C 程序设计 · 判断题 15 道 · 单选题 18 道 · 共 33 题</div>
+    <div class="obj-lecs">相关讲义：<a href="lecture-cprog-2026-11-03.html">2026-11-03</a></div>
+  </header>
+  <div class="obj-tools">
+    <button class="obj-tool on" id="obj-btn-selftest">🙈 自测模式（答案已隐藏）</button>
+    <button class="obj-tool" id="obj-btn-showall">💡 显示全部答案</button>
+    <button class="obj-tool" id="obj-btn-wrong">🔴 只看错题</button>
+    <button class="obj-tool" id="obj-btn-reset">↺ 重做（清空本机作答）</button>
+  </div>
+  <div class="obj-notice">选择或判断后即时查看对错、正确答案与解析；可用「🙈 自测模式」先隐藏答案独立作答。作答记录只保存在本机浏览器，不计分、不上传。<br>说明：本页为纯静态自测，答案随页面一起下发（查看源码即可见），仅用于自查，不具备防作弊或计分功能。</div>
+  <h2 class="obj-part">一、判断题（15 题）</h2>
+<article class="obj-card" data-key="T-1" data-answer="×">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">表达式 !x 等价于 x != 1。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。!x 等价于 x==0；x 为 2 时 !x 为 0 而 x!=1 为 1，二者不等价。</div></div>
+</article>
+<article class="obj-card" data-key="T-2" data-answer="×">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">运算符 + 不能作为单目运算符。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。+ 可作单目正号运算符，如 +3。</div></div>
+</article>
+<article class="obj-card" data-key="T-3" data-answer="×">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">s(s-a)(s-b)(s-c) 是合法的 C 语言表达式。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。C 不支持省略乘号的隐式相乘，s(s-a) 会被当成函数调用。</div></div>
+</article>
+<article class="obj-card" data-key="T-4" data-answer="×">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">表达式 !!6 的值是 6。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。!!6 先得 1 再取反得 0？实际 !6=0、!0=1，故 !!6=1，不是 6。</div></div>
+</article>
+<article class="obj-card" data-key="T-5" data-answer="√">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">表达式 ~(~2&lt;&lt;1) 的值是 5。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。~2 = -3，-3&lt;&lt;1 = -6，~(-6) = 5，结果为 5。</div></div>
+</article>
+<article class="obj-card" data-key="T-6" data-answer="√">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">表达式 !(x&gt;0||y&gt;0) 等价于 !(x&gt;0)&amp;&amp;!(y&gt;0)。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。按德摩根律，!(A||B) 等价于 !A &amp;&amp; !B。</div></div>
+</article>
+<article class="obj-card" data-key="T-7" data-answer="√">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">若表达式 sizeof(int) 的值为 4，则 int 类型数据可以表示的最大整数为 2³¹ − 1。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。4 字节有符号 int 的最大值是 2³¹−1。</div></div>
+</article>
+<article class="obj-card" data-key="T-8" data-answer="×">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">表达式 (z=0, (x=2)||(z=1), z) 的值是 1。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。逗号表达式取最后一项 z；(x=2)||(z=1) 因左侧为真而短路，z 仍为 0，结果是 0。</div></div>
+</article>
+<article class="obj-card" data-key="T-9" data-answer="×">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言的运算符只有单目运算符和双目运算符两种。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。C 还有三目 ?:、逗号、sizeof、下标、成员等多种运算符。</div></div>
+</article>
+<article class="obj-card" data-key="T-10" data-answer="√">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在所有的关系运算符（&gt;=、&gt;、==、!=、&lt;=、&lt;）中，优先级最低的运算符是 ==、!=。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。关系运算符中 ==、!= 的优先级低于 &gt;、&lt;、&gt;=、&lt;=。</div></div>
+</article>
+<article class="obj-card" data-key="T-11" data-answer="×">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 的 double 类型数据可以精确表示任何实数。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。double 只有有限位有效数字，无法精确表示任意实数。</div></div>
+</article>
+<article class="obj-card" data-key="T-12" data-answer="√">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言中，常量和变量都有数据类型。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。常量和变量都有确定的数据类型。</div></div>
+</article>
+<article class="obj-card" data-key="T-13" data-answer="√">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">与 float 型数据相比，double 型数据的精度高，取值范围大。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。double 比 float 精度更高、取值范围更大。</div></div>
+</article>
+<article class="obj-card" data-key="T-14" data-answer="×">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">08 是正确的整型常量。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。以 0 开头是八进制常量，数字 8 不是合法八进制数字。</div></div>
+</article>
+<article class="obj-card" data-key="T-15" data-answer="×">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">表达式 0195 是一个八进制整数。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。0195 含数字 9，不是合法的八进制整数。</div></div>
+</article>
+<h2 class="obj-part">二、单选题（18 题）</h2>
+<article class="obj-card" data-key="C-1" data-answer="C">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">已知字符 &#x27;c&#x27; 的 ASCII 码为 99，语句 printf(&quot;%d,%c&quot;, &#x27;c&#x27;, &#x27;c&#x27;+1); 的输出为（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>99,c</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>99,100</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>99,d</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>语句不合法</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。%d 输出 &#x27;c&#x27; 的码值 99，%c 输出 &#x27;c&#x27;+1 即字符 d。</div></div>
+</article>
+<article class="obj-card" data-key="C-2" data-answer="D">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">阅读以下程序段，如果从键盘上输入 1234567 回车，则程序的运行结果是（　）。</div>
+<pre><code>int i, j;
+scanf(&quot;%3d%2d&quot;, &amp;i, &amp;j);
+printf(&quot;i = %d, j = %d\n&quot;, i, j);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>i = 123, j = 4567</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>i = 1234, j = 567</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>i = 1, j = 2</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>i = 123, j = 45</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。%3d 读 123，%2d 从剩下的 4567 中读 45，故 i=123、j=45。</div></div>
+</article>
+<article class="obj-card" data-key="C-3" data-answer="A">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">阅读以下程序段，如果从键盘上输入 abc 回车，则程序的运行结果是（　）。</div>
+<pre><code>char ch;
+scanf(&quot;%3c&quot;, &amp;ch);
+printf(&quot;%c&quot;, ch);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>a</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>b</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>c</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>语法出错</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。%3c 读取 3 个字符但只给 ch 一个字节空间，实际按字符输出为 a。</div></div>
+</article>
+<article class="obj-card" data-key="C-4" data-answer="A">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">已知字母 A 的 ASCII 码为十进制的 65，下面程序段的输出是（　）。</div>
+<pre><code>char ch1, ch2;
+ch1 = &#x27;A&#x27; + &#x27;5&#x27; - &#x27;3&#x27;;
+ch2 = &#x27;A&#x27; + &#x27;6&#x27; - &#x27;3&#x27;;
+printf(&quot;%d,%c\n&quot;, ch1, ch2);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>67,D</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>B,C</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>C,D</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>不确定的值</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。ch1=&#x27;A&#x27;+(&#x27;5&#x27;-&#x27;3&#x27;)=65+2=67，ch2=65+3=68 即 &#x27;D&#x27;，输出 67,D。</div></div>
+</article>
+<article class="obj-card" data-key="C-5" data-answer="B">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">设整型变量 a=2，则执行下列语句后，浮点型变量 b 的值不为 0.5 的是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>b = 1.0/a;</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>b = (float)(1/a);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>b = 1/(float)a;</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>b = 1/(a*1.0);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。1/a 先做整数除法得 0，再转 float 仍是 0，不等于 0.5。</div></div>
+</article>
+<article class="obj-card" data-key="C-6" data-answer="A">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">若 int n; float f = 13.8;，则执行 n = (int)f % 3 后，n 的值是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>1</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>4</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>4.333333</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>4.6</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。(int)13.8 = 13，13 % 3 = 1。</div></div>
+</article>
+<article class="obj-card" data-key="C-7" data-answer="D">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下面（　）表达式的值为 4。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>11/3</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>11.0/3</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>(float)11/3</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>(int)(11.0/3 + 0.5)</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。11.0/3≈3.666，加 0.5 后取整得 4。</div></div>
+</article>
+<article class="obj-card" data-key="C-8" data-answer="D">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">若有定义 int x=3, y=2 和 float a=2.5, b=3.5，则表达式 (x+y)%2 + (int)a/(int)b 的值是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>0</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>2</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>1.5</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>1</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。(3+2)%2=1，(int)2.5/(int)3.5 = 2/3 = 0，合计 1。</div></div>
+</article>
+<article class="obj-card" data-key="C-9" data-answer="D">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">计算变量 x（x 大于 1）整数部分位数的表达式，可以写作（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>(int)log10(x)</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>log10(x)</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>log10(x)+1</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>(int)log10(x)+1</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。位数为 ⌊log10(x)⌋+1，即 (int)log10(x)+1。</div></div>
+</article>
+<article class="obj-card" data-key="C-10" data-answer="C">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言中，关系表达式和逻辑表达式的值是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>0</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>1</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>0 或 1</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>&#x27;T&#x27;</code> 或 <code>&#x27;F&#x27;</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。关系和逻辑表达式的结果只能是 0 或 1。</div></div>
+</article>
+<article class="obj-card" data-key="C-11" data-answer="A">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">判断变量 x、y 中有且只有 1 个值为 0 的表达式为（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>!(x*y) &amp;&amp; x+y</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>(x*y) &amp;&amp; x+y</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>x*y == 0</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>x==0 &amp;&amp; y!=0</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。x*y 为 0 说明至少一个为 0，再用 x+y 非零排除两者都为 0。</div></div>
+</article>
+<article class="obj-card" data-key="C-12" data-answer="D">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">若变量已经被正确定义，为表示“变量 x 和 y 都能被 3 整除”，应使用的 C 表达式是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>(x%3 != 0) || (y%3 != 0)</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>(x%3 != 0) &amp;&amp; (y%3 != 0)</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>(x%3 == 0) || (y%3 == 0)</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>(x%3 == 0) &amp;&amp; (y%3 == 0)</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。两者都能被 3 整除要用 &amp;&amp; 连接两个 %3==0。</div></div>
+</article>
+<article class="obj-card" data-key="C-13" data-answer="D">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">为表示“a 和 b 都不等于 0”，应使用的 C 语言表达式是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>(a!=0) || (b!=0)</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>a || b</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>!(a=0) &amp;&amp; (b!=0)</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>a &amp;&amp; b</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。a &amp;&amp; b 恰好表示 a、b 都非 0。</div></div>
+</article>
+<article class="obj-card" data-key="C-14" data-answer="B">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">执行下面程序中的输出语句后，输出结果是（　）。</div>
+<pre><code>int a;
+printf(&quot;%d\n&quot;, (a=3*5, a*4, a+5));</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>65</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>20</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>15</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>10</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。逗号表达式取最后一项 a+5 = 15+5 = 20。</div></div>
+</article>
+<article class="obj-card" data-key="C-15" data-answer="A">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下面合法的 C 语言字符常量是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>&#x27;\t&#x27;</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>&quot;A&quot;</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>&#x27;xx&#x27;</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>A</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 <code>A。&#x27;\t&#x27;</code> 是转义字符常量；&quot;A&quot; 是字符串，&#x27;xx&#x27; 非法，A 是标识符。</div></div>
+</article>
+<article class="obj-card" data-key="C-16" data-answer="B">
+<div class="obj-chead"><span class="obj-num">16</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下面程序段的输出是（　）。</div>
+<pre><code>int x = 023;
+printf(&quot;%d\n&quot;, --x);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>17</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>18</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>23</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>24</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。023 是八进制即 19，前缀 --x 先自减为 18 再输出。</div></div>
+</article>
+<article class="obj-card" data-key="C-17" data-answer="D">
+<div class="obj-chead"><span class="obj-num">17</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下面的程序段输出是（　）。</div>
+<pre><code>int k = 11;
+printf(&quot;k=%d,k=%o,k=%x\n&quot;, k, k, k);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>k=11,k=12,k=11</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>k=11,k=13,k=13</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>k=11,k=013;k=0xb</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>k=11,k=13,k=b</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。11 的八进制是 13、十六进制是 b，故输出 k=11,k=13,k=b。</div></div>
+</article>
+<article class="obj-card" data-key="C-18" data-answer="B">
+<div class="obj-chead"><span class="obj-num">18</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下面的程序段输出是（　）。</div>
+<pre><code>short int a;
+int b = 65536;
+a = b;
+printf(&quot;%d\n&quot;, a);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>65536</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>0</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>-1</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>1</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。65536 超出 short 表示范围，截断后低 16 位为 0。</div></div>
+</article>
+  <nav class="obj-nav"><a href="homework-cprog-05.html">‹ 上一次作业</a><a href="course-cprog.html?tab=homework">📚 返回作业列表</a><span class="off">已是最后一次 ›</span></nav>
+  <div class="obj-notes" id="obj-notes" style="display:none">
+    <h3>📝 本节批注</h3>
+    <div id="obj-notes-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="obj-tool" id="obj-notes-export">📤 导出 JSON</button>
+      <button class="obj-tool" id="obj-notes-clear">🗑️ 清空批注</button>
+    </div>
+  </div>
+</div>
+
+<div id="wb-hl-popover">
+  <span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="核心考点"></span>
+  <span class="wb-hl-color-dot wb-dot-green" data-color="green" title="概念定义"></span>
+  <span class="wb-hl-color-dot wb-dot-red" data-color="red" title="易错反例"></span>
+  <span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="解题技巧"></span>
+  <button class="wb-hl-btn" data-color="underline" title="波浪下划线"><u>U</u></button>
+  <button id="wb-hl-add-note" title="添加便签批注">📝 便签</button>
+  <button id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button>
+</div>
+<div id="wb-note-modal">
+  <div class="wb-note-dialog">
+    <div class="wb-note-head"><span>📝 添加/编辑便签</span><button id="wb-note-close">×</button></div>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea id="wb-note-input" placeholder="写下你的疑问或思考..."></textarea>
+    <div class="wb-note-footer">
+      <button id="wb-note-del-btn" style="display:none">删除便签</button>
+      <button id="wb-note-save-btn">保存便签</button>
+    </div>
+  </div>
+</div>
+<div class="obj-toast" id="obj-toast"></div>
+
+<script>
+(function(){
+  var LID = "cprog-06";
+  window.LID = LID;
+  function S(){ return window.WB_STORAGE || localStorage; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var toastEl = document.getElementById('obj-toast'), toastTimer = null;
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1900);
+  }
+  window.showToast = showToast;
+
+  /* ---------- 客观题自测（不计分） ---------- */
+  var KEY = 'wb_quiz_' + LID;
+  var answers = {};
+  try { answers = JSON.parse(S().getItem(KEY) || '{}') || {}; } catch(e){ answers = {}; }
+  function saveAnswers(){ try { S().setItem(KEY, JSON.stringify(answers)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.obj-card'));
+  function paint(card){
+    var key = card.getAttribute('data-key');
+    var picked = answers[key];
+    var correct = card.getAttribute('data-answer');
+    var opts = Array.prototype.slice.call(card.querySelectorAll('.obj-opt'));
+    var fb = card.querySelector('.obj-feedback');
+    opts.forEach(function(b){
+      b.classList.remove('obj-picked','obj-hit','obj-miss');
+      var v = b.getAttribute('data-val');
+      if(picked && v === picked) b.classList.add('obj-picked');
+      if(v === correct) b.classList.add('obj-hit');
+      else if(picked && v === picked) b.classList.add('obj-miss');
+    });
+    card.classList.toggle('obj-answered', !!picked);
+    card.classList.toggle('obj-iswrong', !!picked && picked !== correct);
+    card.classList.toggle('obj-wrong-picked', !!picked && picked !== correct);
+    if(fb){
+      var v = fb.querySelector('.obj-verdict');
+      if(picked){
+        v.textContent = picked === correct ? '✓ 回答正确' : '✕ 回答错误，你选了 ' + picked;
+        v.className = 'obj-verdict ' + (picked === correct ? 'ok' : 'no');
+      } else {
+        v.textContent = '（未作答）'; v.className = 'obj-verdict';
+      }
+    }
+    if(picked) card.classList.add('obj-revealed');
+    else if(!document.body.classList.contains('obj-showall')) card.classList.remove('obj-revealed');
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.obj-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(document.body.classList.contains('obj-locked')) return;
+        answers[card.getAttribute('data-key')] = btn.getAttribute('data-val');
+        saveAnswers(); paint(card);
+      });
+    });
+    paint(card);
+  });
+  function setAll(on){
+    document.body.classList.toggle('obj-showall', on);
+    cards.forEach(function(c){ c.classList.toggle('obj-revealed', on); });
+    document.getElementById('obj-btn-showall').textContent = on ? '🙈 隐藏答案' : '💡 显示全部答案';
+    document.getElementById('obj-btn-showall').classList.toggle('on', on);
+  }
+  document.getElementById('obj-btn-showall').addEventListener('click', function(){
+    setAll(!document.body.classList.contains('obj-showall'));
+  });
+  document.getElementById('obj-btn-selftest').addEventListener('click', function(){
+    var on = !this.classList.contains('on');
+    this.classList.toggle('on', on);
+    this.textContent = on ? '🙈 自测模式（答案已隐藏）' : '📖 阅读模式（可直接看答案）';
+    document.body.classList.toggle('obj-locked', false);
+    if(on){ setAll(false); cards.forEach(function(c){ if(!answers[c.getAttribute('data-key')]) c.classList.remove('obj-revealed'); }); }
+    else { setAll(true); }
+    showToast(on ? '已开启自测：作答后才显示答案与解析' : '已切到阅读模式：答案全部展开');
+  });
+  document.getElementById('obj-btn-wrong').addEventListener('click', function(){
+    var on = !document.body.classList.contains('obj-onlywrong');
+    document.body.classList.toggle('obj-onlywrong', on);
+    this.classList.toggle('on', on);
+    showToast(on ? '只看答错的题' : '显示全部题目');
+  });
+  document.getElementById('obj-btn-reset').addEventListener('click', function(){
+    answers = {}; saveAnswers(); setAll(false);
+    cards.forEach(function(c){ c.classList.remove('obj-revealed','obj-answered','obj-iswrong','obj-wrong-picked'); paint(c); });
+    showToast('✓ 已清空本机作答记录');
+  });
+
+  /* ---------- 划词批注钩子（供 wb-hl.js 回连） ---------- */
+  function getHighlights(){
+    try { return JSON.parse(S().getItem('wb_hl_' + LID) || '[]') || []; } catch(e){ return []; }
+  }
+  function updateNotesDrawer(){
+    var list = getHighlights();
+    var n = document.getElementById('obj-notes-count');
+    if(n) n.textContent = String(list.length);
+    var box = document.getElementById('obj-notes-list');
+    if(!box) return;
+    if(!list.length){ box.innerHTML = '<div style="color:#8a94a6;font-size:13px">还没有批注。选中正文文字即可呼出荧光笔。</div>'; return; }
+    box.innerHTML = list.map(function(it){
+      return '<div class="obj-note-item"><b>' + esc(it.text) + '</b>' +
+             (it.note ? '<div style="color:#5f6b7d">💬 ' + esc(it.note) + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  window.updateNotesDrawer = updateNotesDrawer;
+  updateNotesDrawer();
+  document.getElementById('obj-notes-toggle').addEventListener('click', function(){
+    var box = document.getElementById('obj-notes');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    updateNotesDrawer();
+  });
+  document.getElementById('obj-notes-clear').addEventListener('click', function(){
+    if(window.WB_HL && window.WB_HL.saveList) window.WB_HL.saveList([]);
+    else S().setItem('wb_hl_' + LID, '[]');
+    updateNotesDrawer(); showToast('✓ 已清空批注，刷新后高亮也会消失');
+  });
+  document.getElementById('obj-notes-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(getHighlights(), null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'notes-' + LID + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✓ 已导出批注 JSON');
+  });
+})();
+</script>
+<script src="wb-hl.js"></script>
+</body>
+</html>

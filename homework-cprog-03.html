@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第三次作业 ｜ 选择结构：if 与 switch · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.obj-wrap{max-width:920px;margin:0 auto;padding:22px 18px 60px;font:15px/1.75 -apple-system,'Microsoft YaHei',sans-serif;color:#243044}
+.obj-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#f7f9fd;border-bottom:1px solid #dbe3f0;font-size:13px}
+.obj-bar a{color:#185fa5;text-decoration:none}
+.obj-bar .obj-cur{font-weight:600;color:#243044}
+.obj-head{padding:18px 0 10px;border-bottom:2px solid #185fa5}
+.obj-head h1{font-size:24px;margin:0 0 6px;color:#143a75}
+.obj-head .obj-sub{color:#5f6b7d;font-size:13px}
+.obj-lecs{margin:10px 0 0;font-size:13px;color:#5f6b7d}
+.obj-lecs a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid #bcd3f0;border-radius:12px;background:#eef5ff;color:#185fa5;text-decoration:none}
+.obj-tools{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0 8px;background:#fff;border-bottom:1px solid #e3e8f0}
+.obj-tool{padding:6px 13px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;font-size:13px;cursor:pointer}
+.obj-tool:hover{background:#e8f1ff}
+.obj-tool.on{background:#185fa5;color:#fff;border-color:#185fa5}
+.obj-notice{padding:10px 14px;margin:8px 0 18px;background:#fff8e8;border:1px solid #ecd9a8;border-radius:8px;color:#7a5410;font-size:13px}
+.obj-part{margin:26px 0 12px;padding:7px 14px;background:#eef4fb;border-left:4px solid #185fa5;color:#143a75;font-weight:600;font-size:16px;border-radius:0 6px 6px 0}
+.obj-card{margin:12px 0;padding:16px 18px;border:1px solid #e1e7f0;border-radius:10px;background:#fff}
+.obj-card.obj-wrong-picked{border-color:#f0b4b4}
+.obj-chead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.obj-num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:7px;background:#185fa5;color:#fff;font-size:13px;font-weight:600}
+.obj-kind{font-size:12px;color:#6b7789}
+.obj-stem{margin:2px 0 10px;line-height:1.8}
+.obj-stem code,.obj-opt code,.obj-analysis code{font-family:Consolas,Monaco,monospace;background:#f1f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#a33}
+.obj-card pre{margin:8px 0;padding:12px 14px;background:#f6f8fb;border:1px solid #e1e7f0;border-radius:7px;overflow-x:auto;font:13px/1.7 Consolas,Monaco,monospace;color:#243044}
+.obj-card pre code{background:none;padding:0;color:inherit}
+.obj-options{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.obj-opt{display:flex;gap:9px;align-items:flex-start;width:100%;padding:9px 12px;border:1px solid #d7e0ee;border-radius:7px;background:#fbfcff;text-align:left;font:14px/1.6 inherit;color:#243044;cursor:pointer}
+.obj-opt:hover{background:#eef5ff;border-color:#9dc0ea}
+.obj-opt .obj-k{flex:0 0 22px;font-weight:600;color:#185fa5}
+.obj-card.obj-answered .obj-opt{cursor:default}
+.obj-opt.obj-picked{border-color:#185fa5;background:#e8f1ff}
+.obj-opt.obj-hit{border-color:#2e9e5b;background:#e7f7ed}
+.obj-opt.obj-miss{border-color:#d9534f;background:#fdecec}
+.obj-feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#f7f9fd;border:1px solid #e1e7f0;font-size:14px}
+.obj-card.obj-revealed .obj-feedback{display:block}
+.obj-verdict{font-weight:600;margin-bottom:6px}
+.obj-verdict.ok{color:#2e9e5b}
+.obj-verdict.no{color:#d9534f}
+.obj-answer{color:#143a75;margin-bottom:6px}
+.obj-analysis{color:#3c485c;line-height:1.8}
+.obj-nav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid #e3e8f0}
+.obj-nav a,.obj-nav span{padding:8px 14px;border:1px solid #c9d6ea;border-radius:7px;color:#185fa5;text-decoration:none;font-size:13px}
+.obj-nav .off{color:#9aa5b5;background:#f5f7fa}
+.obj-onlywrong .obj-card:not(.obj-iswrong){display:none}
+.obj-onlywrong .obj-part{display:none}
+.obj-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:#243044;color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+.obj-toast.on{opacity:1}
+.obj-notes{padding:10px 14px;margin-top:16px;border:1px solid #e1e7f0;border-radius:8px;background:#fbfcff}
+.obj-notes h3{margin:0 0 8px;font-size:14px;color:#143a75}
+.obj-note-item{padding:7px 0;border-bottom:1px dashed #e1e7f0;font-size:13px}
+.obj-note-item:last-child{border-bottom:none}
+#wb-hl-popover{position:absolute;display:none;z-index:80;padding:6px 9px;background:#fff;border:1px solid #d7e0ee;border-radius:9px;box-shadow:0 3px 14px rgba(20,50,90,.16)}
+#wb-hl-popover .wb-hl-color-dot{display:inline-block;width:18px;height:18px;margin:0 3px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.1)}
+#wb-hl-popover button{padding:3px 8px;border:1px solid #d7e0ee;border-radius:6px;background:#f7faff;cursor:pointer;font-size:12px}
+.wb-dot-yellow{background:#ffe066}.wb-dot-green{background:#9ae6b4}.wb-dot-red{background:#ffa8a8}.wb-dot-purple{background:#d0bfff}
+#wb-note-modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(20,35,60,.4)}
+#wb-note-modal.wb-open{display:flex;align-items:center;justify-content:center}
+.wb-note-dialog{width:min(460px,90vw);background:#fff;border-radius:12px;padding:18px}
+.wb-note-dialog textarea{width:100%;min-height:90px;padding:8px;border:1px solid #d7e0ee;border-radius:7px;font:14px/1.6 inherit}
+.wb-note-dialog .wb-note-quote{padding:8px;background:#f6f8fb;border-radius:6px;color:#5f6b7d;font-size:13px;margin:8px 0}
+.wb-note-dialog .wb-note-head{display:flex;justify-content:space-between;font-weight:600;color:#143a75}
+.wb-note-dialog .wb-note-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.wb-note-dialog button{padding:6px 12px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;cursor:pointer}
+.wb-user-hl{border-radius:3px;padding:0 1px}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body data-lid="cprog-03">
+<div class="obj-bar">
+  <a href="index.html">首页</a> <span>›</span>
+  <a href="course-cprog.html?tab=homework">C 程序设计 · 作业</a> <span>›</span>
+  <span class="obj-cur">第三次作业</span>
+  <span style="flex:1"></span>
+  <button class="obj-tool" id="obj-notes-toggle">🖍️ 批注 (<span id="obj-notes-count">0</span>)</button>
+</div>
+<div class="obj-wrap">
+  <header class="obj-head">
+    <h1>第三次作业 ｜ 选择结构：if 与 switch</h1>
+    <div class="obj-sub">C 程序设计 · 判断题 10 道 · 单选题 22 道 · 共 32 题</div>
+    <div class="obj-lecs">相关讲义：<a href="lecture-cprog-2026-09-29.html">2026-09-29</a></div>
+  </header>
+  <div class="obj-tools">
+    <button class="obj-tool on" id="obj-btn-selftest">🙈 自测模式（答案已隐藏）</button>
+    <button class="obj-tool" id="obj-btn-showall">💡 显示全部答案</button>
+    <button class="obj-tool" id="obj-btn-wrong">🔴 只看错题</button>
+    <button class="obj-tool" id="obj-btn-reset">↺ 重做（清空本机作答）</button>
+  </div>
+  <div class="obj-notice">选择或判断后即时查看对错、正确答案与解析；可用「🙈 自测模式」先隐藏答案独立作答。作答记录只保存在本机浏览器，不计分、不上传。<br>说明：本页为纯静态自测，答案随页面一起下发（查看源码即可见），仅用于自查，不具备防作弊或计分功能。</div>
+  <h2 class="obj-part">一、判断题（10 题）</h2>
+<article class="obj-card" data-key="T-1" data-answer="√">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中，else 总是与离它最近且未配对的 if 进行配对，这是 else 与 if 的默认配对原则。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。else 与离它最近且尚未配对的 if 配对，与缩进无关。</div></div>
+</article>
+<article class="obj-card" data-key="T-2" data-answer="√">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言中，关系运算符的优先级高于赋值运算符。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。关系运算符优先级高于赋值运算符。</div></div>
+</article>
+<article class="obj-card" data-key="T-3" data-answer="√">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中，关系表达式的结果是 1（表示真）或 0（表示假）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。关系表达式成立得 1，不成立得 0。</div></div>
+</article>
+<article class="obj-card" data-key="T-4" data-answer="×">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 if/else if 多路分支中，改变各个 else if 的顺序不会影响程序的最终执行结果。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。多路分支按顺序判断，调整 else if 顺序会改变执行结果。</div></div>
+</article>
+<article class="obj-card" data-key="T-5" data-answer="√">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言 switch 语句中，case 后面必须跟常量表达式，不能是未定义的变量或动态计算的值。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。case 标签必须是编译期常量表达式。</div></div>
+</article>
+<article class="obj-card" data-key="T-6" data-answer="×">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">假设变量 x 已经正确定义并赋值。表达式 8&lt;x&lt;2 不符合 C 的语法规则，无法计算其值。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。8&lt;x&lt;2 语法合法，按左结合先算 8&lt;x 得 0 或 1 再与 2 比较，只是结果恒真，并非无法计算。</div></div>
+</article>
+<article class="obj-card" data-key="T-7" data-answer="×">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言允许使用浮点数进行模运算，例如 6.5 % 2 的语法是合法的。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。% 要求两侧都是整数，浮点数取模非法。</div></div>
+</article>
+<article class="obj-card" data-key="T-8" data-answer="×">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">3.14 = c; 是合法的赋值语句。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。赋值号左侧必须是可修改的左值，常量 3.14 不能作左值。</div></div>
+</article>
+<article class="obj-card" data-key="T-9" data-answer="×">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">所有大写英文字母的 ASCII 码值均比对应的小写英文字母大 32。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。大写字母 ASCII 码比对应小写字母小 32，而不是大 32。</div></div>
+</article>
+<article class="obj-card" data-key="T-10" data-answer="√">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">当 char 类型变量参与算术运算时，会先自动提升为 int 类型再进行计算。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。char 参与算术运算会先整型提升为 int。</div></div>
+</article>
+<h2 class="obj-part">二、单选题（22 题）</h2>
+<article class="obj-card" data-key="C-1" data-answer="B">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于 C 语言的 if/else if 多路分支语句，下列描述正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>必须包含 else 分支才能编译通过</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>一旦找到第一个满足条件的分支，后续分支不再判断和执行</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>所有条件为“真”的分支都会依次执行</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>调整 else if 分支的顺序不会对程序逻辑产生任何影响</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。找到第一个满足条件的分支后，后续分支不再判断也不执行。</div></div>
+</article>
+<article class="obj-card" data-key="C-2" data-answer="B">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言中“else 与 if 的默认配对原则”是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>else 总是与最前面未配对的 if 配对</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>else 总是与离它最近且未配对的 if 配对</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>else 总是与最后面未配对的 if 配对</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>else 可以根据代码缩进任意与某个 if 配对</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。就近且未配对是 else 与 if 的默认配对原则。</div></div>
+</article>
+<article class="obj-card" data-key="C-3" data-answer="B">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言 if 语句的条件中，误将判断相等的 == 写成赋值的 =，会导致什么问题？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>触发编译错误，无法生成可执行文件</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>程序将赋值表达式的结果作为条件判断，可能出现逻辑错误</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>编译器会自动修正为 == 并正常执行</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>程序运行时会弹出“语法错误”提示窗口</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。= 使赋值表达式的值成为条件，编译不报错但常产生逻辑错误。</div></div>
+</article>
+<article class="obj-card" data-key="C-4" data-answer="B">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列关于 C 语言 if 语句的说法，正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>if 语句的条件表达式结果只能是 1（真）或 0（假）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>if 语句的条件表达式结果为非零值时，视为“真”并执行代码块</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>if 语句后必须用花括号 {} 包裹代码块，否则语法错误</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>if 语句可以不写条件表达式，直接执行后续代码块</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。C 中非零即真，条件表达式可以是任意数值。</div></div>
+</article>
+<article class="obj-card" data-key="C-5" data-answer="B">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">若要在 C 语言 if 语句后实现“不执行任何操作”的逻辑，正确的写法是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>if(条件)</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>if(条件);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>if(条件) void;</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>if(条件) empty;</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。if(条件); 中的分号是空语句，表示什么都不做。</div></div>
+</article>
+<article class="obj-card" data-key="C-6" data-answer="B">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言 if/else if 多路分支语句的核心特性是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>多个条件同时满足时，会依次执行所有对应分支</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>分支判断具有“短路性”，找到满足条件的分支后停止后续判断</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>必须包含至少 3 个分支（1 个 if + 2 个 else if）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>分支的执行顺序与条件书写顺序无关</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。多路分支具有短路性，命中后停止后续判断。</div></div>
+</article>
+<article class="obj-card" data-key="C-7" data-answer="B">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列关于 C 语言 else 语句的说法，错误的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>else 语句不能单独存在，必须与 if 语句配对使用</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>一个 if 语句可以对应多个 else 语句，实现多分支逻辑</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>else 语句只能跟在 if 或 else if 语句之后</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>else 语句的代码块，仅在前面所有条件都为“假”时执行</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。一个 if 只能配一个 else；多个 else 需写成 else if 链。</div></div>
+</article>
+<article class="obj-card" data-key="C-8" data-answer="B">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">执行 C 语言代码 if(a = 5) 时，该条件表达式的结果是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>0（视为“假”）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>5（非零，视为“真”）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>语法错误，无法编译</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>不确定，取决于变量 a 的初始值</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。赋值表达式 a=5 的值为 5，非零视为真。</div></div>
+</article>
+<article class="obj-card" data-key="C-9" data-answer="B">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言中，字符型变量（char）参与关系运算（如 &#x27;A&#x27; &gt; &#x27;B&#x27;）时，比较的本质是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>字符的视觉外观差异</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>字符对应的 ASCII 码值大小</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>字符的 Unicode 编码值</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>字符在内存中占用的字节数</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。字符比较本质是对应 ASCII 码值大小的比较。</div></div>
+</article>
+<article class="obj-card" data-key="C-10" data-answer="B">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下代码中，else 与哪个 if 匹配？</div>
+<pre><code>if (a &gt; 0)    if (b &gt; 0)        printf(&quot;ok&quot;);
+else    printf(&quot;no&quot;);</code></pre>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>外层 <code>if (a &gt; 0)</code></span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>内层 <code>if (b &gt; 0)</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>两个 <code>if</code> 同时匹配</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>不匹配任何 <code>if</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。按就近未配对原则，else 与内层 if(b&gt;0) 配对。</div></div>
+</article>
+<article class="obj-card" data-key="C-11" data-answer="C">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言 if/else if 多路分支中，若调整 else if 分支的顺序，可能导致的结果是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>触发编译错误，程序无法运行</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>程序运行时崩溃</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>程序执行结果改变</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>无任何影响，执行结果始终一致</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。条件有重叠时，调整 else if 顺序会改变最终执行结果。</div></div>
+</article>
+<article class="obj-card" data-key="C-12" data-answer="B">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言中，关系运算符（如 &gt;、&lt;、==）与赋值运算符（=）的优先级关系是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>赋值运算符优先级更高</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>关系运算符优先级更高</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>两者优先级相同，按从左到右顺序执行</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>优先级不确定，取决于编译器版本</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。关系运算符优先级高于赋值运算符。</div></div>
+</article>
+<article class="obj-card" data-key="C-13" data-answer="C">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列哪种情况会导致 C 语言 if-else 语句的 else 块被执行？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>if</code> 条件表达式结果为 1（非零）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>if</code> 条件表达式结果为 100（非零）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>if</code> 条件表达式结果为 0</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span><code>if</code> 条件表达式结果为字符 <code>&#x27;A&#x27;</code>（ASCII 码值 65，非零）</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。条件结果为 0（假）时才执行 else 块。</div></div>
+</article>
+<article class="obj-card" data-key="C-14" data-answer="B">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言的 switch 语句中，case 后面必须跟的是什么类型的表达式？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>变量表达式</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>常量表达式</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>赋值表达式</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>函数调用表达式</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。case 后必须是常量表达式，不能是变量或运行时计算值。</div></div>
+</article>
+<article class="obj-card" data-key="C-15" data-answer="A">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 switch 语句中，break 语句的主要作用是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>跳出当前 <code>switch</code> 语句，终止后续 <code>case</code> 的执行</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>暂停程序执行，等待用户输入</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>结束整个程序的运行</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>跳转到 <code>switch</code> 语句的 <code>default</code> 部分</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。break 跳出当前 switch，阻止后续 case 继续执行。</div></div>
+</article>
+<article class="obj-card" data-key="C-16" data-answer="B">
+<div class="obj-chead"><span class="obj-num">16</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在使用 switch 语句时，下列哪项是常见的语法错误？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>case</code> 后面跟整数常量</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>case</code> 后面使用赋值运算符 <code>=</code> 而非冒号 <code>:</code></span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>default</code> 后面跟冒号 <code>:</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>在 <code>case</code> 语句块末尾使用 <code>break</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。case 标签用冒号 : 结尾，误写赋值号 = 是常见语法错误。</div></div>
+</article>
+<article class="obj-card" data-key="C-17" data-answer="B">
+<div class="obj-chead"><span class="obj-num">17</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列哪种情况不适合使用 switch 语句实现分支逻辑？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>根据用户输入的 1-7 数字，判断星期几</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>根据变量 <code>x</code> 的取值范围（如 <code>x&lt;0</code>、<code>0≤x≤10</code>、<code>x&gt;10</code>）执行不同操作</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>根据枚举类型的值，执行对应功能</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>根据字符变量的取值（如 <code>&#x27;a&#x27;</code>、<code>&#x27;b&#x27;</code>、<code>&#x27;c&#x27;</code>）执行不同操作</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。switch 适合离散值匹配，取值范围判断应用 if-else。</div></div>
+</article>
+<article class="obj-card" data-key="C-18" data-answer="A">
+<div class="obj-chead"><span class="obj-num">18</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在嵌套的 switch 语句中，内层 switch 中的 break 语句作用是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>仅跳出内层 <code>switch</code> 语句，不影响外层 <code>switch</code> 或循环</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>同时跳出内层和外层 <code>switch</code> 语句</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>跳出整个程序</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>仅终止内层 <code>switch</code> 中当前 <code>case</code> 的执行，继续内层其他 <code>case</code></span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。内层 switch 的 break 只跳出内层，不影响外层。</div></div>
+</article>
+<article class="obj-card" data-key="C-19" data-answer="B">
+<div class="obj-chead"><span class="obj-num">19</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 switch 语句中，若某个 case 块后没有加 break 语句，会出现什么情况？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>程序编译报错</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>程序会继续执行后续 <code>case</code> 块的语句（<code>case</code> 穿透）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>程序直接跳出 <code>switch</code> 语句</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>程序会执行 <code>default</code> 块的语句</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。缺少 break 会发生 case 穿透，继续执行后续 case 块。</div></div>
+</article>
+<article class="obj-card" data-key="C-20" data-answer="B">
+<div class="obj-chead"><span class="obj-num">20</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言 switch 语句中，关于 case 后面的表达式，下列说法正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>可以是未初始化的 <code>int</code> 变量</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>必须是编译期就能确定值的常量表达式</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>可以是浮点型常量（如 3.14）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>可以是自定义函数的返回值（如 <code>get_num()</code>）</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。case 必须是编译期即可确定值的常量表达式，浮点数和函数调用都不行。</div></div>
+</article>
+<article class="obj-card" data-key="C-21" data-answer="C">
+<div class="obj-chead"><span class="obj-num">21</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于 C 语言 switch 语句中 default 的位置，下列表述正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span><code>default</code> 必须放在所有 <code>case</code> 标签的最前面</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span><code>default</code> 必须放在所有 <code>case</code> 标签的最后面</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span><code>default</code> 可以放在任意 <code>case</code> 标签之间，不影响执行逻辑</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>一个 <code>switch</code> 语句中最多只能有两个 <code>default</code> 标签</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。default 可放在任意位置，匹配逻辑不变。</div></div>
+</article>
+<article class="obj-card" data-key="C-22" data-answer="D">
+<div class="obj-chead"><span class="obj-num">22</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言中，若要让 switch 语句中多个 case 值对应执行相同的代码块，正确的实现方式是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>在一个 <code>case</code> 后用逗号分隔多个值（如 <code>case 1,2,3:</code>）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>为每个 <code>case</code> 重复编写相同的代码块</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>在 <code>case</code> 之间使用 <code>||</code> 连接多个条件（如 <code>case 1||2:</code>）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>让多个 <code>case</code> 依次排列，仅在最后一个 <code>case</code> 后编写代码并加 <code>break</code>（利用 <code>case</code> 穿透）</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。多个 case 依次排列、仅在最后一个写代码块并加 break，利用穿透共享逻辑。</div></div>
+</article>
+  <nav class="obj-nav"><a href="homework-cprog-02.html">‹ 上一次作业</a><a href="course-cprog.html?tab=homework">📚 返回作业列表</a><a href="homework-cprog-04.html">下一次作业 ›</a></nav>
+  <div class="obj-notes" id="obj-notes" style="display:none">
+    <h3>📝 本节批注</h3>
+    <div id="obj-notes-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="obj-tool" id="obj-notes-export">📤 导出 JSON</button>
+      <button class="obj-tool" id="obj-notes-clear">🗑️ 清空批注</button>
+    </div>
+  </div>
+</div>
+
+<div id="wb-hl-popover">
+  <span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="核心考点"></span>
+  <span class="wb-hl-color-dot wb-dot-green" data-color="green" title="概念定义"></span>
+  <span class="wb-hl-color-dot wb-dot-red" data-color="red" title="易错反例"></span>
+  <span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="解题技巧"></span>
+  <button class="wb-hl-btn" data-color="underline" title="波浪下划线"><u>U</u></button>
+  <button id="wb-hl-add-note" title="添加便签批注">📝 便签</button>
+  <button id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button>
+</div>
+<div id="wb-note-modal">
+  <div class="wb-note-dialog">
+    <div class="wb-note-head"><span>📝 添加/编辑便签</span><button id="wb-note-close">×</button></div>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea id="wb-note-input" placeholder="写下你的疑问或思考..."></textarea>
+    <div class="wb-note-footer">
+      <button id="wb-note-del-btn" style="display:none">删除便签</button>
+      <button id="wb-note-save-btn">保存便签</button>
+    </div>
+  </div>
+</div>
+<div class="obj-toast" id="obj-toast"></div>
+
+<script>
+(function(){
+  var LID = "cprog-03";
+  window.LID = LID;
+  function S(){ return window.WB_STORAGE || localStorage; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var toastEl = document.getElementById('obj-toast'), toastTimer = null;
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1900);
+  }
+  window.showToast = showToast;
+
+  /* ---------- 客观题自测（不计分） ---------- */
+  var KEY = 'wb_quiz_' + LID;
+  var answers = {};
+  try { answers = JSON.parse(S().getItem(KEY) || '{}') || {}; } catch(e){ answers = {}; }
+  function saveAnswers(){ try { S().setItem(KEY, JSON.stringify(answers)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.obj-card'));
+  function paint(card){
+    var key = card.getAttribute('data-key');
+    var picked = answers[key];
+    var correct = card.getAttribute('data-answer');
+    var opts = Array.prototype.slice.call(card.querySelectorAll('.obj-opt'));
+    var fb = card.querySelector('.obj-feedback');
+    opts.forEach(function(b){
+      b.classList.remove('obj-picked','obj-hit','obj-miss');
+      var v = b.getAttribute('data-val');
+      if(picked && v === picked) b.classList.add('obj-picked');
+      if(v === correct) b.classList.add('obj-hit');
+      else if(picked && v === picked) b.classList.add('obj-miss');
+    });
+    card.classList.toggle('obj-answered', !!picked);
+    card.classList.toggle('obj-iswrong', !!picked && picked !== correct);
+    card.classList.toggle('obj-wrong-picked', !!picked && picked !== correct);
+    if(fb){
+      var v = fb.querySelector('.obj-verdict');
+      if(picked){
+        v.textContent = picked === correct ? '✓ 回答正确' : '✕ 回答错误，你选了 ' + picked;
+        v.className = 'obj-verdict ' + (picked === correct ? 'ok' : 'no');
+      } else {
+        v.textContent = '（未作答）'; v.className = 'obj-verdict';
+      }
+    }
+    if(picked) card.classList.add('obj-revealed');
+    else if(!document.body.classList.contains('obj-showall')) card.classList.remove('obj-revealed');
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.obj-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(document.body.classList.contains('obj-locked')) return;
+        answers[card.getAttribute('data-key')] = btn.getAttribute('data-val');
+        saveAnswers(); paint(card);
+      });
+    });
+    paint(card);
+  });
+  function setAll(on){
+    document.body.classList.toggle('obj-showall', on);
+    cards.forEach(function(c){ c.classList.toggle('obj-revealed', on); });
+    document.getElementById('obj-btn-showall').textContent = on ? '🙈 隐藏答案' : '💡 显示全部答案';
+    document.getElementById('obj-btn-showall').classList.toggle('on', on);
+  }
+  document.getElementById('obj-btn-showall').addEventListener('click', function(){
+    setAll(!document.body.classList.contains('obj-showall'));
+  });
+  document.getElementById('obj-btn-selftest').addEventListener('click', function(){
+    var on = !this.classList.contains('on');
+    this.classList.toggle('on', on);
+    this.textContent = on ? '🙈 自测模式（答案已隐藏）' : '📖 阅读模式（可直接看答案）';
+    document.body.classList.toggle('obj-locked', false);
+    if(on){ setAll(false); cards.forEach(function(c){ if(!answers[c.getAttribute('data-key')]) c.classList.remove('obj-revealed'); }); }
+    else { setAll(true); }
+    showToast(on ? '已开启自测：作答后才显示答案与解析' : '已切到阅读模式：答案全部展开');
+  });
+  document.getElementById('obj-btn-wrong').addEventListener('click', function(){
+    var on = !document.body.classList.contains('obj-onlywrong');
+    document.body.classList.toggle('obj-onlywrong', on);
+    this.classList.toggle('on', on);
+    showToast(on ? '只看答错的题' : '显示全部题目');
+  });
+  document.getElementById('obj-btn-reset').addEventListener('click', function(){
+    answers = {}; saveAnswers(); setAll(false);
+    cards.forEach(function(c){ c.classList.remove('obj-revealed','obj-answered','obj-iswrong','obj-wrong-picked'); paint(c); });
+    showToast('✓ 已清空本机作答记录');
+  });
+
+  /* ---------- 划词批注钩子（供 wb-hl.js 回连） ---------- */
+  function getHighlights(){
+    try { return JSON.parse(S().getItem('wb_hl_' + LID) || '[]') || []; } catch(e){ return []; }
+  }
+  function updateNotesDrawer(){
+    var list = getHighlights();
+    var n = document.getElementById('obj-notes-count');
+    if(n) n.textContent = String(list.length);
+    var box = document.getElementById('obj-notes-list');
+    if(!box) return;
+    if(!list.length){ box.innerHTML = '<div style="color:#8a94a6;font-size:13px">还没有批注。选中正文文字即可呼出荧光笔。</div>'; return; }
+    box.innerHTML = list.map(function(it){
+      return '<div class="obj-note-item"><b>' + esc(it.text) + '</b>' +
+             (it.note ? '<div style="color:#5f6b7d">💬 ' + esc(it.note) + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  window.updateNotesDrawer = updateNotesDrawer;
+  updateNotesDrawer();
+  document.getElementById('obj-notes-toggle').addEventListener('click', function(){
+    var box = document.getElementById('obj-notes');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    updateNotesDrawer();
+  });
+  document.getElementById('obj-notes-clear').addEventListener('click', function(){
+    if(window.WB_HL && window.WB_HL.saveList) window.WB_HL.saveList([]);
+    else S().setItem('wb_hl_' + LID, '[]');
+    updateNotesDrawer(); showToast('✓ 已清空批注，刷新后高亮也会消失');
+  });
+  document.getElementById('obj-notes-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(getHighlights(), null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'notes-' + LID + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✓ 已导出批注 JSON');
+  });
+})();
+</script>
+<script src="wb-hl.js"></script>
+</body>
+</html>

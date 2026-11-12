@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第一次作业 ｜ C 语言概述、标准与开发环境 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.obj-wrap{max-width:920px;margin:0 auto;padding:22px 18px 60px;font:15px/1.75 -apple-system,'Microsoft YaHei',sans-serif;color:#243044}
+.obj-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#f7f9fd;border-bottom:1px solid #dbe3f0;font-size:13px}
+.obj-bar a{color:#185fa5;text-decoration:none}
+.obj-bar .obj-cur{font-weight:600;color:#243044}
+.obj-head{padding:18px 0 10px;border-bottom:2px solid #185fa5}
+.obj-head h1{font-size:24px;margin:0 0 6px;color:#143a75}
+.obj-head .obj-sub{color:#5f6b7d;font-size:13px}
+.obj-lecs{margin:10px 0 0;font-size:13px;color:#5f6b7d}
+.obj-lecs a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid #bcd3f0;border-radius:12px;background:#eef5ff;color:#185fa5;text-decoration:none}
+.obj-tools{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0 8px;background:#fff;border-bottom:1px solid #e3e8f0}
+.obj-tool{padding:6px 13px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;font-size:13px;cursor:pointer}
+.obj-tool:hover{background:#e8f1ff}
+.obj-tool.on{background:#185fa5;color:#fff;border-color:#185fa5}
+.obj-notice{padding:10px 14px;margin:8px 0 18px;background:#fff8e8;border:1px solid #ecd9a8;border-radius:8px;color:#7a5410;font-size:13px}
+.obj-part{margin:26px 0 12px;padding:7px 14px;background:#eef4fb;border-left:4px solid #185fa5;color:#143a75;font-weight:600;font-size:16px;border-radius:0 6px 6px 0}
+.obj-card{margin:12px 0;padding:16px 18px;border:1px solid #e1e7f0;border-radius:10px;background:#fff}
+.obj-card.obj-wrong-picked{border-color:#f0b4b4}
+.obj-chead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.obj-num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:7px;background:#185fa5;color:#fff;font-size:13px;font-weight:600}
+.obj-kind{font-size:12px;color:#6b7789}
+.obj-stem{margin:2px 0 10px;line-height:1.8}
+.obj-stem code,.obj-opt code,.obj-analysis code{font-family:Consolas,Monaco,monospace;background:#f1f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#a33}
+.obj-card pre{margin:8px 0;padding:12px 14px;background:#f6f8fb;border:1px solid #e1e7f0;border-radius:7px;overflow-x:auto;font:13px/1.7 Consolas,Monaco,monospace;color:#243044}
+.obj-card pre code{background:none;padding:0;color:inherit}
+.obj-options{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.obj-opt{display:flex;gap:9px;align-items:flex-start;width:100%;padding:9px 12px;border:1px solid #d7e0ee;border-radius:7px;background:#fbfcff;text-align:left;font:14px/1.6 inherit;color:#243044;cursor:pointer}
+.obj-opt:hover{background:#eef5ff;border-color:#9dc0ea}
+.obj-opt .obj-k{flex:0 0 22px;font-weight:600;color:#185fa5}
+.obj-card.obj-answered .obj-opt{cursor:default}
+.obj-opt.obj-picked{border-color:#185fa5;background:#e8f1ff}
+.obj-opt.obj-hit{border-color:#2e9e5b;background:#e7f7ed}
+.obj-opt.obj-miss{border-color:#d9534f;background:#fdecec}
+.obj-feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#f7f9fd;border:1px solid #e1e7f0;font-size:14px}
+.obj-card.obj-revealed .obj-feedback{display:block}
+.obj-verdict{font-weight:600;margin-bottom:6px}
+.obj-verdict.ok{color:#2e9e5b}
+.obj-verdict.no{color:#d9534f}
+.obj-answer{color:#143a75;margin-bottom:6px}
+.obj-analysis{color:#3c485c;line-height:1.8}
+.obj-nav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid #e3e8f0}
+.obj-nav a,.obj-nav span{padding:8px 14px;border:1px solid #c9d6ea;border-radius:7px;color:#185fa5;text-decoration:none;font-size:13px}
+.obj-nav .off{color:#9aa5b5;background:#f5f7fa}
+.obj-onlywrong .obj-card:not(.obj-iswrong){display:none}
+.obj-onlywrong .obj-part{display:none}
+.obj-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:#243044;color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+.obj-toast.on{opacity:1}
+.obj-notes{padding:10px 14px;margin-top:16px;border:1px solid #e1e7f0;border-radius:8px;background:#fbfcff}
+.obj-notes h3{margin:0 0 8px;font-size:14px;color:#143a75}
+.obj-note-item{padding:7px 0;border-bottom:1px dashed #e1e7f0;font-size:13px}
+.obj-note-item:last-child{border-bottom:none}
+#wb-hl-popover{position:absolute;display:none;z-index:80;padding:6px 9px;background:#fff;border:1px solid #d7e0ee;border-radius:9px;box-shadow:0 3px 14px rgba(20,50,90,.16)}
+#wb-hl-popover .wb-hl-color-dot{display:inline-block;width:18px;height:18px;margin:0 3px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.1)}
+#wb-hl-popover button{padding:3px 8px;border:1px solid #d7e0ee;border-radius:6px;background:#f7faff;cursor:pointer;font-size:12px}
+.wb-dot-yellow{background:#ffe066}.wb-dot-green{background:#9ae6b4}.wb-dot-red{background:#ffa8a8}.wb-dot-purple{background:#d0bfff}
+#wb-note-modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(20,35,60,.4)}
+#wb-note-modal.wb-open{display:flex;align-items:center;justify-content:center}
+.wb-note-dialog{width:min(460px,90vw);background:#fff;border-radius:12px;padding:18px}
+.wb-note-dialog textarea{width:100%;min-height:90px;padding:8px;border:1px solid #d7e0ee;border-radius:7px;font:14px/1.6 inherit}
+.wb-note-dialog .wb-note-quote{padding:8px;background:#f6f8fb;border-radius:6px;color:#5f6b7d;font-size:13px;margin:8px 0}
+.wb-note-dialog .wb-note-head{display:flex;justify-content:space-between;font-weight:600;color:#143a75}
+.wb-note-dialog .wb-note-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.wb-note-dialog button{padding:6px 12px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;cursor:pointer}
+.wb-user-hl{border-radius:3px;padding:0 1px}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body data-lid="cprog-01">
+<div class="obj-bar">
+  <a href="index.html">首页</a> <span>›</span>
+  <a href="course-cprog.html?tab=homework">C 程序设计 · 作业</a> <span>›</span>
+  <span class="obj-cur">第一次作业</span>
+  <span style="flex:1"></span>
+  <button class="obj-tool" id="obj-notes-toggle">🖍️ 批注 (<span id="obj-notes-count">0</span>)</button>
+</div>
+<div class="obj-wrap">
+  <header class="obj-head">
+    <h1>第一次作业 ｜ C 语言概述、标准与开发环境</h1>
+    <div class="obj-sub">C 程序设计 · 判断题 20 道 · 单选题 20 道 · 共 40 题</div>
+    <div class="obj-lecs">相关讲义：<a href="lecture-cprog-0915.html">2026-09-15</a></div>
+  </header>
+  <div class="obj-tools">
+    <button class="obj-tool on" id="obj-btn-selftest">🙈 自测模式（答案已隐藏）</button>
+    <button class="obj-tool" id="obj-btn-showall">💡 显示全部答案</button>
+    <button class="obj-tool" id="obj-btn-wrong">🔴 只看错题</button>
+    <button class="obj-tool" id="obj-btn-reset">↺ 重做（清空本机作答）</button>
+  </div>
+  <div class="obj-notice">选择或判断后即时查看对错、正确答案与解析；可用「🙈 自测模式」先隐藏答案独立作答。作答记录只保存在本机浏览器，不计分、不上传。<br>说明：本页为纯静态自测，答案随页面一起下发（查看源码即可见），仅用于自查，不具备防作弊或计分功能。</div>
+  <h2 class="obj-part">一、判断题（20 题）</h2>
+<article class="obj-card" data-key="T-1" data-answer="×">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言的标识符由字母、数字和其他任意字符组成。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。标识符只能由字母、数字和下划线组成，不含「其他任意字符」。</div></div>
+</article>
+<article class="obj-card" data-key="T-2" data-answer="√">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言中，标识符中的英文字母是区分大小写的。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。C 语言区分大小写，Name 与 name 是两个不同标识符。</div></div>
+</article>
+<article class="obj-card" data-key="T-3" data-answer="×">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言的源程序是可以直接运行的。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。源程序必须经过编译、链接生成可执行文件后才能运行。</div></div>
+</article>
+<article class="obj-card" data-key="T-4" data-answer="√">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言中，一个语句可以书写在不同行上。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。语句以分号结束，可以跨行书写；换行只是空白符。</div></div>
+</article>
+<article class="obj-card" data-key="T-5" data-answer="×">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">程序调试就是找出并改正 C 源程序中的语法错误。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。调试主要是定位逻辑错误，语法错误由编译器在编译阶段报出。</div></div>
+</article>
+<article class="obj-card" data-key="T-6" data-answer="√">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">单步跟踪（Trace Step by Step）是常用的程序调试方法，即一步一步跟踪程序的执行过程，同时观察变量的变化情况。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。单步跟踪就是逐条执行并同步观察变量取值变化。</div></div>
+</article>
+<article class="obj-card" data-key="T-7" data-answer="√">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言的代码执行效率接近汇编语言，因此适合开发对性能要求高的底层程序。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。C 接近硬件、执行效率高，适合底层与性能敏感场景。</div></div>
+</article>
+<article class="obj-card" data-key="T-8" data-answer="×">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言的“可移植性”意味着其代码无需任何修改，就能在 Windows、Linux 等所有操作系统上运行。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。可移植性指改动较少即可迁移，不等于零修改跑遍所有系统。</div></div>
+</article>
+<article class="obj-card" data-key="T-9" data-answer="√">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言程序的排版格式（如缩进、换行）仅影响可读性，不影响程序编译和执行结果。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。缩进、换行等排版只影响可读性，不改变语义与编译结果。</div></div>
+</article>
+<article class="obj-card" data-key="T-10" data-answer="√">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言单行注释以 // 开头，多行注释以 /* 开头、*/ 结尾，注释内容不会被编译。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。// 为单行注释，/* */ 为多行注释，注释内容不参与编译。</div></div>
+</article>
+<article class="obj-card" data-key="T-11" data-answer="√">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言标识符可由字母、数字和下划线组成，且首字符必须是字母或下划线。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。标识符首字符必须是字母或下划线，其后可跟数字。</div></div>
+</article>
+<article class="obj-card" data-key="T-12" data-answer="√">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言区分大小写，total 和 Total 是两个不同的标识符。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。区分大小写，total 与 Total 是两个不同标识符。</div></div>
+</article>
+<article class="obj-card" data-key="T-13" data-answer="√">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言程序必须包含且仅包含一个 main 函数，它是程序执行的唯一入口。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。main 是程序唯一入口，必须有且仅有一个。</div></div>
+</article>
+<article class="obj-card" data-key="T-14" data-answer="√">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言三种基本流程控制结构包括：顺序结构、选择结构（分支）、循环结构。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。三种基本结构是顺序、选择（分支）和循环。</div></div>
+</article>
+<article class="obj-card" data-key="T-15" data-answer="√">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">三种基本流程控制结构可以嵌套使用（如循环中嵌套 if-else），实现复杂逻辑。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。三种结构可任意嵌套，如循环内嵌 if-else。</div></div>
+</article>
+<article class="obj-card" data-key="T-16" data-answer="√">
+<div class="obj-chead"><span class="obj-num">16</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">集成开发环境（IDE）通常集成了代码编辑、编译、调试、运行等功能，如 Dev-C++。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。IDE 集成编辑、编译、调试、运行，Dev-C++ 即为一例。</div></div>
+</article>
+<article class="obj-card" data-key="T-17" data-answer="√">
+<div class="obj-chead"><span class="obj-num">17</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言调试时，设置断点的目的是让程序在指定位置暂停，方便查看此时的变量值和执行状态。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。断点使程序在指定位置暂停，便于查看当时的变量与状态。</div></div>
+</article>
+<article class="obj-card" data-key="T-18" data-answer="√">
+<div class="obj-chead"><span class="obj-num">18</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">“单步执行”调试时，程序会逐行执行代码，包括进入函数内部，便于追踪执行流程。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。单步执行逐行推进并可进入函数内部，用于追踪流程。</div></div>
+</article>
+<article class="obj-card" data-key="T-19" data-answer="√">
+<div class="obj-chead"><span class="obj-num">19</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">调试时的“监视窗口”功能可以实时查看指定变量的值变化，帮助定位逻辑错误。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。监视窗口实时显示指定变量值的变化，帮助定位逻辑错误。</div></div>
+</article>
+<article class="obj-card" data-key="T-20" data-answer="√">
+<div class="obj-chead"><span class="obj-num">20</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言程序运行前，必须先通过编译和链接，生成可执行文件后才能执行。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。运行前须编译、链接生成可执行文件。</div></div>
+</article>
+<h2 class="obj-part">二、单选题（20 题）</h2>
+<article class="obj-card" data-key="C-1" data-answer="B">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">程序员要想调用输入输出函数，需要在程序的开头写上语句（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>#include &lt;stdlib.h&gt;</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>#include &lt;stdio.h&gt;</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>#include &lt;math.h&gt;</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>#include &lt;string.h&gt;</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。标准输入输出函数声明在 stdio.h，故需 #include &lt;stdio.h&gt;。</div></div>
+</article>
+<article class="obj-card" data-key="C-2" data-answer="B">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下说法中正确的是（　）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>C 语言程序总是从第一个定义的函数开始执行</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>总是从 main() 函数开始执行</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>C 语言程序中，要调用的函数必须在 main() 中定义</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>main() 函数必须放在程序的最开始部分</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。程序总是从 main 函数开始执行，与函数定义先后无关。</div></div>
+</article>
+<article class="obj-card" data-key="C-3" data-answer="B">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪位是 C 语言的发明者？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>比尔·盖茨（Bill Gates）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>丹尼斯·里奇（Dennis Ritchie）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>林纳斯·托瓦兹（Linus Torvalds）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>詹姆斯·高斯林（James Gosling）</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。C 语言由丹尼斯·里奇（Dennis Ritchie）在贝尔实验室发明。</div></div>
+</article>
+<article class="obj-card" data-key="C-4" data-answer="B">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪个 C 语言标识符是合法的？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>123abc</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>_student</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>if</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>a#b</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。_student 以下划线开头且只含字母数字下划线，合法。</div></div>
+</article>
+<article class="obj-card" data-key="C-5" data-answer="C">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪个 C 语言标识符是非法的？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>total_123</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>Num</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>float</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>_num2</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。float 是关键字，不能用作标识符。</div></div>
+</article>
+<article class="obj-card" data-key="C-6" data-answer="D">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于 C 语言标识符的说法，错误的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>可由字母、数字、下划线组成</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>区分大小写（如 sum 和 Sum 不同）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>不能使用关键字（如 for、int）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>长度没有限制，任意长度都能识别</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。标识符有效长度受编译器限制，并非任意长度都能识别。</div></div>
+</article>
+<article class="obj-card" data-key="C-7" data-answer="B">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言程序必须包含的函数是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>add()</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>main()</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>print()</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>input()</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。main 是 C 程序必须包含且唯一的函数入口。</div></div>
+</article>
+<article class="obj-card" data-key="C-8" data-answer="D">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于 C 语言主函数位置的说法，正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>必须位于程序最开头</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>必须位于程序最末尾</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>必须位于所有自定义函数之前</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>可位于任意位置，只要有且仅有一个</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。main 可放在源文件任意位置，只要全程序有且仅有一个。</div></div>
+</article>
+<article class="obj-card" data-key="C-9" data-answer="A">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">main 函数中 return 语句的主要作用是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>结束 main 函数，向操作系统返回状态值</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>输出数据到屏幕</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>读取用户输入的内容</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>定义新的变量</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。return 结束 main 并向操作系统返回进程状态值。</div></div>
+</article>
+<article class="obj-card" data-key="C-10" data-answer="A">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">将目标文件转换为可执行文件的过程称为？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>链接</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>编辑</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>调试</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>运行</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。链接把目标文件与库合并，生成可执行文件。</div></div>
+</article>
+<article class="obj-card" data-key="C-11" data-answer="C">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">程序中的语法错误（如少写分号 ;）通常在哪个阶段被发现？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>编辑阶段</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>链接阶段</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>编译阶段</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>运行阶段</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。少写分号等语法错误在编译阶段由编译器发现。</div></div>
+</article>
+<article class="obj-card" data-key="C-12" data-answer="D">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">程序中的逻辑错误（如循环条件错误导致死循环）通常在哪个阶段被发现？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>编辑阶段</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>编译阶段</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>链接阶段</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>调试/运行阶段</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。死循环等逻辑错误编译期查不出，须在调试/运行阶段暴露。</div></div>
+</article>
+<article class="obj-card" data-key="C-13" data-answer="B">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言调试时，“设置断点”的作用是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>直接结束程序执行</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>让程序在指定位置暂停，方便查看变量</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>自动修复程序中的错误</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>提高程序执行速度</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。断点让程序在指定位置暂停，方便查看变量。</div></div>
+</article>
+<article class="obj-card" data-key="C-14" data-answer="A">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪项是“单步执行”的作用？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>逐行执行代码，追踪程序执行流程</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>快速执行完整个程序</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>自动定位语法错误</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>生成程序的执行日志</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。单步执行逐行推进，用于追踪程序执行流程。</div></div>
+</article>
+<article class="obj-card" data-key="C-15" data-answer="D">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">调试时，“监视窗口”的主要功能是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>显示程序的编译日志</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>自动修复逻辑错误</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>播放调试过程的视频</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>实时查看指定变量的值变化</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。监视窗口实时查看指定变量的值变化。</div></div>
+</article>
+<article class="obj-card" data-key="C-16" data-answer="A">
+<div class="obj-chead"><span class="obj-num">16</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下关于 C 语言注释的说法，正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>注释内容不会被编译器处理，仅用于开发者阅读</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>多行注释可以嵌套使用（<code>/* ... /* ... */ */</code>）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>单行注释必须写在代码开头，不能写在代码中间</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>注释会被编译成机器码，影响程序运行速度</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。注释不参与编译，仅给开发者阅读。</div></div>
+</article>
+<article class="obj-card" data-key="C-17" data-answer="B">
+<div class="obj-chead"><span class="obj-num">17</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪种错误属于语法错误？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>循环条件错误导致死循环</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>变量未声明就使用</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>输入错误导致计算结果偏差</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>数组下标越界导致程序崩溃</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。变量未声明就使用属于语法错误，编译期即报错。</div></div>
+</article>
+<article class="obj-card" data-key="C-18" data-answer="C">
+<div class="obj-chead"><span class="obj-num">18</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪种错误属于逻辑错误？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>少写分号导致编译失败</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>关键字拼写错误（如 <code>int</code> 写成 <code>itn</code>）</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>求 1+2+…+10 时，循环条件写成 <code>i&gt;10</code> 导致结果为 0</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>函数名拼写错误导致链接失败</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。循环条件写错导致结果不对，属于逻辑错误。</div></div>
+</article>
+<article class="obj-card" data-key="C-19" data-answer="A">
+<div class="obj-chead"><span class="obj-num">19</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">IDE 中的“调试”功能主要用于解决什么问题？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>定位并修复程序中的逻辑错误</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>美化代码格式，提高可读性</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>加快程序编译速度</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>自动生成 C 语言代码</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。IDE 的调试功能主要用于定位并修复逻辑错误。</div></div>
+</article>
+<article class="obj-card" data-key="C-20" data-answer="D">
+<div class="obj-chead"><span class="obj-num">20</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪项是 C 语言的优点？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>自动管理内存，无需手动释放</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>内置大量图形化界面开发工具</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>语法复杂，功能冗余</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>代码执行效率高，支持直接操作硬件</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。C 执行效率高且能直接操作硬件，是其核心优势。</div></div>
+</article>
+  <nav class="obj-nav"><span class="off">‹ 已是第一次</span><a href="course-cprog.html?tab=homework">📚 返回作业列表</a><a href="homework-cprog-02.html">下一次作业 ›</a></nav>
+  <div class="obj-notes" id="obj-notes" style="display:none">
+    <h3>📝 本节批注</h3>
+    <div id="obj-notes-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="obj-tool" id="obj-notes-export">📤 导出 JSON</button>
+      <button class="obj-tool" id="obj-notes-clear">🗑️ 清空批注</button>
+    </div>
+  </div>
+</div>
+
+<div id="wb-hl-popover">
+  <span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="核心考点"></span>
+  <span class="wb-hl-color-dot wb-dot-green" data-color="green" title="概念定义"></span>
+  <span class="wb-hl-color-dot wb-dot-red" data-color="red" title="易错反例"></span>
+  <span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="解题技巧"></span>
+  <button class="wb-hl-btn" data-color="underline" title="波浪下划线"><u>U</u></button>
+  <button id="wb-hl-add-note" title="添加便签批注">📝 便签</button>
+  <button id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button>
+</div>
+<div id="wb-note-modal">
+  <div class="wb-note-dialog">
+    <div class="wb-note-head"><span>📝 添加/编辑便签</span><button id="wb-note-close">×</button></div>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea id="wb-note-input" placeholder="写下你的疑问或思考..."></textarea>
+    <div class="wb-note-footer">
+      <button id="wb-note-del-btn" style="display:none">删除便签</button>
+      <button id="wb-note-save-btn">保存便签</button>
+    </div>
+  </div>
+</div>
+<div class="obj-toast" id="obj-toast"></div>
+
+<script>
+(function(){
+  var LID = "cprog-01";
+  window.LID = LID;
+  function S(){ return window.WB_STORAGE || localStorage; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var toastEl = document.getElementById('obj-toast'), toastTimer = null;
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1900);
+  }
+  window.showToast = showToast;
+
+  /* ---------- 客观题自测（不计分） ---------- */
+  var KEY = 'wb_quiz_' + LID;
+  var answers = {};
+  try { answers = JSON.parse(S().getItem(KEY) || '{}') || {}; } catch(e){ answers = {}; }
+  function saveAnswers(){ try { S().setItem(KEY, JSON.stringify(answers)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.obj-card'));
+  function paint(card){
+    var key = card.getAttribute('data-key');
+    var picked = answers[key];
+    var correct = card.getAttribute('data-answer');
+    var opts = Array.prototype.slice.call(card.querySelectorAll('.obj-opt'));
+    var fb = card.querySelector('.obj-feedback');
+    opts.forEach(function(b){
+      b.classList.remove('obj-picked','obj-hit','obj-miss');
+      var v = b.getAttribute('data-val');
+      if(picked && v === picked) b.classList.add('obj-picked');
+      if(v === correct) b.classList.add('obj-hit');
+      else if(picked && v === picked) b.classList.add('obj-miss');
+    });
+    card.classList.toggle('obj-answered', !!picked);
+    card.classList.toggle('obj-iswrong', !!picked && picked !== correct);
+    card.classList.toggle('obj-wrong-picked', !!picked && picked !== correct);
+    if(fb){
+      var v = fb.querySelector('.obj-verdict');
+      if(picked){
+        v.textContent = picked === correct ? '✓ 回答正确' : '✕ 回答错误，你选了 ' + picked;
+        v.className = 'obj-verdict ' + (picked === correct ? 'ok' : 'no');
+      } else {
+        v.textContent = '（未作答）'; v.className = 'obj-verdict';
+      }
+    }
+    if(picked) card.classList.add('obj-revealed');
+    else if(!document.body.classList.contains('obj-showall')) card.classList.remove('obj-revealed');
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.obj-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(document.body.classList.contains('obj-locked')) return;
+        answers[card.getAttribute('data-key')] = btn.getAttribute('data-val');
+        saveAnswers(); paint(card);
+      });
+    });
+    paint(card);
+  });
+  function setAll(on){
+    document.body.classList.toggle('obj-showall', on);
+    cards.forEach(function(c){ c.classList.toggle('obj-revealed', on); });
+    document.getElementById('obj-btn-showall').textContent = on ? '🙈 隐藏答案' : '💡 显示全部答案';
+    document.getElementById('obj-btn-showall').classList.toggle('on', on);
+  }
+  document.getElementById('obj-btn-showall').addEventListener('click', function(){
+    setAll(!document.body.classList.contains('obj-showall'));
+  });
+  document.getElementById('obj-btn-selftest').addEventListener('click', function(){
+    var on = !this.classList.contains('on');
+    this.classList.toggle('on', on);
+    this.textContent = on ? '🙈 自测模式（答案已隐藏）' : '📖 阅读模式（可直接看答案）';
+    document.body.classList.toggle('obj-locked', false);
+    if(on){ setAll(false); cards.forEach(function(c){ if(!answers[c.getAttribute('data-key')]) c.classList.remove('obj-revealed'); }); }
+    else { setAll(true); }
+    showToast(on ? '已开启自测：作答后才显示答案与解析' : '已切到阅读模式：答案全部展开');
+  });
+  document.getElementById('obj-btn-wrong').addEventListener('click', function(){
+    var on = !document.body.classList.contains('obj-onlywrong');
+    document.body.classList.toggle('obj-onlywrong', on);
+    this.classList.toggle('on', on);
+    showToast(on ? '只看答错的题' : '显示全部题目');
+  });
+  document.getElementById('obj-btn-reset').addEventListener('click', function(){
+    answers = {}; saveAnswers(); setAll(false);
+    cards.forEach(function(c){ c.classList.remove('obj-revealed','obj-answered','obj-iswrong','obj-wrong-picked'); paint(c); });
+    showToast('✓ 已清空本机作答记录');
+  });
+
+  /* ---------- 划词批注钩子（供 wb-hl.js 回连） ---------- */
+  function getHighlights(){
+    try { return JSON.parse(S().getItem('wb_hl_' + LID) || '[]') || []; } catch(e){ return []; }
+  }
+  function updateNotesDrawer(){
+    var list = getHighlights();
+    var n = document.getElementById('obj-notes-count');
+    if(n) n.textContent = String(list.length);
+    var box = document.getElementById('obj-notes-list');
+    if(!box) return;
+    if(!list.length){ box.innerHTML = '<div style="color:#8a94a6;font-size:13px">还没有批注。选中正文文字即可呼出荧光笔。</div>'; return; }
+    box.innerHTML = list.map(function(it){
+      return '<div class="obj-note-item"><b>' + esc(it.text) + '</b>' +
+             (it.note ? '<div style="color:#5f6b7d">💬 ' + esc(it.note) + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  window.updateNotesDrawer = updateNotesDrawer;
+  updateNotesDrawer();
+  document.getElementById('obj-notes-toggle').addEventListener('click', function(){
+    var box = document.getElementById('obj-notes');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    updateNotesDrawer();
+  });
+  document.getElementById('obj-notes-clear').addEventListener('click', function(){
+    if(window.WB_HL && window.WB_HL.saveList) window.WB_HL.saveList([]);
+    else S().setItem('wb_hl_' + LID, '[]');
+    updateNotesDrawer(); showToast('✓ 已清空批注，刷新后高亮也会消失');
+  });
+  document.getElementById('obj-notes-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(getHighlights(), null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'notes-' + LID + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✓ 已导出批注 JSON');
+  });
+})();
+</script>
+<script src="wb-hl.js"></script>
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第五次作业 ｜ 函数、变量作用域与存储类别 · 课程讲义汇总站</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.obj-wrap{max-width:920px;margin:0 auto;padding:22px 18px 60px;font:15px/1.75 -apple-system,'Microsoft YaHei',sans-serif;color:#243044}
+.obj-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#f7f9fd;border-bottom:1px solid #dbe3f0;font-size:13px}
+.obj-bar a{color:#185fa5;text-decoration:none}
+.obj-bar .obj-cur{font-weight:600;color:#243044}
+.obj-head{padding:18px 0 10px;border-bottom:2px solid #185fa5}
+.obj-head h1{font-size:24px;margin:0 0 6px;color:#143a75}
+.obj-head .obj-sub{color:#5f6b7d;font-size:13px}
+.obj-lecs{margin:10px 0 0;font-size:13px;color:#5f6b7d}
+.obj-lecs a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid #bcd3f0;border-radius:12px;background:#eef5ff;color:#185fa5;text-decoration:none}
+.obj-tools{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0 8px;background:#fff;border-bottom:1px solid #e3e8f0}
+.obj-tool{padding:6px 13px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;font-size:13px;cursor:pointer}
+.obj-tool:hover{background:#e8f1ff}
+.obj-tool.on{background:#185fa5;color:#fff;border-color:#185fa5}
+.obj-notice{padding:10px 14px;margin:8px 0 18px;background:#fff8e8;border:1px solid #ecd9a8;border-radius:8px;color:#7a5410;font-size:13px}
+.obj-part{margin:26px 0 12px;padding:7px 14px;background:#eef4fb;border-left:4px solid #185fa5;color:#143a75;font-weight:600;font-size:16px;border-radius:0 6px 6px 0}
+.obj-card{margin:12px 0;padding:16px 18px;border:1px solid #e1e7f0;border-radius:10px;background:#fff}
+.obj-card.obj-wrong-picked{border-color:#f0b4b4}
+.obj-chead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.obj-num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:7px;background:#185fa5;color:#fff;font-size:13px;font-weight:600}
+.obj-kind{font-size:12px;color:#6b7789}
+.obj-stem{margin:2px 0 10px;line-height:1.8}
+.obj-stem code,.obj-opt code,.obj-analysis code{font-family:Consolas,Monaco,monospace;background:#f1f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#a33}
+.obj-card pre{margin:8px 0;padding:12px 14px;background:#f6f8fb;border:1px solid #e1e7f0;border-radius:7px;overflow-x:auto;font:13px/1.7 Consolas,Monaco,monospace;color:#243044}
+.obj-card pre code{background:none;padding:0;color:inherit}
+.obj-options{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.obj-opt{display:flex;gap:9px;align-items:flex-start;width:100%;padding:9px 12px;border:1px solid #d7e0ee;border-radius:7px;background:#fbfcff;text-align:left;font:14px/1.6 inherit;color:#243044;cursor:pointer}
+.obj-opt:hover{background:#eef5ff;border-color:#9dc0ea}
+.obj-opt .obj-k{flex:0 0 22px;font-weight:600;color:#185fa5}
+.obj-card.obj-answered .obj-opt{cursor:default}
+.obj-opt.obj-picked{border-color:#185fa5;background:#e8f1ff}
+.obj-opt.obj-hit{border-color:#2e9e5b;background:#e7f7ed}
+.obj-opt.obj-miss{border-color:#d9534f;background:#fdecec}
+.obj-feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#f7f9fd;border:1px solid #e1e7f0;font-size:14px}
+.obj-card.obj-revealed .obj-feedback{display:block}
+.obj-verdict{font-weight:600;margin-bottom:6px}
+.obj-verdict.ok{color:#2e9e5b}
+.obj-verdict.no{color:#d9534f}
+.obj-answer{color:#143a75;margin-bottom:6px}
+.obj-analysis{color:#3c485c;line-height:1.8}
+.obj-nav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid #e3e8f0}
+.obj-nav a,.obj-nav span{padding:8px 14px;border:1px solid #c9d6ea;border-radius:7px;color:#185fa5;text-decoration:none;font-size:13px}
+.obj-nav .off{color:#9aa5b5;background:#f5f7fa}
+.obj-onlywrong .obj-card:not(.obj-iswrong){display:none}
+.obj-onlywrong .obj-part{display:none}
+.obj-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:#243044;color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+.obj-toast.on{opacity:1}
+.obj-notes{padding:10px 14px;margin-top:16px;border:1px solid #e1e7f0;border-radius:8px;background:#fbfcff}
+.obj-notes h3{margin:0 0 8px;font-size:14px;color:#143a75}
+.obj-note-item{padding:7px 0;border-bottom:1px dashed #e1e7f0;font-size:13px}
+.obj-note-item:last-child{border-bottom:none}
+#wb-hl-popover{position:absolute;display:none;z-index:80;padding:6px 9px;background:#fff;border:1px solid #d7e0ee;border-radius:9px;box-shadow:0 3px 14px rgba(20,50,90,.16)}
+#wb-hl-popover .wb-hl-color-dot{display:inline-block;width:18px;height:18px;margin:0 3px;border-radius:50%;cursor:pointer;border:1px solid rgba(0,0,0,.1)}
+#wb-hl-popover button{padding:3px 8px;border:1px solid #d7e0ee;border-radius:6px;background:#f7faff;cursor:pointer;font-size:12px}
+.wb-dot-yellow{background:#ffe066}.wb-dot-green{background:#9ae6b4}.wb-dot-red{background:#ffa8a8}.wb-dot-purple{background:#d0bfff}
+#wb-note-modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(20,35,60,.4)}
+#wb-note-modal.wb-open{display:flex;align-items:center;justify-content:center}
+.wb-note-dialog{width:min(460px,90vw);background:#fff;border-radius:12px;padding:18px}
+.wb-note-dialog textarea{width:100%;min-height:90px;padding:8px;border:1px solid #d7e0ee;border-radius:7px;font:14px/1.6 inherit}
+.wb-note-dialog .wb-note-quote{padding:8px;background:#f6f8fb;border-radius:6px;color:#5f6b7d;font-size:13px;margin:8px 0}
+.wb-note-dialog .wb-note-head{display:flex;justify-content:space-between;font-weight:600;color:#143a75}
+.wb-note-dialog .wb-note-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.wb-note-dialog button{padding:6px 12px;border:1px solid #c9d6ea;border-radius:7px;background:#f7faff;color:#185fa5;cursor:pointer}
+.wb-user-hl{border-radius:3px;padding:0 1px}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body data-lid="cprog-05">
+<div class="obj-bar">
+  <a href="index.html">首页</a> <span>›</span>
+  <a href="course-cprog.html?tab=homework">C 程序设计 · 作业</a> <span>›</span>
+  <span class="obj-cur">第五次作业</span>
+  <span style="flex:1"></span>
+  <button class="obj-tool" id="obj-notes-toggle">🖍️ 批注 (<span id="obj-notes-count">0</span>)</button>
+</div>
+<div class="obj-wrap">
+  <header class="obj-head">
+    <h1>第五次作业 ｜ 函数、变量作用域与存储类别</h1>
+    <div class="obj-sub">C 程序设计 · 判断题 15 道 · 单选题 20 道 · 共 35 题</div>
+    <div class="obj-lecs">相关讲义：<a href="lecture-cprog-2026-10-20.html">2026-10-20</a><a href="lecture-cprog-2026-10-27.html">2026-10-27</a></div>
+  </header>
+  <div class="obj-tools">
+    <button class="obj-tool on" id="obj-btn-selftest">🙈 自测模式（答案已隐藏）</button>
+    <button class="obj-tool" id="obj-btn-showall">💡 显示全部答案</button>
+    <button class="obj-tool" id="obj-btn-wrong">🔴 只看错题</button>
+    <button class="obj-tool" id="obj-btn-reset">↺ 重做（清空本机作答）</button>
+  </div>
+  <div class="obj-notice">选择或判断后即时查看对错、正确答案与解析；可用「🙈 自测模式」先隐藏答案独立作答。作答记录只保存在本机浏览器，不计分、不上传。<br>说明：本页为纯静态自测，答案随页面一起下发（查看源码即可见），仅用于自查，不具备防作弊或计分功能。</div>
+  <h2 class="obj-part">一、判断题（15 题）</h2>
+<article class="obj-card" data-key="T-1" data-answer="√">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">函数声明的核心作用是告诉编译器函数的名称、返回值类型和参数类型，无需包含函数体。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。函数声明给出名称、返回值类型和参数类型，不含函数体。</div></div>
+</article>
+<article class="obj-card" data-key="T-2" data-answer="√">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中默认的参数传递方式是值传递，此时函数内部修改形参值不会影响实参。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。默认是值传递，改形参不影响实参。</div></div>
+</article>
+<article class="obj-card" data-key="T-3" data-answer="√">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">如果函数不需要返回任何值，其返回值类型应声明为 void。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。不返回值时类型写 void。</div></div>
+</article>
+<article class="obj-card" data-key="T-4" data-answer="√">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">函数的形参在函数调用结束后会被销毁，不再占用内存空间。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。形参在函数调用结束后被销毁、释放空间。</div></div>
+</article>
+<article class="obj-card" data-key="T-5" data-answer="√">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">函数体中定义的局部变量可以作为调用其它函数的参数，传递给被调用函数。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。局部变量可作为实参传给其他函数。</div></div>
+</article>
+<article class="obj-card" data-key="T-6" data-answer="×">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言全局变量若未显式初始化，其值是不确定的随机值。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。全局变量未显式初始化时系统自动置 0，不是随机值。</div></div>
+</article>
+<article class="obj-card" data-key="T-7" data-answer="√">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言中，若要在一个 .c 文件中使用另一个 .c 文件定义的全局变量，必须先用 extern 关键字声明该变量。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。跨文件使用全局变量需先用 extern 声明。</div></div>
+</article>
+<article class="obj-card" data-key="T-8" data-answer="√">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中，用 static 修饰的变量统称为静态变量，其存储在静态存储区。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。static 变量存放在静态存储区。</div></div>
+</article>
+<article class="obj-card" data-key="T-9" data-answer="√">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言函数内部的静态局部变量，其生命周期与整个程序一致，不会随函数调用结束而释放。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。静态局部变量生命周期与整个程序一致，不随调用结束释放。</div></div>
+</article>
+<article class="obj-card" data-key="T-10" data-answer="×">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中，static 修饰的全局变量可以被程序中所有 .c 文件的函数访问。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。static 修饰的全局变量只在本 .c 文件内可见。</div></div>
+</article>
+<article class="obj-card" data-key="T-11" data-answer="√">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言全局变量的生命周期是从程序开始运行到程序结束。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。全局变量生命周期从程序开始到结束。</div></div>
+</article>
+<article class="obj-card" data-key="T-12" data-answer="×">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">在 C 语言中，函数 func1 内部定义的普通局部变量 x，函数 func2 可以通过 extern 声明直接访问 x。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>×</b></div><div class="obj-analysis">该说法错误。extern 只能声明具有外部链接的对象，函数内的局部变量不可被其他函数访问。</div></div>
+</article>
+<article class="obj-card" data-key="T-13" data-answer="√">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中，普通局部变量存储在栈区，静态局部变量存储在静态存储区。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。普通局部变量在栈区，静态局部变量在静态存储区。</div></div>
+</article>
+<article class="obj-card" data-key="T-14" data-answer="√">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言静态变量若未显式初始化，系统会自动将其初始化为 0（或 NULL）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。静态变量未显式初始化时自动初始化为 0 或 NULL。</div></div>
+</article>
+<article class="obj-card" data-key="T-15" data-answer="√">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">判断题</span></div>
+<div class="obj-stem">C 语言中，用 static 修饰函数内部的变量，可实现函数调用之间的中间结果保存（如累计调用次数）。</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="√"><span class="obj-k">√</span><span>√ 正确</span></button>
+<button class="obj-opt" data-val="×"><span class="obj-k">×</span><span>× 错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>√</b></div><div class="obj-analysis">该说法正确。静态局部变量可在多次调用之间保留中间结果，如累计调用次数。</div></div>
+</article>
+<h2 class="obj-part">二、单选题（20 题）</h2>
+<article class="obj-card" data-key="C-1" data-answer="A">
+<div class="obj-chead"><span class="obj-num">1</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下关于 C 语言函数定义的说法，正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>函数定义必须包含返回值类型、函数名、参数列表和函数体</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>函数定义可以没有函数体</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>函数定义中的参数列表只需要写参数名称，无需写类型</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>函数定义的结尾必须加分号</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。函数定义须包含返回值类型、函数名、参数列表和函数体。</div></div>
+</article>
+<article class="obj-card" data-key="C-2" data-answer="D">
+<div class="obj-chead"><span class="obj-num">2</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">函数声明与函数定义的主要区别在于？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>函数声明有函数名，函数定义没有</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>函数声明有返回值类型，函数定义没有</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>函数声明有参数列表，函数定义没有</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>函数声明没有函数体，函数定义必须包含函数体</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。声明只给出接口、没有函数体；定义必须带函数体。</div></div>
+</article>
+<article class="obj-card" data-key="C-3" data-answer="B">
+<div class="obj-chead"><span class="obj-num">3</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下代码中，属于函数声明的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>int add(int a, int b) { return a + b; }</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>int add(int a, int b);</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>add(3, 5);</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>int a = add(3, 5);</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。以分号结尾且无函数体的 int add(int a, int b); 是函数声明。</div></div>
+</article>
+<article class="obj-card" data-key="C-4" data-answer="B">
+<div class="obj-chead"><span class="obj-num">4</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">函数的“代码复用”特性，以下理解正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>函数只能被调用一次</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>函数可以在多个程序或同一程序的不同地方多次调用</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>函数的代码会被复制到调用处，导致代码冗余</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>代码复用意味着函数不需要修改就能适应所有场景</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。函数可在同一程序不同位置或多个程序中重复调用。</div></div>
+</article>
+<article class="obj-card" data-key="C-5" data-answer="C">
+<div class="obj-chead"><span class="obj-num">5</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在定义函数时，如果函数不需要返回任何值，其返回值类型应指定为？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>int</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>float</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>void</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>char</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。无返回值时返回值类型写 void。</div></div>
+</article>
+<article class="obj-card" data-key="C-6" data-answer="A">
+<div class="obj-chead"><span class="obj-num">6</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于函数参数的描述，错误的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>函数的形参在函数调用结束后仍然占用内存</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>函数的实参可以是常量、变量或表达式</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>函数参数的传递是将实参的值或地址传递给形参</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>形参的作用域仅限于函数内部</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。形参在调用结束后即释放，不再占用内存。</div></div>
+</article>
+<article class="obj-card" data-key="C-7" data-answer="B">
+<div class="obj-chead"><span class="obj-num">7</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">确定一个函数是否需要参数，主要依据是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>函数名的长度</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>函数实现其预定功能是否需要外部输入数据</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>函数体中局部变量的个数</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>函数的返回值类型</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。是否需要参数取决于功能实现是否需要外部输入数据。</div></div>
+</article>
+<article class="obj-card" data-key="C-8" data-answer="D">
+<div class="obj-chead"><span class="obj-num">8</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言的函数调用中，如果实参是变量，以下说法正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>实参变量的地址会自动传递给形参</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>实参变量的值会被形参修改</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>实参变量的类型必须与形参完全相同（不能兼容）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>实参变量的值会被拷贝到形参中（默认值传递）</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。默认按值传递：实参的值被拷贝进形参。</div></div>
+</article>
+<article class="obj-card" data-key="C-9" data-answer="B">
+<div class="obj-chead"><span class="obj-num">9</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">函数“模块化编程”的主要目的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>增加程序的代码行数</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>使程序结构更清晰，便于调试和维护</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>减少函数的调用次数</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>避免使用全局变量</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。模块化使结构更清晰，便于调试与维护。</div></div>
+</article>
+<article class="obj-card" data-key="C-10" data-answer="D">
+<div class="obj-chead"><span class="obj-num">10</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">以下哪种情况不需要函数声明？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>函数定义在调用之后</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>函数调用在另一个源文件中</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>函数的返回值类型不是 <code>int</code></span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>函数定义在调用之前</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。函数定义在调用之前时，编译器已见到定义，可省略声明。</div></div>
+</article>
+<article class="obj-card" data-key="C-11" data-answer="D">
+<div class="obj-chead"><span class="obj-num">11</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列关于 C 语言局部变量的描述，错误的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>局部变量通常定义在函数内部或复合语句（如 <code>if</code>、<code>for</code> 块）中</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>局部变量的作用范围仅限于定义它的函数或复合语句内部</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>局部变量若未显式初始化，其值是不确定的（随机值）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>局部变量存储在静态存储区，程序运行期间始终存在</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。普通局部变量在栈区、随函数结束释放，不在静态存储区。</div></div>
+</article>
+<article class="obj-card" data-key="C-12" data-answer="C">
+<div class="obj-chead"><span class="obj-num">12</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于 C 语言全局变量，下列说法正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>全局变量必须定义在所有函数的最前面（文件开头）</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>全局变量的作用范围仅限于定义它的那个函数内部</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>全局变量若未显式初始化，会被系统自动初始化为 0（所有 bit 为 0）</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>多个函数不能同时访问同一个全局变量，同时访问会导致编译错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。全局变量未显式初始化会被自动清零。</div></div>
+</article>
+<article class="obj-card" data-key="C-13" data-answer="B">
+<div class="obj-chead"><span class="obj-num">13</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言中，若要在一个 .c 文件中使用另一个 .c 文件中定义的全局变量，正确的做法是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>直接使用，C 语言会自动识别跨文件的全局变量</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>在使用前用 <code>extern</code> 关键字声明该全局变量</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>用 <code>static</code> 关键字声明该全局变量</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>将两个 <code>.c</code> 文件合并为一个文件，否则无法使用</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。跨文件访问全局变量要用 extern 声明。</div></div>
+</article>
+<article class="obj-card" data-key="C-14" data-answer="A">
+<div class="obj-chead"><span class="obj-num">14</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列关于 C 语言静态变量（static 修饰的变量）的说法，正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>静态变量存储在静态存储区，其生命周期与整个程序一致</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>静态变量只能定义在函数外部，不能定义在函数内部</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>静态变量的作用范围是整个程序的所有文件</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>静态变量若未显式初始化，其值是不确定的随机值</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。静态变量在静态存储区，生命周期与整个程序一致。</div></div>
+</article>
+<article class="obj-card" data-key="C-15" data-answer="D">
+<div class="obj-chead"><span class="obj-num">15</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言函数内部定义的静态局部变量，与普通局部变量的主要区别是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>静态局部变量的作用范围比普通局部变量大，能被其他函数访问</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>静态局部变量必须显式初始化，普通局部变量可不用</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>静态局部变量和局部变量存储在静态存储区</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>静态局部变量的生命周期是整个程序运行期间，普通局部变量随函数调用结束而释放</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>D</b></div><div class="obj-analysis">正确答案 D。静态局部变量生命周期为整个程序运行期，普通局部变量随调用结束释放。</div></div>
+</article>
+<article class="obj-card" data-key="C-16" data-answer="B">
+<div class="obj-chead"><span class="obj-num">16</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言中，用 static 修饰的全局变量，其特点是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>可以被程序中所有 <code>.c</code> 文件的函数访问</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>只能被定义它的那个 <code>.c</code> 文件中的函数访问</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>其值在程序运行期间不能被修改</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>必须在定义时显式初始化，否则编译错误</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。static 全局变量具有文件作用域，只限定义它的 .c 文件访问。</div></div>
+</article>
+<article class="obj-card" data-key="C-17" data-answer="A">
+<div class="obj-chead"><span class="obj-num">17</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">下列关于 C 语言变量生命周期的描述，正确的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>全局变量的生命周期是从程序开始运行到程序结束</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>局部变量的生命周期是从程序编译完成到程序结束</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>静态局部变量的生命周期仅限于函数调用期间</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>寄存器变量（<code>register</code> 修饰）的生命周期比全局变量长</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。全局变量生命周期从程序开始运行到程序结束。</div></div>
+</article>
+<article class="obj-card" data-key="C-18" data-answer="C">
+<div class="obj-chead"><span class="obj-num">18</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">C 语言中，变量的“作用范围”指的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>变量在内存中占用的存储空间大小</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>变量从定义到被销毁所经历的时间</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>程序中可以合法访问该变量的代码区域</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>变量被初始化后可以修改的次数</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>C</b></div><div class="obj-analysis">正确答案 C。作用范围（作用域）指程序中可合法访问该变量的代码区域。</div></div>
+</article>
+<article class="obj-card" data-key="C-19" data-answer="B">
+<div class="obj-chead"><span class="obj-num">19</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">关于 C 语言中变量的存储类别，下列对应关系错误的是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>全局变量 — 静态存储区</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>普通局部变量 — 静态存储区</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>静态局部变量 — 静态存储区</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>静态全局变量 — 静态存储区</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>B</b></div><div class="obj-analysis">正确答案 B。普通局部变量在栈区，把它归到静态存储区是错误的。</div></div>
+</article>
+<article class="obj-card" data-key="C-20" data-answer="A">
+<div class="obj-chead"><span class="obj-num">20</span><span class="obj-kind">单选题</span></div>
+<div class="obj-stem">在 C 语言中，函数参数作为局部变量，其生命周期是？</div>
+<div class="obj-options">
+<button class="obj-opt" data-val="A"><span class="obj-k">A</span><span>从函数被调用开始，到函数执行结束返回时结束</span></button>
+<button class="obj-opt" data-val="B"><span class="obj-k">B</span><span>从程序开始运行，到程序结束</span></button>
+<button class="obj-opt" data-val="C"><span class="obj-k">C</span><span>从函数定义开始，到程序结束</span></button>
+<button class="obj-opt" data-val="D"><span class="obj-k">D</span><span>从函数第一次被调用开始，到程序结束</span></button>
+</div>
+<div class="obj-feedback"><div class="obj-verdict"></div><div class="obj-answer">正确答案：<b>A</b></div><div class="obj-analysis">正确答案 A。形参的生命周期从函数被调用开始，到函数返回时结束。</div></div>
+</article>
+  <nav class="obj-nav"><a href="homework-cprog-04.html">‹ 上一次作业</a><a href="course-cprog.html?tab=homework">📚 返回作业列表</a><a href="homework-cprog-06.html">下一次作业 ›</a></nav>
+  <div class="obj-notes" id="obj-notes" style="display:none">
+    <h3>📝 本节批注</h3>
+    <div id="obj-notes-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="obj-tool" id="obj-notes-export">📤 导出 JSON</button>
+      <button class="obj-tool" id="obj-notes-clear">🗑️ 清空批注</button>
+    </div>
+  </div>
+</div>
+
+<div id="wb-hl-popover">
+  <span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="核心考点"></span>
+  <span class="wb-hl-color-dot wb-dot-green" data-color="green" title="概念定义"></span>
+  <span class="wb-hl-color-dot wb-dot-red" data-color="red" title="易错反例"></span>
+  <span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="解题技巧"></span>
+  <button class="wb-hl-btn" data-color="underline" title="波浪下划线"><u>U</u></button>
+  <button id="wb-hl-add-note" title="添加便签批注">📝 便签</button>
+  <button id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button>
+</div>
+<div id="wb-note-modal">
+  <div class="wb-note-dialog">
+    <div class="wb-note-head"><span>📝 添加/编辑便签</span><button id="wb-note-close">×</button></div>
+    <div class="wb-note-quote" id="wb-note-quote"></div>
+    <textarea id="wb-note-input" placeholder="写下你的疑问或思考..."></textarea>
+    <div class="wb-note-footer">
+      <button id="wb-note-del-btn" style="display:none">删除便签</button>
+      <button id="wb-note-save-btn">保存便签</button>
+    </div>
+  </div>
+</div>
+<div class="obj-toast" id="obj-toast"></div>
+
+<script>
+(function(){
+  var LID = "cprog-05";
+  window.LID = LID;
+  function S(){ return window.WB_STORAGE || localStorage; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var toastEl = document.getElementById('obj-toast'), toastTimer = null;
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1900);
+  }
+  window.showToast = showToast;
+
+  /* ---------- 客观题自测（不计分） ---------- */
+  var KEY = 'wb_quiz_' + LID;
+  var answers = {};
+  try { answers = JSON.parse(S().getItem(KEY) || '{}') || {}; } catch(e){ answers = {}; }
+  function saveAnswers(){ try { S().setItem(KEY, JSON.stringify(answers)); } catch(e){} }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.obj-card'));
+  function paint(card){
+    var key = card.getAttribute('data-key');
+    var picked = answers[key];
+    var correct = card.getAttribute('data-answer');
+    var opts = Array.prototype.slice.call(card.querySelectorAll('.obj-opt'));
+    var fb = card.querySelector('.obj-feedback');
+    opts.forEach(function(b){
+      b.classList.remove('obj-picked','obj-hit','obj-miss');
+      var v = b.getAttribute('data-val');
+      if(picked && v === picked) b.classList.add('obj-picked');
+      if(v === correct) b.classList.add('obj-hit');
+      else if(picked && v === picked) b.classList.add('obj-miss');
+    });
+    card.classList.toggle('obj-answered', !!picked);
+    card.classList.toggle('obj-iswrong', !!picked && picked !== correct);
+    card.classList.toggle('obj-wrong-picked', !!picked && picked !== correct);
+    if(fb){
+      var v = fb.querySelector('.obj-verdict');
+      if(picked){
+        v.textContent = picked === correct ? '✓ 回答正确' : '✕ 回答错误，你选了 ' + picked;
+        v.className = 'obj-verdict ' + (picked === correct ? 'ok' : 'no');
+      } else {
+        v.textContent = '（未作答）'; v.className = 'obj-verdict';
+      }
+    }
+    if(picked) card.classList.add('obj-revealed');
+    else if(!document.body.classList.contains('obj-showall')) card.classList.remove('obj-revealed');
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.obj-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(document.body.classList.contains('obj-locked')) return;
+        answers[card.getAttribute('data-key')] = btn.getAttribute('data-val');
+        saveAnswers(); paint(card);
+      });
+    });
+    paint(card);
+  });
+  function setAll(on){
+    document.body.classList.toggle('obj-showall', on);
+    cards.forEach(function(c){ c.classList.toggle('obj-revealed', on); });
+    document.getElementById('obj-btn-showall').textContent = on ? '🙈 隐藏答案' : '💡 显示全部答案';
+    document.getElementById('obj-btn-showall').classList.toggle('on', on);
+  }
+  document.getElementById('obj-btn-showall').addEventListener('click', function(){
+    setAll(!document.body.classList.contains('obj-showall'));
+  });
+  document.getElementById('obj-btn-selftest').addEventListener('click', function(){
+    var on = !this.classList.contains('on');
+    this.classList.toggle('on', on);
+    this.textContent = on ? '🙈 自测模式（答案已隐藏）' : '📖 阅读模式（可直接看答案）';
+    document.body.classList.toggle('obj-locked', false);
+    if(on){ setAll(false); cards.forEach(function(c){ if(!answers[c.getAttribute('data-key')]) c.classList.remove('obj-revealed'); }); }
+    else { setAll(true); }
+    showToast(on ? '已开启自测：作答后才显示答案与解析' : '已切到阅读模式：答案全部展开');
+  });
+  document.getElementById('obj-btn-wrong').addEventListener('click', function(){
+    var on = !document.body.classList.contains('obj-onlywrong');
+    document.body.classList.toggle('obj-onlywrong', on);
+    this.classList.toggle('on', on);
+    showToast(on ? '只看答错的题' : '显示全部题目');
+  });
+  document.getElementById('obj-btn-reset').addEventListener('click', function(){
+    answers = {}; saveAnswers(); setAll(false);
+    cards.forEach(function(c){ c.classList.remove('obj-revealed','obj-answered','obj-iswrong','obj-wrong-picked'); paint(c); });
+    showToast('✓ 已清空本机作答记录');
+  });
+
+  /* ---------- 划词批注钩子（供 wb-hl.js 回连） ---------- */
+  function getHighlights(){
+    try { return JSON.parse(S().getItem('wb_hl_' + LID) || '[]') || []; } catch(e){ return []; }
+  }
+  function updateNotesDrawer(){
+    var list = getHighlights();
+    var n = document.getElementById('obj-notes-count');
+    if(n) n.textContent = String(list.length);
+    var box = document.getElementById('obj-notes-list');
+    if(!box) return;
+    if(!list.length){ box.innerHTML = '<div style="color:#8a94a6;font-size:13px">还没有批注。选中正文文字即可呼出荧光笔。</div>'; return; }
+    box.innerHTML = list.map(function(it){
+      return '<div class="obj-note-item"><b>' + esc(it.text) + '</b>' +
+             (it.note ? '<div style="color:#5f6b7d">💬 ' + esc(it.note) + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  window.updateNotesDrawer = updateNotesDrawer;
+  updateNotesDrawer();
+  document.getElementById('obj-notes-toggle').addEventListener('click', function(){
+    var box = document.getElementById('obj-notes');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    updateNotesDrawer();
+  });
+  document.getElementById('obj-notes-clear').addEventListener('click', function(){
+    if(window.WB_HL && window.WB_HL.saveList) window.WB_HL.saveList([]);
+    else S().setItem('wb_hl_' + LID, '[]');
+    updateNotesDrawer(); showToast('✓ 已清空批注，刷新后高亮也会消失');
+  });
+  document.getElementById('obj-notes-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(getHighlights(), null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'notes-' + LID + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✓ 已导出批注 JSON');
+  });
+})();
+</script>
+<script src="wb-hl.js"></script>
+</body>
+</html>
