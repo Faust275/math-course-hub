@@ -1117,6 +1117,14 @@ window.MathJax = {
 (function(){
   var PAGE_ID = window.BOOK_PAGE.page_id;
 
+  /* 批注抽屉用的 HTML 转义。必须在本页内联定义：本页不加载 site.js，
+     且这里不能写成 Python 侧的 esc()——那是构建期函数，浏览器里不存在。 */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
   // 1. 阅读进度与断点记录
   var progEl = document.getElementById('wb-read-prog');
   window.addEventListener('scroll', function(){
@@ -1200,7 +1208,8 @@ window.MathJax = {
   }
   function saveStoredHighlights(list) {
     (window.WB_STORAGE||localStorage).setItem('wb_hl_' + PAGE_ID, JSON.stringify(list));
-    updateNotesDrawer();
+    /* 抽屉只是旁路 UI，刷新失败不能反向打断划词落笔与浮层收起 */
+    try { updateNotesDrawer(); } catch (e) { console.warn('[wb-hl] refresh notes drawer failed:', e); }
   }
 
   function handleTextSelect(e) {
