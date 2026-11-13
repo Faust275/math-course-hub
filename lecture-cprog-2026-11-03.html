@@ -322,9 +322,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -336,7 +336,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -597,10 +597,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1245,8 +1245,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1435,7 +1436,7 @@ id="toc-二维数组的初始化逐行-部分-省略行数-列数不可省">01:2
 ｜ 二维数组的初始化（逐行 / 部分 / 省略行数 / 列数不可省）</a></li>
 <li><a href="#二维数组的内存排列与数组的数组"
 id="toc-二维数组的内存排列与数组的数组">01:36:18—01:44:03 ｜
-二维数组的内存排列与”数组的数组”</a></li>
+二维数组的内存排列与“数组的数组”</a></li>
 <li><a href="#程序解析-7-9-矩阵转置"
 id="toc-程序解析-7-9-矩阵转置">01:44:03—01:47:06 ｜ 程序解析 7-9
 矩阵转置</a></li>
@@ -1494,29 +1495,29 @@ id="一位运算与补码回顾000022000802">一、位运算与补码回顾（00
 <li><strong>将这几位设置为 0（不是取反）</strong>：先把掩码取反，再跟
 <code>N</code> 做按位与（<code>&amp;</code>）。</li>
 </ul>
-<p>老师说这些方法很多，核心是”用掩码 + 与 / 或 /
+<p>老师说这些方法很多，核心是“用掩码 + 与 / 或 /
 异或”去精确定位并改写某几个比特；并提到有兴趣可以去问 AI
 要一些位运算的高级题目。</p>
 </section><section class="wb-seg"><h3 id="补码表示原理回顾"><span class="wb-ts">00:04:43—00:08:02</span> ｜ 补码表示原理回顾</h3>
-<p>老师重讲”为什么整数运算在补码上进行，而不是原码上。</p>
+<p>老师重讲“为什么整数运算在补码上进行，而不是原码上”。</p>
 <ul>
 <li>原码的麻烦：做加法要先判断符号位，异号相加要另做减法，硬件实现复杂。</li>
 <li>补码定义视角：把整数 <code>X</code> 当作无符号数看待。<code>X</code>
-的反码 <code>~X</code> 与 <code>X</code> 相加等于”全 1”；“全 1”再加
+的反码 <code>~X</code> 与 <code>X</code> 相加等于“全 1”；“全 1”再加
 <code>1</code> 等于 <code>0</code>。于是
 <code>X + (~X + 1) = 0</code>，即 <code>~X + 1</code> 正是
-<code>-X</code> 的补码表示，所以”负 <code>X</code> 等于把 <code>X</code>
-按位取反再加 <code>1</code>。</li>
+<code>-X</code> 的补码表示，所以“负 <code>X</code> 等于把 <code>X</code>
+按位取反再加 <code>1</code>”。</li>
 <li>意义：补码下，加减法统一成同一个加法器，不需要单独判断符号位，逢二进一、进位自然丢弃即可。这一段是概念复习，没有屏幕代码。</li>
 </ul>
-<h2 id="二第七章-数组000802021950">二、第七章
+</section><h2 id="二第七章-数组000802021950">二、第七章
 数组（00:08:02—02:19:50）</h2>
-</section><section class="wb-seg"><h3 id="数组的概念与一维数组的定义"><span class="wb-ts">00:08:02—00:11:41</span> ｜
+<section class="wb-seg"><h3 id="数组的概念与一维数组的定义"><span class="wb-ts">00:08:02—00:11:41</span> ｜
 数组的概念与一维数组的定义</h3>
-<p>老师宣布”今天开始上第七章，第七章是<strong>数组</strong>，分三大块：一维数组、二维数组、以及由字符数组引出的字符串。</p>
+<p>老师宣布“今天开始上第七章”，第七章是<strong>数组</strong>，分三大块：一维数组、二维数组、以及由字符数组引出的字符串。</p>
 <p><strong>数组是什么</strong>：一组相同类型数据的有序集合，元素在内存中<strong>连续存放</strong>，每个元素占同样大小的空间（例如一个
 <code>int</code> 占 4
-个字节，数组里就一个挨一个地放）。老师特意纠正了”有序集合”这个词在数学上的不严谨——数学里集合要求元素互异，而数组允许存放相同元素，只是”有序”（按下标顺序）而已。</p>
+个字节，数组里就一个挨一个地放）。老师特意纠正了“有序集合”这个词在数学上的不严谨——数学里集合要求元素互异，而数组允许存放相同元素，只是“有序”（按下标顺序）而已。</p>
 <p>一维数组的定义形式（课件 ch07.txt）：</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
@@ -1551,7 +1552,7 @@ id="一位运算与补码回顾000022000802">一、位运算与补码回顾（00
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> n<span class="op">*</span><span class="dv">100</span><span class="op">;</span></span></code></pre></div>
 <p>代码取自课件 ch07.txt。</p>
 <p><strong>下标范围</strong>：<code>[0, 长度-1]</code>，不能越界；<code>a[k]</code>
-即”第 <code>k</code> 个元素。</p>
+即“第 <code>k</code> 个元素”。</p>
 <p><strong>运算符优先级（本节课重点复习）</strong>：老师把书上运算符附录复习了一遍，关键结论——</p>
 <ul>
 <li>圆括号 <code></code>、方括号
@@ -1575,7 +1576,7 @@ id="一位运算与补码回顾000022000802">一、位运算与补码回顾（00
 1（00:20:08）｜ 例 7-1 输出所有大于平均值的数<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-1" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：读入
 <code>n</code>（<code>n&lt;=10</code>）个整数，计算并输出平均值，再输出其中大于平均值的数。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：只算平均值用不着数组（读一个加一个再除以总个数即可）；但算完平均值后还要回头比较”哪些数大于平均值，所以必须把读进来的数据全部保存起来——用数组。需要两次扫描：第
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：只算平均值用不着数组（读一个加一个再除以总个数即可）；但算完平均值后还要回头比较“哪些数大于平均值”，所以必须把读进来的数据全部保存起来——用数组。需要两次扫描：第
 1 次求和算平均，第 2 次遍历比较并输出。</p>
 <p><strong class="wb-pill wb-pill-derive">代码</strong>（课件 ch07.txt，第 6—8 页，逐字符照抄）：</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
@@ -1624,12 +1625,12 @@ id="一位运算与补码回顾000022000802">一、位运算与补码回顾（00
 十个变量，数组配合循环威力巨大）。</li>
 <li>两个 <code>for</code>
 循环可以合并成一个（读入的同时累加求和）。</li>
-<li><strong class="wb-pill">数组大小限制</strong>：数组大小有上限，取决于编译器和机器的动态存储区大小，一般几千几万没问题，但定义成”11
+<li><strong class="wb-pill">数组大小限制</strong>：数组大小有上限，取决于编译器和机器的动态存储区大小，一般几千几万没问题，但定义成“11
 亿”肯定不行。老师回忆自己当年定义 <code>1000×1000</code>
-的二维数组就被拒。原因见下一点的”动态存储区。</li>
+的二维数组就被拒。原因见下一点的“动态存储区”。</li>
 <li><strong class="wb-pill">为何有大小限制</strong>：数组若是函数内的局部变量，存放在<strong>动态存储区</strong>（栈）。函数调用越深，局部变量越多，这块区域耗尽程序就崩溃；而且
 C
-语言函数调用深度也是有限的（几百层左右），根源都是动态存储区内存有限。等到第八章会学”动态内存分配”来突破这个限制。</li>
+语言函数调用深度也是有限的（几百层左右），根源都是动态存储区内存有限。等到第八章会学“动态内存分配”来突破这个限制。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="一维数组的初始化长度推断与缺省初值"><span class="wb-ts">00:25:32—00:29:59</span> ｜
 一维数组的初始化（长度推断与缺省初值）</h3>
@@ -1643,7 +1644,7 @@ C
 <li>初值用花括号 <code>{}</code> 括起来，各值用逗号隔开。</li>
 <li><strong class="wb-pill">给定了初值表但省略长度时，长度由初值个数决定</strong>：如
 <code>float b[] = {4,6,8,10};</code> 长度为 4。</li>
-<li>老师强调：“随机”是严格的数学概念，数组没初始化时的值<strong>不是随机值</strong>，而是”不确定的值”（垃圾值）。</li>
+<li>老师强调：“随机”是严格的数学概念，数组没初始化时的值<strong>不是随机值</strong>，而是“不确定的值”（垃圾值）。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="局部变量数组的初值不确定垃圾值"><span class="wb-ts">00:29:59—00:33:09</span> ｜
 局部变量数组的初值不确定（垃圾值）</h3>
@@ -1657,7 +1658,7 @@ C
 <code>0</code>（<code>a[3]…a[9]</code> 全为 0）。</li>
 <li><strong class="wb-pill">未给任何初值的静态数组 /
 全局变量数组</strong>：所有元素初值为 <code>0</code>。</li>
-<li><strong class="wb-pill">未给任何初值的局部变量数组</strong>：元素初值是<strong>不确定的</strong>（垃圾值），不能用。老师反复强调：这个值”不可预测，只是”你前一次程序运行留在内存里的残留，绝不是”随机值。</li>
+<li><strong class="wb-pill">未给任何初值的局部变量数组</strong>：元素初值是<strong>不确定的</strong>（垃圾值），不能用。老师反复强调：这个值“不可预测”，只是“你前一次程序运行留在内存里的残留”，绝不是“随机值”。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="程序解析-7-2-用数组计算斐波那契数列"><span class="wb-ts">00:33:09—00:39:07</span> ｜
 程序解析 7-2 用数组计算斐波那契数列</h3>
@@ -1668,7 +1669,7 @@ id="例题证明-2003309-程序解析-7-2-用数组计算和输出斐波那契�
 <code>n</code> 项并输出（每行 5 个）。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：上次没用数组时，用三个变量
 <code>x1,x2,x</code>
-像”滑动窗口”一样推，比较绕；现在用数组存，下标直接就是第几项，算法更直观。老师称这种”多用一点内存、少绕一点弯”的做法叫<strong>“用空间换时间”</strong>。</p>
+像“滑动窗口”一样推，比较绕；现在用数组存，下标直接就是第几项，算法更直观。老师称这种“多用一点内存、少绕一点弯”的做法叫<strong>“用空间换时间”</strong>。</p>
 <p><strong class="wb-pill wb-pill-derive">代码（课件片段，ch07.txt，第 11 页）</strong>：</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAXN </span><span class="dv">64</span></span>
@@ -1709,8 +1710,8 @@ ch07.txt。课件此处只给出到计算部分，下标可以是变量、也可
 3（00:39:15）｜ 程序解析 7-3 顺序查找算法<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-3" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：输入 <code>N</code> 个数据存入数组
 <code>a[]</code>，再输入一个 <code>x</code>，在数组中查找
-<code>x</code>；若找到输出其最小下标，否则输出 “Not Found。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：数组内容无序，只能”从第一个找到最后一个”（就像在抽屉里找袜子）。找到就
+<code>x</code>；若找到输出其最小下标，否则输出 “Not Found”。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：数组内容无序，只能“从第一个找到最后一个”（就像在抽屉里找袜子）。找到就
 <code>break</code>，然后根据循环是否正常结束来判断找没找到：若循环因
 <code>break</code> 退出，<code>i&lt;n</code>
 仍成立；若一直没找到，<code>i</code> 会走到
@@ -1750,8 +1751,8 @@ ch07.txt。课件此处只给出到计算部分，下标可以是变量、也可
 定义在外面。</li>
 <li><strong class="wb-pill">平均复杂度
 O(n)</strong>：每次查找位置等概率时，平均比较次数约 <code>n/2</code>，与
-<code>n</code> 成线性关系（一阶），是”大
-O(n)“的好算法。老师顺带对比：两个 <code>n×n</code> 矩阵相乘是
+<code>n</code> 成线性关系（一阶），是“大
+O(n)”的好算法。老师顺带对比：两个 <code>n×n</code> 矩阵相乘是
 O(n³)，所以大模型的矩阵运算量巨大，算力（GPU、并行）才重要；百度的快速搜索靠的是索引和排序，而不是从头线性找。</li>
 <li><strong class="wb-pill"><code>for</code> 循环专为数组场景设计</strong>：所有
 <code>while</code> 循环都能改写成 <code>for</code>，但处理数组时
@@ -1783,7 +1784,7 @@ id="例题证明-4005317-程序解析-7-4-数组最小值及其与首元素交�
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span>index<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>代码取自课件 ch07.txt。</p>
-<p>课件还给出整数数组可用<strong>异或</strong>实现无临时变量交换（仍是”交换三行”的变体）：</p>
+<p>课件还给出整数数组可用<strong>异或</strong>实现无临时变量交换（仍是“交换三行”的变体）：</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">^=</span> a<span class="op">[</span>index<span class="op">]</span> <span class="op">^=</span> a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">^=</span> a<span class="op">[</span>index<span class="op">];</span></span></code></pre></div>
 <p>代码取自课件 ch07.txt。</p>
 <p><strong class="wb-pill wb-pill-derive">完整可运行版本</strong>（<code>[补全]</code>，课件只给关键片段，按标准
@@ -1820,7 +1821,7 @@ C 补出，非当堂所讲）：</p>
 5（00:57:14）｜ 程序解析 7-5 选择法排序<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：将数组 <code>a</code>（共 <code>n</code>
 个元素）按从小到大排序，结果仍存回原数组。</p>
-<p><strong class="wb-pill wb-pill-idea">思路（自然语言描述的算法）</strong>：每次从”尚未排好”的那一段里挑出最小值，交换到这一段的最前面——</p>
+<p><strong class="wb-pill wb-pill-idea">思路（自然语言描述的算法）</strong>：每次从“尚未排好”的那一段里挑出最小值，交换到这一段的最前面——</p>
 <ul>
 <li>第 0 次：在 <code>a[0]…a[n-1]</code> 中找最小，与 <code>a[0]</code>
 交换；</li>
@@ -1832,8 +1833,8 @@ C 补出，非当堂所讲）：</p>
 <li>直到只剩 <code>a[n-2]</code> 与 <code>a[n-1]</code> 两个，挑小的与
 <code>a[n-2]</code> 交换；最后剩一个元素天然有序，不用再排。</li>
 </ul>
-<p>老师说这先用”伪代码 / 自然语言 + C
-循环结构”把<strong>算法框架</strong>搭好（大方向不能错），再把每一步”翻译”成真正的
+<p>老师说这先用“伪代码 / 自然语言 + C
+循环结构”把<strong>算法框架</strong>搭好（大方向不能错），再把每一步“翻译”成真正的
 C 语句。</p>
 <p><strong class="wb-pill wb-pill-derive">代码（课件片段，ch07.txt，第 18 页，即上述算法的 C
 翻译）</strong>：</p>
@@ -1881,9 +1882,9 @@ C 补出）：</p>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><strong class="wb-pill wb-pill-idea">老师点出的变体与要点</strong>：</p>
 <ul>
-<li>改成”从大到小”：把 <code>&lt;</code> 改成 <code>&gt;</code>。</li>
+<li>改成“从大到小”：把 <code>&lt;</code> 改成 <code>&gt;</code>。</li>
 <li>按绝对值排序：比较处加 <code>fabs</code>。</li>
-<li>若元素是字符串（按拼音排），或复数（先比实部再比虚部），核心排序框架<strong>不变</strong>，只变”比较”那一句话——所以需要写一个”比较函数”（返回
+<li>若元素是字符串（按拼音排），或复数（先比实部再比虚部），核心排序框架<strong>不变</strong>，只变“比较”那一句话——所以需要写一个“比较函数”（返回
 <code>&lt;0</code>、<code>0</code>、<code>&gt;0</code>）。选择法排序的程序结构不随比较规则改变。</li>
 <li>老师要求三个算法（顺序查找、选择法排序、二分查找）回去后<strong>关上书自己写出来</strong>，不能抄。</li>
 </ul>
@@ -1947,15 +1948,15 @@ C 补出）：</p>
 <li>循环<strong>必终止</strong>：要么 <code>break</code>
 出来，要么每次至少排除 <code>mid</code>
 这个元素，区间严格缩小，最终变空。</li>
-<li>判断找没找到，同样靠”循环结束后 <code>low&lt;=high</code>
-是否成立。</li>
+<li>判断找没找到，同样靠“循环结束后 <code>low&lt;=high</code>
+是否成立”。</li>
 <li>和顺序查找一样，<strong>不要在 <code>while</code> 循环体内部定义
 <code>mid</code></strong>——因为循环外还要用它的下标判断结果，必须在外部定义。</li>
 <li>这三个算法（顺序查找、选择排序、二分查找）要求回去关书上手写，确保真懂。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="二维数组的定义下标范围与越界"><span class="wb-ts">01:17:09—01:20:24</span> ｜
 二维数组的定义、下标范围与越界</h3>
-<p>二维数组也是”相同类型数据的有序集合、元素连续存放，区别是逻辑上有<strong>行、列两个维度</strong>。</p>
+<p>二维数组也是“相同类型数据的有序集合、元素连续存放”，区别是逻辑上有<strong>行、列两个维度</strong>。</p>
 <p><strong class="wb-pill wb-pill-idea">定义</strong>（课件 ch07.txt，第 25 页）：</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">3</span><span class="op">][</span><span class="dv">2</span><span class="op">];</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 3行2列的整数数组</span></span>
@@ -1971,8 +1972,8 @@ C 补出）：</p>
 <li>C 语言<strong>不检查下标是否越界</strong>：语法上写
 <code>a[12]</code>（总共才 10
 个元素）没问题，但运行时可能出错——越界可能跑到别的内存去。</li>
-<li><code>a[k]</code>（只给一个行下标）本身就是一个”第 <code>k</code>
-行的一维数组，<code>a[k][j]</code> 才是它的第 <code>j</code>
+<li><code>a[k]</code>（只给一个行下标）本身就是一个“第 <code>k</code>
+行的一维数组”，<code>a[k][j]</code> 才是它的第 <code>j</code>
 个元素。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="程序解析-7-8-求矩阵的最大值"><span class="wb-ts">01:20:24—01:26:47</span> ｜ 程序解析 7-8
@@ -2018,7 +2019,7 @@ C 补出）：</p>
 </section><section class="wb-seg"><h3 id="二维数组的初始化逐行-部分-省略行数-列数不可省"><span class="wb-ts">01:26:47—01:36:18</span>
 ｜ 二维数组的初始化（逐行 / 部分 / 省略行数 / 列数不可省）</h3>
 <p>（01:29:52—01:35:46 为课间休息与点名，属课堂管理，无实质内容。）</p>
-<p>老师讲二维数组的初始化，强调”二维数组的每一行本身就是一个一维数组。</p>
+<p>老师讲二维数组的初始化，强调“二维数组的每一行本身就是一个一维数组”。</p>
 <p><strong class="wb-pill">逐行赋初值</strong>（课件 ch07.txt，第 30 页）：</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">3</span><span class="op">][</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span> <span class="op">},</span> <span class="co">// 第0行初值</span></span>
@@ -2046,23 +2047,23 @@ C 补出）：</p>
 <p>要点：</p>
 <ul>
 <li>行数可以省略，由初值的行数推断；<strong>列数绝对不能省略</strong>（C
-语言规定）。老师解释：列数决定了”每行几个元素，省略了就没法把一长串初值正确地切分成行。</li>
+语言规定）。老师解释：列数决定了“每行几个元素”，省略了就没法把一长串初值正确地切分成行。</li>
 <li>省略的初值元素一律补 <code>0</code>。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="二维数组的内存排列与数组的数组"><span class="wb-ts">01:36:18—01:44:03</span> ｜
-二维数组的内存排列与”数组的数组”</h3>
-<p>老师说二维数组在逻辑上是二维的，但内存是”一条线”（地址只有一个维度），所以<strong>按行优先、逐行连续存放</strong>——把矩阵”拉直。</p>
+二维数组的内存排列与“数组的数组”</h3>
+<p>老师说二维数组在逻辑上是二维的，但内存是“一条线”（地址只有一个维度），所以<strong>按行优先、逐行连续存放</strong>——把矩阵“拉直”。</p>
 <ul>
 <li>例如 <code>int a[3][2];</code>：先放第 0 行
 <code>a[0][0], a[0][1]</code>，再放第 1 行，再放第 2 行。</li>
 <li>更本质的理解：<strong>“二维数组是数组的数组”</strong>。例如
-<code>int a[8][4];</code> 是”8 个元素的一维数组，每个元素又是一个长度为
-4 的一维数组。<code>a[k]</code> 是第 <code>k</code>
+<code>int a[8][4];</code> 是“8 个元素的一维数组，每个元素又是一个长度为
+4 的一维数组”。<code>a[k]</code> 是第 <code>k</code>
 行（一个一维数组），<code>a[k][j]</code> 是该行第 <code>j</code>
 个元素。这样内存排布就非常自然，不用死记。</li>
 <li>类比：<code>int a[10];</code> 每个 <code>int</code> 占 4
-字节，在内存里也是”4 字节、4
-字节……连续放，逻辑下标与实际字节偏移是两回事，但存储都是连续的。</li>
+字节，在内存里也是“4 字节、4
+字节……连续放”，逻辑下标与实际字节偏移是两回事，但存储都是连续的。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="程序解析-7-9-矩阵转置"><span class="wb-ts">01:44:03—01:47:06</span> ｜ 程序解析 7-9
 矩阵转置</h3>
@@ -2108,10 +2109,10 @@ C 补出）：</p>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span></span>
 <span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><strong class="wb-pill wb-pill-note">易错点（老师强调的”经验）</strong>：转置时第二个循环必须是
+<p><strong class="wb-pill wb-pill-note">易错点（老师强调的“经验”）</strong>：转置时第二个循环必须是
 <code>j&lt;i</code>，写成 <code>j&lt;n</code>
-会把每对元素交换两次、结果还原；用注释写清”交换 <code>a[i][j]</code> 与
-<code>a[j][i]</code>“便于自查。</p>
+会把每对元素交换两次、结果还原；用注释写清“交换 <code>a[i][j]</code> 与
+<code>a[j][i]</code>”便于自查。</p>
 </section><section class="wb-seg"><h3
 id="程序解析-7-10-用二维数组计算某年某月某日是第几天"><span class="wb-ts">01:47:06—01:58:28</span>
 ｜ 程序解析 7-10 用二维数组计算某年某月某日是第几天</h3>
@@ -2124,9 +2125,9 @@ id="例题证明-9014706-程序解析-7-10-用二维数组计算日期是该年�
 是第几天）。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：先把 1 到 <code>month-1</code>
 月的天数累加，再加上 <code>day</code>。每月天数有 31、30、28/29
-的规律但很琐碎，所以干脆<strong>用二维数组把”每个月的天数”直接存成一张表</strong>——第
+的规律但很琐碎，所以干脆<strong>用二维数组把“每个月的天数”直接存成一张表</strong>——第
 0 行是非闰年、第 1
-行是闰年。这就是”<strong>预计算</strong>”：用一点点空间，把复杂的条件判断变成”闭眼查表相加，极大简化逻辑。</p>
+行是闰年。这就是“<strong>预计算</strong>”：用一点点空间，把复杂的条件判断变成“闭眼查表相加”，极大简化逻辑。</p>
 <p><strong class="wb-pill wb-pill-derive">代码</strong>（课件 ch07.txt，第 36—37 页，逐字符照抄）：</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> day_of_year<span class="op">(</span><span class="dt">int</span> year<span class="op">,</span> <span class="dt">int</span> month<span class="op">,</span> <span class="dt">int</span> day <span class="op">)</span></span>
@@ -2151,11 +2152,11 @@ id="例题证明-9014706-程序解析-7-10-用二维数组计算日期是该年�
 <code>day=3</code>，得 <code>307</code>。即 2026-11-03 是 2026 年的第
 307 天。</p>
 <p><strong class="wb-pill wb-pill-idea">老师点出的要点</strong>：这张表只占 26 个
-<code>int</code>（约一百多字节），却免去了”判断 2
+<code>int</code>（约一百多字节），却免去了“判断 2
 月、判断奇偶月、判断上下半年”等一大堆分支，程序逻辑清爽且绝不会算错。老师还引申到著名算法
 <strong>marching cubes</strong>（移动立方体）：立方体 8
 个顶点各有大小，共 <code>2^8=256</code> 种情况，与其写 256
-个分支，不如先”预计算”成一张表，运行时直接查表——和这里的”用数组存天数表”是同一个思想。</p>
+个分支，不如先“预计算”成一张表，运行时直接查表——和这里的“用数组存天数表”是同一个思想。</p>
 <p>若不用这张表，就要写成一堆条件判断（课件 ch07.txt，第 38
 页片段）：</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> k <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;</span>month<span class="op">;</span> k<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
@@ -2164,7 +2165,7 @@ id="例题证明-9014706-程序解析-7-10-用二维数组计算日期是该年�
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> day <span class="op">+=</span> <span class="dv">30</span> <span class="op">+</span> k<span class="op">%</span><span class="dv">2</span><span class="op">;</span></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>代码取自课件
-ch07.txt。老师指出这种写法比”查表”复杂得多、容易出错。</p>
+ch07.txt。老师指出这种写法比“查表”复杂得多、容易出错。</p>
 </section><section class="wb-seg"><h3 id="字符数组读入-n-个字符读入一行"><span class="wb-ts">01:58:28—02:03:33</span> ｜
 字符数组（读入 n 个字符、读入一行）</h3>
 <p>字符数组就是元素类型为 <code>char</code>
@@ -2195,7 +2196,7 @@ ch07.txt。老师指出这种写法比”查表”复杂得多、容易出错。
 先调用 <code>getchar</code> 读字符、赋值给
 <code>line[k]</code>、再判断是否换行；因赋值运算符优先级低，必须加括号让它先执行。</li>
 <li>老师提示：也可用宏定义代替 <code>80</code>，但 <code>sizeof</code>
-最”稳”——改了数组大小它自动跟着变。</li>
+最“稳”——改了数组大小它自动跟着变。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="字符串结束标志存储初始化s-输出与风险"><span class="wb-ts">02:03:33—02:14:41</span> ｜
 字符串（结束标志、存储、初始化、%s 输出与风险）</h3>
@@ -2240,7 +2241,7 @@ ch07.txt。老师指出这种写法比”查表”复杂得多、容易出错。
 <li><code>%s</code> 是字符串的格式符：从首字符开始，逐个输出直到遇到
 <code>'\0'</code> 为止。</li>
 <li><strong class="wb-pill">方法 3（<code>printf(s);</code>）有风险</strong>：因为
-<code>s</code> 被当作”格式控制串。若字符串里含有 <code>%d</code>
+<code>s</code> 被当作“格式控制串”。若字符串里含有 <code>%d</code>
 之类的格式符（如 <code>s</code> 内容是
 <code>"x=%d"</code>），<code>printf</code>
 会把它当成格式串、去要对应的参数，而后面的参数没有，就会输出错乱。所以确保字符串<strong>全是普通字符</strong>时才可直接当格式串；更稳妥的是用
@@ -2292,7 +2293,7 @@ ch07.txt。老师指出这种写法比”查表”复杂得多、容易出错。
 <p><strong class="wb-pill wb-pill-idea">老师点出的要点</strong>：</p>
 <ul>
 <li>读入时 <code>while( (line[k]=getchar)!='\n' )</code>
-这一个循环条件里同时做了”读字符、存数组、判断是否换行”三件事；读完换行符后把它换成
+这一个循环条件里同时做了“读字符、存数组、判断是否换行”三件事；读完换行符后把它换成
 <code>'\0'</code>，字符串才完整。</li>
 <li><code>i&lt;k</code> 表明循环是因 <code>break</code>
 退出（没通过检测），不是回文；否则是正常走完（通过检测），是回文。</li>
@@ -2310,8 +2311,8 @@ id="随堂练习021920-把回文判断的-while-循环改写成-for-循环">随�
 <p>代码取自课件 ch07.txt。</p>
 <p>老师认为 <code>for</code>
 版本更简洁，但语句相对更复杂一些；两种写法都正确，可自行选择。</p>
-<p>（02:19:50 老师宣布”今天上到这里，下次从 7-12
-开始上，本节结束。）</p>
+<p>（02:19:50 老师宣布“今天上到这里，下次从 7-12
+开始上”，本节结束。）</p>
 <script>window.MathJax={svg:{fontCache:"local"}};</script>
 </section><script>
 window.MathJax = {
@@ -2466,6 +2467,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -2538,6 +2565,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -2565,11 +2598,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2714,22 +2743,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -3130,19 +3146,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

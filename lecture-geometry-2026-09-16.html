@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1481,9 +1482,9 @@ id="第二分配律-muvec-avec-bmuvec-amuvec-b-的几何证明相似三角形"><
 <p><strong class="wb-pill wb-pill-derive">逐步推导</strong>[ 补全 ] ：课堂只口述了「用相似三角形、平行且成比例」的思路，下面按学科标准补全，并非课堂逐字所讲，仅作自学参照。</p><ol class="wb-steps"><li>由作法，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>O</mi><msup><mi>A</mi><mo>′</mo></msup></mrow><mrow><mi>O</mi><mi>A</mi></mrow></mfrac></mstyle><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>O</mi><msup><mi>B</mi><mo>′</mo></msup></mrow><mrow><mi>O</mi><mi>B</mi></mrow></mfrac></mstyle><mo>=</mo><mi>μ</mi></mrow><annotation encoding="application/x-tex">\dfrac{OA&#39;}{OA}=\dfrac{OB&#39;}{OB}=\mu</annotation></semantics></math>，即两组对应边成比例且夹角相同，故平行四边形<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><msup><mi>A</mi><mo>′</mo></msup><msup><mi>C</mi><mo>′</mo></msup><msup><mi>B</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">OA&#39;C&#39;B&#39;</annotation></semantics></math>与平行四边形 OACB 相似。</li><li>相似意味着整个图形关于直线 OC 方向按比例 μ 缩放，因此点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mo>′</mo></msup><annotation encoding="application/x-tex">C&#39;</annotation></semantics></math>落在射线 OC 上，且<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><mrow><mi>O</mi><msup><mi>C</mi><mo>′</mo></msup></mrow><mrow><mi>O</mi><mi>C</mi></mrow></mfrac></mstyle><mo>=</mo><mi>μ</mi></mrow><annotation encoding="application/x-tex">\dfrac{OC&#39;}{OC}=\mu</annotation></semantics></math>，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msup><mi>C</mi><mo>′</mo></msup></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>μ</mi><mover><mrow><mi>O</mi><mi>C</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>μ</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\overrightarrow{OC&#39;}=\mu\overrightarrow{OC}=\mu(\vec a+\vec b)</annotation></semantics></math>。</li><li>而按平行四边形法则，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><msup><mi>C</mi><mo>′</mo></msup></mrow><mo accent="true">→</mo></mover><mo>=</mo><mi>μ</mi><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><mi>μ</mi><mover><mi>b</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\overrightarrow{OC&#39;}=\mu\vec a+\mu\vec b</annotation></semantics></math>。</li><li>μ&lt;0 时方向相反，论证同理，只把「同向」改为「反向」即可。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>μ</mi><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><mi>μ</mi><mover><mi>b</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\mu(\vec a+\vec b)=\mu\vec a+\mu\vec b</annotation></semantics></math>。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：这条分配律把「数乘」与「加法」联系起来，是后面所有线性运算性质的基础。注意它依赖的几何事实是「平行且成比例的线段对应相似」，而不是凭空把系数 μ 拆进括号。</p>
-<h2
+</section><h2
 id="二中线向量和为零与向量的线性运算001939002829">二、中线向量和为零与向量的线性运算（00:19:39—00:28:29）</h2>
-</section><section class="wb-seg"><h3 id="三角形三条中线向量之和为零"><span class="wb-ts">00:19:39—00:23:33</span> ｜
+<section class="wb-seg"><h3 id="三角形三条中线向量之和为零"><span class="wb-ts">00:19:39—00:23:33</span> ｜
 三角形三条中线向量之和为零</h3>
 </div><div class="wb-excard" id="wb-ex-3" data-ex-idx="3"><h4
 id="例题证明-3001939-证明-overrightarrowadoverrightarrowbeoverrightarrowcfvec-0">例题/证明
@@ -1513,9 +1514,9 @@ id="例题证明-3001939-证明-overrightarrowadoverrightarrowbeoverrightarrowcf
 <strong>线性表示</strong>（或称线性表出）。</li>
 </ul>
 <p>老师提示：线性组合与线性表示本质上是同一件事的两种说法——「一个表达式」与「被表示成这个表达式」。</p>
-<h2
+</section><h2
 id="三两向量共线的充要条件002829003302">三、两向量共线的充要条件（00:28:29—00:33:02）</h2>
-</section><section class="wb-seg"><h3 id="两向量共线的充要条件与系数唯一性"><span class="wb-ts">00:28:29—00:33:02</span> ｜
+<section class="wb-seg"><h3 id="两向量共线的充要条件与系数唯一性"><span class="wb-ts">00:28:29—00:33:02</span> ｜
 两向量共线的充要条件与系数唯一性</h3>
 </div><div class="wb-excard" id="wb-ex-4" data-ex-idx="4"><h4
 id="例题证明-4002829-证明-vec-bparallelvec-a-vec-aneqvec-0iff-existsk-vec-bkvec-a">例题/证明
@@ -1529,9 +1530,9 @@ id="例题证明-4002829-证明-vec-bparallelvec-a-vec-aneqvec-0iff-existsk-vec-
 <div class="wb-math-wrap" data-tex="\vec b=|\vec b|\,\hat b=\pm\frac{|\vec b|}{|\vec a|}\,\vec a,"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mover><mi>b</mi><mo accent="true">̂</mo></mover><mo>=</mo><mi>±</mi><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mspace width="0.167em"></mspace><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">\vec b=|\vec b|\,\hat b=\pm\frac{|\vec b|}{|\vec a|}\,\vec a,</annotation></semantics></math></div></div>取<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mi>±</mi><mstyle displaystyle="true"><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">k=\pm\dfrac{|\vec b|}{|\vec a|}</annotation></semantics></math>即得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec b=k\vec a</annotation></semantics></math>。</li><li><strong class="wb-pill wb-pill-derive">唯一性</strong>：若同时有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec b=k\vec a</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><msup><mi>k</mi><mo>′</mo></msup><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec b=k&#39;\vec a</annotation></semantics></math>，则<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>−</mo><msup><mi>k</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">(k-k&#39;)\vec a=\vec 0</annotation></semantics></math>。由于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>≠</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a\neq\vec 0</annotation></semantics></math>，必有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>−</mo><msup><mi>k</mi><mo>′</mo></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k-k&#39;=0</annotation></semantics></math>，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><msup><mi>k</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">k=k&#39;</annotation></semantics></math>。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>≠</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a\neq\vec 0</annotation></semantics></math>时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>b</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec b</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>a</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec a</annotation></semantics></math>共线 ⇔ 存在唯一的 k 使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec b=k\vec a</annotation></semantics></math>；这个 k 就是两向量之间的「比例系数」。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：这是整个「共线、共面、线性相关」理论的基石。易错点是忘了前提<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>≠</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a\neq\vec 0</annotation></semantics></math>——零向量与任何向量共线，但绝不能充当「除数」去唯一确定比例系数。</p>
-<h2
+</section><h2
 id="四三向量共面的充要条件与空间向量分解003302005006">四、三向量共面的充要条件与空间向量分解（00:33:02—00:50:06）</h2>
-</section><section class="wb-seg"><h3 id="三向量共面的充要条件"><span class="wb-ts">00:33:02—00:41:24</span> ｜
+<section class="wb-seg"><h3 id="三向量共面的充要条件"><span class="wb-ts">00:33:02—00:41:24</span> ｜
 三向量共面的充要条件</h3>
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4
 id="例题证明-5003302-证明-vec-c-与-vec-avec-b-共面-iff-existsk_1k_2-vec-ck_1vec-ak_2vec-b">例题/证明
@@ -1564,9 +1565,9 @@ id="例题证明-6004124-证明任一向量可唯一表为三个不共面向量�
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mrow><mi>O</mi><mi>R</mi></mrow><mo accent="true">→</mo></mover><mo>=</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>+</mo><mover><mrow><mi>O</mi><msub><mi>C</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\overrightarrow{OR}=\overrightarrow{OA_1}+\overrightarrow{OB_1}+\overrightarrow{OC_1}.</annotation></semantics></math></div></li><li>由共线条件：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><msub><mi>A</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OA_1}</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>a</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec a</annotation></semantics></math>共线<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo><mover><mrow><mi>O</mi><msub><mi>A</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>k</mi><mn>1</mn></msub><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\Rightarrow \overrightarrow{OA_1}=k_1\vec a</annotation></semantics></math>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OB_1}</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>b</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec b</annotation></semantics></math>共线<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo><mover><mrow><mi>O</mi><msub><mi>B</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>k</mi><mn>2</mn></msub><mover><mi>b</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\Rightarrow \overrightarrow{OB_1}=k_2\vec b</annotation></semantics></math>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>O</mi><msub><mi>C</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\overrightarrow{OC_1}</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>c</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec c</annotation></semantics></math>共线<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo><mover><mrow><mi>O</mi><msub><mi>C</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>k</mi><mn>3</mn></msub><mover><mi>c</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\Rightarrow \overrightarrow{OC_1}=k_3\vec c</annotation></semantics></math>。</li><li>代入得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>k</mi><mn>1</mn></msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>+</mo><msub><mi>k</mi><mn>3</mn></msub><mover><mi>c</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec r=k_1\vec a+k_2\vec b+k_3\vec c</annotation></semantics></math>。</li><li><strong class="wb-pill wb-pill-derive">唯一性</strong>[ 补全 ] ：老师说明「唯一性的证明完全是类似的，就不做了」；严格地说，若还有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>r</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>ℓ</mi><mn>1</mn></msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><msub><mi>ℓ</mi><mn>2</mn></msub><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>+</mo><msub><mi>ℓ</mi><mn>3</mn></msub><mover><mi>c</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec r=\ell_1\vec a+\ell_2\vec b+\ell_3\vec c</annotation></semantics></math>，相减得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo><mover><mi>c</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">(\cdots)\vec a+(\cdots)\vec b+(\cdots)\vec c=\vec 0</annotation></semantics></math>，由<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>,</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>,</mo><mover><mi>c</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a,\vec b,\vec c</annotation></semantics></math>不共面可推出三组系数均为零，故表示唯一。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：三个不共面的向量可以「表示出空间中所有向量」，且表示唯一；这组系数就是坐标。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：老师点明——正因为分解唯一，才能把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub><mo>,</mo><msub><mi>k</mi><mn>2</mn></msub><mo>,</mo><msub><mi>k</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">k_1,k_2,k_3</annotation></semantics></math>当作坐标来用，这是引入坐标系的真正依据。但我们目前只是「揉在一起」给出直觉，严格的坐标系还要后面再立。</p>
-<h2
+</section><h2
 id="五线性相关与线性无关005012010400">五、线性相关与线性无关（00:50:12—01:04:00）</h2>
-</section><section class="wb-seg"><h3 id="线性相关与线性无关的定义"><span class="wb-ts">00:50:12—00:52:54</span> ｜
+<section class="wb-seg"><h3 id="线性相关与线性无关的定义"><span class="wb-ts">00:50:12—00:52:54</span> ｜
 线性相关与线性无关的定义</h3>
 <p>给定 n 个向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>,</mo><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\vec a_1,\vec a_2,\dots,\vec a_n</annotation></semantics></math>。如果存在<strong>不全为零</strong>的实数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>λ</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\lambda_1,\dots,\lambda_n</annotation></semantics></math>，使得
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>λ</mi><mi>n</mi></msub><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>n</mi></msub><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">\lambda_1\vec a_1+\lambda_2\vec a_2+\cdots+\lambda_n\vec a_n=\vec 0,</annotation></semantics></math></div>则称这 n 个向量<strong>线性相关</strong>。</p>
@@ -1603,9 +1604,9 @@ id="例题证明-8005751-部分线性相关-rightarrow-全体线性相关及其�
 <p>老师在此留了一个观念上的提醒 [ 补全 ] ：我们虽然已经给了「加法」和「数乘」两种运算，但要真正称之为「线性空间」，还必须满足
 8
 条公理；目前只是借这些运算来讨论向量之间的关系，严格的空间结构后面再立。</p>
-<h2
+</section><h2
 id="六综合例题定比分点重心与共面判定010418013632">六、综合例题：定比分点、重心与共面判定（01:04:18—01:36:32）</h2>
-</section><section class="wb-seg"><h3 id="例题直线上的定比分点公式"><span class="wb-ts">01:04:18—01:07:54</span> ｜
+<section class="wb-seg"><h3 id="例题直线上的定比分点公式"><span class="wb-ts">01:04:18—01:07:54</span> ｜
 例题：直线上的定比分点公式</h3>
 </div><div class="wb-excard" id="wb-ex-9" data-ex-idx="9"><h4
 id="例题证明-9010418-由-overrightarrowaplambdaoverrightarrowpb-推出-overrightarrowop-的线性表示">例题/证明
@@ -1844,6 +1845,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1916,6 +1943,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1943,11 +1976,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2092,22 +2121,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2508,19 +2524,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

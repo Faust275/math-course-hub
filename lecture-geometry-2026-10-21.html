@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1358,7 +1359,7 @@ id="一旋转面与二次曲面005735013920">一、旋转面与二次曲面（00
 
 <figure class="fig" style="margin:18px auto;max-width:660px;text-align:center;"><img src="assets/geometry-2026-10-21/fig01_torus_surface.png" alt="图 1: 几何讲义原版切片：环面 T 的旋转与双圆截面生成" style="max-width:100%;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);background:#fff;"><figcaption style="margin-top:8px;font-size:13px;color:#64748b;font-weight:600;">图 1: 几何讲义原版切片：环面 T 的旋转与双圆截面生成</figcaption></figure>
 
-<p>本节是上节课”柱面、锥面”的后续：上次介绍了柱面（曲线沿一条直线平行移动生成）和锥面（曲线绕一点伸缩生成），这次引入第三种由曲线生成曲面的方式——旋转面。下面讲旋转面的定义、一般方程的求法，以及转轴为坐标轴时的快捷规律，并由此认识一批二次曲面。</p>
+<p>本节是上节课“柱面、锥面”的后续：上次介绍了柱面（曲线沿一条直线平行移动生成）和锥面（曲线绕一点伸缩生成），这次引入第三种由曲线生成曲面的方式——旋转面。下面讲旋转面的定义、一般方程的求法，以及转轴为坐标轴时的快捷规律，并由此认识一批二次曲面。</p>
 <section class="wb-seg"><h3 id="旋转面的定义轴母线经线与纬线"><span class="wb-ts">00:57:35—01:01:52</span> ｜
 旋转面的定义：轴、母线、经线与纬线</h3>
 <p>给定一条固定的直线 L ，再给定一条曲线 C 。让曲线 C 绕着直线 L 旋转一周，扫出来的图形就是一张<strong>旋转面</strong>。</p>
@@ -1366,32 +1367,32 @@ id="一旋转面与二次曲面005735013920">一、旋转面与二次曲面（00
 <li>那条固定的直线 L 称为<strong>轴</strong>（旋转轴）。</li>
 <li>那条被旋转的曲线 C 称为<strong>母线</strong>（生成曲线）。老师提醒：这里取 C 为一条平面曲线；但作为旋转面的母线，它不一定要是平面曲线，完全可以是一条空间曲线。</li>
 <li>在母线上任取一点，过该点作一个垂直于轴的平面，这个平面与旋转面交出来的是一个<strong>圆</strong>，称为<strong>纬线</strong>（纬圆、平行圆）。老师原话：“它一定是一个圆。”</li>
-<li>再取一个通过轴的半平面，这个半平面与旋转面也交出一条曲线，称为<strong>经线</strong>（子午线）。经线一定是通过轴的那个半平面与图形的交线；母线可以是经线，也可以不是——但经线必然由”过轴的半平面截图形”得到。</li>
+<li>再取一个通过轴的半平面，这个半平面与旋转面也交出一条曲线，称为<strong>经线</strong>（子午线）。经线一定是通过轴的那个半平面与图形的交线；母线可以是经线，也可以不是——但经线必然由“过轴的半平面截图形”得到。</li>
 </ul>
 <p>[按图还原] 已知：一条直线 L （轴），以及轴外一侧的一条曲线 C （母线）。作法：让 C 绕 L 旋转一周扫出曲面。连/作：过 C 上任一点作垂直于 L 的平面，截得一个圆（纬线）；作过 L 的半平面，截得一条曲线（经线）。图中不另添别的点线。</p>
 <p>几个特殊情形（老师逐一举例）：</p>
 <ul>
 <li>圆柱面：显然是一张旋转面。</li>
 <li>圆锥面：显然也是一张旋转面。</li>
-<li>平面：也是一张旋转面。老师解释：从一点引出的射线绕某轴转一圈，或两条互相垂直的直线中一条绕另一条转一圈，都能扫出平面。因此”平面既是一个柱面，又是一个锥面，又是一个旋转面——平面很正。</li>
+<li>平面：也是一张旋转面。老师解释：从一点引出的射线绕某轴转一圈，或两条互相垂直的直线中一条绕另一条转一圈，都能扫出平面。因此“平面既是一个柱面，又是一个锥面，又是一个旋转面——平面很正”。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="一般旋转面方程的推导旋转轴为任意直线"><span class="wb-ts">01:01:52—01:07:56</span> ｜
 一般旋转面方程的推导（旋转轴为任意直线）</h3>
-<p>下面推导旋转面的一般方程。思路是：在旋转面上任取一点，把它和母线上的对应点用”同一纬圆”联系起来，再用平面与球面把这个圆表示出来，最后消去参变量。</p>
+<p>下面推导旋转面的一般方程。思路是：在旋转面上任取一点，把它和母线上的对应点用“同一纬圆”联系起来，再用平面与球面把这个圆表示出来，最后消去参变量。</p>
 <div class="wb-excard" id="wb-ex-1" data-ex-idx="1"><h4 id="证明-1010214-一般旋转面方程轴为任意直线母线为两曲面的交线">证明
 1（01:02:14）｜ 一般旋转面方程（轴为任意直线，母线为两曲面的交线）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-1" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题／任务</strong>：设旋转轴 L 过点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mn>0</mn></msub><mo>,</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>Z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_0(X_0,Y_0,Z_0)</annotation></semantics></math>，方向向量为 (l,m,n) ，即
 <div class="wb-math-wrap" data-tex="\frac{X-X_0}{l}=\frac{Y-Y_0}{m}=\frac{Z-Z_0}{n}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>X</mi><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub></mrow><mi>l</mi></mfrac><mo>=</mo><mfrac><mrow><mi>Y</mi><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub></mrow><mi>m</mi></mfrac><mo>=</mo><mfrac><mrow><mi>Z</mi><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub></mrow><mi>n</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{X-X_0}{l}=\frac{Y-Y_0}{m}=\frac{Z-Z_0}{n}.</annotation></semantics></math></div></div>母线 C 写成两张曲面的交线：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">F(x,y,z)=0,\qquad G(x,y,z)=0.</annotation></semantics></math></div>求旋转面的方程。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：在旋转面上任取一点 M(x,y,z) 。过 M 的纬圆与母线交于一点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,z_1)</annotation></semantics></math>。 M 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>落在同一个圆上，而这个圆可以看成”过点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>且垂直于轴的平面”与”以轴上一点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>为球心、半径等于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>M</mi><mn>0</mn></msub><mi>M</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|M_0M|</annotation></semantics></math>的球面”的交线。由此得到含<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>的四个方程，消去这三个参变量即得关于 x,y,z 的曲面方程。</p>
-<p><strong class="wb-pill wb-pill-derive">逐步推导</strong>（课上老师口述了四个方程与”消去<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>“这一步，以下把推导过程按学科方式写清；四方程本身为课堂所讲，最后一步消元为一般结论）：</p><ol class="wb-steps"><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>在母线 C 上，故
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：在旋转面上任取一点 M(x,y,z) 。过 M 的纬圆与母线交于一点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_1(x_1,y_1,z_1)</annotation></semantics></math>。 M 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>落在同一个圆上，而这个圆可以看成“过点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>且垂直于轴的平面”与“以轴上一点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>为球心、半径等于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>M</mi><mn>0</mn></msub><mi>M</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|M_0M|</annotation></semantics></math>的球面”的交线。由此得到含<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>的四个方程，消去这三个参变量即得关于 x,y,z 的曲面方程。</p>
+<p><strong class="wb-pill wb-pill-derive">逐步推导</strong>（课上老师口述了四个方程与“消去<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>”这一步，以下把推导过程按学科方式写清；四方程本身为课堂所讲，最后一步消元为一般结论）：</p><ol class="wb-steps"><li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>在母线 C 上，故
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">F(x_1,y_1,z_1)=0,\qquad G(x_1,y_1,z_1)=0.</annotation></semantics></math></div></li><li>过点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>且垂直于轴 L 的平面，其法向量就是轴的方向 (l,m,n) ，方程为
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>m</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">l(x-x_1)+m(y-y_1)+n(z-z_1)=0.</annotation></semantics></math></div></li><li>以轴上一点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mn>0</mn></msub><mo>,</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>Z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_0(X_0,Y_0,Z_0)</annotation></semantics></math>为球心，半径取<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>M</mi><mn>0</mn></msub><mi>M</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>M</mi><mn>0</mn></msub><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|M_0M|=|M_0M_1|</annotation></semantics></math>的球面，方程为
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>z</mi><mn>1</mn></msub><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">(x-X_0)^2+(y-Y_0)^2+(z-Z_0)^2=(x_1-X_0)^2+(y_1-Y_0)^2+(z_1-Z_0)^2.</annotation></semantics></math></div></li><li>以上四个方程联立，从中消去参变量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1,y_1,z_1</annotation></semantics></math>，便得到只含 x,y,z 的方程，这就是所求的旋转面方程。</li></ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>：旋转面的一般求法是——任取面上点 M(x,y,z) ，由”纬圆
+<p><strong class="wb-pill wb-pill-result">结论</strong>：旋转面的一般求法是——任取面上点 M(x,y,z) ，由“纬圆
 = 垂直轴的平面 ∩
 以轴上点为球心的球面”列出四个方程，消去母线上的对应点坐标<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_1,y_1,z_1)</annotation></semantics></math>即得 [补全：具体消元结果随 F,G 与轴而变，课堂未写出统一显式公式，仅给出方法]。</p>
-<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：这是求旋转面”一般的方式和方式。关键要抓住”同一个纬圆”：面上的点 M 和母线上的点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>同圆，所以既满足那个垂直平面、又满足那个以轴上点为球心的球面。</p>
+<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：这是求旋转面“一般的方式和方式”。关键要抓住“同一个纬圆”：面上的点 M 和母线上的点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>同圆，所以既满足那个垂直平面、又满足那个以轴上点为球心的球面。</p>
 </section><section class="wb-seg"><h3
 id="例题一条直线绕另一条直线旋转所得曲面含竞赛送分题提醒"><span class="wb-ts">01:07:32—01:14:21</span>
 ｜ 例题：一条直线绕另一条直线旋转所得曲面（含竞赛送分题提醒）</h3>
@@ -1399,12 +1400,12 @@ id="例题一条直线绕另一条直线旋转所得曲面含竞赛送分题提�
 </div><div class="wb-excard" id="wb-ex-2" data-ex-idx="2"><h4 id="例题证明-2010732-一条直线绕另一直线旋转所得曲面方程">例题/证明
 2（01:07:32）｜ 一条直线绕另一直线旋转所得曲面方程<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-2" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：设母线是一条直线，按老师给出的参数式取为
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>+</mo><mi>S</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>−</mi><mn>3</mn><mi>S</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mn>3</mn><mi>S</mi></mrow><annotation encoding="application/x-tex">x_1=1+S,\qquad y_1=-3S,\qquad z_1=3S</annotation></semantics></math></div>（即通过点 (1,0,0) 、方向 (1,−3,3) 的直线）。旋转轴<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mn>2</mn></msub><annotation encoding="application/x-tex">L_2</annotation></semantics></math>过原点 O ，其方向由老师写出的”垂直于轴的平面”方程推得为 (2,1,−1) [?]，即轴方程
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>+</mo><mi>S</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>−</mi><mn>3</mn><mi>S</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>z</mi><mn>1</mn></msub><mo>=</mo><mn>3</mn><mi>S</mi></mrow><annotation encoding="application/x-tex">x_1=1+S,\qquad y_1=-3S,\qquad z_1=3S</annotation></semantics></math></div>（即通过点 (1,0,0) 、方向 (1,−3,3) 的直线）。旋转轴<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mn>2</mn></msub><annotation encoding="application/x-tex">L_2</annotation></semantics></math>过原点 O ，其方向由老师写出的“垂直于轴的平面”方程推得为 (2,1,−1) [?]，即轴方程
 <div class="wb-math-wrap" data-tex="\frac{x}{2}=\frac{y}{1}=\frac{z}{-1}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>x</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mi>y</mi><mn>1</mn></mfrac><mo>=</mo><mfrac><mi>z</mi><mrow><mi>−</mi><mn>1</mn></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x}{2}=\frac{y}{1}=\frac{z}{-1}.</annotation></semantics></math></div></div>求该直线绕<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mn>2</mn></msub><annotation encoding="application/x-tex">L_2</annotation></semantics></math>旋转一周所得曲面的方程。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：沿用证明 1
 的框架。由于轴过原点，球面取球心为原点；垂直平面取法向量 (2,1,−1) 、过母线上的对应点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>。把直线的参数式代入，得到关于 S 与 (x,y,z) 的两个关系，消去 S 即得曲面方程。</p>
 <p><strong class="wb-pill wb-pill-derive">逐步推导</strong>（课上老师算到 “2x+y−2z = 2x1+y1−z1”
-一类的垂直平面、以及球面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=x_1^2+y_1^2+z_1^2</annotation></semantics></math>，并示意”把 S 代进去就全消掉了”；以下把代换与消元写清，最后的显式多项式为 [补全]）：</p><ol class="wb-steps"><li>球面（球心 O ，半径<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>O</mi><mi>M</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>O</mi><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|OM|=|OM_1|</annotation></semantics></math>）：
+一类的垂直平面、以及球面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=x_1^2+y_1^2+z_1^2</annotation></semantics></math>，并示意“把 S 代进去就全消掉了”；以下把代换与消元写清，最后的显式多项式为 [补全]）：</p><ol class="wb-steps"><li>球面（球心 O ，半径<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>O</mi><mi>M</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>O</mi><msub><mi>M</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|OM|=|OM_1|</annotation></semantics></math>）：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=x_1^2+y_1^2+z_1^2.</annotation></semantics></math></div>代入母线参数式：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>S</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>3</mn><mi>S</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>S</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>S</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>18</mn><msup><mi>S</mi><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">x_1^2+y_1^2+z_1^2=(1+S)^2+(-3S)^2+(3S)^2=(1+S)^2+18S^2.</annotation></semantics></math></div></li><li>垂直平面（法向量 (2,1,−1) ，过<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>）：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>=</mo><mn>2</mn><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>z</mi><mn>1</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">2(x-x_1)+(y-y_1)-(z-z_1)=0\quad\Longrightarrow\quad 2x+y-z=2x_1+y_1-z_1.</annotation></semantics></math></div>代入母线参数式：
@@ -1412,8 +1413,8 @@ id="例题一条直线绕另一条直线旋转所得曲面含竞赛送分题提�
 <div class="wb-math-wrap" data-tex="S=\frac{2-(2x+y-z)}{4}=\frac{2-2x-y+z}{4}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><mn>4</mn></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi></mrow><mn>4</mn></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">S=\frac{2-(2x+y-z)}{4}=\frac{2-2x-y+z}{4}.</annotation></semantics></math></div></div></li><li>把 S 代回球面关系：
 <div class="wb-math-wrap" data-tex="x^2+y^2+z^2=1+2S+19S^2=1+\frac{2-2x-y+z}{2}+\frac{19}{16}(2-2x-y+z)^2."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>S</mi><mo>+</mo><mn>19</mn><msup><mi>S</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi></mrow><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>19</mn><mn>16</mn></mfrac><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=1+2S+19S^2=1+\frac{2-2x-y+z}{2}+\frac{19}{16}(2-2x-y+z)^2.</annotation></semantics></math></div></div>这就是该旋转面的方程 [补全：上式为隐式形式，进一步展开可得一个关于 x,y,z 的多项式方程，老师未写出最终展开式]。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：旋转面方程为
-<div class="wb-math-wrap" data-tex="x^2+y^2+z^2=1+\frac{2-2x-y+z}{2}+\frac{19}{16}(2-2x-y+z)^2,"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi></mrow><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>19</mn><mn>16</mn></mfrac><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=1+\frac{2-2x-y+z}{2}+\frac{19}{16}(2-2x-y+z)^2,</annotation></semantics></math></div></div>由”球面＋垂直平面、消去参数”直接得到。</p>
-<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：老师强调”这完全是一个非常简单的事情。他还顺带提醒：前几天翻全国大学生数学竞赛的赛题，有一年就考了”任意一条直线绕另一条直线旋转求曲面方程，把上面的方法一套就是答案，“完全是送分题。——这是课程相关的数学思维提醒，保留。</p>
+<div class="wb-math-wrap" data-tex="x^2+y^2+z^2=1+\frac{2-2x-y+z}{2}+\frac{19}{16}(2-2x-y+z)^2,"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi></mrow><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>19</mn><mn>16</mn></mfrac><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=1+\frac{2-2x-y+z}{2}+\frac{19}{16}(2-2x-y+z)^2,</annotation></semantics></math></div></div>由“球面＋垂直平面、消去参数”直接得到。</p>
+<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：老师强调“这完全是一个非常简单的事情”。他还顺带提醒：前几天翻全国大学生数学竞赛的赛题，有一年就考了“任意一条直线绕另一条直线旋转求曲面方程”，把上面的方法一套就是答案，“完全是送分题”。——这是课程相关的数学思维提醒，保留。</p>
 </section><section class="wb-seg"><h3 id="旋转轴为坐标轴时的快捷规律"><span class="wb-ts">01:14:48—01:19:56</span> ｜
 旋转轴为坐标轴时的快捷规律</h3>
 <p>一般情形要列四个方程、消三个参变量，比较繁。如果旋转轴正好是某条坐标轴，规律会非常简洁。</p>
@@ -1434,7 +1435,7 @@ id="例题证明-3011448-旋转轴为坐标轴时的快捷规律以-z-轴母线�
 - 绕 X 轴： x 不变，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>↦</mo><mi>±</mi><msqrt><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">(y,z)\mapsto \pm\sqrt{y^2+z^2}</annotation></semantics></math>；
 - 绕 Y 轴： y 不变，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>↦</mo><mi>±</mi><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">(x,z)\mapsto \pm\sqrt{x^2+z^2}</annotation></semantics></math>；
 - 绕 Z 轴： z 不变，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>↦</mo><mi>±</mi><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">(x,y)\mapsto \pm\sqrt{x^2+y^2}</annotation></semantics></math>。</p>
-<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：掌握了这个替换规则，后面所有圆锥曲线绕坐标轴旋转的方程都可以”照规则写，不必每次重新推导。</p>
+<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：掌握了这个替换规则，后面所有圆锥曲线绕坐标轴旋转的方程都可以“照规则写”，不必每次重新推导。</p>
 </section><section class="wb-seg"><h3 id="圆锥曲线绕坐标轴旋转得到的曲面"><span class="wb-ts">01:19:56—01:25:48</span> ｜
 圆锥曲线绕坐标轴旋转得到的曲面</h3>
 <p>把上面的替换规则直接用到三条圆锥曲线上。</p>
@@ -1448,7 +1449,7 @@ id="例题证明-3011448-旋转轴为坐标轴时的快捷规律以-z-轴母线�
 - 绕 Y 轴： y 不变，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><mi>±</mi><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">x\mapsto \pm\sqrt{x^2+z^2}</annotation></semantics></math>，得
 <div class="wb-math-wrap" data-tex="\frac{x^2+z^2}{a^2}+\frac{y^2}{b^2}=1."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow><msup><mi>a</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{x^2+z^2}{a^2}+\frac{y^2}{b^2}=1.</annotation></semantics></math></div></div></p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：椭圆绕其长轴或短轴旋转，得到<strong>旋转椭球面</strong>。</p>
-<p><strong class="wb-pill wb-pill-note">易错点</strong>：这条椭圆在 XY 平面内，老师特别指出”绕 Z 轴不现实”——绕 Z 轴旋转只会扫出一个圆（或圆环），不是一张完整曲面，所以只考虑绕 X 轴或 Y 轴。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：这条椭圆在 XY 平面内，老师特别指出“绕 Z 轴不现实”——绕 Z 轴旋转只会扫出一个圆（或圆环），不是一张完整曲面，所以只考虑绕 X 轴或 Y 轴。</p>
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题证明-5012251-双曲线绕坐标轴旋转">例题/证明 5（01:22:51）｜
 双曲线绕坐标轴旋转<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：双曲线
@@ -1468,17 +1469,17 @@ id="例题证明-3011448-旋转轴为坐标轴时的快捷规律以-z-轴母线�
 <div class="wb-math-wrap" data-tex="y^2=2p\!\left(\pm\sqrt{x^2+z^2}\right)\quad\Longrightarrow\quad y^2=2p\sqrt{x^2+z^2}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>±</mi><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">y^2=2p\!\left(\pm\sqrt{x^2+z^2}\right)\quad\Longrightarrow\quad y^2=2p\sqrt{x^2+z^2}.</annotation></semantics></math></div></div>两边平方得 [补全：平方步骤]
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mn>4</mn></msup><mo>=</mo><mn>4</mn><msup><mi>p</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">y^4=4p^2(x^2+z^2).</annotation></semantics></math></div>老师点评：“这是一条非常不一般、很不平凡的曲线。” - 绕 X 轴： x 不变，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>↦</mo><mi>±</mi><msqrt><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">y\mapsto \pm\sqrt{y^2+z^2}</annotation></semantics></math>，于是
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><mi>x</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">y^2+z^2=2px.</annotation></semantics></math></div></p>
-<p><strong class="wb-pill wb-pill-result">结论</strong>：抛物线绕其对称轴（ Y 轴）旋转得到”旋转抛物面”的某种四次形式；绕其轴线垂直方向（ X 轴）旋转得到标准旋转抛物面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">y^2+z^2=2px</annotation></semantics></math>。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：抛物线绕其对称轴（ Y 轴）旋转得到“旋转抛物面”的某种四次形式；绕其轴线垂直方向（ X 轴）旋转得到标准旋转抛物面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">y^2+z^2=2px</annotation></semantics></math>。</p>
 </section><section class="wb-seg"><h3 id="环面圆环面的参数方程"><span class="wb-ts">01:25:59—01:30:14</span> ｜
 环面（圆环面）的参数方程</h3>
-<p>再来看一个用参数方程更方便的曲面——圆环面（老师比喻为”汽车轮胎）。</p>
+<p>再来看一个用参数方程更方便的曲面——圆环面（老师比喻为“汽车轮胎”）。</p>
 </div><h4 id="构造-7012608-环面汽车轮胎的参数方程">构造 7（01:26:08）｜
 环面（汽车轮胎）的参数方程</h4>
 <p><strong>命题／任务</strong>：取一个半径为 a 的小圆，其圆心到 Z 轴的距离为 b （ b&gt;a ）。让这个小圆绕 Z 轴旋转一周，得到圆环面，写出它的参数方程。</p>
 <p>[按图还原]
 已知： Z 轴为旋转轴；在距轴 b 处有一个半径为 a 的小圆（圆心在 XY 平面内距原点 b 处）。作法：小圆绕 Z 轴旋转一周扫出圆环面。图上只画轴、小圆与旋转生成的圆环，不添别的点线。</p>
 <p><strong>思路</strong>：小圆上一点到 Z 轴的距离（半径）为 b+acos⁡θ ，高度为 asin⁡θ ，其中 θ 是绕生成小圆的参数角。再让整个图形绕 Z 轴转过角度 φ ，即得 x,y 。</p>
-<p><strong>操作步骤</strong>（课上老师完整口述了如下参数式）：</p><ol class="wb-steps"><li>小圆圆心到轴距离为 b ，小圆上一点相对圆心的位置用角度 θ 表示：它到轴的额外距离为 acos⁡θ ，高度为 asin⁡θ 。所以该点的”极半径”为 b+acos⁡θ ，高度 z=asin⁡θ 。</li><li>绕 Z 轴旋转角度 φ ，把极半径分配到 x,y ：
+<p><strong>操作步骤</strong>（课上老师完整口述了如下参数式）：</p><ol class="wb-steps"><li>小圆圆心到轴距离为 b ，小圆上一点相对圆心的位置用角度 θ 表示：它到轴的额外距离为 acos⁡θ ，高度为 asin⁡θ 。所以该点的“极半径”为 b+acos⁡θ ，高度 z=asin⁡θ 。</li><li>绕 Z 轴旋转角度 φ ，把极半径分配到 x,y ：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>+</mo><mi>a</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>y</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>+</mo><mi>a</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>z</mi><mo>=</mo><mi>a</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">x=(b+a\cos\theta)\cos\varphi,\qquad y=(b+a\cos\theta)\sin\varphi,\qquad z=a\sin\theta.</annotation></semantics></math></div></li></ol>
 <p><strong>结论</strong>：圆环面的参数方程为
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>+</mo><mi>a</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>y</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>+</mo><mi>a</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>z</mi><mo>=</mo><mi>a</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>,</mo></mtd></mtr></mtable></mrow><mspace width="2.0em"></mspace><mi>θ</mi><mo>,</mo><mi>φ</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{cases}
@@ -1486,7 +1487,7 @@ x=(b+a\cos\theta)\cos\varphi,\\[2pt]
 y=(b+a\cos\theta)\sin\varphi,\\[2pt]
 z=a\sin\theta,
 \end{cases}\qquad \theta,\varphi\in[0,2\pi).</annotation></semantics></math></p>
-<p><strong>老师点出的意义与易错点</strong>：这种”半径 b+acos⁡θ 、高度 asin⁡θ 、再绕轴转 φ “的结构，与球面的参数表示是同一套路——老师提醒大家回想上次讲过的球面参数表示。</p>
+<p><strong>老师点出的意义与易错点</strong>：这种“半径 b+acos⁡θ 、高度 asin⁡θ 、再绕轴转 φ ”的结构，与球面的参数表示是同一套路——老师提醒大家回想上次讲过的球面参数表示。</p>
 </section><section class="wb-seg"><h3 id="一般母线参数方程的旋转面参数化兼谈球面"><span class="wb-ts">01:30:14—01:34:47</span> ｜
 一般母线参数方程的旋转面参数化（兼谈球面）</h3>
 <p>当母线本身就用参数方程给出时，旋转面也可以整体写成参数形式。</p>
@@ -1497,9 +1498,9 @@ z=a\sin\theta,
 <p><strong>思路</strong>：旋转时，母线上的点到轴的距离是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><msqrt><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">R=\sqrt{f(u)^2+g(u)^2}</annotation></semantics></math>，这个半径在绕轴转动时不变；沿轴的坐标（这里是 z ）就是母线的第三个坐标分量；绕轴的角度记为 φ 。</p>
 <p><strong>操作步骤</strong>（课上老师给出如下形式，并指出与球面参数式一致）：</p><ol class="wb-steps"><li>半径<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><msqrt><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">R=\sqrt{f(u)^2+g(u)^2}</annotation></semantics></math>。</li><li>绕 Z 轴转 φ ，得到
 <div class="wb-math-wrap" data-tex="x=\sqrt{f(u)^2+g(u)^2}\,\cos\varphi,\qquad y=\sqrt{f(u)^2+g(u)^2}\,\sin\varphi,\qquad z=g(u)."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msqrt><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>y</mi><mo>=</mo><msqrt><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>z</mi><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">x=\sqrt{f(u)^2+g(u)^2}\,\cos\varphi,\qquad y=\sqrt{f(u)^2+g(u)^2}\,\sin\varphi,\qquad z=g(u).</annotation></semantics></math></div></div></li></ol>
-<p><strong>结论</strong>：一般母线绕坐标轴旋转，直接用”半径取母线上点到轴的距离、绕轴角度作 cos⁡φ,sin⁡φ 、沿轴坐标保留”写出参数方程即可。</p>
+<p><strong>结论</strong>：一般母线绕坐标轴旋转，直接用“半径取母线上点到轴的距离、绕轴角度作 cos⁡φ,sin⁡φ 、沿轴坐标保留”写出参数方程即可。</p>
 <p><strong>老师点出的意义与易错点</strong>：球面是旋转面的一个特例
-[补全：例如取母线为半圆 x=rcos⁡u,z=rsin⁡u(0≤u≤π) 绕 Z 轴旋转，即得球面参数式<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>u</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>u</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">x=r\cos u\cos\varphi,\ y=r\sin u\sin\varphi,\ z=r\sin u</annotation></semantics></math>，此特例为按学科补全，非当堂逐项推导]。所以”球面参数表示”本质上就是这里这套旋转面参数化。</p>
+[补全：例如取母线为半圆 x=rcos⁡u,z=rsin⁡u(0≤u≤π) 绕 Z 轴旋转，即得球面参数式<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>u</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>u</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>φ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>=</mo><mi>r</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">x=r\cos u\cos\varphi,\ y=r\sin u\sin\varphi,\ z=r\sin u</annotation></semantics></math>，此特例为按学科补全，非当堂逐项推导]。所以“球面参数表示”本质上就是这里这套旋转面参数化。</p>
 </section><section class="wb-seg"><h3 id="由参数方程化为普通方程环面方程"><span class="wb-ts">01:34:47—01:38:40</span> ｜
 由参数方程化为普通方程：环面方程</h3>
 <p>参数式有时要化回普通（直角坐标）方程。以环面为例。</p>
@@ -1515,7 +1516,7 @@ z=a\sin\theta,
 <div class="wb-math-wrap" data-tex="(\sqrt{x^2+y^2}-b)^2+z^2=a^2."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></msqrt><mo>−</mo><mi>b</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">(\sqrt{x^2+y^2}-b)^2+z^2=a^2.</annotation></semantics></math></div></div></li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：圆环面的普通方程为
 <div class="wb-math-wrap" data-tex="(\sqrt{x^2+y^2}-b)^2+z^2=a^2."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></msqrt><mo>−</mo><mi>b</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">(\sqrt{x^2+y^2}-b)^2+z^2=a^2.</annotation></semantics></math></div></div></p>
-<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：参数式与普通方程两种写法完全等价，可互相转化。注意方程里出现的是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{x^2+y^2}</annotation></semantics></math>（到 Z 轴的距离），这正是旋转面”沿轴坐标不变、另一坐标取半径”特征的体现。</p>
+<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：参数式与普通方程两种写法完全等价，可互相转化。注意方程里出现的是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{x^2+y^2}</annotation></semantics></math>（到 Z 轴的距离），这正是旋转面“沿轴坐标不变、另一坐标取半径”特征的体现。</p>
 </section><section class="wb-seg"><h3 id="二次曲面旋转椭球面与一般椭球面"><span class="wb-ts">01:38:40—01:39:20</span> ｜
 二次曲面：旋转椭球面与一般椭球面</h3>
 <p>最后把旋转面和二次曲面联系起来。回顾二次曲面的一个对称方程
@@ -1523,11 +1524,11 @@ z=a\sin\theta,
 </div><div class="wb-excard" id="wb-ex-8" data-ex-idx="8"><h4 id="例题证明-10013702-旋转椭球面与一般椭球面的识别">例题/证明
 10（01:37:02）｜ 旋转椭球面与一般椭球面的识别<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-8" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：判断上述方程何时是旋转面（旋转椭球面），何时是一般椭球面。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：根据”旋转面的方程中有两个变量的系数相等”这一特征来判别。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：根据“旋转面的方程中有两个变量的系数相等”这一特征来判别。</p>
 <p><strong class="wb-pill wb-pill-derive">逐步推导</strong>（课上老师口述了如下分类）：</p><ol class="wb-steps"><li>若三个系数全相等（ a=b=c ），方程退化为球面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2+z^2=a^2</annotation></semantics></math>。</li><li>若恰有两个系数相等，例如 b=c ，则
 <div class="wb-math-wrap" data-tex="\frac{x^2}{a^2}+\frac{y^2+z^2}{b^2}=1,"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac><mo>+</mo><mfrac><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow><msup><mi>b</mi><mn>2</mn></msup></mfrac><mo>=</mo><mn>1</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x^2}{a^2}+\frac{y^2+z^2}{b^2}=1,</annotation></semantics></math></div></div>这正是椭圆<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1</annotation></semantics></math>绕 X 轴旋转得到的<strong>旋转椭球面</strong>（旋转椭球面）。</li><li>若三个系数互不相等（ a,b,c 全不同），则是一般的<strong>椭球面</strong>（一般椭球面），它不是旋转面。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：二次曲面中，只要有两个变量的系数相同，它就是绕对应轴旋转得到的旋转面；三个系数全同是球面；三个全不同则是一般椭球面。</p>
-<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：柱面、锥面、旋转面本是三种”由一条曲线生成曲面”的不同方式——柱面是曲线沿直线平行移动，锥面是曲线绕一点伸缩，旋转面是曲线绕轴旋转。拿到一个对称的方程，先看有几个系数相等，就能判断它是不是旋转面。老师说明：“它有什么性质，我们下次再讲，本节到此结束。</p>
+<p><strong class="wb-pill wb-pill-note">老师点出的意义与易错点</strong>：柱面、锥面、旋转面本是三种“由一条曲线生成曲面”的不同方式——柱面是曲线沿直线平行移动，锥面是曲线绕一点伸缩，旋转面是曲线绕轴旋转。拿到一个对称的方程，先看有几个系数相等，就能判断它是不是旋转面。老师说明：“它有什么性质，我们下次再讲”，本节到此结束。</p>
 <script>window.MathJax={svg:{fontCache:"local"}};</script>
 </section><script>
 window.MathJax = {
@@ -1682,6 +1683,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1754,6 +1781,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1781,11 +1814,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -1930,22 +1959,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2346,19 +2362,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1429,7 +1430,7 @@ id="一内积点积的定义抽象化与基本性质000406001025">一、内积�
 <p>有同学质疑：夹角和长度本来就用内积定义，反过来内积又靠夹角、长度来写，是不是循环论证？老师指出：这一层并不矛盾——我们起初从「向量是有大小、有方向的量」这一直观概念拿到长度和夹角，用它们先把内积写出来；但内积的<strong>本质</strong>其实是一个抽象定义：</p>
 <blockquote>
 <p>在一个向量空间 V 上，内积是一个映射
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo><mo>:</mo><mi>V</mi><mo>×</mo><mi>V</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">(\cdot,\cdot):V\times V\to\mathbb R,</annotation></semantics></math></div>满足：</p><ol class="wb-steps"><li><strong>双线性</strong>：对两个变量都线性；</li><li><strong>对称</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a\cdot\vec b=\vec b\cdot\vec a</annotation></semantics></math>；</li><li><strong>正定</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec a\cdot\vec a\ge 0</annotation></semantics></math>，且等号当且仅当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a=\vec 0</annotation></semantics></math>。</li></ol>
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo><mo>:</mo><mi>V</mi><mo>×</mo><mi>V</mi><mo>→</mo><mi mathvariant="double-struck">R</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">(\cdot,\cdot):V\times V\to\mathbb R,</annotation></semantics></math></div>满足：</p><ol class="wb-steps"><li><strong>双线性</strong>：对两个变量都线性；</li><li><strong>对称</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mi>b</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mover><mi>a</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a\cdot\vec b=\vec b\cdot\vec a</annotation></semantics></math>；</li><li><strong>正定</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\vec a\cdot\vec a\ge 0</annotation></semantics></math>，且等号当且仅当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a=\vec 0</annotation></semantics></math>。</li></ol>
 </blockquote>
 <p>这样的映射统一称为<strong>内积（inner
 product）</strong>；装备了内积的向量空间称为<strong>内积空间</strong>。长度、夹角都是在有了这个内积之后，由上面两式<strong>反推</strong>出来的。所以抽象定义并不循环，它是更底层的出发点。</p>
@@ -1444,9 +1445,9 @@ product）</strong>；装备了内积的向量空间称为<strong>内积空间</
 <p>等号成立的充分必要条件是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>a</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec a</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>b</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec b</annotation></semantics></math>
 <strong>共线</strong>（其中一个是另一个的数乘，含其中一个为零向量的情形）。</p>
 <p><strong>注</strong>：本节图形（投影、垂直关系）念不出来，相关结论的「已知—作法—关系」见下方各例的 [ 按图还原 ] ；图上未出现的点线一律不编造。</p>
-<h2
+</section><h2
 id="二内积的运算律与双线性展开001025001805">二、内积的运算律与双线性展开（00:10:25—00:18:05）</h2>
-</section><section class="wb-seg"><h3 id="内积的交换律数乘结合律分配律及其证明"><span class="wb-ts">00:10:25—00:14:51</span> ｜
+<section class="wb-seg"><h3 id="内积的交换律数乘结合律分配律及其证明"><span class="wb-ts">00:10:25—00:14:51</span> ｜
 内积的交换律、数乘结合律、分配律及其证明</h3>
 <p>内积作为运算，满足以下三条运算律（以下证明统一用「投影」观点来看最简洁）：</p>
 <ol type="1">
@@ -1467,9 +1468,9 @@ id="二内积的运算律与双线性展开001025001805">二、内积的运算�
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msub><mi>μ</mi><mi>i</mi></msub><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">)</mo><mo>⋅</mo><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>ν</mi><mi>j</mi></msub><msub><mover><mi>b</mi><mo accent="true">→</mo></mover><mi>j</mi></msub><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>μ</mi><mi>i</mi></msub><msub><mi>ν</mi><mi>j</mi></msub><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>⋅</mo><msub><mover><mi>b</mi><mo accent="true">→</mo></mover><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\Bigl(\sum_{i=1}^m\mu_i\vec a_i\Bigr)\cdot\Bigl(\sum_{j=1}^n\nu_j\vec b_j\Bigr)
 =\sum_{i=1}^m\sum_{j=1}^n\mu_i\nu_j\,(\vec a_i\cdot\vec b_j).</annotation></semantics></math></p>
 <p>只要把求和指标统一（利用交换律把求和次序交换），就可以写成任意线性组合层层展开的形式。这是后面所有「向量法」代数运算的基础。</p>
-<h2
+</section><h2
 id="三向量法例题内积001805003434">三、向量法例题（内积）（00:18:05—00:34:34）</h2>
-</section><section class="wb-seg"><h3 id="例向量法证明三角形三高共点垂心"><span class="wb-ts">00:18:05—00:22:18</span> ｜
+<section class="wb-seg"><h3 id="例向量法证明三角形三高共点垂心"><span class="wb-ts">00:18:05—00:22:18</span> ｜
 例：向量法证明三角形三高共点（垂心）</h3>
 <p><strong>命题</strong>：任意 △ABC 的三条高交于一点（垂心）。</p>
 <p><strong>思路</strong>：从 A 、 B 各作一条高，设它们交于 H [按图还原：已知 △ABC ；从 A 向 BC 作垂线、从 B 向 AC 作垂线，两垂线交于 H ；图上只出现点 A,B,C,H 与三条边、两条高，不引入其它点线]。要证第三条高也过 H ，即证 HC⟂AB 。</p>
@@ -1540,9 +1541,9 @@ id="三向量法例题内积001805003434">三、向量法例题（内积）（00
 <p><strong>结论</strong>：
 <div class="wb-math-wrap" data-tex="|\vec e_1+\vec e_2+\vec e_3|&amp;lt;1\quad(\text{当然更小于 }3)."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mover><mi>e</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>+</mo><msub><mover><mi>e</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo>+</mo><msub><mover><mi>e</mi><mo accent="true">→</mo></mover><mn>3</mn></msub><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mn>1</mn><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mrow><mtext mathvariant="normal">当然更小于 </mtext><mspace width="0.333em"></mspace></mrow><mn>3</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">|\vec e_1+\vec e_2+\vec e_3|&lt;1\quad(\text{当然更小于 }3).</annotation></semantics></math></div></div></p>
 <p><strong>意义与易错点</strong>：老师强调，这道题真正想考的是「长度与内积的关系——算长度要通过内积自己乘自己」；中学里常把「长度」和「内积」当成两个不同的、未被区分的概念，而在我们这里长度完全由内积决定。核心计算最后都归结为三角恒等式的变形。另外要留意：每个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>φ</mi><mi>i</mi></msub><mo>&lt;</mo><msup><mn>180</mn><mo>∘</mo></msup></mrow><annotation encoding="application/x-tex">\varphi_i&lt;180^\circ</annotation></semantics></math>，所以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>φ</mi><mi>i</mi></msub><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\cos(\varphi_i/2)&gt;0</annotation></semantics></math>，这是放缩成立的关键。</p>
-<h2
+</section><h2
 id="四内积的坐标表示003438005510">四、内积的坐标表示（00:34:38—00:55:10）</h2>
-</section><section class="wb-seg"><h3 id="内积的坐标表示与度量矩阵gram-矩阵"><span class="wb-ts">00:34:38—00:46:27</span> ｜
+<section class="wb-seg"><h3 id="内积的坐标表示与度量矩阵gram-矩阵"><span class="wb-ts">00:34:38—00:46:27</span> ｜
 内积的坐标表示与度量矩阵（Gram 矩阵）</h3>
 <p>在仿射标架下，设两个向量</p>
 <p><div class="wb-math-wrap" data-tex="\vec A=\sum_{i=1}^3 x_i\vec e_i,\qquad \vec B=\sum_{j=1}^3 y_j\vec e_j,"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>3</mn></munderover><msub><mi>x</mi><mi>i</mi></msub><msub><mover><mi>e</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>B</mi><mo accent="true">→</mo></mover><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mn>3</mn></munderover><msub><mi>y</mi><mi>j</mi></msub><msub><mover><mi>e</mi><mo accent="true">→</mo></mover><mi>j</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\vec A=\sum_{i=1}^3 x_i\vec e_i,\qquad \vec B=\sum_{j=1}^3 y_j\vec e_j,</annotation></semantics></math></div></div></p>
@@ -1588,9 +1589,9 @@ Y=\begin{pmatrix}y_1\\y_2\\y_3\end{pmatrix},</annotation></semantics></math></p>
 \cos\gamma=\frac{z}{|\vec r|}.</annotation></semantics></math></p>
 <p>于是 (cos⁡α,cos⁡β,cos⁡γ) 恰好是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec r</annotation></semantics></math>方向上的<strong>单位向量</strong>，故</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>α</mi><mo>+</mo><msup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>β</mi><mo>+</mo><msup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>γ</mi><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\cos^2\alpha+\cos^2\beta+\cos^2\gamma=1.</annotation></semantics></math></div></p>
-<h2
+</section><h2
 id="五柯西-施瓦茨不等式的坐标证明与高维推广005534005914">五、柯西-施瓦茨不等式的坐标证明与高维推广（00:55:34—00:59:14）</h2>
-</section><section class="wb-seg"><h3 id="柯西-施瓦茨不等式的坐标证明与高维推广"><span class="wb-ts">00:55:34—00:59:14</span> ｜
+<section class="wb-seg"><h3 id="柯西-施瓦茨不等式的坐标证明与高维推广"><span class="wb-ts">00:55:34—00:59:14</span> ｜
 柯西-施瓦茨不等式的坐标证明与高维推广</h3>
 <p><strong>命题（柯西-施瓦茨不等式）</strong>：在标准正交基下，对<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><msub><mi>a</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec A=(a_1,a_2,a_3)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>B</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><msub><mi>b</mi><mn>2</mn></msub><mo>,</mo><msub><mi>b</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec B=(b_1,b_2,b_3)</annotation></semantics></math>，</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">|</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>3</mn></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">|</mo></mrow><mo>≤</mo><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>3</mn></munderover><msubsup><mi>a</mi><mi>i</mi><mn>2</mn></msubsup></mrow></msqrt><mspace width="0.278em"></mspace><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>3</mn></munderover><msubsup><mi>b</mi><mi>i</mi><mn>2</mn></msubsup></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">\left|\sum_{i=1}^3 a_i b_i\right|
@@ -1601,9 +1602,9 @@ id="五柯西-施瓦茨不等式的坐标证明与高维推广005534005914">五�
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">|</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">|</mo></mrow><mo>≤</mo><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>a</mi><mi>i</mi><mn>2</mn></msubsup></mrow></msqrt><mspace width="0.278em"></mspace><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>b</mi><mi>i</mi><mn>2</mn></msubsup></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">\left|\sum_{i=1}^n a_i b_i\right|
 \le \sqrt{\sum_{i=1}^n a_i^2}\;\sqrt{\sum_{i=1}^n b_i^2}.</annotation></semantics></math></p>
 <p><strong>思维提醒（数学语言的精确性）</strong>：老师特别强调，写这个不等式时必须先<strong>说明所用的是标准正交基</strong>。如果标架都没写，直接说「向量点乘等于坐标对应相乘之和、写出上面这串」——一般情形下是<strong>错的</strong>，因为内积未必是在标准正交基下的内积。严格写出「在___基（标准正交）下」才是合格的数学语言。学好数学，首先就是把这套语言的逻辑关系写清楚。</p>
-<h2
+</section><h2
 id="六向量积叉乘的定义与几何意义005950010658">六、向量积（叉乘）的定义与几何意义（00:59:50—01:06:58）</h2>
-</section><section class="wb-seg"><h3 id="向量积的定义模长方向退化情形"><span class="wb-ts">00:59:50—01:04:49</span> ｜
+<section class="wb-seg"><h3 id="向量积的定义模长方向退化情形"><span class="wb-ts">00:59:50—01:04:49</span> ｜
 向量积的定义（模长、方向、退化情形）</h3>
 <p>两个向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>,</mo><mover><mi>b</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a,\vec b</annotation></semantics></math>的<strong>向量积（叉乘、外积）</strong>记为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>b</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec a\times\vec b</annotation></semantics></math>，结果是一个<strong>新的向量</strong>，由大小与方向两方面定义：</p>
 <ol type="1">
@@ -1622,9 +1623,9 @@ id="六向量积叉乘的定义与几何意义005950010658">六、向量积（�
 <p>以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>,</mo><mover><mi>B</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec A,\vec B</annotation></semantics></math>为邻边的平行四边形，其面积等于</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">S=|\vec A\times\vec B|=|\vec A|\,|\vec B|\sin\theta,</annotation></semantics></math></div></p>
 <p>即「底乘高」（这里的高就是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">|\vec B|\sin\theta</annotation></semantics></math>）。同时<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>B</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec A\times\vec B</annotation></semantics></math>的方向垂直于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>,</mo><mover><mi>B</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec A,\vec B</annotation></semantics></math>所在的平面，是该平面的一个<strong>法向量</strong>，且按右手系确定朝向。</p>
-<h2
+</section><h2
 id="七向量积的运算律与常见错误010658012821">七、向量积的运算律与常见错误（01:06:58—01:28:21）</h2>
-</section><section class="wb-seg"><h3 id="向量积的反交换性与数乘结合律"><span class="wb-ts">01:06:58—01:09:54</span> ｜
+<section class="wb-seg"><h3 id="向量积的反交换性与数乘结合律"><span class="wb-ts">01:06:58—01:09:54</span> ｜
 向量积的反交换性与数乘结合律</h3>
 <ol type="1">
 <li><p><strong>反交换性</strong>
@@ -1678,9 +1679,9 @@ id="七向量积的运算律与常见错误010658012821">七、向量积的运�
 2</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\vec A+\vec B)\times(\vec A+\vec B)</annotation></semantics></math>等于什么？ 两个因子是<strong>同一个向量</strong>，自己叉乘自己：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mover><mn>0</mn><mo accent="true">→</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">(\vec A+\vec B)\times(\vec A+\vec B)=\vec 0,</annotation></semantics></math></div>而不是「先平方再怎样」。本质是相同两向量叉乘恒为零。</p>
 <p><strong>易错点</strong>：很多同学会把叉乘误当成和内积一样的运算去套用，或把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>A</mi><mo accent="true">→</mo></mover><mo>+</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\vec A+\vec B)\times(\vec A+\vec B)</annotation></semantics></math>错误地「平方展开」。记住——叉乘结果仍是向量，且同向量自乘必为零。</p>
-<h2
+</section><h2
 id="八向量法的进一步应用012833013950">八、向量法的进一步应用（01:28:33—01:39:50）</h2>
-</section><section class="wb-seg"><h3 id="例向量法推导正弦定理"><span class="wb-ts">01:28:33—01:32:34</span> ｜
+<section class="wb-seg"><h3 id="例向量法推导正弦定理"><span class="wb-ts">01:28:33—01:32:34</span> ｜
 例：向量法推导正弦定理</h3>
 <p><strong>命题</strong>：在 △ABC 中，
 <div class="wb-math-wrap" data-tex="\frac{a}{\sin A}=\frac{b}{\sin B}=\frac{c}{\sin C}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>a</mi><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>A</mi></mrow></mfrac><mo>=</mo><mfrac><mi>b</mi><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>B</mi></mrow></mfrac><mo>=</mo><mfrac><mi>c</mi><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>C</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{a}{\sin A}=\frac{b}{\sin B}=\frac{c}{\sin C}.</annotation></semantics></math></div></div></p>
@@ -1888,6 +1889,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1960,6 +1987,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1987,11 +2020,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2136,22 +2165,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2552,19 +2568,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

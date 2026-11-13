@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1487,7 +1488,7 @@ id="toc-要不要写证明课堂问答与把论证写清楚的要求">01:18:07�
 要不要写证明：课堂问答与「把论证写清楚」的要求</a></li>
 <li><a href="#存在性用不交的左闭右开区间覆盖-mathbb-z"
 id="toc-存在性用不交的左闭右开区间覆盖-mathbb-z">01:21:14—01:23:49 ｜
-存在性：用不交的左闭右开区间覆盖 ℤ</a></li>
+存在性：用不交的左闭右开区间覆盖 Z</a></li>
 <li><a href="#唯一性留作练习" id="toc-唯一性留作练习">01:23:49—01:24:14
 ｜ 唯一性留作练习</a></li>
 </ul></li>
@@ -1610,7 +1611,7 @@ id="toc-二十二可数集的例子整数与有理数020633021808">二十二、�
 id="toc-回到可数不可数整数集可数吗">02:06:33—02:07:19 ｜
 回到可数／不可数：整数集可数吗</a></li>
 <li><a href="#整数集-mathbbz-可数"
-id="toc-整数集-mathbbz-可数">02:07:25—02:08:00 ｜ 整数集 ℤ 可数</a></li>
+id="toc-整数集-mathbbz-可数">02:07:25—02:08:00 ｜ 整数集 Z 可数</a></li>
 <li><a href="#有理数可数既约分数与两种策略"
 id="toc-有理数可数既约分数与两种策略">02:08:12—02:10:17 ｜
 有理数可数：既约分数与两种策略</a></li>
@@ -1633,7 +1634,7 @@ id="toc-二十三实数集不可数约化二进制展开与对角线法021815022
 <li><a href="#结果与约化" id="toc-结果与约化">02:18:15—02:19:06 ｜
 结果与约化</a></li>
 <li><a href="#与-mathbbr-等势双射的复合"
-id="toc-与-mathbbr-等势双射的复合">02:19:09—02:22:00 ｜ (0,1) 与 ℝ 等势：双射的复合</a></li>
+id="toc-与-mathbbr-等势双射的复合">02:19:09—02:22:00 ｜ (0,1) 与 R 等势：双射的复合</a></li>
 <li><a href="#中数的二进制展开"
 id="toc-中数的二进制展开">02:22:17—02:25:20 ｜ (0,1) 中数的二进制展开</a></li>
 <li><a href="#反证法与对角线构造时间到周四继续"
@@ -1690,9 +1691,9 @@ id="toc-答疑二mathcalpa-与-2a-的双射">02:30:25—02:32:58 ｜
 4 个 45 分钟。</p>
 <p>每周设一个两小时的答疑，周四再定时间地点，基本定在主楼三楼；三楼有一间给部分同学预留的自习室，到时再定具体时间。习题课就不设了（分析学是有习题课的，只是还没上），尽量选一个合适的答疑时间，也可以安排在接在分析的习题课后面；但只设答疑一个环节，因为
 6 节正课已经非常多，再设习题课就太多了。</p>
-<h2
+</section><h2
 id="二代数的背景经典问题与伽罗瓦理论000515001143">二、代数的背景：经典问题与伽罗瓦理论（00:05:15—00:11:43）</h2>
-</section><section class="wb-seg"><h3 id="为什么要有这门课"><span class="wb-ts">00:05:15—00:05:50</span> ｜ 为什么要有这门课</h3>
+<section class="wb-seg"><h3 id="为什么要有这门课"><span class="wb-ts">00:05:15—00:05:50</span> ｜ 为什么要有这门课</h3>
 <p>正式讲内容之前，先解释一些大的背景：为什么会有这门课、为什么要学代数。对大家来说，直接原因是它在培养方案里，但这不是本质原因；这门课最终是要去理解一些规则、理解一些对称性的规律。下面先看几个经典的、能用代数解决的问题。</p>
 </section><section class="wb-seg"><h3 id="古希腊三大尺规作图问题"><span class="wb-ts">00:05:57—00:07:47</span> ｜
 古希腊三大尺规作图问题</h3>
@@ -1739,9 +1740,9 @@ id="二代数的背景经典问题与伽罗瓦理论000515001143">二、代数�
 <p>有了群的概念之后，伽罗瓦证明了一件事：一个多项式是否可解，等价于由它的根的一些置换所构成的群（伽罗瓦群）具有某种性质——也就是把多项式的可解性转化成群的某种特性（可解性）。这部分现在不详细解释。</p>
 <p>另一方面，从五次开始，由 5
 元集合的置换构成的某些群是不可解的，于是就推出五次方程不可解。以上只是非常粗略的逻辑线索。</p>
-<h2
+</section><h2
 id="三对称性与群从根的置换到几何等距001156002914">三、对称性与群：从根的置换到几何等距（00:11:56—00:29:14）</h2>
-</section><section class="wb-seg"><h3 id="两个五次方程及其复根的分布"><span class="wb-ts">00:11:56—00:13:08</span> ｜
+<section class="wb-seg"><h3 id="两个五次方程及其复根的分布"><span class="wb-ts">00:11:56—00:13:08</span> ｜
 两个五次方程及其复根的分布</h3>
 <p>我们关心的是对称性。屏幕上给出两个具体的五次多项式，求它们的复根（数值计算会给出结果），观察根的对称性：</p>
 <ul>
@@ -1827,20 +1828,20 @@ id="例题证明-4002147-构造周期图形的平移生成无限循环群对应�
 说明：这一条群公理的逐项验证不是当堂讲的，仅作自学参照。</li>
 </ol>
 <p><strong class="wb-pill wb-pill-result">结论。</strong>
-所有的平移生成一个群，叫无限循环群；它可以和整数集合 ℤ 对应， ℤ 上带有加法运算， (ℤ,+) 就是一个无限循环群（对应<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>T</mi><mi>n</mi></msup><mo>↔</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">T^n\leftrightarrow n</annotation></semantics></math>）。</p>
+所有的平移生成一个群，叫无限循环群；它可以和整数集合 Z 对应， Z 上带有加法运算， (Z,+) 就是一个无限循环群（对应<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>T</mi><mi>n</mi></msup><mo>↔</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">T^n\leftrightarrow n</annotation></semantics></math>）。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点。</strong>
 这是「群来自对称性」的第一个具体例子：把几何平移翻译成群元素与群运算。正三角形、正方形等平面图映到自身的对称，同样各自给出一个对称群。</p>
 </section><section class="wb-seg"><h3 id="等距映射保原点等距的线性性与二维等距"><span class="wb-ts">00:23:03—00:27:00</span> ｜
 等距映射、保原点等距的线性性与二维等距</h3>
-<p>把刚才「刚性的、保距离的运动」说得更一般些：考虑<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\mathbb R^n</annotation></semantics></math>的欧氏空间（二维平面或三维现实空间），其上可以定义标准距离。若一个从空间到自身的映射保持元素之间的距离，就称它为等距。</p>
+<p>把刚才「刚性的、保距离的运动」说得更一般些：考虑<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">R</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\mathbb R^n</annotation></semantics></math>的欧氏空间（二维平面或三维现实空间），其上可以定义标准距离。若一个从空间到自身的映射保持元素之间的距离，就称它为等距。</p>
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题证明-5002510-构造二维平面的三类等距及其矩阵表示">例题/证明
 5（00:25:10）｜ 构造：二维平面的三类等距及其矩阵表示<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">命题／任务。</strong> 给出<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\mathbb R^2</annotation></semantics></math>上具体的等距（保距离映射）：平移、旋转、反射，并说明后两者可以用矩阵乘法表达。</p>
+<p><strong class="wb-pill wb-pill-topic">命题／任务。</strong> 给出<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\mathbb R^2</annotation></semantics></math>上具体的等距（保距离映射）：平移、旋转、反射，并说明后两者可以用矩阵乘法表达。</p>
 <p><strong class="wb-pill wb-pill-idea">思路。</strong>
 先写出等距的定义，再逐个写出映射；旋转与反射在线性代数里正是 2×2 矩阵。</p>
 <p><strong class="wb-pill wb-pill-derive">逐步推导。</strong></p>
 <ol type="1">
-<li>定义：设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><mo>→</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">f:\mathbb R^2\to\mathbb R^2</annotation></semantics></math>，若对任意 u,v 都有 d(f(u),f(v))=d(u,v) ，就称 f 是等距。标准的对称如平移、镜面反射，都是保持距离的。</li>
+<li>定义：设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup><mo>→</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">f:\mathbb R^2\to\mathbb R^2</annotation></semantics></math>，若对任意 u,v 都有 d(f(u),f(v))=d(u,v) ，就称 f 是等距。标准的对称如平移、镜面反射，都是保持距离的。</li>
 <li>平移：取定一个向量 a ，定义<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo>+</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">T_a(x)=x+a</annotation></semantics></math>，即把 x 变成 x+a 的通常向量加法，这就是一个平移。</li>
 <li>旋转：把任意 x 逆时针旋转 θ 角，记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><msub><mi>R</mi><mi>θ</mi></msub><mi>x</mi></mrow><annotation encoding="application/x-tex">x\mapsto R_\theta x</annotation></semantics></math>。这个操作在线性代数里用矩阵乘法表达：</li>
 </ol>
@@ -1867,8 +1868,8 @@ id="例题证明-4002147-构造周期图形的平移生成无限循环群对应�
 <p>（其中 =2 是 [补全]：课堂上只说「是一个常数」，具体值 2
 不是当堂讲的，仅作自学参照。）这属于拓扑学的东西，老师声明不展开。</p>
 <p>每个正多面体都有很多对称性，它们的对称各自给出一些群。更具体的还有带周期性的墙纸的分类、各种铺砌；物理里也会有一些对称。平面图的这些对称，反映的都是空间上的对称性。</p>
-<h2 id="四连续对称单群-a_5-与前沿002921003558">四、连续对称、单群<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mn>5</mn></msub><annotation encoding="application/x-tex">A_5</annotation></semantics></math>与前沿（00:29:21—00:35:58）</h2>
-</section><section class="wb-seg"><h3 id="连续对称与李群"><span class="wb-ts">00:29:21—00:30:07</span> ｜ 连续对称与李群</h3>
+</section><h2 id="四连续对称单群-a_5-与前沿002921003558">四、连续对称、单群<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mn>5</mn></msub><annotation encoding="application/x-tex">A_5</annotation></semantics></math>与前沿（00:29:21—00:35:58）</h2>
+<section class="wb-seg"><h3 id="连续对称与李群"><span class="wb-ts">00:29:21—00:30:07</span> ｜ 连续对称与李群</h3>
 <p>如果在三维乃至更高维的空间里考虑具有连续性的对称、或者具有可微性的对称（分析学之后会讲连续映射、连续函数、可微函数等），对这种连续性再加上一些解析的要求，就会得到比较大的群，即所谓的李群（名字来自索菲斯·李
 Sophus Lie
 [?]）。李群是数学和物理中比较重要的一类对象，反映时空的连续对称。</p>
@@ -1901,9 +1902,9 @@ Fuller）是一位建筑师，他有一个建筑作品应用了这样的稳定�
 <p>最后一页稍微提一下比较前沿的、偏理论 的方向：朗兰兹纲领
 [?]。前面讲过李群；这个纲领是在两侧建立了一些对应关系：一侧是李群上的分析（调和分析一类的对称性），另一侧是算术、数论里的离散对象，于是以某种方式在解析的领域和离散的数论领域之间建立对应。它的一个特例，在一个著名大定理的证明中起到过（关键）作用。这个纲领也有各种变体、各种场景，与数学物理也有比较大的关系，这些就不再多说。</p>
 <p>以上是一个非常简要的介绍。老师问大家有没有问题；没有问题，下面就正式开始讲课程内容。</p>
-<h2
+</section><h2
 id="五正式开讲集合论基础003614003956">五、正式开讲：集合论基础（00:36:14—00:39:56）</h2>
-</section><section class="wb-seg"><h3 id="唯一的-ppt板书与从基础讲起"><span class="wb-ts">00:36:14—00:36:38</span> ｜ 唯一的
+<section class="wb-seg"><h3 id="唯一的-ppt板书与从基础讲起"><span class="wb-ts">00:36:14—00:36:38</span> ｜ 唯一的
 PPT、板书与从基础讲起</h3>
 <p>这是本节课唯一的 1 个 PPT，以后就再也没有 PPT
 了，之后的板书都写在黑板上。第一次课从一些比较基础的内容讲起，并与中学内容做一个衔接。</p>
@@ -1919,9 +1920,9 @@ PPT、板书与从基础讲起</h3>
 </section><section class="wb-seg"><h3 id="集合的运算与括号表示"><span class="wb-ts">00:39:38—00:39:56</span> ｜
 集合的运算与括号表示</h3>
 <p>对集合可以做一些操作：比如写出两个集合 A,B ，就可以做它们之间的运算。通常表示一个集合，会用一个大括号把它写出来。这段讲述刚刚开头便中止，具体的集合运算留待后续。</p>
-<h2
+</section><h2
 id="六集合的运算与幂集003958004417">六、集合的运算与幂集（00:39:58—00:44:17）</h2>
-</section><section class="wb-seg"><h3 id="用条件定义集合交并差及其推广"><span class="wb-ts">00:39:58—00:41:50</span> ｜
+<section class="wb-seg"><h3 id="用条件定义集合交并差及其推广"><span class="wb-ts">00:39:58—00:41:50</span> ｜
 用条件定义集合：交、并、差及其推广</h3>
 <p>描述法（集合的记号）：前面写元素的代表符号，后面加一条竖线或冒号，再写这个元素要满足的条件。也就是说，把满足某个条件的对象放在一起，用「规定元素满足的条件」来定义一个集合：
 <div class="wb-math-wrap" data-tex="\{\,x\mid x\ \text{满足条件}\ P\,\}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mspace width="0.167em"></mspace><mi>x</mi><mo>∣</mo><mi>x</mi><mspace width="0.222em"></mspace><mtext mathvariant="normal">满足条件</mtext><mspace width="0.222em"></mspace><mi>P</mi><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\{\,x\mid x\ \text{满足条件}\ P\,\}.</annotation></semantics></math></div></div></p>
@@ -1947,17 +1948,17 @@ union），记作 A⊔B （也有在并号上加一点的写法<math display="in
 <p>为什么写成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>？先看 A 是有限集的场合。课堂提问：一个 n 元集有多少个子集？回答是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>n</mi></msup><annotation encoding="application/x-tex">2^n</annotation></semantics></math>个（ 2 的 n 次方）。这个记号「有道理」之处就在这里：每个元素有「取 /
 不取」两种选择， n 个元素共给出<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>n</mi></msup><annotation encoding="application/x-tex">2^n</annotation></semantics></math>个子集。</p>
 <p>但是对无限集合也可以考虑幂集，这时就不能再说「这个无限集的子集个数是 2 的多少次方」了——把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>当成字面上的乘方去理解是不对的。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>在这里只是一个记号，待会儿会很容易把它解释清楚。</p>
-<h2
+</section><h2
 id="七代数学的逻辑对象关系与集合概念的边界004417004532">七、代数学的逻辑：对象、关系与集合概念的边界（00:44:17—00:45:32）</h2>
-</section><section class="wb-seg"><h3 id="先有对象再谈对象之间的关系"><span class="wb-ts">00:44:17—00:45:07</span> ｜
+<section class="wb-seg"><h3 id="先有对象再谈对象之间的关系"><span class="wb-ts">00:44:17—00:45:07</span> ｜
 先有对象，再谈对象之间的关系</h3>
 <p>不管是线性代数还是抽象代数，理论的逻辑都是同一套：<strong>先有一些对象</strong>，然后<strong>再去考虑不同对象之间的关系</strong>。比如先定义什么叫集合（什么是集合），接着就要讨论不同集合之间的关系。而建立两个集合之间关系的最重要手段，就是所谓的<strong>映射</strong>——从一个结构到另一个结构的映射。下面的展开都沿着这条线走。</p>
 </section><section class="wb-seg"><h3 id="集合概念不可滥用补充说明"><span class="wb-ts">00:45:07—00:45:32</span> ｜
 集合概念不可滥用（补充说明）</h3>
 <p>在正式讲映射之前，要先补充一句：集合这个概念并不是一个可以滥用的东西。也就是说，「我用一个规则把一些元素、一些对象放到一起，就定义出一个集合」这件事<strong>并不总是合法</strong>。这一点先记下，休息之后马上用罗素悖论把它讲清楚。</p>
-<h2
+</section><h2
 id="八集合论的局限罗素悖论与公理化004532005453">八、集合论的局限：罗素悖论与公理化（00:45:32—00:54:53）</h2>
-</section><section class="wb-seg"><h3 id="课间休息与零散问答"><span class="wb-ts">00:45:32—00:50:35</span> ｜ 课间休息与零散问答</h3>
+<section class="wb-seg"><h3 id="课间休息与零散问答"><span class="wb-ts">00:45:32—00:50:35</span> ｜ 课间休息与零散问答</h3>
 <p>这段是课间休息与学生的个别问答，转写零散，多是课堂管理性质的闲谈，夹杂个别关于形式化证明、商与单群、作业成绩的只言片语。老师明确表示：这类用来在证明中保证「某些定义存在」的公理化工具，本节课暂时不展开，现在提一提或者不提都可以，因为眼下还没有应用场景，等真正用到的时候再讲。因此这里不列入正文知识点，也不补写任何结论。</p>
 </section><section class="wb-seg"><h3 id="罗素悖论与朴素集合论的局限"><span class="wb-ts">00:50:35—00:53:46</span> ｜
 罗素悖论与朴素集合论的局限</h3>
@@ -1991,15 +1992,15 @@ id="八集合论的局限罗素悖论与公理化004532005453">八、集合论�
 <li>在本课程里仍然可以用朴素集合论，只要不做上一节那种自我指向的构造即可。</li>
 <li>预告：刚才这套「考虑一个对象是否落在由它自身定义出来的整体里」的逻辑，待会儿在关于幂集的那个论证里会原样再用一次。</li>
 </ul>
-<h2
+</section><h2
 id="九映射定义像与原像005453010242">九、映射：定义、像与原像（00:54:53—01:02:42）</h2>
-</section><section class="wb-seg"><h3 id="映射的定义与记号"><span class="wb-ts">00:54:53—00:58:09</span> ｜ 映射的定义与记号</h3>
+<section class="wb-seg"><h3 id="映射的定义与记号"><span class="wb-ts">00:54:53—00:58:09</span> ｜ 映射的定义与记号</h3>
 <p>映射（也叫函数）大家应当都见过。给定两个集合 X,Y ，一个从 X 到 Y 的映射就是一个<strong>对应规则</strong>：对 X 中任意一个元素 x ，都规定 Y 中<strong>唯一</strong>的一个元素与它对应，记作 f(x)∈Y 。写成逻辑记号（以后会用 ∀,∃ 这类任意／存在符号）就是
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>∈</mo><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mo>∃</mo><mi>!</mi><mspace width="0.167em"></mspace><mi>y</mi><mo>∈</mo><mi>Y</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\forall x\in X,\ \exists!\,y\in Y:\ y=f(x).</annotation></semantics></math></div></p>
 <p>标准记号：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi>X</mi><mo>→</mo><mi>Y</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>x</mi><mo>↦</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">f:X\longrightarrow Y,\qquad x\longmapsto f(x).</annotation></semantics></math></div>其中： - 长箭头 → 表示<strong>两个集合之间</strong>的映射； - 带短竖线的 ↦ 表示<strong>元素</strong>的对应（「把 x 映到 f(x) 」）。</p>
 <p>例如常见的初等函数，从实数映到实数：
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>x</mi><mo>↦</mo><msup><mi>x</mi><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">f:\mathbb{R}\longrightarrow\mathbb{R},\qquad x\longmapsto x^2,</annotation></semantics></math></div>这就是平方函数。</p>
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">R</mi><mo>→</mo><mi mathvariant="double-struck">R</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>x</mi><mo>↦</mo><msup><mi>x</mi><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">f:\mathbb{R}\longrightarrow\mathbb{R},\qquad x\longmapsto x^2,</annotation></semantics></math></div>这就是平方函数。</p>
 </section><section class="wb-seg"><h3 id="定义域陪域与值域像"><span class="wb-ts">00:58:09—00:59:38</span> ｜
 定义域、陪域与值域（像）</h3>
 <p>围绕一个映射 f:X→Y 有三个集合要说清楚：</p>
@@ -2020,10 +2021,10 @@ id="九映射定义像与原像005453010242">九、映射：定义、像与原�
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mi>⌀</mi><mo>⇔</mo><mi>y</mi><mo>∈</mo><mrow><mi mathvariant="normal">im</mi><mo>&#8289;</mo></mrow><mi>f</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">f^{-1}(y)\neq\varnothing\iff y\in\operatorname{im} f.</annotation></semantics></math></div></li>
 </ul>
 <p>老师接着又把同一套说法放到另一个目标集合 Z 上列举了一遍：只要有一个映射打到 Z ，对 Z 中的元素照样可以问它的原像。</p>
-<h2
+</section><h2
 id="十满射单射与双射010242010644">十、满射、单射与双射（01:02:42—01:06:44）</h2>
 <p>下面对映射本身给出三个性质：满射、单射、双射。</p>
-</section><section class="wb-seg"><h3 id="满射"><span class="wb-ts">01:02:42—01:04:01</span> ｜ 满射</h3>
+<section class="wb-seg"><h3 id="满射"><span class="wb-ts">01:02:42—01:04:01</span> ｜ 满射</h3>
 <p>若值域（像）等于<strong>整个陪域</strong>，即
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">im</mi><mo>&#8289;</mo></mrow><mi>f</mi><mo>=</mo><mi>Y</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\operatorname{im} f=Y,</annotation></semantics></math></div>也就是说 Y 中每一点都有原像（每一点都被映到），就称 f 是<strong>满射</strong>（也说 f 是「满的」「映上的」，英文 onto）：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∀</mo><mi>y</mi><mo>∈</mo><mi>Y</mi><mo>,</mo><mspace width="0.222em"></mspace><mo>∃</mo><mi>x</mi><mo>∈</mo><mi>X</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>y</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\forall y\in Y,\ \exists x\in X:\ f(x)=y.</annotation></semantics></math></div></p>
@@ -2036,9 +2037,9 @@ one-to-one）。</p>
 </section><section class="wb-seg"><h3 id="双射一一对应"><span class="wb-ts">01:05:28—01:06:44</span> ｜ 双射（一一对应）</h3>
 <p>若 f<strong>既是单射又是满射</strong>，就称 f 是<strong>双射</strong>，也叫<strong>一一对应</strong>（bijective，one-to-one
 and onto / one-to-one correspondence）。此时每个 y∈Y 的原像恰好是单点集：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msup><mi>f</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|f^{-1}(y)|=1</annotation></semantics></math>对所有 y 成立。</p>
-<h2
+</section><h2
 id="十一幂集比原集严格地大010644011405">十一、幂集比原集严格地大（01:06:44—01:14:05）</h2>
-</section><section class="wb-seg"><h3 id="命题的提出与思路"><span class="wb-ts">01:06:44—01:08:41</span> ｜ 命题的提出与思路</h3>
+<section class="wb-seg"><h3 id="命题的提出与思路"><span class="wb-ts">01:06:44—01:08:41</span> ｜ 命题的提出与思路</h3>
 <p>现在对刚才的幂集证明一个结果：对任意集合 A ，<strong>不存在</strong>从 A 到幂集 𝒫(A) 的双射；事实上可以证得更强一点——<strong>连满射都不存在</strong>。</p>
 <p>老师先说明为什么要做这个结果：它是为了说明幂集 𝒫(A) 在「元素个数」上比 A<strong>严格地多</strong>（严格大于），这一点后面还会回头解释。</p>
 <p>证明的手法：回忆罗素悖论——那里是「考虑一个集合是不是属于它自己」，把所有不属于自己的集合收成一组东西；这里照搬同一套构造，把所有「不属于自己像」的元素收成一个集合即可。</p>
@@ -2070,13 +2071,13 @@ id="十一幂集比原集严格地大010644011405">十一、幂集比原集严�
 - 关键在于 f(a) 本身是 A 的子集，因此 a∈f(a) 这个问句才有意义；这与「映射打到幂集」这一设定分不开。 - 只需假设 f<strong>满射</strong>就够，不必假设单射，结论反而更强（排除满射即排除双射）。
 -
 对有限集，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="script">𝒫</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msup><mn>2</mn><mrow><mo stretchy="false" form="prefix">|</mo><mi>A</mi><mo stretchy="false" form="prefix">|</mo></mrow></msup><mo>&gt;</mo><mo stretchy="false" form="prefix">|</mo><mi>A</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|\mathcal{P}(A)|=2^{|A|}&gt;|A|</annotation></semantics></math>是看得见的；这个证明把「严格地多」推广到了任意集合（包括无限集），且不需要真的去数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>。</p>
-<h2
+</section><h2
 id="十二映射的例子常用数集记号与带余除法011405011720">十二、映射的例子、常用数集记号与带余除法（01:14:05—01:17:20）</h2>
-</section><section class="wb-seg"><h3 id="映射的例子"><span class="wb-ts">01:14:05—01:15:03</span> ｜ 映射的例子</h3>
+<section class="wb-seg"><h3 id="映射的例子"><span class="wb-ts">01:14:05—01:15:03</span> ｜ 映射的例子</h3>
 <p>学过的所有函数都可以理解成映射的例子：初等函数、多项式函数、三角函数、指数函数等等，都没有问题。下面再引进几个不那么常见、但以后要经常用的例子（记号与例子）。</p>
 </section><section class="wb-seg"><h3 id="常用数集记号"><span class="wb-ts">01:15:03—01:16:14</span> ｜ 常用数集记号</h3>
 <p>先约定一批常用集合的记号：</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi mathvariant="double-struck">ℤ</mi><mo>+</mo></msup><mspace width="0.167em"></mspace></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">正整数集</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">ℕ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">自然数集（非负整数）</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">ℤ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">全体整数</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">ℚ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">有理数集</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">ℝ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">实数集</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">ℂ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">复数集</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{array}{c|l}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi mathvariant="double-struck">Z</mi><mo>+</mo></msup><mspace width="0.167em"></mspace></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">正整数集</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">N</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">自然数集（非负整数）</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">Z</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">全体整数</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">Q</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">有理数集</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">R</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">实数集</mtext></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi mathvariant="double-struck">C</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">复数集</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{array}{c|l}
 \mathbb{Z}^{+}\, &amp; \text{正整数集}\\
 \mathbb{N} &amp; \text{自然数集（非负整数）}\\
 \mathbb{Z} &amp; \text{全体整数}\\
@@ -2087,48 +2088,48 @@ id="十二映射的例子常用数集记号与带余除法011405011720">十二�
 <p>于是我们手上有了一批具体的集合，可以拿它们当定义域、陪域来构造映射。</p>
 </section><section class="wb-seg"><h3 id="带余除法回顾"><span class="wb-ts">01:16:14—01:17:20</span> ｜ 带余除法（回顾）</h3>
 <p>这里不定义新东西，只是回顾<strong>带余除法</strong>这件事。固定一个正整数 n ，有一个初等的小结论：对任意整数 a ，都可以用 n 去除 a ，得到<strong>唯一的</strong>商和余数——这就是所谓的带余除法。结论的正式表述在「对任意的整数 a 存在唯一的……」处未完，带余除法的完整陈述留待后文。</p>
-<h2
+</section><h2
 id="十三带余除法及其证明011726012414">十三、带余除法及其证明（01:17:26—01:24:14）</h2>
-</section><section class="wb-seg"><h3 id="带余除法的命题陈述"><span class="wb-ts">01:17:26—01:18:01</span> ｜ 带余除法的命题陈述</h3>
+<section class="wb-seg"><h3 id="带余除法的命题陈述"><span class="wb-ts">01:17:26—01:18:01</span> ｜ 带余除法的命题陈述</h3>
 <p>取定正整数 N 。对任意整数 a ，存在唯一的一对 (q,r) ： q 是整数（商）， r 是余数，它是满足 0≤r&lt;N 的非负整数，也就是落在 {0,1,…,N−1} 里，使得</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mi>q</mi><mi>N</mi><mo>+</mo><mi>r</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">a=qN+r.</annotation></semantics></math></div></p>
 <p>这就是所谓的带余除法。</p>
 </section><section class="wb-seg"><h3 id="要不要写证明课堂问答与把论证写清楚的要求"><span class="wb-ts">01:18:07—01:21:14</span> ｜
 要不要写证明：课堂问答与「把论证写清楚」的要求</h3>
-<p>老师问：这个需要写证明吗，需要还是不需要？有同学答”不用。老师随即抽一位同学来试着讲这个证明（玩笑说要挑个名字霸气的同学），并说坐着讲也行：“你知道怎么证明这个带余除法吗？”同学提到：先说存在性，要证明从 a 中减掉 N 的一个倍数之后，可以得到一个余数满足大于等于 0 、严格小于 N ；但像加 1 、减 1 这类情形怎么处理，并没有讲清。</p>
-<p>老师借此强调：我们需要的是数学上一个清晰的、严格的论证，问题在于”怎么样组织一个证明。大学数学一开始第一个要练习的事情，并不是技术上的东西，而是你怎样把一件事情在数学上写清楚、写出一个清楚而严格的论证——这件事其实不那么容易。就这么一个结论，大家都是知道的、都学过的，但是怎么样把它写清楚？写证明一定要基于一些原理。老师说明这里”偷懒，写一个比较快的想法，书上有详细的论证。</p>
+<p>老师问：这个需要写证明吗，需要还是不需要？有同学答“不用”。老师随即抽一位同学来试着讲这个证明（玩笑说要挑个名字霸气的同学），并说坐着讲也行：“你知道怎么证明这个带余除法吗？”同学提到：先说存在性，要证明从 a 中减掉 N 的一个倍数之后，可以得到一个余数满足大于等于 0 、严格小于 N ；但像加 1 、减 1 这类情形怎么处理，并没有讲清。</p>
+<p>老师借此强调：我们需要的是数学上一个清晰的、严格的论证，问题在于“怎么样组织一个证明”。大学数学一开始第一个要练习的事情，并不是技术上的东西，而是你怎样把一件事情在数学上写清楚、写出一个清楚而严格的论证——这件事其实不那么容易。就这么一个结论，大家都是知道的、都学过的，但是怎么样把它写清楚？写证明一定要基于一些原理。老师说明这里“偷懒”，写一个比较快的想法，书上有详细的论证。</p>
 </section><section class="wb-seg"><h3 id="存在性用不交的左闭右开区间覆盖-mathbb-z"><span class="wb-ts">01:21:14—01:23:49</span> ｜
-存在性：用不交的左闭右开区间覆盖 ℤ</h3>
+存在性：用不交的左闭右开区间覆盖 Z</h3>
 </div><div class="wb-excard" id="wb-ex-8" data-ex-idx="8"><h4 id="例题证明-8012114-带余除法中-qr-的存在性">例题/证明
 8（01:21:14）｜ 带余除法中 (q,r) 的存在性<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-8" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ol type="1">
-<li>命题：设 N 是已经取定的正整数， a∈ℤ 。要证存在 q∈ℤ 与满足 0≤r&lt;N 的非负整数 r ，使 a=qN+r 。</li>
+<li>命题：设 N 是已经取定的正整数， a∈Z 。要证存在 q∈Z 与满足 0≤r&lt;N 的非负整数 r ，使 a=qN+r 。</li>
 <li>思路：先说存在性。把整数按 N 的倍数分成长度为 N 的一段段，这些段两两不交、并起来正好是全部整数； a 只能落在唯一一段里，那段左端点的倍数给出 q ，再令 r:=a−qN 即可。</li>
 <li>逐步推导：
 <ul>
 <li>考虑 N 的所有倍数 …,−2N,−N,0,N,2N,… ，得到数轴上的一串等距点。</li>
-<li>对每个 k∈ℤ ，取左闭右开区间 [kN,(k+1)N) ，并取其中的整数点，记
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>k</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>m</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>k</mi><mi>N</mi><mo>≤</mo><mi>m</mi><mo>&lt;</mo><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>N</mi><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">I_k=\{m\in\mathbb Z:\ kN\le m&lt;(k+1)N\}.</annotation></semantics></math></div>用不交并可以把整数集写成
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℤ</mi><mo>=</mo><munder><mo>⨆</mo><mrow><mi>k</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow></munder><msub><mi>I</mi><mi>k</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbb Z=\bigsqcup_{k\in\mathbb Z} I_k.</annotation></semantics></math></div>这些<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>k</mi></msub><annotation encoding="application/x-tex">I_k</annotation></semantics></math>两两不交，等于用不交的区间（段）去覆盖所有的整数。</li>
-<li>于是 a 掉在唯一的一个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>k</mi></msub><annotation encoding="application/x-tex">I_k</annotation></semantics></math>里，所以存在唯一的一个 q∈ℤ ，使
+<li>对每个 k∈Z ，取左闭右开区间 [kN,(k+1)N) ，并取其中的整数点，记
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>k</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>m</mi><mo>∈</mo><mi mathvariant="double-struck">Z</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>k</mi><mi>N</mi><mo>≤</mo><mi>m</mi><mo>&lt;</mo><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>N</mi><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">I_k=\{m\in\mathbb Z:\ kN\le m&lt;(k+1)N\}.</annotation></semantics></math></div>用不交并可以把整数集写成
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">Z</mi><mo>=</mo><munder><mo>⨆</mo><mrow><mi>k</mi><mo>∈</mo><mi mathvariant="double-struck">Z</mi></mrow></munder><msub><mi>I</mi><mi>k</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbb Z=\bigsqcup_{k\in\mathbb Z} I_k.</annotation></semantics></math></div>这些<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>k</mi></msub><annotation encoding="application/x-tex">I_k</annotation></semantics></math>两两不交，等于用不交的区间（段）去覆盖所有的整数。</li>
+<li>于是 a 掉在唯一的一个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>k</mi></msub><annotation encoding="application/x-tex">I_k</annotation></semantics></math>里，所以存在唯一的一个 q∈Z ，使
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mi>N</mi><mo>≤</mo><mi>a</mi><mo>&lt;</mo><mo stretchy="false" form="prefix">(</mo><mi>q</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>N</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">qN\le a&lt;(q+1)N.</annotation></semantics></math></div></li>
-<li>定义（冒号等号表示”定义为）
+<li>定义（冒号等号表示“定义为”）
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>:=</mo><mi>a</mi><mo>−</mo><mi>q</mi><mi>N</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">r:=a-qN.</annotation></semantics></math></div></li>
 <li>由 qN≤a&lt;(q+1)N 两边减去 qN ，得 0≤a−qN&lt;N ，即
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>r</mi><mo>&lt;</mo><mi>N</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">0\le r&lt;N,</annotation></semantics></math></div>且 r 是整数、非负。于是 a=qN+r 。</li>
 </ul></li>
 <li>结论：满足条件的 (q,r) 存在。</li>
-<li>老师点出的意义与易错点：老师称这是”最偷懒的写法，用”把整数用不交区间覆盖起来”这样一个论证，书上有更详细的论证。关键是存在性不能靠”显然，而要基于” ℤ 可写成不交并”这条原理——写证明一定要基于原理（这也正是后面课间被追问的地方）。</li>
+<li>老师点出的意义与易错点：老师称这是“最偷懒的写法”，用“把整数用不交区间覆盖起来”这样一个论证，书上有更详细的论证。关键是存在性不能靠“显然”，而要基于“ Z 可写成不交并”这条原理——写证明一定要基于原理（这也正是后面课间被追问的地方）。</li>
 </ol>
 </section><section class="wb-seg"><h3 id="唯一性留作练习"><span class="wb-ts">01:23:49—01:24:14</span> ｜ 唯一性留作练习</h3>
 </div><div class="wb-excard" id="wb-ex-9" data-ex-idx="9"><h4 id="例题证明-9012354-练习证明满足-aqnr0le-rn-的-qr-唯一">例题/证明
 9（01:23:54）｜ 练习：证明满足 a=qN+r 、 0≤r&lt;N 的 (q,r) 唯一<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-9" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ol type="1">
-<li>任务陈述：老师说”唯一性大家就自己做一个练习，我就不证了，并复述题目：就是这一对元素 (q,r) ，满足等式 a=qN+r 以及上面 q∈ℤ 、 0≤r&lt;N 的条件，它是唯一的。</li>
+<li>任务陈述：老师说“唯一性大家就自己做一个练习，我就不证了”，并复述题目：就是这一对元素 (q,r) ，满足等式 a=qN+r 以及上面 q∈Z 、 0≤r&lt;N 的条件，它是唯一的。</li>
 <li>思路：设两组解，相减把 q 与 r 分离，用 N 整除与 0≤r&lt;N 夹出<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><mo>=</mo><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">r_1=r_2</annotation></semantics></math>。</li>
 <li>[补全] 逐步推导（以下不是当堂讲的，仅作自学参照）：
 <ul>
-<li>设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><msub><mi>q</mi><mn>1</mn></msub><mi>N</mi><mo>+</mo><msub><mi>r</mi><mn>1</mn></msub><mo>=</mo><msub><mi>q</mi><mn>2</mn></msub><mi>N</mi><mo>+</mo><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">a=q_1N+r_1=q_2N+r_2</annotation></semantics></math>，其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">q_1,q_2\in\mathbb Z</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><msub><mi>r</mi><mn>1</mn></msub><mo>,</mo><msub><mi>r</mi><mn>2</mn></msub><mo>&lt;</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">0\le r_1,r_2&lt;N</annotation></semantics></math>
+<li>设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><msub><mi>q</mi><mn>1</mn></msub><mi>N</mi><mo>+</mo><msub><mi>r</mi><mn>1</mn></msub><mo>=</mo><msub><mi>q</mi><mn>2</mn></msub><mi>N</mi><mo>+</mo><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">a=q_1N+r_1=q_2N+r_2</annotation></semantics></math>，其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>q</mi><mn>2</mn></msub><mo>∈</mo><mi mathvariant="double-struck">Z</mi></mrow><annotation encoding="application/x-tex">q_1,q_2\in\mathbb Z</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><msub><mi>r</mi><mn>1</mn></msub><mo>,</mo><msub><mi>r</mi><mn>2</mn></msub><mo>&lt;</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">0\le r_1,r_2&lt;N</annotation></semantics></math>
 [补全]。</li>
 <li>相减得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>q</mi><mn>1</mn></msub><mo>−</mo><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>N</mi><mo>=</mo><msub><mi>r</mi><mn>2</mn></msub><mo>−</mo><msub><mi>r</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">(q_1-q_2)N=r_2-r_1</annotation></semantics></math>，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>∣</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>r</mi><mn>2</mn></msub><mo>−</mo><msub><mi>r</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N\mid(r_2-r_1)</annotation></semantics></math>
 [补全]。</li>
@@ -2140,18 +2141,18 @@ id="十三带余除法及其证明011726012414">十三、带余除法及其证�
 <li>结论： (q,r) 唯一 [补全]。</li>
 <li>意义与易错点：存在性与唯一性是要分别交代的两件事；老师把唯一性留作练习，要求自己把证明写完整。</li>
 </ol>
-<h2 id="十四模-n-的余数映射与同余类012427012647">十四、模 N 的余数映射与同余类（01:24:27—01:26:47）</h2>
-</section><section class="wb-seg"><h3 id="定义取模-n-的余数映射"><span class="wb-ts">01:24:27—01:25:20</span> ｜ 定义取模 N 的余数映射</h3>
-<p>有了带余除法，下面定义一个取模 N 的余数的映射。把 ℤ 映到余数的集合 {0,1,…,N−1} ：</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="double-struck">ℤ</mi><mo>→</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>a</mi><mo>↦</mo><mi>a</mi><mrow><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">mod</mi><mo>&#8289;</mo></mrow><mspace width="0.222em"></mspace><mi>N</mi></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\varphi:\ \mathbb Z\longrightarrow\{0,1,\dots,N-1\},\qquad a\longmapsto a\bmod N,</annotation></semantics></math></div></p>
+</section><h2 id="十四模-n-的余数映射与同余类012427012647">十四、模 N 的余数映射与同余类（01:24:27—01:26:47）</h2>
+<section class="wb-seg"><h3 id="定义取模-n-的余数映射"><span class="wb-ts">01:24:27—01:25:20</span> ｜ 定义取模 N 的余数映射</h3>
+<p>有了带余除法，下面定义一个取模 N 的余数的映射。把 Z 映到余数的集合 {0,1,…,N−1} ：</p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="double-struck">Z</mi><mo>→</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>a</mi><mo>↦</mo><mi>a</mi><mrow><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">mod</mi><mo>&#8289;</mo></mrow><mspace width="0.222em"></mspace><mi>N</mi></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\varphi:\ \mathbb Z\longrightarrow\{0,1,\dots,N-1\},\qquad a\longmapsto a\bmod N,</annotation></semantics></math></div></p>
 <p>也就是把一个整数 a 映到它除以 N 所得的余数；这个余数就落在 0 到 N−1 这样一个集合里。</p>
 </section><section class="wb-seg"><h3 id="取原像得到模-n-的同余类"><span class="wb-ts">01:25:20—01:26:47</span> ｜ 取原像得到模 N 的同余类</h3>
 <p>如果对这个映射取原像，就得到所谓的一个同余类；这个事情后面还会再回来讲。总之，取 r∈{0,1,…,N−1} 的原像</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>φ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>a</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>a</mi><mo>≡</mo><mi>r</mi><mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">mod</mi><mo>&#8289;</mo></mrow><mspace width="0.222em"></mspace><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi^{-1}(r)=\{a\in\mathbb Z:\ a\equiv r\pmod N\}.</annotation></semantics></math></div></p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>φ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>a</mi><mo>∈</mo><mi mathvariant="double-struck">Z</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>a</mi><mo>≡</mo><mi>r</mi><mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">mod</mi><mo>&#8289;</mo></mrow><mspace width="0.222em"></mspace><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi^{-1}(r)=\{a\in\mathbb Z:\ a\equiv r\pmod N\}.</annotation></semantics></math></div></p>
 <p>符号 a≡r(mod⁡N) 的意思指的是 N∣a−r ，即 a−r 被 N 整除。两个数模 N 同余，意思就是说它们的差是被 N 整除的，于是得到一个模 N 的同余类。</p>
-<h2
+</section><h2
 id="十五恒等映射复合映射与逆映射012647013446">十五、恒等映射、复合映射与逆映射（01:26:47—01:34:46）</h2>
-</section><section class="wb-seg"><h3 id="双射的逆映射与恒等映射-mathrmid_x"><span class="wb-ts">01:26:47—01:28:09</span> ｜
+<section class="wb-seg"><h3 id="双射的逆映射与恒等映射-mathrmid_x"><span class="wb-ts">01:26:47—01:28:09</span> ｜
 双射的逆映射与恒等映射<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow><mi>X</mi></msub><annotation encoding="application/x-tex">\mathrm{id}_X</annotation></semantics></math></h3>
 <p>前面讲了单射、满射、双射，然后讲了原像。关于双射有一个额外的操作：它存在所谓的逆映射。为说清楚这件事，先引入恒等映射。设 φ 是集合间的一个映射；对任何一个集合 X ，都可以考虑它到自己的恒等映射，记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow><mi>X</mi></msub><annotation encoding="application/x-tex">\mathrm{id}_X</annotation></semantics></math>：</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi></mrow><mi>X</mi></msub><mo>:</mo><mspace width="0.222em"></mspace><mi>X</mi><mo>→</mo><mi>X</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>x</mi><mo>↦</mo><mi>x</mi><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mo>∀</mo><mi>x</mi><mo>∈</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathrm{id}_X:\ X\to X,\qquad x\mapsto x\quad(\forall x\in X),</annotation></semantics></math></div></p>
@@ -2168,7 +2169,7 @@ id="十五恒等映射复合映射与逆映射012647013446">十五、恒等映�
 </div><div class="wb-excard" id="wb-ex-10" data-ex-idx="10"><h4 id="例题证明-10013117-随堂练习计算-fcirc-g-与-gcirc-f">例题/证明
 10（01:31:17）｜ 随堂练习：计算 f∘g 与 g∘f<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-10" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ol type="1">
-<li>任务：老师说”还是写具体的例子吧，取<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup></mrow><annotation encoding="application/x-tex">f(x)=e^x</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">g(x)=x^2</annotation></semantics></math>，让大家很快做一个练习： (f∘g)(x) 等于什么？ (g∘f)(x) 又等于什么？</li>
+<li>任务：老师说“还是写具体的例子吧”，取<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup></mrow><annotation encoding="application/x-tex">f(x)=e^x</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">g(x)=x^2</annotation></semantics></math>，让大家很快做一个练习： (f∘g)(x) 等于什么？ (g∘f)(x) 又等于什么？</li>
 <li>思路：按定义， ψ∘φ 是先作用 φ 、再作用 ψ ，所以 f∘g 里先算 g 、 g∘f 里先算 f 。</li>
 <li>逐步推导：
 <ul>
@@ -2176,7 +2177,7 @@ id="十五恒等映射复合映射与逆映射012647013446">十五、恒等映�
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo>∘</mo><mi>f</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mi>x</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mi>x</mi></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><msup><mi>e</mi><mrow><mn>2</mn><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(g\circ f)(x)=g(f(x))=g(e^x)=(e^x)^2=e^{2x}</annotation></semantics></math>。</li>
 </ul></li>
 <li>结论：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo>∘</mo><mi>g</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><msup><mi>x</mi><mn>2</mn></msup></msup></mrow><annotation encoding="application/x-tex">(f\circ g)(x)=e^{x^2}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo>∘</mo><mi>f</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mn>2</mn><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(g\circ f)(x)=e^{2x}</annotation></semantics></math>，两者不相等；换顺序复合是不一样的。</li>
-<li>意义与易错点：复合映射一般不可交换，次序至关重要；记号 ψ∘φ 的读法与书写方向容易弄反，必须留意定义域与陪域的衔接，以及”先右后左”的作用次序。</li>
+<li>意义与易错点：复合映射一般不可交换，次序至关重要；记号 ψ∘φ 的读法与书写方向容易弄反，必须留意定义域与陪域的衔接，以及“先右后左”的作用次序。</li>
 </ol>
 </section><section class="wb-seg"><h3 id="逆映射的定义与一个等价性小练习"><span class="wb-ts">01:31:50—01:34:46</span> ｜
 逆映射的定义与一个等价性小练习</h3>
@@ -2188,7 +2189,7 @@ id="例题证明-11013355-思考题varphi-有双侧逆等价于varphi-既单又�
 11（01:33:55）｜
 思考题：「 φ 有双侧逆」等价于「 φ 既单又满」<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-11" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ol type="1">
-<li>任务陈述：老师说”可以做一个小练习”：上面的条件还可以等价于 φ 是双射，就是说 φ 既单又满。</li>
+<li>任务陈述：老师说“可以做一个小练习”：上面的条件还可以等价于 φ 是双射，就是说 φ 既单又满。</li>
 <li>思路：一个方向的复合给出单射，另一个方向的复合给出满射；反过来用双射把 ψ 造出来。</li>
 <li>[补全] 逐步推导（以下不是当堂讲的，仅作自学参照）：
 <ul>
@@ -2201,26 +2202,26 @@ id="例题证明-11013355-思考题varphi-有双侧逆等价于varphi-既单又�
 <li>结论：两种表述等价 [补全]。</li>
 <li>意义与老师的要求：“存在双侧逆”就是双射的严格刻画。老师同时建议大家：把书上关于双射、满射的一些没有证明的性质，自己去写一些详细的证明细节；这些东西比较基础，但还是有必要，先从这种简单的证明开始写起。</li>
 </ol>
-<h2
+</section><h2
 id="十六课间讨论带余除法的证明是否依赖最小元公理013452014056">十六、课间讨论：带余除法的证明是否依赖最小元公理（01:34:52—01:40:56）</h2>
-</section><section class="wb-seg"><h3 id="宣布休息转入课间追问"><span class="wb-ts">01:34:52—01:35:36</span> ｜
+<section class="wb-seg"><h3 id="宣布休息转入课间追问"><span class="wb-ts">01:34:52—01:35:36</span> ｜
 宣布休息，转入课间追问</h3>
-<p>老师先说”最后我们再来引进一个（映射的）操作，叫做限制映射，随即宣布课间休息、十五分钟后再继续。接下来的几分钟，是同学接着追问刚才带余除法证明的一段对话。</p>
+<p>老师先说“最后我们再来引进一个（映射的）操作，叫做限制映射”，随即宣布课间休息、十五分钟后再继续。接下来的几分钟，是同学接着追问刚才带余除法证明的一段对话。</p>
 </section><section class="wb-seg"><h3
 id="同学质疑覆盖论证是否循环地用了自然数非空子集有最小元"><span class="wb-ts">01:35:36—01:38:22</span>
 ｜ 同学质疑：覆盖论证是否循环地用了「自然数非空子集有最小元」</h3>
-<p>同学先给出另一条思路：从 a 出发不断减去 N （若 a 是负的就往上加回来），直到落进 [0,N) ；如果 a 本身已经在这一段里就不用做了，如果太大就一直减，得到一列不断下降的自然数。这条思路要靠”自然数集合（的任一非空子集）一定有最小元”这条公理；同学说”如果没有这个的话，感觉好像做不了这个证明。</p>
-<p>同学接着把问题拉回老师刚才的”不交区间覆盖”论证：这样算不算循环论证？怎么证明这些集合两两不交，而且所有集合并起来又正好是 ℤ ？要说明这一点，似乎得把整数一个个列出来、排列出来，这本身又依赖于”有最小元”这条公理；感觉确实依赖于它。同学还说：如果没有这条公理，自然数里就可能存在一列不断下降、却永远到不了 0 的序列，那样刚才那个”覆盖”就未必成立了。</p>
+<p>同学先给出另一条思路：从 a 出发不断减去 N （若 a 是负的就往上加回来），直到落进 [0,N) ；如果 a 本身已经在这一段里就不用做了，如果太大就一直减，得到一列不断下降的自然数。这条思路要靠“自然数集合（的任一非空子集）一定有最小元”这条公理；同学说“如果没有这个的话，感觉好像做不了这个证明”。</p>
+<p>同学接着把问题拉回老师刚才的“不交区间覆盖”论证：这样算不算循环论证？怎么证明这些集合两两不交，而且所有集合并起来又正好是 Z ？要说明这一点，似乎得把整数一个个列出来、排列出来，这本身又依赖于“有最小元”这条公理；感觉确实依赖于它。同学还说：如果没有这条公理，自然数里就可能存在一列不断下降、却永远到不了 0 的序列，那样刚才那个“覆盖”就未必成立了。</p>
 </section><section class="wb-seg"><h3 id="回应把整数分段直接列出来即可验证"><span class="wb-ts">01:38:22—01:39:57</span> ｜
 回应：把整数分段直接列出来即可验证</h3>
-<p>回应是并没有用那条公理，只是把整数全列出来、摆出来、陈列出来： 0,1,2,…,N−1 ；再 N,N+1,…,2N−1 ；……一段一段排下去没有异议，这可以直接证明。同学追问”比如你从零开始吗？“接着的说法是：对，比如 0 到 N 、 N 到 2N 就没问题吧，用这个办法把所有整数这样排出来，这些段是不交的。还提醒：写这个证明时别把该写的东西漏掉，至少要把端点记号、”不交”以及”并起来是全部整数”写清楚。</p>
+<p>回应是并没有用那条公理，只是把整数全列出来、摆出来、陈列出来： 0,1,2,…,N−1 ；再 N,N+1,…,2N−1 ；……一段一段排下去没有异议，这可以直接证明。同学追问“比如你从零开始吗？”接着的说法是：对，比如 0 到 N 、 N 到 2N 就没问题吧，用这个办法把所有整数这样排出来，这些段是不交的。还提醒：写这个证明时别把该写的东西漏掉，至少要把端点记号、“不交”以及“并起来是全部整数”写清楚。</p>
 </section><section class="wb-seg"><h3 id="课间应答无实质内容"><span class="wb-ts">01:39:57—01:40:56</span> ｜
 课间应答（无实质内容）</h3>
 <p>这几分钟是课间临近结束时的零散应答与闲谈，没有给出新的数学内容或结论；到
-01:40:56 老师说”好，那我们就继续吧，回到正课。</p>
-<h2
+01:40:56 老师说“好，那我们就继续吧”，回到正课。</p>
+</section><h2
 id="十七限制映射与交换图014109014321">十七、限制映射与交换图（01:41:09—01:43:21）</h2>
-</section><section class="wb-seg"><h3 id="限制映射-varphi_x-的定义"><span class="wb-ts">01:41:09—01:42:24</span> ｜ 限制映射<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><msub><mo stretchy="false" form="prefix">|</mo><msup><mi>X</mi><mo>′</mo></msup></msub></mrow><annotation encoding="application/x-tex">\varphi|_{X&#39;}</annotation></semantics></math>的定义</h3>
+<section class="wb-seg"><h3 id="限制映射-varphi_x-的定义"><span class="wb-ts">01:41:09—01:42:24</span> ｜ 限制映射<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><msub><mo stretchy="false" form="prefix">|</mo><msup><mi>X</mi><mo>′</mo></msup></msub></mrow><annotation encoding="application/x-tex">\varphi|_{X&#39;}</annotation></semantics></math>的定义</h3>
 <p>关于映射再引入一个定义：前面讲了单射、满射、双射，映射复合，以及可逆与它的逆；最后引进限制映射。仍设 φ:X→Y 是一个映射，并设 X 有一个子集<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mo>′</mo></msup><mo>⊆</mo><mi>X</mi></mrow><annotation encoding="application/x-tex">X&#39;\subseteq X</annotation></semantics></math>。可以把 φ 的定义域缩小到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>X</mi><mo>′</mo></msup><annotation encoding="application/x-tex">X&#39;</annotation></semantics></math>，定义 φ 在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>X</mi><mo>′</mo></msup><annotation encoding="application/x-tex">X&#39;</annotation></semantics></math>上的限制，记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><msub><mo stretchy="false" form="prefix">|</mo><msup><mi>X</mi><mo>′</mo></msup></msub></mrow><annotation encoding="application/x-tex">\varphi|_{X&#39;}</annotation></semantics></math>：</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><msub><mo stretchy="false" form="prefix">|</mo><msup><mi>X</mi><mo>′</mo></msup></msub><mo>:</mo><mspace width="0.222em"></mspace><msup><mi>X</mi><mo>′</mo></msup><mo>→</mo><mi>Y</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>x</mi><mo>↦</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi|_{X&#39;}:\ X&#39;\longrightarrow Y,\qquad x\longmapsto\varphi(x).</annotation></semantics></math></div></p>
 <p>它的对应规则和 φ 一样，改变的只是定义域；所以严格来说它是一个新的映射。易错点：限制映射与原映射法则相同但定义域不同，二者不是同一个映射。</p>
@@ -2237,9 +2238,9 @@ X&#39; &amp; \xrightarrow{\quad i\quad} &amp; X \\[2mm]
 Y &amp; = &amp; Y
 \end{array}</annotation></semantics></math></p>
 <p>老师最后点出过渡的一句话：在集合论里存在映射，映射可以用来定义运算，也可以用来描述运算。</p>
-<h2
+</section><h2
 id="十八直积与二元运算014321015533">十八、直积与二元运算（01:43:21—01:55:33）</h2>
-</section><section class="wb-seg"><h3 id="笛卡尔积直积的定义"><span class="wb-ts">01:43:21—01:44:47</span> ｜
+<section class="wb-seg"><h3 id="笛卡尔积直积的定义"><span class="wb-ts">01:43:21—01:44:47</span> ｜
 笛卡尔积（直积）的定义</h3>
 <p>具体来讲，先考虑直积，也叫笛卡尔积，然后再来考虑运算。用两个集合做例子，一般任意有限多个都可以类似地定义。设 X,Y 是集合，定义它们的笛卡尔积（直积），记作 X×Y ：</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>×</mo><mi>Y</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>∣</mo><mi>x</mi><mo>∈</mo><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>∈</mo><mi>Y</mi><mo stretchy="false" form="postfix">}</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">X\times Y=\{(x,y)\mid x\in X,\ y\in Y\},</annotation></semantics></math></div></p>
@@ -2247,8 +2248,8 @@ id="十八直积与二元运算014321015533">十八、直积与二元运算（01
 </section><section class="wb-seg"><h3 id="自己与自己作直积及二维平面的记号约定"><span class="wb-ts">01:44:47—01:45:52</span> ｜
 自己与自己作直积及二维平面的记号约定</h3>
 <p>这就是两个集合的直积，可以推广到任意有限多个。一个集合可以和自己做直积，写成 X×X （也记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>X</mi><mn>2</mn></msup><annotation encoding="application/x-tex">X^2</annotation></semantics></math>）。更具体的例子：二维平面就是两个实数集的直积</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℝ</mi><mo>×</mo><mi mathvariant="double-struck">ℝ</mi><mo>=</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbb R\times\mathbb R=\mathbb R^2,</annotation></semantics></math></div></p>
-<p>通常把它的元素写成二元实向量（二元数组）。书里对行向量与列向量不做区分，要在具体的场合说明用的是行还是列：可以用行向量（“躺下来），有时它也表示列向量（“立起来）；需要额外做一个明确的说明。</p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">R</mi><mo>×</mo><mi mathvariant="double-struck">R</mi><mo>=</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbb R\times\mathbb R=\mathbb R^2,</annotation></semantics></math></div></p>
+<p>通常把它的元素写成二元实向量（二元数组）。书里对行向量与列向量不做区分，要在具体的场合说明用的是行还是列：可以用行向量（“躺下来”），有时它也表示列向量（“立起来”）；需要额外做一个明确的说明。</p>
 </section><section class="wb-seg"><h3 id="二元运算的一般定义"><span class="wb-ts">01:46:05—01:47:49</span> ｜ 二元运算的一般定义</h3>
 <p>现在设还有第三个集合 Z 。若有一个映射</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>X</mi><mo>×</mo><mi>Y</mi><mo>→</mo><mi>Z</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\varphi:\ X\times Y\longrightarrow Z,</annotation></semantics></math></div></p>
@@ -2258,11 +2259,11 @@ id="十八直积与二元运算014321015533">十八、直积与二元运算（01
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi>X</mi><mo>×</mo><mi>X</mi><mo>→</mo><mi>X</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\varphi:\ X\times X\longrightarrow X.</annotation></semantics></math></div></p>
 </section><section class="wb-seg"><h3 id="四则运算二元运算要求处处有定义"><span class="wb-ts">01:47:54—01:48:45</span> ｜
 四则运算：二元运算要求处处有定义</h3>
-<p>很常见的例子是四则运算（加、减、乘、除）。取 X=ℝ ：加减乘都没问题，</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>−</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>×</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="double-struck">ℝ</mi><mo>×</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">+,\ -,\ \times:\ \mathbb R\times\mathbb R\longrightarrow\mathbb R.</annotation></semantics></math></div></p>
-<p>但要做除法就不能除以零，所以不能在整个 ℝ×ℝ 上定义除法——它不是总有定义的。把定义域稍作调整（例如第二个分量限制为非零实数）也可以定义除法：</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>/</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="double-struck">ℝ</mi><mo>×</mo><msup><mi mathvariant="double-struck">ℝ</mi><mo>×</mo></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>↦</mo><mi>a</mi><mi>/</mi><mi>b</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">/:\ \mathbb R\times\mathbb R^\times\longrightarrow\mathbb R,\qquad (a,b)\longmapsto a/b.</annotation></semantics></math></div></p>
-<p>易错点：二元运算必须在整个定义域上处处有定义；“除零”使除法不能成为 ℝ 上的二元运算。</p>
+<p>很常见的例子是四则运算（加、减、乘、除）。取 X=R ：加减乘都没问题，</p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>−</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>×</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="double-struck">R</mi><mo>×</mo><mi mathvariant="double-struck">R</mi><mo>→</mo><mi mathvariant="double-struck">R</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">+,\ -,\ \times:\ \mathbb R\times\mathbb R\longrightarrow\mathbb R.</annotation></semantics></math></div></p>
+<p>但要做除法就不能除以零，所以不能在整个 R×R 上定义除法——它不是总有定义的。把定义域稍作调整（例如第二个分量限制为非零实数）也可以定义除法：</p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>/</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="double-struck">R</mi><mo>×</mo><msup><mi mathvariant="double-struck">R</mi><mo>×</mo></msup><mo>→</mo><mi mathvariant="double-struck">R</mi><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>↦</mo><mi>a</mi><mi>/</mi><mi>b</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">/:\ \mathbb R\times\mathbb R^\times\longrightarrow\mathbb R,\qquad (a,b)\longmapsto a/b.</annotation></semantics></math></div></p>
+<p>易错点：二元运算必须在整个定义域上处处有定义；“除零”使除法不能成为 R 上的二元运算。</p>
 </section><section class="wb-seg"><h3 id="映射集的记号-mathrmmapxy-与-yx"><span class="wb-ts">01:48:45—01:49:48</span> ｜
 映射集的记号 Map(X,Y) 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>Y</mi><mi>X</mi></msup><annotation encoding="application/x-tex">Y^X</annotation></semantics></math></h3>
 <p>常规的例子先不说，写一些其他的运算。先约定一个记号：用 Map(X,Y) 表示所有从 X 到 Y 的映射构成的集合。在别的地方也会看到记号<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>Y</mi><mi>X</mi></msup><annotation encoding="application/x-tex">Y^X</annotation></semantics></math>，同样表示 X 到 Y 的所有映射。</p>
@@ -2271,7 +2272,7 @@ id="十八直积与二元运算014321015533">十八、直积与二元运算（01
 </div><div class="wb-excard" id="wb-ex-12" data-ex-idx="12"><h4 id="例题证明-12015001-把映射复合写成一个二元运算">例题/证明
 12（01:50:01）｜ 把映射复合写成一个二元运算<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-12" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ol type="1">
-<li>任务：用两个映射集定义下面一个二元运算，使”输入两个映射、输出一个映射。</li>
+<li>任务：用两个映射集定义下面一个二元运算，使“输入两个映射、输出一个映射”。</li>
 <li>思路：取 Map(X,Y) 与 Map(Y,Z) ，让一对映射沿<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mover><mo>→</mo><mi>φ</mi></mover><mi>Y</mi><mover><mo>→</mo><mi>ψ</mi></mover><mi>Z</mi></mrow><annotation encoding="application/x-tex">X\xrightarrow{\varphi}Y\xrightarrow{\psi}Z</annotation></semantics></math>复合，结果落在 Map(X,Z) 。</li>
 <li>逐步操作：
 <ul>
@@ -2282,8 +2283,8 @@ id="十八直积与二元运算014321015533">十八、直积与二元运算（01
 <li>写成
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>∘</mi><mo>:</mo><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>ψ</mi><mo>,</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>↦</mo><mi>ψ</mi><mo>∘</mo><mi>φ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\circ:\ \mathrm{Map}(Y,Z)\times\mathrm{Map}(X,Y)\longrightarrow\mathrm{Map}(X,Z),\qquad (\psi,\varphi)\longmapsto\psi\circ\varphi.</annotation></semantics></math></div></li>
 </ul></li>
-<li>结论：映射复合是这两个映射集之间（一般地，两个不同集合之间）的一个二元运算；老师说”好，那这是一个例子。</li>
-<li>意义与易错点：这是”用映射描述运算”的第一个非平凡例子；也说明二元运算不一定要形如 X×X→X ，参与的两个集合可以不同，次序不能颠倒。</li>
+<li>结论：映射复合是这两个映射集之间（一般地，两个不同集合之间）的一个二元运算；老师说“好，那这是一个例子”。</li>
+<li>意义与易错点：这是“用映射描述运算”的第一个非平凡例子；也说明二元运算不一定要形如 X×X→X ，参与的两个集合可以不同，次序不能颠倒。</li>
 </ol>
 </section><section class="wb-seg"><h3 id="幂集与-2a示性函数给出的双射"><span class="wb-ts">01:51:00—01:54:32</span> ｜ 幂集与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>：示性函数给出的双射</h3>
 </div><div class="wb-excard" id="wb-ex-13" data-ex-idx="13"><h4
@@ -2291,10 +2292,10 @@ id="例题证明-13015116-构造mathcal-pa-与-2amathrmmapa01-之间的双射示
 13（01:51:16）｜
 构造： 𝒫(A) 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>A</mi></msup><mo>=</mo><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo>,</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">2^A=\mathrm{Map}(A,\{0,1\})</annotation></semantics></math>之间的双射（示性函数）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-13" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ol type="1">
-<li>任务与背景：前面写过幂集 𝒫(A) 。把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>规定为”从 A 到二元集 {0,1} 的所有映射”构成的集合，即
+<li>任务与背景：前面写过幂集 𝒫(A) 。把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>规定为“从 A 到二元集 {0,1} 的所有映射”构成的集合，即
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>A</mi></msup><mo>:=</mo><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo>,</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">2^A:=\mathrm{Map}(A,\{0,1\}).</annotation></semantics></math></div>要建立一个映射
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>:</mo><mspace width="0.222em"></mspace><mi mathvariant="script">𝒫</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><msup><mn>2</mn><mi>A</mi></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">\Phi:\ \mathcal P(A)\longrightarrow 2^A,</annotation></semantics></math></div>并说明它是双射——这也解释了幂集为什么可以写成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>。</li>
-<li>思路：给定 A 的子集 B ，用”判断元素是不是掉在 B 里头”来造一个 A→{0,1} 的映射，即 B 的示性函数。</li>
+<li>思路：给定 A 的子集 B ，用“判断元素是不是掉在 B 里头”来造一个 A→{0,1} 的映射，即 B 的示性函数。</li>
 <li>逐步构造与推导：
 <ul>
 <li>给定 B⊆A ，定义示性函数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mn mathvariant="bold">𝟏</mn><mi>B</mi></msub><mo>:</mo><mi>A</mi><mo>→</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\mathbf{1}_B:A\to\{0,1\}</annotation></semantics></math>：
@@ -2307,7 +2308,7 @@ id="例题证明-13015116-构造mathcal-pa-与-2amathrmmapa01-之间的双射示
 [补全]。</li>
 </ul></li>
 <li>结论： Φ 是双射， 𝒫(A) 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>作为集合一一对应。老师说：“所以之前<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>呢，就是因为有这样一个对应，才可以这么写。”</li>
-<li>意义与易错点：子集与”到 {0,1} 的映射”一一对应；课上只报出这个双射并让大家自行检验，单射、满射的验证细节未展开，已按
+<li>意义与易错点：子集与“到 {0,1} 的映射”一一对应；课上只报出这个双射并让大家自行检验，单射、满射的验证细节未展开，已按
 [补全] 标注，仅作自学参照。</li>
 </ol>
 </section><section class="wb-seg"><h3 id="回扣映射集上的二元运算就是复合"><span class="wb-ts">01:54:32—01:54:49</span> ｜
@@ -2323,9 +2324,9 @@ id="例题证明-13015116-构造mathcal-pa-与-2amathrmmapa01-之间的双射示
 <li>减法： (f,g)↦f−g 。</li>
 </ul>
 <p>这些都是 X×X→X 的二元运算。老师最后说：有非常多的例子可以解释。</p>
-<h2
+</section><h2
 id="十九集合的基数势与大小的比较015535020131">十九、集合的基数（势）与大小的比较（01:55:35—02:01:31）</h2>
-</section><section class="wb-seg"><h3 id="开场无实质内容"><span class="wb-ts">01:55:35—01:56:40</span> ｜ 开场（无实质内容）</h3>
+<section class="wb-seg"><h3 id="开场无实质内容"><span class="wb-ts">01:55:35—01:56:40</span> ｜ 开场（无实质内容）</h3>
 <p>这几句只有「ok」「好」等口头语和停顿，没有数学内容，略过。老师随后进入正题，讲集合的大小。</p>
 </section><section class="wb-seg"><h3 id="本节主题集合的大小势基数"><span class="wb-ts">01:56:40—01:58:02</span> ｜
 本节主题：集合的大小、势（基数）</h3>
@@ -2361,23 +2362,23 @@ id="十九集合的基数势与大小的比较015535020131">十九、集合的�
 <li>在存在单射的前提下，如果两者又不相等（不等势），也就是<strong>又不存在双射</strong>A→B ，就说 A 的势严格更小，记作 |A|&lt;|B| 。一句话概括：存在单射，但是不存在双射。</li>
 <li>有限集没什么好说的，这样的比较非常直截了当。</li>
 </ul>
-<h2
+</section><h2
 id="二十可数集与不可数集020141020452">二十、可数集与不可数集（02:01:41—02:04:52）</h2>
-</section><section class="wb-seg"><h3 id="最小的无限集与可数不可数"><span class="wb-ts">02:01:41—02:03:53</span> ｜
+<section class="wb-seg"><h3 id="最小的无限集与可数不可数"><span class="wb-ts">02:01:41—02:03:53</span> ｜
 最小的无限集与可数、不可数</h3>
-<p>第一个无限集、也是最小的无限集，就是自然数集 ℕ （正整数集）。</p>
+<p>第一个无限集、也是最小的无限集，就是自然数集 N （正整数集）。</p>
 <ul>
-<li>如果集合 A 与 ℕ 等势，即可以建立一一对应，就说 A 是<strong>可数</strong>的无穷集，简称<strong>可数集</strong>。</li>
-<li>有的教科书会把有限集以及自然数集都叫「可数集」；我们这里直接约定：可数集专指<strong>无限</strong>的、与 ℕ 等势的集合。</li>
-<li>「可数」的意思就是能把 A 中元素一个一个列出来：通过与 ℕ 的双射，可以数出它的第一个元素、第二个元素、第三个元素……一直数遍，把 A 中元素全部列出来。</li>
-<li>为确定起见，约定讨论的是无限集：无限集 A 与 ℕ 等势就说它可数；无限集 A 与 ℕ 不等势，就说它<strong>不可数</strong>。</li>
+<li>如果集合 A 与 N 等势，即可以建立一一对应，就说 A 是<strong>可数</strong>的无穷集，简称<strong>可数集</strong>。</li>
+<li>有的教科书会把有限集以及自然数集都叫「可数集」；我们这里直接约定：可数集专指<strong>无限</strong>的、与 N 等势的集合。</li>
+<li>「可数」的意思就是能把 A 中元素一个一个列出来：通过与 N 的双射，可以数出它的第一个元素、第二个元素、第三个元素……一直数遍，把 A 中元素全部列出来。</li>
+<li>为确定起见，约定讨论的是无限集：无限集 A 与 N 等势就说它可数；无限集 A 与 N 不等势，就说它<strong>不可数</strong>。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="回顾与新问题a-与它的幂集哪个大"><span class="wb-ts">02:04:24—02:04:52</span> ｜
 回顾与新问题： A 与它的幂集哪个大</h3>
 <p>现在规定了怎样比较集合的大小。之前那个例子可以重新看看：一个集合 A 和它的幂集 𝒫(A) ，它们的势之间有什么大小关系？哪个大、哪个小？</p>
-<h2
+</section><h2
 id="二十一幂集没有最大的基数020502020619">二十一、幂集：没有最大的基数（02:05:02—02:06:19）</h2>
-</section><section class="wb-seg"><h3 id="单射-amapstoa-与没有最大的基数"><span class="wb-ts">02:05:02—02:06:19</span> ｜ 单射 a↦{a} 与「没有最大的基数」</h3>
+<section class="wb-seg"><h3 id="单射-amapstoa-与没有最大的基数"><span class="wb-ts">02:05:02—02:06:19</span> ｜ 单射 a↦{a} 与「没有最大的基数」</h3>
 </div><div class="wb-excard" id="wb-ex-15" data-ex-idx="15"><h4 id="例题证明-15020502-amathcalpa单射-amapstoa">例题/证明
 15（02:05:02）｜ |A|&lt;|𝒫(A)| ：单射 a↦{a}<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-15" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：对任意集合 A ，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>A</mi><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="script">𝒫</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|A|&lt;|\mathcal{P}(A)|</annotation></semantics></math>。</p>
@@ -2393,25 +2394,25 @@ id="二十一幂集没有最大的基数020502020619">二十一、幂集：没�
 </ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>： |A|&lt;|𝒫(A)| 。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：这个结论告诉你「<strong>没有最大的基数（势）</strong>」——基数总可以严格地变大：从一个集合出发取它的幂集，再取幂集，每次都严格变大。注意「存在单射」只给出 ≤ ，要得到严格小于必须再排除双射；这一步靠的是之前已证的结论，不要以为单射本身就够。</p>
-<h2
+</section><h2
 id="二十二可数集的例子整数与有理数020633021808">二十二、可数集的例子：整数与有理数（02:06:33—02:18:08）</h2>
-</section><section class="wb-seg"><h3 id="回到可数不可数整数集可数吗"><span class="wb-ts">02:06:33—02:07:19</span> ｜
+<section class="wb-seg"><h3 id="回到可数不可数整数集可数吗"><span class="wb-ts">02:06:33—02:07:19</span> ｜
 回到可数／不可数：整数集可数吗</h3>
-<p>回到可数、不可数这个特定的话题：与 ℕ 等势的集合（自然数集的势）单独讨论一下。按定义，可数就是元素可以全部列出来——第一个、第二个、第三个这么列出来。</p>
-<p>考虑这样的包含关系： ℕ⊂ℤ⊂ℚ 。虽然作为集合它们有直接的包含关系，但先别急着下结论，先考虑：整数集是不是可数的？为什么可数？</p>
-</section><section class="wb-seg"><h3 id="整数集-mathbbz-可数"><span class="wb-ts">02:07:25—02:08:00</span> ｜ 整数集 ℤ 可数</h3>
+<p>回到可数、不可数这个特定的话题：与 N 等势的集合（自然数集的势）单独讨论一下。按定义，可数就是元素可以全部列出来——第一个、第二个、第三个这么列出来。</p>
+<p>考虑这样的包含关系： N⊂Z⊂Q 。虽然作为集合它们有直接的包含关系，但先别急着下结论，先考虑：整数集是不是可数的？为什么可数？</p>
+</section><section class="wb-seg"><h3 id="整数集-mathbbz-可数"><span class="wb-ts">02:07:25—02:08:00</span> ｜ 整数集 Z 可数</h3>
 </div><div class="wb-excard" id="wb-ex-16" data-ex-idx="16"><h4 id="例题证明-16020725-整数集-mathbbz-可数">例题/证明
-16（02:07:25）｜ 整数集 ℤ 可数<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-16" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">命题</strong>： ℤ 是可数集。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：把 ℤ 的元素一个不漏地排成一列；或者等价地，给出 ℕ→ℤ 的双射。</p>
+16（02:07:25）｜ 整数集 Z 可数<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-16" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">命题</strong>： Z 是可数集。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：把 Z 的元素一个不漏地排成一列；或者等价地，给出 N→Z 的双射。</p>
 <p><strong class="wb-pill wb-pill-derive">步骤</strong>（两种写法）：</p>
 <ol type="1">
-<li>映射写法（同学回答）：把正数映到偶数、负数映到奇数（ 0 单独处理），由此得到 ℕ 与 ℤ 之间的双射。</li>
-<li>列举写法：直接把 ℤ 全部列出来：
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>2</mn><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><mn>2</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>3</mn><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><mn>3</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>…</mi></mrow><annotation encoding="application/x-tex">0,\ 1,\ -1,\ 2,\ -2,\ 3,\ -3,\ \dots</annotation></semantics></math></div>这样第一个、第二个、第三个……就把所有整数数遍了，所以 ℤ 可数。</li>
+<li>映射写法（同学回答）：把正数映到偶数、负数映到奇数（ 0 单独处理），由此得到 N 与 Z 之间的双射。</li>
+<li>列举写法：直接把 Z 全部列出来：
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>2</mn><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><mn>2</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>3</mn><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><mn>3</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>…</mi></mrow><annotation encoding="application/x-tex">0,\ 1,\ -1,\ 2,\ -2,\ 3,\ -3,\ \dots</annotation></semantics></math></div>这样第一个、第二个、第三个……就把所有整数数遍了，所以 Z 可数。</li>
 </ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>： ℤ∼ℕ ，整数集可数。</p>
-<p><strong class="wb-pill wb-pill-note">易错点</strong>： ℤ 真包含 ℕ ，但两者元素「一样多」——不能用有限集里「真子集一定更小」的直觉去套无限集。老师特意让大家先想「为什么可数」，就是要按列举／双射的定义来判定。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>： Z∼N ，整数集可数。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>： Z 真包含 N ，但两者元素「一样多」——不能用有限集里「真子集一定更小」的直觉去套无限集。老师特意让大家先想「为什么可数」，就是要按列举／双射的定义来判定。</p>
 </section><section class="wb-seg"><h3 id="有理数可数既约分数与两种策略"><span class="wb-ts">02:08:12—02:10:17</span> ｜
 有理数可数：既约分数与两种策略</h3>
 <p>那有理数呢？也是可数的，为什么？怎样列举出所有的有理数？</p>
@@ -2420,14 +2421,14 @@ id="二十二可数集的例子整数与有理数020633021808">二十二、可�
 <li>有人想固定分子去列分母：比如分子取 1 ，得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo><mi>…</mi><mo>,</mo><mfrac><mn>1</mn><mn>10000</mn></mfrac><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">\frac12,\frac13,\frac14,\dots,\frac1{10000},\dots</annotation></semantics></math>，光这一个分子就说不完，列不下去。</li>
 <li>一种有效的策略：约定按<strong>分子分母之和</strong>p+q 来排序（把和固定的分数放在一组）。</li>
 <li>另一种策略：真的去固定分子、列分母——因为分子本身也只有可数个选择，所以最终得到的是<strong>可数个可数集的并</strong>；这时需要证明「可数个可数集的并还是可数的」。</li>
-<li>两个方式课上都会简单解释一下。老师希望大家花时间把这些细节补完整，因为课上的基础部分讲得比较简略；这也是一个提醒：把「想清楚一件事情」看得比「知道答案」更重。结论是真的： ℚ 可数。</li>
+<li>两个方式课上都会简单解释一下。老师希望大家花时间把这些细节补完整，因为课上的基础部分讲得比较简略；这也是一个提醒：把「想清楚一件事情」看得比「知道答案」更重。结论是真的： Q 可数。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="策略一按分子分母之和排序"><span class="wb-ts">02:10:24—02:12:42</span> ｜
 策略一：按分子分母之和排序</h3>
 </div><div class="wb-excard" id="wb-ex-17" data-ex-idx="17"><h4
 id="例题证明-17021024-有理数集-mathbbq-可数策略一按-pq-排序">例题/证明
-17（02:10:24）｜ 有理数集 ℚ 可数（策略一：按 p+q 排序）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-17" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">命题</strong>： ℚ 可数。</p>
+17（02:10:24）｜ 有理数集 Q 可数（策略一：按 p+q 排序）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-17" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">命题</strong>： Q 可数。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：先证<strong>正有理数</strong>可数（按分子分母之和 p+q 排序），再像整数那样把正、负、零穿插列出，就得到全体有理数。</p>
 <p><strong class="wb-pill wb-pill-derive">步骤</strong>：</p>
 <ol type="1">
@@ -2436,29 +2437,29 @@ id="例题证明-17021024-有理数集-mathbbq-可数策略一按-pq-排序">例
 <li>于是按 n=2,3,4,… 的顺序，把每个 n 对应的有限个既约分数依次列出，就把所有正有理数排成一列<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><mo>,</mo><msub><mi>r</mi><mn>2</mn></msub><mo>,</mo><msub><mi>r</mi><mn>3</mn></msub><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">r_1,r_2,r_3,\dots</annotation></semantics></math>，故正有理数集可数。</li>
 <li>与整数的情形类似：把正有理数列成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><mo>,</mo><msub><mi>r</mi><mn>2</mn></msub><mo>,</mo><msub><mi>r</mi><mn>3</mn></msub><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">r_1,r_2,r_3,\dots</annotation></semantics></math>后，全体有理数可列为
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>r</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><msub><mi>r</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>r</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><msub><mi>r</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>r</mi><mn>3</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mo>−</mo><msub><mi>r</mi><mn>3</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>…</mi></mrow><annotation encoding="application/x-tex">0,\ r_1,\ -r_1,\ r_2,\ -r_2,\ r_3,\ -r_3,\ \dots</annotation></semantics></math></div></li>
-<li>这一列把 ℚ 中元素全部列出，故 ℚ 可数。</li>
+<li>这一列把 Q 中元素全部列出，故 Q 可数。</li>
 </ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>： ℚ 可数。这是第一种策略，成立。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>： Q 可数。这是第一种策略，成立。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：必须先把分数化成既约，否则同一个有理数会以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>2</mn><mn>4</mn></mfrac><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">\frac12,\frac24,\dots</annotation></semantics></math>反复出现；而「和固定只有有限个」正是保证能一组一组列完的关键。</p>
 </section><section class="wb-seg"><h3 id="策略二固定分子与所需命题"><span class="wb-ts">02:12:46—02:14:19</span> ｜
 策略二：固定分子与所需命题</h3>
 </div><div class="wb-excard" id="wb-ex-18" data-ex-idx="18"><h4
 id="例题证明-18021246-有理数集-mathbbq-可数策略二化为可数个可数集的并">例题/证明
-18（02:12:46）｜ 有理数集 ℚ 可数（策略二：化为可数个可数集的并）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-18" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">命题</strong>： ℚ 可数。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：按分子（或分母）分组，把 ℚ 写成可数个可数集的并，再用「可数个可数集的并仍可数」这一命题（见证明
+18（02:12:46）｜ 有理数集 Q 可数（策略二：化为可数个可数集的并）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-18" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">命题</strong>： Q 可数。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：按分子（或分母）分组，把 Q 写成可数个可数集的并，再用「可数个可数集的并仍可数」这一命题（见证明
 6）得出结论。</p>
 <p><strong class="wb-pill wb-pill-derive">步骤</strong>：</p>
 <ol type="1">
 <li>对所有的整数 p 作为分子考虑，令
-<div class="wb-math-wrap" data-tex="A_p=\left\{\dfrac{p}{q}\ \middle|\ q\in\mathbb{Z},\ q\ne0,\ \gcd(p,q)=1\right\}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>p</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mstyle displaystyle="true"><mfrac><mi>p</mi><mi>q</mi></mfrac></mstyle><mspace width="0.222em"></mspace><mo stretchy="true" form="infix">|</mo><mspace width="0.222em"></mspace><mi>q</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>q</mi><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi mathvariant="normal">gcd</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mo stretchy="true" form="postfix">}</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A_p=\left\{\dfrac{p}{q}\ \middle|\ q\in\mathbb{Z},\ q\ne0,\ \gcd(p,q)=1\right\}.</annotation></semantics></math></div></div></li>
+<div class="wb-math-wrap" data-tex="A_p=\left\{\dfrac{p}{q}\ \middle|\ q\in\mathbb{Z},\ q\ne0,\ \gcd(p,q)=1\right\}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>p</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mstyle displaystyle="true"><mfrac><mi>p</mi><mi>q</mi></mfrac></mstyle><mspace width="0.222em"></mspace><mo stretchy="true" form="infix">|</mo><mspace width="0.222em"></mspace><mi>q</mi><mo>∈</mo><mi mathvariant="double-struck">Z</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>q</mi><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi mathvariant="normal">gcd</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mo stretchy="true" form="postfix">}</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A_p=\left\{\dfrac{p}{q}\ \middle|\ q\in\mathbb{Z},\ q\ne0,\ \gcd(p,q)=1\right\}.</annotation></semantics></math></div></div></li>
 <li>为了写成<strong>不交并</strong>，可以约定分数都取既约形式（分子分母无公因子），这样不同组的元素不会重复。</li>
 <li>每个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>p</mi></msub><annotation encoding="application/x-tex">A_p</annotation></semantics></math>由分母 q 遍历可数多个值，是可数集；而 p 也只有可数个，于是
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">ℚ</mi><mo>=</mo><munder><mo>⋃</mo><mrow><mi>p</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow></munder><msub><mi>A</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">\mathbb{Q}=\bigcup_{p\in\mathbb{Z}}A_p</annotation></semantics></math></div>是可数个可数集的并。</li>
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">Q</mi><mo>=</mo><munder><mo>⋃</mo><mrow><mi>p</mi><mo>∈</mo><mi mathvariant="double-struck">Z</mi></mrow></munder><msub><mi>A</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">\mathbb{Q}=\bigcup_{p\in\mathbb{Z}}A_p</annotation></semantics></math></div>是可数个可数集的并。</li>
 <li>由证明 6
-的命题， ℚ 可数。</li>
+的命题， Q 可数。</li>
 </ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>： ℚ 可数（第二种策略）。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>： Q 可数（第二种策略）。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：固定分子时「一个分子列不完」不是问题——只要每一组可数、组数也可数，就能用并集命题一次处理完；不交并的约定只是为了列举时不重复。</p>
 </section><section class="wb-seg"><h3 id="命题的证明矩形表与两下标求和排序"><span class="wb-ts">02:14:32—02:17:48</span> ｜
 命题的证明：矩形表与两下标求和排序</h3>
@@ -2481,35 +2482,35 @@ a_{31} &amp; a_{32} &amp; a_{33} &amp; \cdots \\
 <li>于是并集的元素可以全部列举出来，故并集可数。</li>
 </ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：可数个可数集的并仍可数。把这个结论用到证明
-5，就得到 ℚ 可数。</p>
+5，就得到 Q 可数。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：用严格语言把这个「走对角线」的排序写下来稍微啰嗦一点，老师让大家练习一下这个陈述；并强调「想清楚一件事情是更重要的，比你知道这个答案可能更重要一点」。若不同<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>n</mi></msub><annotation encoding="application/x-tex">A_n</annotation></semantics></math>有重复元素，列举时跳过已出现过的即可，不影响结论。</p>
 </section><section class="wb-seg"><h3 id="分界从实数开始不再可数"><span class="wb-ts">02:18:01—02:18:08</span> ｜
 分界：从实数开始不再可数</h3>
 <p>现在知道了：正整数、整数、有理数这些都是可数的。下面有一个不一样的分界：从实数开始，或者说无理数，它就不再是可数集了。</p>
-<h2
+</section><h2
 id="二十三实数集不可数约化二进制展开与对角线法021815022536">二十三、实数集不可数：约化、二进制展开与对角线法（02:18:15—02:25:36）</h2>
-</section><section class="wb-seg"><h3 id="结果与约化"><span class="wb-ts">02:18:15—02:19:06</span> ｜ 结果与约化</h3>
-<p>要陈述并证明的结果：实数集 ℝ （从而无理数集）<strong>不可数</strong>。</p>
-<p>证明时先做一个约化以方便：只需要证明开区间 (0,1) 不可数，因为 (0,1) 与 ℝ 是等势的。</p>
-</section><section class="wb-seg"><h3 id="与-mathbbr-等势双射的复合"><span class="wb-ts">02:19:09—02:22:00</span> ｜ (0,1) 与 ℝ 等势：双射的复合</h3>
+<section class="wb-seg"><h3 id="结果与约化"><span class="wb-ts">02:18:15—02:19:06</span> ｜ 结果与约化</h3>
+<p>要陈述并证明的结果：实数集 R （从而无理数集）<strong>不可数</strong>。</p>
+<p>证明时先做一个约化以方便：只需要证明开区间 (0,1) 不可数，因为 (0,1) 与 R 是等势的。</p>
+</section><section class="wb-seg"><h3 id="与-mathbbr-等势双射的复合"><span class="wb-ts">02:19:09—02:22:00</span> ｜ (0,1) 与 R 等势：双射的复合</h3>
 </div><div class="wb-excard" id="wb-ex-20" data-ex-idx="20"><h4
 id="例题证明-20021909-构造01-与-mathbbr-等势线性函数与正切函数的复合">例题/证明
 20（02:19:09）｜
-构造： (0,1) 与 ℝ 等势：线性函数与正切函数的复合<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-20" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">任务</strong>：造出 (0,1) 到 ℝ 的双射，说明二者等势。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：任意两个有限区间都可以用线性函数建立双射；再用正切函数把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-\frac{\pi}{2},\frac{\pi}{2})</annotation></semantics></math>映到整个 ℝ 。所求双射就是这两者的复合。</p>
+构造： (0,1) 与 R 等势：线性函数与正切函数的复合<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-20" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务</strong>：造出 (0,1) 到 R 的双射，说明二者等势。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：任意两个有限区间都可以用线性函数建立双射；再用正切函数把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-\frac{\pi}{2},\frac{\pi}{2})</annotation></semantics></math>映到整个 R 。所求双射就是这两者的复合。</p>
 <p><strong class="wb-pill">课堂上的办法</strong>：同学们提了反三角（函数）、倒数等，都可以，只是各要多做一些操作。老师采用三角函数这一条。</p>
 <p><strong class="wb-pill wb-pill-derive">步骤</strong>：</p>
 <ol type="1">
 <li>先用线性函数把 (0,1) 映到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-\frac{\pi}{2},\frac{\pi}{2})</annotation></semantics></math>：
 <div class="wb-math-wrap" data-tex="x\ \longmapsto\ \pi\left(x-\frac12\right)=\pi x-\frac{\pi}{2},"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mspace width="0.222em"></mspace><mo>↦</mo><mspace width="0.222em"></mspace><mi>π</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>π</mi><mi>x</mi><mo>−</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">x\ \longmapsto\ \pi\left(x-\frac12\right)=\pi x-\frac{\pi}{2},</annotation></semantics></math></div></div>它是线性的，斜率为 π ，把 x=0,1 分别送到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mi>π</mi><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">-\frac{\pi}{2},\ \frac{\pi}{2}</annotation></semantics></math>。</li>
 <li>再取正切：
-<div class="wb-math-wrap" data-tex="t\ \longmapsto\ \tan t,\qquad t\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right),"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mspace width="0.222em"></mspace><mo>↦</mo><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">tan</mi><mo>&#8289;</mo></mrow><mi>t</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>t</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">t\ \longmapsto\ \tan t,\qquad t\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right),</annotation></semantics></math></div></div>它把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-\frac{\pi}{2},\frac{\pi}{2})</annotation></semantics></math>双射到 ℝ 。</li>
-<li>复合得 (0,1)→ℝ 的双射
+<div class="wb-math-wrap" data-tex="t\ \longmapsto\ \tan t,\qquad t\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right),"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mspace width="0.222em"></mspace><mo>↦</mo><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">tan</mi><mo>&#8289;</mo></mrow><mi>t</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>t</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">t\ \longmapsto\ \tan t,\qquad t\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right),</annotation></semantics></math></div></div>它把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-\frac{\pi}{2},\frac{\pi}{2})</annotation></semantics></math>双射到 R 。</li>
+<li>复合得 (0,1)→R 的双射
 <div class="wb-math-wrap" data-tex="x\ \longmapsto\ \tan\!\left(\pi x-\frac{\pi}{2}\right)."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mspace width="0.222em"></mspace><mo>↦</mo><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">tan</mi><mo>&#8289;</mo></mrow><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>π</mi><mi>x</mi><mo>−</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">x\ \longmapsto\ \tan\!\left(\pi x-\frac{\pi}{2}\right).</annotation></semantics></math></div></div>（换一个变量记号来写也一样；这里细节没那么重要，关键是知道有限区间与整个实数可以很容易地建立双射。）</li>
 </ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>： (0,1)∼ℝ ，所以只需证明 (0,1) 不可数即可。</p>
-<p><strong class="wb-pill wb-pill-note">易错点</strong>：由「双射的复合仍是双射」保证整体是双射；不要只写一段线性函数就以为映到了整个 ℝ 。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>： (0,1)∼R ，所以只需证明 (0,1) 不可数即可。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：由「双射的复合仍是双射」保证整体是双射；不要只写一段线性函数就以为映到了整个 R 。</p>
 </section><section class="wb-seg"><h3 id="中数的二进制展开"><span class="wb-ts">02:22:17—02:25:20</span> ｜ (0,1) 中数的二进制展开</h3>
 </div><div class="wb-excard" id="wb-ex-21" data-ex-idx="21"><h4 id="例题证明-21022217-构造01-中数的二进制小数展开">例题/证明
 21（02:22:17）｜
@@ -2531,14 +2532,14 @@ id="例题证明-20021909-构造01-与-mathbbr-等势线性函数与正切函数
 反证法与对角线构造（时间到，周四继续）</h3>
 </div><div class="wb-excard" id="wb-ex-22" data-ex-idx="22"><h4
 id="例题证明-22022520-实数集-mathbbr-不可数反证法与对角线构造">例题/证明
-22（02:25:20）｜ 实数集 ℝ 不可数：反证法与对角线构造<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-22" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">命题</strong>： ℝ 不可数（等价于 (0,1) 不可数）。</p>
+22（02:25:20）｜ 实数集 R 不可数：反证法与对角线构造<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-22" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">命题</strong>： R 不可数（等价于 (0,1) 不可数）。</p>
 <p><strong class="wb-pill wb-pill-idea">思路（当堂讲到）</strong>：老师明确说，接下来要通过一个<strong>反证法</strong>把这些二进制小数全部列出来，全列出之后再构造一个「在这个区间里头、却不在那张表里」的数，从而导出矛盾。但时间已经到了，今天讲不完这个例子，<strong>周四继续这个证明</strong>。以下标
 <code>[补全]</code> 的部分都不是当堂讲的，仅作自学参照。</p>
 <p><strong class="wb-pill wb-pill-derive">当堂给出的准备步骤</strong>：</p>
 <ol type="1">
 <li>由构造
-7， (0,1)∼ℝ ，只需证 (0,1) 不可数。</li>
+7， (0,1)∼R ，只需证 (0,1) 不可数。</li>
 <li>由构造
 8， (0,1) 中每个数可写成二进制小数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mi>.</mi><msub><mi>a</mi><mn>1</mn></msub><msub><mi>a</mi><mn>2</mn></msub><mi>⋯</mi></mrow><annotation encoding="application/x-tex">0.a_1a_2\cdots</annotation></semantics></math>，且表示唯一（已排除全 0 、全 1 及二义表示）。</li>
 <li>反证假设：设 (0,1) 可数，则其中的数可全部列成一列<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>x</mi><mn>3</mn></msub><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">x_1,x_2,x_3,\dots</annotation></semantics></math>，每个
@@ -2551,14 +2552,14 @@ id="例题证明-22022520-实数集-mathbbr-不可数反证法与对角线构造
 <li>于是对每个 n ， b 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>n</mi></msub><annotation encoding="application/x-tex">x_n</annotation></semantics></math>在第 2n−1 或第 2n 位上不同，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≠</mo><msub><mi>x</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">b\ne x_n</annotation></semantics></math>；又 b 的每一组里都含 0 ，不会以全 1 结尾，也不会全为 0 ，所以 b∈(0,1) 且表示唯一。</li>
 <li>但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">x_1,x_2,\dots</annotation></semantics></math>已声称列尽 (0,1) 中所有数，与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≠</mo><msub><mi>x</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">b\ne x_n</annotation></semantics></math>（对所有 n ）矛盾。</li>
 </ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>：反证假设不成立， (0,1) 不可数，故 ℝ 不可数（无理数集同样不可数）。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：反证假设不成立， (0,1) 不可数，故 R 不可数（无理数集同样不可数）。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：这是 Cantor
 对角线法。把无限多个二进制小数「全部列出」正是反证假设，构造出的数必须在区间里、又必须避开表里每一行；二进制的二义表示若不先排除，构造时容易出错。本段只讲到思路与准备，完整论证按
 <code>[补全]</code>
 给出，<strong>不是当堂讲的</strong>，周四接着讲。</p>
-<h2
+</section><h2
 id="二十四课后答疑对角线法与-2a-记号022543023258">二十四、课后答疑：对角线法与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>A</mi></msup><annotation encoding="application/x-tex">2^A</annotation></semantics></math>记号（02:25:43—02:32:58）</h2>
-</section><section class="wb-seg"><h3 id="下课与课间无实质内容"><span class="wb-ts">02:25:43—02:26:27</span> ｜
+<section class="wb-seg"><h3 id="下课与课间无实质内容"><span class="wb-ts">02:25:43—02:26:27</span> ｜
 下课与课间（无实质内容）</h3>
 <p>下课、接电话（「喂……挂了」）等课堂管理与闲聊，没有数学内容，略过。随后有同学留下来继续问。</p>
 </section><section class="wb-seg"><h3 id="答疑一对角线法为什么给出不在表里的数"><span class="wb-ts">02:26:27—02:29:43</span> ｜
@@ -2744,6 +2745,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -2816,6 +2843,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -2843,11 +2876,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2992,22 +3021,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -3408,19 +3424,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

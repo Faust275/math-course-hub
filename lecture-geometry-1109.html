@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1306,7 +1307,7 @@ body{padding-top:54px}
 @media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
 
 </style>
-<div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-geometry.html">← 几何</a><a href="course-geometry.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html" class="wb-cur">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">几何 <span>›</span> <b>2026-11-09</b><span class="wb-tag">讲义全文</span></div><span class="wb-meta">1 章 · 11 小节 · 5 例题</span><a href="lecture-geometry-2026-11-04.html">‹ 上一节</a><span class="wb-off">下一节 ›</span><a href="full/geometry-1109.html" target="_blank">纯净版 ↗</a><button class="wb-tool-btn" id="wb-selftest-btn" title="遮挡推导自测模式">🙈 自测模式</button><button class="wb-tool-btn" id="wb-toc-btn" title="查看大纲目录 (Alt+T)">📑 大纲</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜概念 / 时间戳 / 例题 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 目录大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" data-color="underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn wb-btn-del" id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><span>📝 添加/编辑便签</span><button class="wb-close-btn" id="wb-note-close" title="关闭">×</button></div><div class="wb-note-quote" id="wb-note-quote"></div><div class="wb-note-body"><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的疑问、思考或拓展推导..."></textarea></div><div class="wb-note-footer"><button class="wb-btn-text-del" id="wb-note-del-btn" style="display:none">删除便签</button><div style="flex:1"></div><button class="wb-tool-btn" id="wb-note-save-btn">保存便签</button></div></div></div><div id="wb-resume-toast" class="wb-resume-toast"><span>上次读到 <b id="wb-resume-pct">0</b>%</span><button id="wb-resume-jump" class="wb-resume-btn">继续阅读</button><button id="wb-resume-close" class="wb-close-btn" style="color:var(--wb-muted);font-size:16px">×</button></div><div class="wb-math-modal" id="wb-math-modal"><div class="wb-math-modal-dialog"><div class="wb-math-modal-header"><span>🔍 公式高清放大</span><button class="wb-close-btn" id="wb-math-modal-close" title="关闭 (Esc)">×</button></div><div class="wb-math-modal-body" id="wb-math-modal-body"></div><div class="wb-math-modal-footer"><button class="wb-tool-btn" id="wb-math-modal-copy">📋 复制 LaTeX 源码</button></div></div></div><div style="max-width:980px;margin:0 auto;">
+<div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-geometry.html">← 几何</a><a href="course-geometry.html?tab=textbook">📚 教材</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html" class="wb-cur">几何</a><a href="course-cprog.html">C 程</a></span><div class="wb-crumb">几何 <span>›</span> <b>2026-11-09</b><span class="wb-tag">讲义全文</span></div><span class="wb-meta">1 章 · 11 小节 · 5 例题</span><a href="lecture-geometry-2026-11-04.html">‹ 上一节</a><a href="lecture-geometry-1111.html">下一节 ›</a><a href="full/geometry-1109.html" target="_blank">纯净版 ↗</a><button class="wb-tool-btn" id="wb-selftest-btn" title="遮挡推导自测模式">🙈 自测模式</button><button class="wb-tool-btn" id="wb-toc-btn" title="查看大纲目录 (Alt+T)">📑 大纲</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜概念 / 时间戳 / 例题 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 目录大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" data-color="underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn wb-btn-del" id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><span>📝 添加/编辑便签</span><button class="wb-close-btn" id="wb-note-close" title="关闭">×</button></div><div class="wb-note-quote" id="wb-note-quote"></div><div class="wb-note-body"><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的疑问、思考或拓展推导..."></textarea></div><div class="wb-note-footer"><button class="wb-btn-text-del" id="wb-note-del-btn" style="display:none">删除便签</button><div style="flex:1"></div><button class="wb-tool-btn" id="wb-note-save-btn">保存便签</button></div></div></div><div id="wb-resume-toast" class="wb-resume-toast"><span>上次读到 <b id="wb-resume-pct">0</b>%</span><button id="wb-resume-jump" class="wb-resume-btn">继续阅读</button><button id="wb-resume-close" class="wb-close-btn" style="color:var(--wb-muted);font-size:16px">×</button></div><div class="wb-math-modal" id="wb-math-modal"><div class="wb-math-modal-dialog"><div class="wb-math-modal-header"><span>🔍 公式高清放大</span><button class="wb-close-btn" id="wb-math-modal-close" title="关闭 (Esc)">×</button></div><div class="wb-math-modal-body" id="wb-math-modal-body"></div><div class="wb-math-modal-footer"><button class="wb-tool-btn" id="wb-math-modal-copy">📋 复制 LaTeX 源码</button></div></div></div><div style="max-width:980px;margin:0 auto;">
     <div class="wb-cross-bar">
       <span class="wb-cross-label">🔗 对应知识推荐</span>
       <div class="wb-cross-pills">
@@ -1394,16 +1395,16 @@ id="坐标变换与正交对角化主方向与特征值作为几何不变量"><s
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi>T</mi></msup><mi>A</mi><mi>C</mi><mo>=</mo><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">C^TAC=\operatorname{diag}(\lambda_1,\lambda_2,\lambda_3).</annotation></semantics></math></div></p>
 <p>要使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi>T</mi></msup><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">C^TAC</annotation></semantics></math>为对角阵，由
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi><mo>=</mo><mi>C</mi><mi mathvariant="normal">Λ</mi><mspace width="1.0em"></mspace><mo>⇔</mo><mspace width="1.0em"></mspace><mi>A</mi><msub><mi mathvariant="bold-italic">𝒄</mi><mi>i</mi></msub><mo>=</mo><msub><mi>λ</mi><mi>i</mi></msub><msub><mi mathvariant="bold-italic">𝒄</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">AC=C\Lambda\quad\Longleftrightarrow\quad A\mathbf{c}_i=\lambda_i\mathbf{c}_i</annotation></semantics></math></div>可知： C 的每一列必须是 A 的<strong>特征向量</strong>，对角元<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\lambda_i</annotation></semantics></math>是对应的<strong>特征值</strong>。因此 -
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\lambda_i</annotation></semantics></math>称为 A 的<strong>特征值</strong>（老师口中的“增值）； - 对应的单位特征向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒄</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mathbf{c}_i</annotation></semantics></math>称为<strong>主方向</strong>（或特征方向）。</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\lambda_i</annotation></semantics></math>称为 A 的<strong>特征值</strong>（老师口中的“增值”）； - 对应的单位特征向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝒄</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mathbf{c}_i</annotation></semantics></math>称为<strong>主方向</strong>（或特征方向）。</p>
 <p><strong>特征值是几何不变量。</strong> 二次曲面由 A 决定；作正交坐标变换时 A 会变，但它的<strong>特征值不变</strong>。所以特征值是坐标旋转下的几何不变量，与所选坐标系无关。</p>
-<p><strong>主方向只与方向有关。</strong> 若 𝒚 是特征向量，则对任意非零数 k ， k𝒚 也是特征向量——特征向量只确定一条“方向，与长度无关。正因为如此我们称之为“主方向。</p>
+<p><strong>主方向只与方向有关。</strong> 若 𝒚 是特征向量，则对任意非零数 k ， k𝒚 也是特征向量——特征向量只确定一条“方向”，与长度无关。正因为如此我们称之为“主方向”。</p>
 </section><section class="wb-seg"><h3 id="例题求一个二次型的主方向正交对角化"><span class="wb-ts">00:16:11—00:29:09</span> ｜
 例题：求一个二次型的主方向（正交对角化）</h3>
 <div class="wb-excard" id="wb-ex-1" data-ex-idx="1"><h4 id="例题证明-1001611-求实对称矩阵的主方向与正交对角化">例题/证明
 1（00:16:11）｜ 求实对称矩阵的主方向与正交对角化<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-1" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题（题目）。</strong> 给定二次型
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mi>y</mi><mo>+</mo><mn>4</mn><mi>y</mi><mi>z</mi><mo>+</mo><mn>4</mn><mi>z</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">F(x,y,z)=x^2+y^2+z^2+4xy+4yz+4zx</annotation></semantics></math></div>（其对称矩阵的非对角元均为 2 ），求它完整的主方向，并写出正交矩阵 C 使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi>T</mi></msup><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">C^TAC</annotation></semantics></math>为对角阵。</p>
-<p><strong class="wb-pill wb-pill-idea">思路。</strong> 先写出对称矩阵 A ；再求特征多项式 |λE−A| 得到特征值；对每个特征值解 (A−λE)𝒙=𝟎 得特征方向；最后把相互正交的单位特征向量排成 C 。老师强调：本题重点在“过程，不必只盯答案。</p>
+<p><strong class="wb-pill wb-pill-idea">思路。</strong> 先写出对称矩阵 A ；再求特征多项式 |λE−A| 得到特征值；对每个特征值解 (A−λE)𝒙=𝟎 得特征方向；最后把相互正交的单位特征向量排成 C 。老师强调：本题重点在“过程”，不必只盯答案。</p>
 <p><strong class="wb-pill wb-pill-derive">逐步推导。</strong></p>
 <ol type="1">
 <li><p><strong class="wb-pill">写出 A 。</strong>
@@ -1449,7 +1450,7 @@ id="坐标变换与正交对角化主方向与特征值作为几何不变量"><s
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>A</mi><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi mathvariant="bold-italic">𝒙</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>H</mi></msup><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><msup><mi mathvariant="bold-italic">𝒙</mi><mi>H</mi></msup><msup><mi>A</mi><mi>H</mi></msup><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><msup><mi mathvariant="bold-italic">𝒙</mi><mi>H</mi></msup><mi>A</mi><mi mathvariant="bold-italic">𝒙</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\langle A\mathbf{x},\mathbf{x}\rangle=(A\mathbf{x})^H\mathbf{x}=\mathbf{x}^H A^H\mathbf{x}=\mathbf{x}^H A\mathbf{x}.</annotation></semantics></math></div>而
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="bold-italic">𝒙</mi><mi>H</mi></msup><mi>A</mi><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><msup><mi mathvariant="bold-italic">𝒙</mi><mi>H</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mover><mi>λ</mi><mo accent="true">¯</mo></mover><mspace width="0.167em"></mspace><msup><mi mathvariant="bold-italic">𝒙</mi><mi>H</mi></msup><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><mover><mi>λ</mi><mo accent="true">¯</mo></mover><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}^H A\mathbf{x}=\mathbf{x}^H(\lambda\mathbf{x})=\overline{\lambda}\,\mathbf{x}^H\mathbf{x}=\overline{\lambda}\,\lVert\mathbf{x}\rVert^2.</annotation></semantics></math></div></p></li>
 <li><p>两式相等：
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mo>=</mo><mover><mi>λ</mi><mo accent="true">¯</mo></mover><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda\,\lVert\mathbf{x}\rVert^2=\overline{\lambda}\,\lVert\mathbf{x}\rVert^2.</annotation></semantics></math></div>因 𝒙≠𝟎 ，有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lVert\mathbf{x}\rVert^2&gt;0</annotation></semantics></math>，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mover><mi>λ</mi><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\lambda=\overline{\lambda}</annotation></semantics></math>，即 λ∈ℝ 。</p></li>
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mo>=</mo><mover><mi>λ</mi><mo accent="true">¯</mo></mover><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda\,\lVert\mathbf{x}\rVert^2=\overline{\lambda}\,\lVert\mathbf{x}\rVert^2.</annotation></semantics></math></div>因 𝒙≠𝟎 ，有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">‖</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mn>2</mn></msup><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lVert\mathbf{x}\rVert^2&gt;0</annotation></semantics></math>，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mover><mi>λ</mi><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\lambda=\overline{\lambda}</annotation></semantics></math>，即 λ∈R 。</p></li>
 </ol>
 <p><strong class="wb-pill wb-pill-result">结论。</strong> 实对称矩阵的特征值全为实数。</p>
 <p><strong class="wb-pill wb-pill-note">老师点出的意义。</strong>
@@ -1567,11 +1568,11 @@ a_{41}&amp;a_{42}&amp;a_{44}
 <p>老师就“数学学习中如何使用人工智能（AI）”作了较长提醒，属于学习方法与学术规范的提醒，要点如下：</p>
 <ul>
 <li><strong class="wb-pill wb-pill-idea">背景案例。</strong> 有本科生用 AI
-批量生成论文，其中两篇被较好期刊接收；但审稿人与编委发现作者并不理解其“证明，引发国际负面影响。用自己都不懂的
+批量生成论文，其中两篇被较好期刊接收；但审稿人与编委发现作者并不理解其“证明”，引发国际负面影响。用自己都不懂的
 AI 成果投稿，既不道德，也浪费审稿人的大量时间。</li>
 <li><strong class="wb-pill">规则与态度。</strong> 不能完全依赖
-AI：要“利用”而非“依赖，二者层次不同。低年级打基础时尤其不要过早让 AI
-代做数学题——亲自动手推导的“过程”才是能力提升的来源，“你所有的付出都是有回报的。</li>
+AI：要“利用”而非“依赖”，二者层次不同。低年级打基础时尤其不要过早让 AI
+代做数学题——亲自动手推导的“过程”才是能力提升的来源，“你所有的付出都是有回报的”。</li>
 <li><strong class="wb-pill">正确用法。</strong> 用 AI
 查资料、引导思考、辅助学习是应当鼓励的；但绝不能在根本不理解的情况下把
 AI 产物拿去投稿或当作自己的成果。</li>
@@ -1740,6 +1741,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1812,6 +1839,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1839,11 +1872,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -1988,22 +2017,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2404,19 +2420,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

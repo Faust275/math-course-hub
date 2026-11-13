@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1407,17 +1408,17 @@ id="一线性相关性与有限域上的计数习题000355001814">一、线性�
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><msub><mi>v</mi><mn>1</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>a</mi><mi>m</mi></msub><msub><mi>v</mi><mi>m</mi></msub><mo>=</mo><mn>0</mn><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>∈</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a_1v_1+\cdots+a_mv_m=0\qquad(a_i\in F)</annotation></semantics></math></div>必定推出所有系数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>=</mo><mi>⋯</mi><mo>=</mo><msub><mi>a</mi><mi>m</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_1=\cdots=a_m=0</annotation></semantics></math>。</p>
 <ul>
 <li>单个向量 v 线性无关，等价于 v≠0 。</li>
-<li>两个向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_1,v_2</annotation></semantics></math>线性无关，等价于它们”不共线”——即谁也不是另一个的倍数（在实数域上，它们张成一个平面）。</li>
+<li>两个向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_1,v_2</annotation></semantics></math>线性无关，等价于它们“不共线”——即谁也不是另一个的倍数（在实数域上，它们张成一个平面）。</li>
 </ul>
 <p>线性相关则相反：某个向量可以被其余向量线性表出。</p>
 </section><section class="wb-seg"><h3 id="有限域上线性无关有序组的计数"><span class="wb-ts">00:06:07—00:18:14</span> ｜
 有限域上线性无关有序组的计数</h3>
-<p>考虑有限域 F （如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>，或更一般的有限域），记其元素个数为 p （当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">F=\mathbb Z_p</annotation></semantics></math>时 p 为素数）。 n 维向量空间<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>中共有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mi>n</mi></msup><annotation encoding="application/x-tex">p^n</annotation></semantics></math>个向量。</p>
+<p>考虑有限域 F （如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">Z</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>，或更一般的有限域），记其元素个数为 p （当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi mathvariant="double-struck">Z</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">F=\mathbb Z_p</annotation></semantics></math>时 p 为素数）。 n 维向量空间<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>中共有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mi>n</mi></msup><annotation encoding="application/x-tex">p^n</annotation></semantics></math>个向量。</p>
 <p>定义<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>m</mi></msub><annotation encoding="application/x-tex">S_m</annotation></semantics></math>为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>中<strong>有序</strong>的 m 个向量构成的线性无关组的全体，即
 <div class="wb-math-wrap" data-tex="S_m=\{(v_1,\ldots,v_m)\mid v_i\in F^n,\ v_1,\ldots,v_m\text{ 线性无关}\}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>m</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>∣</mo><msub><mi>v</mi><mi>i</mi></msub><mo>∈</mo><msup><mi>F</mi><mi>n</mi></msup><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mi>m</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> 线性无关</mtext></mrow><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">S_m=\{(v_1,\ldots,v_m)\mid v_i\in F^n,\ v_1,\ldots,v_m\text{ 线性无关}\}.</annotation></semantics></math></div></div>下面计算<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|S_m|</annotation></semantics></math>。</p>
 <div class="wb-excard" id="wb-ex-1" data-ex-idx="1"><h4 id="例题-1000948-m1-的情形s_1pn-1">例题 1（00:09:48）｜ m=1 的情形：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S_1=p^n-1</annotation></semantics></math><span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-1" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：求单个线性无关向量的取法数。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>： m=1 时，“线性无关”等价于”非零。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>： m=1 时，“线性无关”等价于“非零”。</p>
 <p><strong class="wb-pill wb-pill-derive">推导</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>中任取一个非零向量即可。非零向量共有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mi>n</mi></msup><annotation encoding="application/x-tex">p^n</annotation></semantics></math>个减去零向量 1 个，故
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">|S_1|=p^n-1.</annotation></semantics></math></div></p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|S_1|=p^n-1</annotation></semantics></math>。</p>
@@ -1437,7 +1438,7 @@ id="一线性相关性与有限域上的计数习题000355001814">一、线性�
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>v</mi><mn>1</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>a</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><msub><mi>v</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>∣</mo><msub><mi>a</mi><mi>i</mi></msub><mo>∈</mo><mi>F</mi><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{span}(v_1,\ldots,v_{m-1})=\{a_1v_1+\cdots+a_{m-1}v_{m-1}\mid a_i\in F\}.</annotation></semantics></math></div></li><li>由于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">v_1,\ldots,v_{m-1}</annotation></semantics></math>线性无关，不同的系数组<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a_1,\ldots,a_{m-1})</annotation></semantics></math>给出不同的向量；每个系数有 p 种取法，故该子空间恰有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">p^{m-1}</annotation></semantics></math>个元素。</li><li>为使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">v_1,\ldots,v_m</annotation></semantics></math>仍线性无关，只需<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>m</mi></msub><mo>∉</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v_m\notin\operatorname{span}(v_1,\ldots,v_{m-1})</annotation></semantics></math>。</li><li>因此固定前 m−1 个向量后，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>m</mi></msub><annotation encoding="application/x-tex">v_m</annotation></semantics></math>的取法为全空间<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>（共<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mi>n</mi></msup><annotation encoding="application/x-tex">p^n</annotation></semantics></math>个）减去该子空间（共<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>p</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">p^{m-1}</annotation></semantics></math>个），即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><msup><mi>p</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">p^n-p^{m-1}</annotation></semantics></math>种。</li></ol>
 <p>于是得到递推式
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><msup><mi>p</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">|S_m|=|S_{m-1}|\,(p^n-p^{m-1}).</annotation></semantics></math></div></p>
-<p><strong class="wb-pill wb-pill-result">结论</strong>：递推成立。注意当 m&gt;n 时会出现因子<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><msup><mi>p</mi><mi>n</mi></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p^n-p^n=0</annotation></semantics></math>，与”<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>中至多 n 个向量可线性无关”一致。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：递推成立。注意当 m&gt;n 时会出现因子<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><msup><mi>p</mi><mi>n</mi></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p^n-p^n=0</annotation></semantics></math>，与“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mi>n</mi></msup><annotation encoding="application/x-tex">F^n</annotation></semantics></math>中至多 n 个向量可线性无关”一致。</p>
 </div><div class="wb-excard" id="wb-ex-4" data-ex-idx="4"><h4 id="例题-3001600-乘积形式-s_mprod_i0m-1pn-pi">例题 3（00:16:00）｜
 乘积形式<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msubsup><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><msup><mi>p</mi><mi>i</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">|S_m|=\prod_{i=0}^{m-1}(p^n-p^i)</annotation></semantics></math><span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-4" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：写出<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|S_m|</annotation></semantics></math>的显式乘积公式。</p>
@@ -1448,9 +1449,9 @@ id="一线性相关性与有限域上的计数习题000355001814">一、线性�
 <p><strong class="wb-pill wb-pill-result">结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>S</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msubsup><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mi>n</mi></msup><mo>−</mo><msup><mi>p</mi><mi>i</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">|S_m|=\displaystyle\prod_{i=0}^{m-1}(p^n-p^i)</annotation></semantics></math>。</p>
 <p><strong class="wb-pill wb-pill-note">意义（老师预告）</strong>：这个有限域上的例子之后会用来计算一般线性群<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(F)</annotation></semantics></math>（即可逆 n 阶矩阵的个数），到时再回到这里。</p>
 <hr />
-<h2
+</section><h2
 id="二向量组的线性表示与矩阵的引入001824003733">二、向量组的线性表示与矩阵的引入（00:18:24—00:37:33）</h2>
-</section><section class="wb-seg"><h3 id="两组向量间的线性表示与系数记号"><span class="wb-ts">00:18:24—00:26:50</span> ｜
+<section class="wb-seg"><h3 id="两组向量间的线性表示与系数记号"><span class="wb-ts">00:18:24—00:26:50</span> ｜
 两组向量间的线性表示与系数记号</h3>
 <p>设 V 是 F 上的线性空间。取两组向量： -
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\ldots,\alpha_m</annotation></semantics></math>（称为 α 组）； -
@@ -1462,14 +1463,14 @@ id="二向量组的线性表示与矩阵的引入001824003733">二、向量组�
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>j</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>v</mi><mi>j</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\beta_j=(\alpha_1,\ldots,\alpha_m)\,v_j.</annotation></semantics></math></div></p>
 </section><section class="wb-seg"><h3 id="把线性表示组装成矩阵"><span class="wb-ts">00:26:50—00:30:30</span> ｜
 把线性表示组装成矩阵</h3>
-<p>把 n 个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>并排放在一起，记<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_n)</annotation></semantics></math>为以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>为”列”的有序组，则
+<p>把 n 个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>并排放在一起，记<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_n)</annotation></semantics></math>为以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\beta_j</annotation></semantics></math>为“列”的有序组，则
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">(\beta_1,\ldots,\beta_n)=(\alpha_1,\ldots,\alpha_m)\,(v_1,\ldots,v_n).</annotation></semantics></math></div>右侧第二个因子是一个 m 行 n 列的矩形数表，其第 i 行第 j 列的元素正是系数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">a_{ij}</annotation></semantics></math>：
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>1</mn><mi>n</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"><mo>⋱</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mi>m</mi><mn>1</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mi>m</mi><mn>2</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}
 a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1n}\\
 a_{21}&amp;a_{22}&amp;\cdots&amp;a_{2n}\\
 \vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
 a_{m1}&amp;a_{m2}&amp;\cdots&amp;a_{mn}
-\end{pmatrix}.</annotation></semantics></math>也就是说：要把一组向量用另一组向量线性表示，可以统一写成”向量组 ×
+\end{pmatrix}.</annotation></semantics></math>也就是说：要把一组向量用另一组向量线性表示，可以统一写成“向量组 ×
 系数矩阵”的乘积形式。<strong>矩阵</strong>正是这样自然出现的——它是代数里最重要的对象之一。</p>
 </section><section class="wb-seg"><h3 id="矩阵的定义零矩阵方阵与-fmtimes-n"><span class="wb-ts">00:30:30—00:37:33</span> ｜
 矩阵的定义、零矩阵、方阵与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{m\times n}</annotation></semantics></math></h3>
@@ -1480,13 +1481,13 @@ a_{m1}&amp;a_{m2}&amp;\cdots&amp;a_{mn}
 <li><strong class="wb-pill">方阵</strong>：当 m=n 时，称 A 为
 <strong>n 阶方阵</strong>。</li>
 <li><strong class="wb-pill">行列式</strong>：行列式只对（行数=列数的）方阵定义；对一般的非方阵不定义行列式。（老师提示：行列式的系统学习在几何/分析课，此处先不展开。）</li>
-<li><strong class="wb-pill">矩阵集合的记号</strong>：所有 m×n 矩阵构成的集合记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{m\times n}</annotation></semantics></math>。特别地，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mn>1</mn><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{1\times n}</annotation></semantics></math>对应”行向量空间，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">F^{n\times 1}</annotation></semantics></math>对应”列向量空间”——它们都天然是 F 上的线性空间，只是分别取横排或竖排的形式。</li>
+<li><strong class="wb-pill">矩阵集合的记号</strong>：所有 m×n 矩阵构成的集合记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{m\times n}</annotation></semantics></math>。特别地，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mn>1</mn><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{1\times n}</annotation></semantics></math>对应“行向量空间”，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">F^{n\times 1}</annotation></semantics></math>对应“列向量空间”——它们都天然是 F 上的线性空间，只是分别取横排或竖排的形式。</li>
 </ul>
-<p>若域 F 为 ℚ,ℝ 或 ℂ ，则分别称其上的矩阵为有理数矩阵、实矩阵、复矩阵（即矩阵元素取自该域）。</p>
+<p>若域 F 为 Q,R 或 C ，则分别称其上的矩阵为有理数矩阵、实矩阵、复矩阵（即矩阵元素取自该域）。</p>
 <hr />
-<h2
+</section><h2
 id="三矩阵的相等fmtimes-n-的线性空间结构与加法数乘003733004817">三、矩阵的相等、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{m\times n}</annotation></semantics></math>的线性空间结构与加法数乘（00:37:33—00:48:17）</h2>
-</section><section class="wb-seg"><h3 id="行列向量空间与矩阵相等"><span class="wb-ts">00:37:33—00:40:19</span> ｜
+<section class="wb-seg"><h3 id="行列向量空间与矩阵相等"><span class="wb-ts">00:37:33—00:40:19</span> ｜
 行/列向量空间与矩阵相等</h3>
 <p>作为特例，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mn>1</mn><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{1\times n}</annotation></semantics></math>（行向量）与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">F^{n\times 1}</annotation></semantics></math>（列向量）就是此前学过的 n 元向量空间的两个版本。</p>
 <p>在集合<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup><annotation encoding="application/x-tex">F^{m\times n}</annotation></semantics></math>中，两个矩阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A=(a_{ij})</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B=(b_{ij})</annotation></semantics></math>（同为 m×n ）相等，当且仅当它们<strong>所有对应元素都相等</strong>：
@@ -1507,16 +1508,16 @@ id="三矩阵的相等fmtimes-n-的线性空间结构与加法数乘003733004817
 <p><strong>逐步推导（老师带领逐条过）</strong>：</p><ol class="wb-steps"><li><strong>加法构成加群</strong>：零元是零矩阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mn>0</mn><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msub><annotation encoding="application/x-tex">0_{m\times n}</annotation></semantics></math>（所有元素为 0 ）；任意 A 的逆元是 −A （每个元素取相反数）；加法交换律显然。</li><li><strong>数乘与 1</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>⋅</mo><mi>A</mi><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">1\cdot A=A</annotation></semantics></math>。</li><li><strong>数乘结合律</strong>： (λμ)A=λ(μA) 。</li><li><strong>数乘对加法的分配律</strong>： λ(A+B)=λA+λB 。</li><li><strong>数的加法对数乘的分配律</strong>： (λ+μ)A=λA+μA 。</li></ol>
 <p><strong>结论</strong>：以上即定义 F -线性空间（亦即 F -模）所需的全部公理，因此固定行列数后，所有 m×n 矩阵构成 F -线性空间。</p>
 <hr />
-<h2
+</section><h2
 id="四矩阵的乘法005340013829">四、矩阵的乘法（00:53:40—01:38:29）</h2>
 <p>（课间休息后）此前定义了加法与数乘；减法在加群中自动存在（ A−B=A+(−B) ）。下面考虑乘法。</p>
-</section><section class="wb-seg"><h3 id="乘法的定义与可乘条件"><span class="wb-ts">00:53:40—01:02:02</span> ｜
+<section class="wb-seg"><h3 id="乘法的定义与可乘条件"><span class="wb-ts">00:53:40—01:02:02</span> ｜
 乘法的定义与可乘条件</h3>
-<p>设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">A\in F^{m\times n}</annotation></semantics></math>（ A 为 m 行 n 列），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">B\in F^{n\times p}</annotation></semantics></math>（ B 为 n 行 p 列）。<strong>只有当左矩阵的列数等于右矩阵的行数时，乘积才有定义</strong>。此时定义乘积<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mi>A</mi><mi>B</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">C=AB\in F^{m\times p}</annotation></semantics></math>，其第 (i,k) 元素为 A 的第 i 行与 B 的第 k 列做”点乘”：
+<p>设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">A\in F^{m\times n}</annotation></semantics></math>（ A 为 m 行 n 列），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">B\in F^{n\times p}</annotation></semantics></math>（ B 为 n 行 p 列）。<strong>只有当左矩阵的列数等于右矩阵的行数时，乘积才有定义</strong>。此时定义乘积<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mi>A</mi><mi>B</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">C=AB\in F^{m\times p}</annotation></semantics></math>，其第 (i,k) 元素为 A 的第 i 行与 B 的第 k 列做“点乘”：
 <div class="wb-math-wrap" data-tex="c_{ik}=\sum_{j=1}^{n}a_{ij}b_{jk}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>b</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">c_{ik}=\sum_{j=1}^{n}a_{ij}b_{jk}.</annotation></semantics></math></div></div>用求和号统一写成
 <div class="wb-math-wrap" data-tex="c_{ik}=\sum_{j=1}^{n}a_{ij}\,b_{jk}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mspace width="0.167em"></mspace><msub><mi>b</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">c_{ik}=\sum_{j=1}^{n}a_{ij}\,b_{jk}.</annotation></semantics></math></div></div></p>
 <p>直观上，算一次矩阵乘法需要做 m⋅p 个点乘，每个点乘含 n 次乘法与求和。乘法是从<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup><mo>×</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">F^{m\times n}\times F^{n\times p}</annotation></semantics></math>到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>p</mi></mrow></msup><annotation encoding="application/x-tex">F^{m\times p}</annotation></semantics></math>的二元运算。</p>
-<p>特别地，若 A,B 都是 n 阶方阵，则 AB 仍是 n 阶方阵——乘法在”方阵集合自身”上封闭。</p>
+<p>特别地，若 A,B 都是 n 阶方阵，则 AB 仍是 n 阶方阵——乘法在“方阵集合自身”上封闭。</p>
 </section><section class="wb-seg"><h3 id="非交换性零因子与手算例题"><span class="wb-ts">01:02:02—01:12:15</span> ｜
 非交换性、零因子与手算例题</h3>
 <p>与数的乘法不同，<strong>当 n≥2 时矩阵乘法一般不可交换</strong>， AB 与 BA 通常不等；而且即使 A,B 都非零矩阵，乘积也可能为零矩阵，因此<strong>消去律一般不成立</strong>。</p>
@@ -1552,7 +1553,7 @@ id="例题-2010947-手算-beginpmatrix1234endpmatrixbeginpmatrix5678endpmatrix">
 <p><strong class="wb-pill wb-pill-result">结论</strong>：熟悉点积式乘法法则即可，这类计算是直截了当的。</p>
 </section><section class="wb-seg"><h3 id="乘法的分配律数乘结合与结合律"><span class="wb-ts">01:12:15—01:23:00</span> ｜
 乘法的分配律、数乘结合与结合律</h3>
-<p>矩阵乘法虽不满足交换律与消去律，但仍有乘法的其他基本性质（均”自行检验）：</p>
+<p>矩阵乘法虽不满足交换律与消去律，但仍有乘法的其他基本性质（均“自行检验”）：</p>
 <ul>
 <li><strong class="wb-pill">分配律</strong>：若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">A\in F^{m\times n}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>,</mo><mi>C</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">B,C\in F^{n\times p}</annotation></semantics></math>，则
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>B</mi><mo>+</mo><mi>C</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><mi>B</mi><mo>+</mo><mi>A</mi><mi>C</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">A(B+C)=AB+AC.</annotation></semantics></math></div>若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>D</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">A,D\in F^{m\times n}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">B\in F^{n\times p}</annotation></semantics></math>，则
@@ -1574,7 +1575,7 @@ id="例题-2010947-手算-beginpmatrix1234endpmatrixbeginpmatrix5678endpmatrix">
    =\sum_{k=1}^{p}\Bigl(\sum_{j=1}^{n}a_{ij}b_{jk}\Bigr)c_{k\ell}
    =\sum_{k=1}^{p}\sum_{j=1}^{n}a_{ij}b_{jk}c_{k\ell}.</annotation></semantics></math></li><li>两式只是求和次序不同，被加项完全相同，故相等。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：矩阵乘法满足结合律（尽管一般不交换）。[补全]
-老师在此略去了右端展开的细节，仅说明”类似可得同一二重求和，上式的完整展开即为其补全。</p>
+老师在此略去了右端展开的细节，仅说明“类似可得同一二重求和”，上式的完整展开即为其补全。</p>
 </section><section class="wb-seg"><h3 id="特殊乘法行乘列对角阵与单位阵"><span class="wb-ts">01:23:00—01:38:29</span> ｜
 特殊乘法：行乘列、对角阵与单位阵</h3>
 <p>下面看几个重要且常用的特殊情形。</p>
@@ -1589,7 +1590,7 @@ id="例题-2010947-手算-beginpmatrix1234endpmatrixbeginpmatrix5678endpmatrix">
 a_2b_1&amp;a_2b_2&amp;\cdots&amp;a_2b_m\\
 \vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
 a_mb_1&amp;a_mb_2&amp;\cdots&amp;a_mb_m\end{pmatrix}\in F^{m\times m}</annotation></semantics></math>是一个 m 阶方阵（即外积），其 (i,j) 元素为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub><msub><mi>b</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">a_i b_j</annotation></semantics></math>。</p>
-<p><strong class="wb-pill wb-pill-result">结论</strong>：同一对向量，左乘与右乘结果截然不同（一个是数，一个是矩阵），再次体现不交换；但它们之间有”转置”层面的关联（之后会讲不变量）。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>：同一对向量，左乘与右乘结果截然不同（一个是数，一个是矩阵），再次体现不交换；但它们之间有“转置”层面的关联（之后会讲不变量）。</p>
 </div><div class="wb-excard" id="wb-ex-9" data-ex-idx="9"><h4 id="例题-4012917-对角阵乘以一般矩阵按行按列缩放">例题
 4（01:29:17）｜ 对角阵乘以一般矩阵（按行/按列缩放）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-9" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">D=\operatorname{diag}(d_1,\ldots,d_n)</annotation></semantics></math>是 n 阶对角阵，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></mrow><annotation encoding="application/x-tex">B\in F^{n\times p}</annotation></semantics></math>，考察 DB 与 BD 。</p>
@@ -1607,9 +1608,9 @@ a_mb_1&amp;a_mb_2&amp;\cdots&amp;a_mb_m\end{pmatrix}\in F^{m\times m}</annotatio
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>I</mi><mi>n</mi></msub><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">B I_n=B</annotation></semantics></math></div>（此处 B 为 p×n 时可左乘<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>，或 B 为 n×p 时可右乘<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>）。</p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：只要乘法有定义，单位阵乘上去保持不变，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>是矩阵乘法的<strong>单位元</strong>。</p>
 <hr />
-<h2
+</section><h2
 id="五方阵的代数结构含幺环与矩阵多项式013829015214">五、方阵的代数结构：含幺环与矩阵多项式（01:38:29—01:52:14）</h2>
-</section><section class="wb-seg"><h3 id="方阵构成含幺环"><span class="wb-ts">01:38:29—01:46:44</span> ｜ 方阵构成含幺环</h3>
+<section class="wb-seg"><h3 id="方阵构成含幺环"><span class="wb-ts">01:38:29—01:46:44</span> ｜ 方阵构成含幺环</h3>
 <p>固定 n 阶方阵的集合<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>F</mi><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">M_n(F)=F^{n\times n}</annotation></semantics></math>：它在加法下是加群，在乘法下封闭（方阵乘方阵仍是方阵），且满足乘法结合律与加法对乘法的分配律，乘法单位元就是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>。因此<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_n(F)</annotation></semantics></math>构成一个<strong>含幺环</strong>（同时它还是 F -线性空间，数乘与环运算相容，暂不展开）。</p>
 </section><section class="wb-seg"><h3 id="矩阵多项式及其交换性"><span class="wb-ts">01:46:44—01:52:14</span> ｜
 矩阵多项式及其交换性</h3>
@@ -1624,15 +1625,15 @@ id="五方阵的代数结构含幺环与矩阵多项式013829015214">五、方�
 <p><strong class="wb-pill wb-pill-derive">推导</strong>： A 的任意两个幂<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi>r</mi></msup><mo>,</mo><msup><mi>A</mi><mi>s</mi></msup></mrow><annotation encoding="application/x-tex">A^r,A^s</annotation></semantics></math>满足<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi>r</mi></msup><msup><mi>A</mi><mi>s</mi></msup><mo>=</mo><msup><mi>A</mi><mrow><mi>r</mi><mo>+</mo><mi>s</mi></mrow></msup><mo>=</mo><msup><mi>A</mi><mi>s</mi></msup><msup><mi>A</mi><mi>r</mi></msup></mrow><annotation encoding="application/x-tex">A^rA^s=A^{r+s}=A^sA^r</annotation></semantics></math>；将 f(A),g(A) 展开为 A 的幂的线性组合，逐项相乘后利用幂的交换性与分配律即得整体交换。</p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：矩阵乘法一般不交换，但<strong>同一个矩阵的两个多项式自动可交换</strong>——这一事实后续会用于证明。</p>
 <hr />
-<h2
+</section><h2
 id="六可逆矩阵与一般线性群015218022821">六、可逆矩阵与一般线性群（01:52:18—02:28:21）</h2>
-</section><section class="wb-seg"><h3 id="可逆矩阵的定义奇异非奇异与行列式剧透"><span class="wb-ts">01:52:18—01:58:25</span> ｜
+<section class="wb-seg"><h3 id="可逆矩阵的定义奇异非奇异与行列式剧透"><span class="wb-ts">01:52:18—01:58:25</span> ｜
 可逆矩阵的定义、奇异/非奇异与行列式剧透</h3>
-<p>四则运算中剩下”除法”可归结为先讨论乘法逆元。并不是每个矩阵都有逆元，需区分可逆与不可逆。</p>
+<p>四则运算中剩下“除法”可归结为先讨论乘法逆元。并不是每个矩阵都有逆元，需区分可逆与不可逆。</p>
 <p><strong class="wb-pill wb-pill-idea">定义</strong>：设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><msub><mi>M</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A\in M_n(F)</annotation></semantics></math>是方阵。若存在方阵 B 使
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>=</mo><mi>B</mi><mi>A</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">AB=BA=I_n,</annotation></semantics></math></div>则称 A<strong>可逆</strong>（invertible），并称 B 为 A 的<strong>逆矩阵</strong>，记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">A^{-1}</annotation></semantics></math>。可逆矩阵也称<strong>非奇异矩阵</strong>（nonsingular）。若不存在这样的 B ，则称 A<strong>不可逆</strong>（或<strong>奇异矩阵</strong>，singular）。</p>
-<p><strong class="wb-pill wb-pill-idea">老师点出的直观</strong>：从某种”稠密性”意义看，可逆矩阵占绝大多数，不可逆矩阵是”稀疏”的（好比三维空间中的曲线、曲面是低维对象）。[剧透，未证]
-对一般的 n ，有充要条件： A 可逆 ⇔det⁡A≠0 ；特别地，对三阶及以下的矩阵该结论已可用（严格证明以后给出）。因此奇异矩阵就是”行列式等于零”所刻画的那部分矩阵。</p>
+<p><strong class="wb-pill wb-pill-idea">老师点出的直观</strong>：从某种“稠密性”意义看，可逆矩阵占绝大多数，不可逆矩阵是“稀疏”的（好比三维空间中的曲线、曲面是低维对象）。[剧透，未证]
+对一般的 n ，有充要条件： A 可逆 ⇔det⁡A≠0 ；特别地，对三阶及以下的矩阵该结论已可用（严格证明以后给出）。因此奇异矩阵就是“行列式等于零”所刻画的那部分矩阵。</p>
 </section><section class="wb-seg"><h3 id="逆矩阵的例子对角阵上三角不可逆"><span class="wb-ts">01:58:25—02:06:37</span> ｜
 逆矩阵的例子（对角阵、上三角、不可逆）</h3>
 </div><div class="wb-excard" id="wb-ex-12" data-ex-idx="12"><h4 id="例题-1015841-对角阵-beginpmatrix2003endpmatrix-及其逆">例题
@@ -1667,7 +1668,7 @@ id="六可逆矩阵与一般线性群015218022821">六、可逆矩阵与一般�
 逆矩阵的唯一性与一般线性群<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(F)</annotation></semantics></math></h3>
 <div class="wb-excard" id="wb-ex-14" data-ex-idx="14"><h4 id="证明-1020725-逆矩阵唯一">证明 1（02:07:25）｜ 逆矩阵唯一<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-14" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：若方阵 A 可逆，则其逆矩阵唯一。</p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：与”群中逆元唯一”的论证完全类似，利用单位元与结合律。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：与“群中逆元唯一”的论证完全类似，利用单位元与结合律。</p>
 <p><strong class="wb-pill wb-pill-derive">推导</strong>：设 B,C 都满足<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mo>=</mo><mi>B</mi><mi>A</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">AB=BA=I_n</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>C</mi><mo>=</mo><mi>C</mi><mi>A</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">AC=CA=I_n</annotation></semantics></math>。则
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>B</mi><msub><mi>I</mi><mi>n</mi></msub><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>B</mi><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mi>C</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub><mi>C</mi><mo>=</mo><mi>C</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">B=BI_n=B(AC)=(BA)C=I_nC=C.</annotation></semantics></math></div></p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>： A 的逆唯一，故可无歧义地记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">A^{-1}</annotation></semantics></math>。</p>
@@ -1686,18 +1687,18 @@ id="六可逆矩阵与一般线性群015218022821">六、可逆矩阵与一般�
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(AB)^{-1}=B^{-1}A^{-1}</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mi>A</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>λ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(\lambda A)^{-1}=\lambda^{-1}A^{-1}</annotation></semantics></math><span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-16" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>∈</mo><msub><mi>M</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A,B\in M_n(F)</annotation></semantics></math>可逆， λ∈F 且 λ≠0 ，证明
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mi>A</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>λ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">(AB)^{-1}=B^{-1}A^{-1},\qquad (\lambda A)^{-1}=\lambda^{-1}A^{-1}.</annotation></semantics></math></div></p>
-<p><strong class="wb-pill wb-pill-idea">思路</strong>：验证”倒序相乘”后给出单位阵。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong>：验证“倒序相乘”后给出单位阵。</p>
 <p><strong class="wb-pill wb-pill-derive">推导</strong>：</p><ol class="wb-steps"><li>对 AB ：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>B</mi><msup><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mi>A</mi><msub><mi>I</mi><mi>n</mi></msub><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">(AB)(B^{-1}A^{-1})=A(BB^{-1})A^{-1}=AI_nA^{-1}=I_n,</annotation></semantics></math></div>同理<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">(B^{-1}A^{-1})(AB)=I_n</annotation></semantics></math>，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(AB)^{-1}=B^{-1}A^{-1}</annotation></semantics></math>。</li><li>对 λA ：
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>λ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>λ</mi><msup><mi>λ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>A</mi><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><mn>1</mn><mo>⋅</mo><msub><mi>I</mi><mi>n</mi></msub><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">(\lambda A)(\lambda^{-1}A^{-1})=\lambda\lambda^{-1}AA^{-1}=1\cdot I_n=I_n,</annotation></semantics></math></div>同理反向也成立，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mi>A</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>λ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(\lambda A)^{-1}=\lambda^{-1}A^{-1}</annotation></semantics></math>。</li></ol>
-<p><strong class="wb-pill wb-pill-result">结论</strong>：两因子的逆要”倒序”；数乘因子取其倒数。<strong>意义</strong>：第
+<p><strong class="wb-pill wb-pill-result">结论</strong>：两因子的逆要“倒序”；数乘因子取其倒数。<strong>意义</strong>：第
 2 条正说明<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(F)</annotation></semantics></math>对乘法封闭（从而是群）。</p>
 </div><div class="wb-excard" id="wb-ex-17" data-ex-idx="17"><h4 id="证明-3021821-有限个可逆矩阵乘积的逆">证明 3（02:18:21）｜
 有限个可逆矩阵乘积的逆<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-17" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">命题</strong>：若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>A</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">A_1,\ldots,A_k</annotation></semantics></math>均为 n 阶可逆矩阵，则它们的乘积可逆，且
 <div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>A</mi><mn>1</mn></msub><msub><mi>A</mi><mn>2</mn></msub><mi>⋯</mi><msub><mi>A</mi><mi>k</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>=</mo><msubsup><mi>A</mi><mi>k</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>⋯</mi><msubsup><mi>A</mi><mn>2</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msubsup><mi>A</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">(A_1A_2\cdots A_k)^{-1}=A_k^{-1}\cdots A_2^{-1}A_1^{-1}.</annotation></semantics></math></div></p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：由第 2
-条归纳推广（即”穿脱原理”：取逆时括号打开、各自取逆、整体倒序）。</p>
+条归纳推广（即“穿脱原理”：取逆时括号打开、各自取逆、整体倒序）。</p>
 <p><strong class="wb-pill wb-pill-derive">推导</strong>：对 k 归纳，或直接与两端相乘验证即得。</p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：多个可逆矩阵之积仍可逆，逆为各因子逆的倒序乘积。</p>
 </section><section class="wb-seg"><h3 id="两个练习多项式为零推出可逆对角阵的多项式"><span class="wb-ts">02:19:45—02:28:21</span> ｜
@@ -1723,7 +1724,7 @@ id="六可逆矩阵与一般线性群015218022821">六、可逆矩阵与一般�
 =\operatorname{diag}\bigl(f(\lambda_1),\ldots,f(\lambda_n)\bigr).</annotation></semantics></math></p>
 <p><strong>结论</strong>：对角阵的多项式仍是对角阵，各对角元为原对角元代入多项式所得。[补全]
 老师指出此结论可直接由单项式推广到线性组合，仅作提示，非当堂完整板书。</p>
-<p><strong>收尾（02:28:21）</strong>：本节课到此结束。老师预告：一开始有限域上线性无关组的计数（第一章）将与这里的一般线性群<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(F)</annotation></semantics></math>（如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℤ</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>上的可逆 n 阶矩阵个数）联系起来，留待后续计算。</p>
+<p><strong>收尾（02:28:21）</strong>：本节课到此结束。老师预告：一开始有限域上线性无关组的计数（第一章）将与这里的一般线性群<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">L</mi></mrow><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{GL}_n(F)</annotation></semantics></math>（如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">Z</mi><mi>p</mi></msub><annotation encoding="application/x-tex">\mathbb Z_p</annotation></semantics></math>上的可逆 n 阶矩阵个数）联系起来，留待后续计算。</p>
 <script>window.MathJax={svg:{fontCache:"local"}};</script>
 </section><script>
 window.MathJax = {
@@ -1878,6 +1879,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1950,6 +1977,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1977,11 +2010,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2126,22 +2155,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2542,19 +2558,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

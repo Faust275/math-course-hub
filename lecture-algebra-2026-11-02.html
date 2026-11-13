@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1448,9 +1449,9 @@ id="例题-3002404-迹为零矩阵空间与数量矩阵空间的直和分解特�
 <p><strong class="wb-pill wb-pill-note">易错点（老师点出）</strong>：若 char⁡F=p 且 p∣n ，则<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>I</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>n</mi><mo>⋅</mo><msub><mn>1</mn><mi>F</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{tr}(I_n)=n\cdot 1_F=0</annotation></semantics></math>，此时<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>n</mi></msub><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">I_n\in V</annotation></semantics></math>，数量矩阵空间 W 已经落在 V 中，不能用它做补空间。 &gt; 补充说明（非当堂所讲，按理论补全）：即便 char⁡F∣n ，由后面「补空间存在性」定理， V 作为真子空间仍必有某个补空间<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>W</mi><mo>′</mo></msup><annotation encoding="application/x-tex">W&#39;</annotation></semantics></math>，只是它不再是数量矩阵空间。</p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>： char⁡F∤n 时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>V</mi><mo>⊕</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>I</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">M_n(F)=V\oplus\operatorname{span}\{I_n\}</annotation></semantics></math>。</p>
 <hr />
-<h2
+</section><h2
 id="二两个子空间直和的等价条件与补空间003150010057">二、两个子空间直和的等价条件与补空间（00:31:50—01:00:57）</h2>
-</section><section class="wb-seg"><h3 id="两个子空间直和的等价定义三条等价"><span class="wb-ts">00:31:50—00:41:09</span> ｜
+<section class="wb-seg"><h3 id="两个子空间直和的等价定义三条等价"><span class="wb-ts">00:31:50—00:41:09</span> ｜
 两个子空间直和的等价定义（三条等价）</h3>
 <p>把「直和」用更便于使用的等价条件重新描述。</p>
 <p>设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_1,V_2</annotation></semantics></math>是 V 的子空间，记<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><msub><mi>V</mi><mn>1</mn></msub><mo>+</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">W=V_1+V_2</annotation></semantics></math>。下面三条两两等价：</p>
@@ -1480,13 +1481,13 @@ id="二两个子空间直和的等价条件与补空间003150010057">二、两�
 补空间的定义与不唯一性</h3>
 <p>设 U 是有限维线性空间 V 的子空间。若存在子空间 W 使 V=U⊕W ，则称 W 是 U 的一个<strong>补空间</strong>（complementary subspace）。</p>
 <ul>
-<li>补空间<strong>不唯一</strong>。例如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">V=\mathbb R^2</annotation></semantics></math>（平面）， U 是一条过原点的直线，则任意另一条过原点且不同于 U 的直线 W 都满足 V=U⊕W 。</li>
+<li>补空间<strong>不唯一</strong>。例如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">V=\mathbb R^2</annotation></semantics></math>（平面）， U 是一条过原点的直线，则任意另一条过原点且不同于 U 的直线 W 都满足 V=U⊕W 。</li>
 </ul>
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题-1004428-二维平面中直线的补空间不唯一">例题 1（00:44:28）｜
 二维平面中直线的补空间不唯一<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
-<p><strong class="wb-pill wb-pill-topic">命题／任务</strong>：在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">V=\mathbb R^2</annotation></semantics></math>中，取 U 为一条过原点的直线，说明其补空间不唯一。</p>
+<p><strong class="wb-pill wb-pill-topic">命题／任务</strong>：在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">V=\mathbb R^2</annotation></semantics></math>中，取 U 为一条过原点的直线，说明其补空间不唯一。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>：平面内过原点的任意两条不同直线的交仅为 {0} ，且它们的和是整个平面。</p>
-<p><strong class="wb-pill wb-pill-derive">逐步推导</strong>：</p><ol class="wb-steps"><li>取 U={(t,0)∣t∈ℝ} （横轴）。</li><li>任取异于 U 的直线 W={(s,ks)∣s∈ℝ} （ k≠0 ），则 U∩W={0} 且<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>+</mo><mi>W</mi><mo>=</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">U+W=\mathbb R^2</annotation></semantics></math>。</li><li>换不同的斜率即得不同的补空间。</li></ol>
+<p><strong class="wb-pill wb-pill-derive">逐步推导</strong>：</p><ol class="wb-steps"><li>取 U={(t,0)∣t∈R} （横轴）。</li><li>任取异于 U 的直线 W={(s,ks)∣s∈R} （ k≠0 ），则 U∩W={0} 且<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>+</mo><mi>W</mi><mo>=</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">U+W=\mathbb R^2</annotation></semantics></math>。</li><li>换不同的斜率即得不同的补空间。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：同一子空间可以有多个（甚至无穷多个）不同的补空间。</p>
 </section><section class="wb-seg"><h3 id="补空间的存在性证明与多子空间的推广"><span class="wb-ts">00:52:50—01:00:57</span> ｜
 补空间的存在性证明与多子空间的推广</h3>
@@ -1501,9 +1502,9 @@ id="二两个子空间直和的等价条件与补空间003150010057">二、两�
 <p>老师由此引出推广：上面把「一个子空间」拆成「两个子空间直和」的过程，可以推广到任意有限多个子空间。</p>
 </blockquote>
 <hr />
-<h2
+</section><h2
 id="三有限多个子空间的直和010057013127">三、有限多个子空间的直和（01:00:57—01:31:27）</h2>
-</section><section class="wb-seg"><h3 id="多个子空间直和的定义强于两两交为零"><span class="wb-ts">01:00:57—01:10:10</span> ｜
+<section class="wb-seg"><h3 id="多个子空间直和的定义强于两两交为零"><span class="wb-ts">01:00:57—01:10:10</span> ｜
 多个子空间直和的定义（强于两两交为零）</h3>
 <p>设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>V</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">V_1,\ldots,V_k</annotation></semantics></math>是 V 的子空间。定义它们的<strong>直和</strong>（记作<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>⊕</mo><mi>⋯</mi><mo>⊕</mo><msub><mi>V</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">V_1\oplus\cdots\oplus V_k</annotation></semantics></math>）为：对<strong>每一个</strong>i=1,…,k ，都有
 <div class="wb-math-wrap" data-tex="V_i\cap\Bigl(\sum_{j\neq i}V_j\Bigr)=\{0\}."><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>i</mi></msub><mo>∩</mo><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">(</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>≠</mo><mi>i</mi></mrow></munder><msub><mi>V</mi><mi>j</mi></msub><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">V_i\cap\Bigl(\sum_{j\neq i}V_j\Bigr)=\{0\}.</annotation></semantics></math></div></div></p>
@@ -1512,10 +1513,10 @@ id="三有限多个子空间的直和010057013127">三、有限多个子空间�
 </blockquote>
 </div><h4 id="反例-1010235-平面内三条过原点直线两两交为零但不是直和">反例
 1（01:02:35）｜ 平面内三条过原点直线：两两交为零但不是直和</h4>
-<p><strong>命题／任务</strong>：在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\mathbb R^2</annotation></semantics></math>中取三条互不相同的过原点直线<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>,</mo><msub><mi>L</mi><mn>2</mn></msub><mo>,</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1,L_2,L_3</annotation></semantics></math>，说明它们两两交集为零，但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>L</mi><mn>2</mn></msub><mo>⊕</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1\oplus L_2\oplus L_3</annotation></semantics></math>不是直和。</p>
+<p><strong>命题／任务</strong>：在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\mathbb R^2</annotation></semantics></math>中取三条互不相同的过原点直线<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>,</mo><msub><mi>L</mi><mn>2</mn></msub><mo>,</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1,L_2,L_3</annotation></semantics></math>，说明它们两两交集为零，但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>L</mi><mn>2</mn></msub><mo>⊕</mo><msub><mi>L</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">L_1\oplus L_2\oplus L_3</annotation></semantics></math>不是直和。</p>
 <p><strong>思路</strong>：两条不同直线已张成整个平面，因此第三条直线必与「前两条之和（即全平面）」有非平凡交集。</p>
-<p><strong>逐步推导</strong>：</p><ol class="wb-steps"><li>两两交：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>i</mi></msub><mo>∩</mo><msub><mi>L</mi><mi>j</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">L_i\cap L_j=\{0\}</annotation></semantics></math>（ i≠j ），因为任意两条不同过原点直线只交于原点。</li><li>但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>+</mo><msub><mi>L</mi><mn>2</mn></msub><mo>=</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">L_1+L_2=\mathbb R^2</annotation></semantics></math>（两条不同直线张成平面）。于是
-<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>3</mn></msub><mo>∩</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mn>1</mn></msub><mo>+</mo><msub><mi>L</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>L</mi><mn>3</mn></msub><mo>∩</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><mo>=</mo><msub><mi>L</mi><mn>3</mn></msub><mo>≠</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">L_3\cap(L_1+L_2)=L_3\cap\mathbb R^2=L_3\neq\{0\}.</annotation></semantics></math></div></li><li>不满足直和定义中「每个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mi>i</mi></msub><annotation encoding="application/x-tex">V_i</annotation></semantics></math>与其余之和交为零」的要求。</li></ol>
+<p><strong>逐步推导</strong>：</p><ol class="wb-steps"><li>两两交：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>i</mi></msub><mo>∩</mo><msub><mi>L</mi><mi>j</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">L_i\cap L_j=\{0\}</annotation></semantics></math>（ i≠j ），因为任意两条不同过原点直线只交于原点。</li><li>但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>+</mo><msub><mi>L</mi><mn>2</mn></msub><mo>=</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">L_1+L_2=\mathbb R^2</annotation></semantics></math>（两条不同直线张成平面）。于是
+<div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>3</mn></msub><mo>∩</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mn>1</mn></msub><mo>+</mo><msub><mi>L</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>L</mi><mn>3</mn></msub><mo>∩</mo><msup><mi mathvariant="double-struck">R</mi><mn>2</mn></msup><mo>=</mo><msub><mi>L</mi><mn>3</mn></msub><mo>≠</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">L_3\cap(L_1+L_2)=L_3\cap\mathbb R^2=L_3\neq\{0\}.</annotation></semantics></math></div></li><li>不满足直和定义中「每个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mi>i</mi></msub><annotation encoding="application/x-tex">V_i</annotation></semantics></math>与其余之和交为零」的要求。</li></ol>
 <p><strong>结论</strong>：仅「两两交为零」不足以构成直和；必须要求每个子空间与其余所有子空间的和空间交为零。</p>
 </section><section class="wb-seg"><h3 id="等价条件维数公式与递推定义命题"><span class="wb-ts">01:10:21—01:26:06</span> ｜
 等价条件、维数公式与递推定义命题</h3>
@@ -1547,9 +1548,9 @@ id="三有限多个子空间的直和010057013127">三、有限多个子空间�
 <p><strong class="wb-pill wb-pill-derive">逐步推导</strong>：</p><ol class="wb-steps"><li>任一多项式只能含有限项，故属于某有限个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msup><mi>x</mi><mi>k</mi></msup><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\operatorname{span}\{x^k\}</annotation></semantics></math>的和。</li><li>对任意有限指标集，不同次数的单项式<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mi>x</mi><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>x</mi><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">1,x,\ldots,x^m</annotation></semantics></math>线性无关，因此它们的和空间是直和。</li><li>故全体构成无穷直和。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><msubsup><mo>⨁</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msup><mi>x</mi><mi>k</mi></msup><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">F[x]=\bigoplus_{k=0}^{\infty}\operatorname{span}\{x^k\}</annotation></semantics></math>。这种无穷直和在处理无限维空间时才真正需要。</p>
 <hr />
-<h2
+</section><h2
 id="四期中考试说明与线性方程组的引入013339015609">四、期中考试说明与线性方程组的引入（01:33:39—01:56:09）</h2>
-</section><section class="wb-seg"><h3 id="期中考试范围与复习提示"><span class="wb-ts">01:33:39—01:35:40</span> ｜
+<section class="wb-seg"><h3 id="期中考试范围与复习提示"><span class="wb-ts">01:33:39—01:35:40</span> ｜
 期中考试范围与复习提示</h3>
 <blockquote>
 <p>课程要求（老师原话要点，保留）： - 期中考试范围到教材 <strong>5.4
@@ -1588,9 +1589,9 @@ a_{m1}x_1+\cdots+a_{mn}x_n=b_m.
 <p>记号约定：把未知量排成一列<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>⊤</mi></msup><mo>∈</mo><msup><mi>F</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">X=(x_1,\ldots,x_n)^\top\in F^n</annotation></semantics></math>，解即一组代入后使所有方程成立的值。</p>
 </blockquote>
 <hr />
-<h2
+</section><h2
 id="五高斯消元法与阶梯型定理015609022640">五、高斯消元法与阶梯型定理（01:56:09—02:26:40）</h2>
-</section><section class="wb-seg"><h3 id="解解集与齐次方程组的平凡解"><span class="wb-ts">01:56:09—01:58:10</span> ｜
+<section class="wb-seg"><h3 id="解解集与齐次方程组的平凡解"><span class="wb-ts">01:56:09—01:58:10</span> ｜
 解、解集与齐次方程组的平凡解</h3>
 <ul>
 <li><strong class="wb-pill">解</strong>：一组值<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_1,\ldots,x_n)</annotation></semantics></math>代入后使方程组全部成立，称为该方程组的一个解。</li>
@@ -1785,6 +1786,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1857,6 +1884,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1884,11 +1917,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2033,22 +2062,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2449,19 +2465,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

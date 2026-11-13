@@ -872,7 +872,7 @@ html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
 <div class="wb-formula-block"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><msqrt><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></msqrt><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mi>x</mi><msqrt><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></msqrt><mo>−</mo><mfrac><mrow><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>ln</mo><mo>|</mo><mi>x</mi><mo>+</mo><msqrt><mrow><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>−</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup></mrow></msqrt><mo>|</mo><mo>+</mo><mi>C</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\int \sqrt {x ^ {2} - a ^ {2}} d x = \frac {1}{2} x \sqrt {x ^ {2} - a ^ {2}} - \frac {a ^ {2}}{2} \ln | x + \sqrt {x ^ {2} - a ^ {2}} | + C.</annotation></semantics></math></div>
 <div class="wb-example" id="tbk_5">
   <div class="wb-blk-title"><span>例 6.3.5</span><span class="tag">经典例题</span></div>
-<p>求不定积分 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mo>∫</mo><mfrac><mrow><mstyle mathvariant="normal"><mrow><mi>d</mi></mrow></mstyle><mi>x</mi></mrow><mrow><mo>(</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow></mfrac><mo>,</mo><mi>n</mi><mo>∈</mo><mi>ℕ</mi></mrow><annotation encoding="application/x-tex">I_{n} = \int \frac{\mathrm{d}x}{(x^{2} + a^{2})^{n}}, n \in \mathbb{N}</annotation></semantics></math> .</p>
+<p>求不定积分 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>n</mi></mrow></msub><mo>=</mo><mo>∫</mo><mfrac><mrow><mstyle mathvariant="normal"><mrow><mi>d</mi></mrow></mstyle><mi>x</mi></mrow><mrow><mo>(</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup><mo>+</mo><msup><mi>a</mi><mrow><mn>2</mn></mrow></msup><msup><mo>)</mo><mrow><mi>n</mi></mrow></msup></mrow></mfrac><mo>,</mo><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">N</mi></mrow><annotation encoding="application/x-tex">I_{n} = \int \frac{\mathrm{d}x}{(x^{2} + a^{2})^{n}}, n \in \mathbb{N}</annotation></semantics></math> .</p>
 </div>
 <div class="wb-example">
   <div class="wb-blk-title"><span>解答</span></div>
@@ -1098,7 +1098,7 @@ window.MathJax = {
 
   function handleTextSelect(e) {
     if (noteModal && noteModal.classList.contains('wb-open')) return;
-    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+    if (e && e.target && e.target.closest && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
 
     var sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.toString().trim()) {
@@ -1404,22 +1404,29 @@ window.MathJax = {
   function restoreHighlights() {
     var list = getStoredHighlights();
     if (!list.length) return;
-    var body = document.querySelector('.wb-book-body');
-    if (!body) return;
+    // 恢复范围覆盖整篇文章（书头标题 + 正文），只排除导航/抽屉/浮层，避免「标题上划的线刷新后消失」
+    var root = document.getElementById('wb-book-content') || document.querySelector('.wb-book-layout')
+      || document.querySelector('.wb-book-body');
+    if (!root) return;
 
     list.forEach(function(item) {
       if (!item.text) return;
-      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(n) {
+          var el = n.parentElement;
+          if (!el || el.closest('header, .wb-book-nav, .wb-drawer, #wb-hl-popover, #wb-note-modal')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
       var node;
       while (node = walker.nextNode()) {
         var idx = node.nodeValue.indexOf(item.text);
-        if (idx !== -1) {
-          var range = document.createRange();
-          range.setStart(node, idx);
-          range.setEnd(node, idx + item.text.length);
-          wrapRangeWithHl(range, item.id, item.color, item.note);
-          break;
-        }
+        if (idx === -1) continue;
+        var range = document.createRange();
+        range.setStart(node, idx);
+        range.setEnd(node, idx + item.text.length);
+        wrapRangeWithHl(range, item.id, item.color, item.note);
+        break;
       }
     });
     updateNotesDrawer();

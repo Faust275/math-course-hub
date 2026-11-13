@@ -1099,7 +1099,7 @@ window.MathJax = {
 
   function handleTextSelect(e) {
     if (noteModal && noteModal.classList.contains('wb-open')) return;
-    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+    if (e && e.target && e.target.closest && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
 
     var sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.toString().trim()) {
@@ -1405,22 +1405,29 @@ window.MathJax = {
   function restoreHighlights() {
     var list = getStoredHighlights();
     if (!list.length) return;
-    var body = document.querySelector('.wb-book-body');
-    if (!body) return;
+    // 恢复范围覆盖整篇文章（书头标题 + 正文），只排除导航/抽屉/浮层，避免「标题上划的线刷新后消失」
+    var root = document.getElementById('wb-book-content') || document.querySelector('.wb-book-layout')
+      || document.querySelector('.wb-book-body');
+    if (!root) return;
 
     list.forEach(function(item) {
       if (!item.text) return;
-      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(n) {
+          var el = n.parentElement;
+          if (!el || el.closest('header, .wb-book-nav, .wb-drawer, #wb-hl-popover, #wb-note-modal')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
       var node;
       while (node = walker.nextNode()) {
         var idx = node.nodeValue.indexOf(item.text);
-        if (idx !== -1) {
-          var range = document.createRange();
-          range.setStart(node, idx);
-          range.setEnd(node, idx + item.text.length);
-          wrapRangeWithHl(range, item.id, item.color, item.note);
-          break;
-        }
+        if (idx === -1) continue;
+        var range = document.createRange();
+        range.setStart(node, idx);
+        range.setEnd(node, idx + item.text.length);
+        wrapRangeWithHl(range, item.id, item.color, item.note);
+        break;
       }
     });
     updateNotesDrawer();

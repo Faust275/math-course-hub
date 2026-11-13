@@ -883,7 +883,7 @@ html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
 </div>
 <div class="wb-example" id="tbk_10">
   <div class="wb-blk-title"><span>例 9.9.13</span><span class="tag">经典例题</span></div>
-<p>我们再次证明定义为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>:</mo><mo>=</mo><mn>1</mn><mo>/</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x) := 1/x</annotation></semantics></math> 的函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo><mo>→</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">f : (0, 2) \to \mathbb{R}</annotation></semantics></math> 不是一致连续的。序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mi>n</mi><msubsup><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo>)</mo><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(1/n)^{\infty}_{n=1}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(0, 2)</annotation></semantics></math> 中的柯西序列，但是序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>f</mi><mo>(</mo><mn>1</mn><mo>/</mo><mi>n</mi><mo>)</mo><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(f(1/n))_{n=1}^{\infty}</annotation></semantics></math> 不是柯西序列。（为什么？）所以由命题 9.9.12 可知，f 不是一致连续的。</p>
+<p>我们再次证明定义为 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>:</mo><mo>=</mo><mn>1</mn><mo>/</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x) := 1/x</annotation></semantics></math> 的函数 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo><mo>→</mo><mi mathvariant="double-struck">R</mi></mrow><annotation encoding="application/x-tex">f : (0, 2) \to \mathbb{R}</annotation></semantics></math> 不是一致连续的。序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mi>n</mi><msubsup><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo>)</mo><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(1/n)^{\infty}_{n=1}</annotation></semantics></math> 是 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(0, 2)</annotation></semantics></math> 中的柯西序列，但是序列 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>(</mo><mi>f</mi><mo>(</mo><mn>1</mn><mo>/</mo><mi>n</mi><mo>)</mo><msubsup><mo>)</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mrow><mo>∞</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">(f(1/n))_{n=1}^{\infty}</annotation></semantics></math> 不是柯西序列。（为什么？）所以由命题 9.9.12 可知，f 不是一致连续的。</p>
 </div>
 <div class="wb-thm" id="tbk_11">
   <div class="wb-blk-title"><span>推论 9.9.14</span><span class="tag">推论</span></div>
@@ -1148,7 +1148,7 @@ window.MathJax = {
 
   function handleTextSelect(e) {
     if (noteModal && noteModal.classList.contains('wb-open')) return;
-    if (e && e.target && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
+    if (e && e.target && e.target.closest && (e.target.closest('#wb-hl-popover') || e.target.closest('#wb-note-modal') || e.target.closest('.wb-drawer') || e.target.closest('header'))) return;
 
     var sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.toString().trim()) {
@@ -1454,22 +1454,29 @@ window.MathJax = {
   function restoreHighlights() {
     var list = getStoredHighlights();
     if (!list.length) return;
-    var body = document.querySelector('.wb-book-body');
-    if (!body) return;
+    // 恢复范围覆盖整篇文章（书头标题 + 正文），只排除导航/抽屉/浮层，避免「标题上划的线刷新后消失」
+    var root = document.getElementById('wb-book-content') || document.querySelector('.wb-book-layout')
+      || document.querySelector('.wb-book-body');
+    if (!root) return;
 
     list.forEach(function(item) {
       if (!item.text) return;
-      var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(n) {
+          var el = n.parentElement;
+          if (!el || el.closest('header, .wb-book-nav, .wb-drawer, #wb-hl-popover, #wb-note-modal')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
       var node;
       while (node = walker.nextNode()) {
         var idx = node.nodeValue.indexOf(item.text);
-        if (idx !== -1) {
-          var range = document.createRange();
-          range.setStart(node, idx);
-          range.setEnd(node, idx + item.text.length);
-          wrapRangeWithHl(range, item.id, item.color, item.note);
-          break;
-        }
+        if (idx === -1) continue;
+        var range = document.createRange();
+        range.setStart(node, idx);
+        range.setEnd(node, idx + item.text.length);
+        wrapRangeWithHl(range, item.id, item.color, item.note);
+        break;
       }
     });
     updateNotesDrawer();

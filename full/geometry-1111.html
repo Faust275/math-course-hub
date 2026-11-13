@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《几何学》2026-11-11 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    /* 打印样式优化 */
+    @media print {
+      body { padding: 0 !important; max-width: 100% !important; font-size: 12pt !important; line-height: 1.6 !important; color: #000 !important; background: #fff !important; }
+      .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor { display: none !important; }
+      .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill { break-inside: avoid !important; page-break-inside: avoid !important; }
+      .wb-excard { border: 1px solid #aaa !important; background: #fff !important; }
+      .wb-derive-box.wb-hidden { display: block !important; }
+      a { text-decoration: none !important; color: #000 !important; }
+    }
+  </style>
+<style>
+ol.wb-steps{margin:10px 0 16px;padding-left:28px;line-height:1.85}
+ol.wb-steps>li{margin:8px 0;padding-left:4px}
+ol.wb-steps>li::marker{color:#1d4ed8;font-weight:600}
+math[display="inline"]{margin:0 .08em}
+mjx-container[jax="SVG"]{margin:0 .04em}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《几何学》2026-11-11 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#几何学2026-11-11-课堂详解"
+id="toc-几何学2026-11-11-课堂详解">《几何学》2026-11-11 课堂详解</a>
+<ul>
+<li><a href="#一不变量与有中心型的六类000302002608"
+id="toc-一不变量与有中心型的六类000302002608">一、不变量与有中心型的六类（00:03:02—00:26:08）</a>
+<ul>
+<li><a href="#承接上节矩阵形式增广矩阵与标准形"
+id="toc-承接上节矩阵形式增广矩阵与标准形">00:03:02—00:07:47 ｜
+承接上节：矩阵形式、增广矩阵与标准形</a></li>
+<li><a href="#四个不变量与两个半不变量"
+id="toc-四个不变量与两个半不变量">00:07:47—00:12:24 ｜
+四个不变量与两个半不变量</a></li>
+<li><a href="#按第四行展开定出常数项"
+id="toc-按第四行展开定出常数项">00:12:24—00:17:22 ｜
+按第四行展开定出常数项</a></li>
+<li><a href="#有中心型配方加平移"
+id="toc-有中心型配方加平移">00:17:22—00:23:17 ｜
+有中心型：配方加平移</a></li>
+<li><a href="#按常数项与特征值的符号分出六类"
+id="toc-按常数项与特征值的符号分出六类">00:23:17—00:26:08 ｜
+按常数项与特征值的符号分出六类</a></li>
+</ul></li>
+<li><a href="#二抛物面型一个特征值为零002608003752"
+id="toc-二抛物面型一个特征值为零002608003752">二、抛物面型：一个特征值为零（00:26:08—00:37:52）</a>
+<ul>
+<li><a href="#只配得动两项" id="toc-只配得动两项">00:26:08—00:29:37 ｜
+只配得动两项</a></li>
+<li><a href="#椭圆抛物面与双曲抛物面"
+id="toc-椭圆抛物面与双曲抛物面">00:29:37—00:33:01 ｜
+椭圆抛物面与双曲抛物面</a></li>
+<li><a href="#柱面一对相交平面与一条直线"
+id="toc-柱面一对相交平面与一条直线">00:33:01—00:37:52 ｜
+柱面、一对相交平面与一条直线</a></li>
+</ul></li>
+<li><a href="#三柱面型与平行平面型十七类总表003752010011"
+id="toc-三柱面型与平行平面型十七类总表003752010011">三、柱面型与平行平面型：十七类总表（00:37:52—01:00:11）</a>
+<ul>
+<li><a href="#只剩一个非零特征值"
+id="toc-只剩一个非零特征值">00:37:52—00:44:25 ｜
+只剩一个非零特征值</a></li>
+<li><a href="#抛物柱面与母线的方向"
+id="toc-抛物柱面与母线的方向">00:44:25—00:54:14 ｜
+抛物柱面与母线的方向</a></li>
+<li><a href="#平行平面族补漏与十七类"
+id="toc-平行平面族补漏与十七类">00:54:14—01:00:11 ｜
+平行平面族、补漏与十七类</a></li>
+</ul></li>
+<li><a href="#四例题用正交变换化二次曲面为标准型010212011616"
+id="toc-四例题用正交变换化二次曲面为标准型010212011616">四、例题：用正交变换化二次曲面为标准型（01:02:12—01:16:16）</a>
+<ul>
+<li><a href="#题目要求与两条路线"
+id="toc-题目要求与两条路线">01:02:12—01:07:00 ｜
+题目、要求与两条路线</a></li>
+<li><a href="#老师的几点交代" id="toc-老师的几点交代">01:14:25—01:16:16
+｜ 老师的几点交代</a></li>
+</ul></li>
+<li><a href="#五几何变换与坐标变换011616012504"
+id="toc-五几何变换与坐标变换011616012504">五、几何变换与坐标变换（01:16:16—01:25:04）</a>
+<ul>
+<li><a href="#课程安排" id="toc-课程安排">01:16:16—01:18:10 ｜
+课程安排</a></li>
+<li><a href="#图形不动与坐标系不动"
+id="toc-图形不动与坐标系不动">01:18:10—01:21:04 ｜
+图形不动与坐标系不动</a></li>
+<li><a href="#放大镜blow-up-与庞加莱猜想课堂插话"
+id="toc-放大镜blow-up-与庞加莱猜想课堂插话">01:21:04—01:25:04 ｜
+放大镜、blow-up 与庞加莱猜想（课堂插话）</a></li>
+</ul></li>
+<li><a href="#六映射的基本概念012504013421"
+id="toc-六映射的基本概念012504013421">六、映射的基本概念（01:25:04—01:34:21）</a>
+<ul>
+<li><a href="#映射单射与满射" id="toc-映射单射与满射">01:25:04—01:28:48
+｜ 映射、单射与满射</a></li>
+<li><a href="#复合与结合律" id="toc-复合与结合律">01:28:48—01:32:20 ｜
+复合与结合律</a></li>
+<li><a href="#逆映射的唯一性与可逆即双射"
+id="toc-逆映射的唯一性与可逆即双射">01:32:20—01:34:21 ｜
+逆映射的唯一性与“可逆即双射”</a></li>
+</ul></li>
+<li><a href="#七平面上的等距变换与正交变换013421014016"
+id="toc-七平面上的等距变换与正交变换013421014016">七、平面上的等距变换与正交变换（01:34:21—01:40:16）</a>
+<ul>
+<li><a href="#等距变换保持两点间距离"
+id="toc-等距变换保持两点间距离">01:34:21—01:38:54 ｜
+等距变换：保持两点间距离</a></li>
+<li><a href="#正交变换与只有三种的预告"
+id="toc-正交变换与只有三种的预告">01:38:54—01:40:16 ｜
+正交变换与“只有三种”的预告</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="几何学2026-11-11-课堂详解">《几何学》2026-11-11 课堂详解</h1>
+<blockquote>
+<p>授课：盛为民 ｜ 时长：01:42:36 ｜ 逐条字幕：848 条 ｜ 时间段小节：21
+｜ 例题 / 证明：1</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[?]</code>
+标记转写存疑处；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<h2
+id="一不变量与有中心型的六类000302002608">一、不变量与有中心型的六类（00:03:02—00:26:08）</h2>
+<h3 id="承接上节矩阵形式增广矩阵与标准形">00:03:02—00:07:47 ｜
+承接上节：矩阵形式、增广矩阵与标准形</h3>
+<p>本节要把 11-09
+的工作做完：给出二次曲面的<strong>完整分类</strong>。老师开场说得很直白——这是一个很大的工程。给一张二次曲面的方程，先要把它化成标准型，标准型出来了才知道它是什么曲面；同样的问题在高等代数里对二次型做一遍，是同一件事的两种讲法，两边都会考。</p>
+<p><strong>二次型的矩阵形式。</strong> 取标架<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>O</mi><mo>;</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{O;\mathbf{e}_1,\mathbf{e}_2,\mathbf{e}_3\}</annotation></semantics></math>，点的坐标记为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\mathbf{x}=(x,y,z)^T</annotation></semantics></math>，二次曲面方程写成</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi mathvariant="bold-italic">𝒙</mi><mi>T</mi></msup><mi>A</mi><mi mathvariant="bold-italic">𝒙</mi><mo>+</mo><mn>2</mn><msup><mi mathvariant="bold-italic">𝜶</mi><mi>T</mi></msup><mi mathvariant="bold-italic">𝒙</mi><mo>+</mo><msub><mi>a</mi><mn>44</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">F(\mathbf{x})=\mathbf{x}^TA\mathbf{x}+2\boldsymbol{\alpha}^T\mathbf{x}+a_{44}=0,</annotation></semantics></math></p>
+<p>其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mo stretchy="false" form="postfix">)</mo><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A=(a_{ij})_{3\times3}</annotation></semantics></math>是<strong>实对称矩阵</strong>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝜶</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>14</mn></msub><mo>,</mo><msub><mi>a</mi><mn>24</mn></msub><mo>,</mo><msub><mi>a</mi><mn>34</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(a_{14},a_{24},a_{34})^T</annotation></semantics></math>是一次项系数的一半，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mn>44</mn></msub><annotation encoding="application/x-tex">a_{44}</annotation></semantics></math>是常数项。</p>
+<p><strong>增广矩阵。</strong> 再把常数项并进去，令第 4 个坐标为 1 ：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>A</mi><mo accent="true">̃</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>A</mi></mtd><mtd columnalign="center" style="text-align: center"><mi mathvariant="bold-italic">𝜶</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi mathvariant="bold-italic">𝜶</mi><mi>T</mi></msup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>44</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>F</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mover><mi>A</mi><mo accent="true">̃</mo></mover><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">\tilde A=\begin{pmatrix}A&amp;\boldsymbol{\alpha}\\ \boldsymbol{\alpha}^T&amp;a_{44}\end{pmatrix},\qquad 
+F=(x,y,z,1)\,\tilde A\,(x,y,z,1)^T .</annotation></semantics></math></p>
+<p><strong>只做旋转时的标准形。</strong> 令<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><mi>C</mi><msup><mi mathvariant="bold-italic">𝒙</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">\mathbf{x}=C\mathbf{x}&#39;</annotation></semantics></math>，其中 C 是正交矩阵（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi>T</mi></msup><mi>C</mi><mo>=</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">C^TC=E</annotation></semantics></math>），它的三列是 A 的<strong>单位</strong>特征向量，于是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi>T</mi></msup><mi>A</mi><mi>C</mi><mo>=</mo><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>A</mi><msub><mi mathvariant="bold-italic">𝒄</mi><mi>i</mi></msub><mo>=</mo><msub><mi>λ</mi><mi>i</mi></msub><msub><mi mathvariant="bold-italic">𝒄</mi><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">C^TAC=\operatorname{diag}(\lambda_1,\lambda_2,\lambda_3),\qquad A\mathbf{c}_i=\lambda_i\mathbf{c}_i .</annotation></semantics></math></p>
+<p>代回原式，方程变成</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>x</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>y</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><msup><mi>z</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><msup><mi>z</mi><mo>′</mo></msup><mo>+</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">F=\lambda_1x&#39;^2+\lambda_2y&#39;^2+\lambda_3z&#39;^2+2a_{14}^*x&#39;+2a_{24}^*y&#39;+2a_{34}^*z&#39;+a_{44}^* .</annotation></semantics></math></p>
+<p>带星号的是变换后增广矩阵的元素。老师特意交代这一步的分量：<strong>只用了旋转</strong>——原点没动、基仍然正交，所以图形还是原来那个图形，只是换了一组更好看的坐标轴；平移是下一步才做的。</p>
+<h3 id="四个不变量与两个半不变量">00:07:47—00:12:24 ｜
+四个不变量与两个半不变量</h3>
+<p>接下来把标准形里的系数全部翻译成 A 的<strong>特征值</strong>，因为特征值在正交变换下不变：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">I_1=\lambda_1+\lambda_2+\lambda_3=\operatorname{tr}A,</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msub><mi>λ</mi><mn>3</mn></msub><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">I_2=\lambda_1\lambda_2+\lambda_2\lambda_3+\lambda_3\lambda_1,
+\qquad
+I_3=\lambda_1\lambda_2\lambda_3=\det A,</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mover><mi>A</mi><mo accent="true">̃</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">I_4=\det\tilde A .</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>1</mn></msub><annotation encoding="application/x-tex">I_1</annotation></semantics></math>就是 A 的主对角线之和（迹），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>2</mn></msub><annotation encoding="application/x-tex">I_2</annotation></semantics></math>是 A 的全部二阶主子式之和，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">I_3=\det A</annotation></semantics></math>。前三个由特征值表出，所以<strong>旋转不变</strong>；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>4</mn></msub><annotation encoding="application/x-tex">I_4</annotation></semantics></math>是增广矩阵的行列式，平移只相当于给<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>做一次行列式为 1 的合同变换，所以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>4</mn></msub><annotation encoding="application/x-tex">I_4</annotation></semantics></math>在<strong>旋转和平移下都不变</strong>。这四个量统称<strong>不变量</strong>。</p>
+<p>除此之外还要两个量，由增广矩阵的高阶主子式给出：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mn>1</mn></msub><annotation encoding="application/x-tex">K_1</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>的<strong>全部二阶主子式之和</strong>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mn>2</mn></msub><annotation encoding="application/x-tex">K_2</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>的<strong>全部三阶主子式之和</strong>（把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>任删一行一列得到的四个三阶行列式全加起来）。</li>
+</ul>
+<p>这两个量<strong>旋转不变、平移会变</strong>，所以叫<strong>半不变量</strong>。老师说，“半”字的意思是“有条件的不变”：</p>
+<ul>
+<li>当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=0</annotation></semantics></math>时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mn>2</mn></msub><annotation encoding="application/x-tex">K_2</annotation></semantics></math>在平移下不变；</li>
+<li>当<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=K_2=0</annotation></semantics></math>时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mn>1</mn></msub><annotation encoding="application/x-tex">K_1</annotation></semantics></math>在平移下不变。</li>
+</ul>
+<p>这正是后面分到柱面、平行平面那两支时能继续用它们做判据的原因——在那些位置上，平移恰好不再改变它们。</p>
+<h3 id="按第四行展开定出常数项">00:12:24—00:17:22 ｜
+按第四行展开定出常数项</h3>
+<p>分类的全部技术难点浓缩在一件事上：<strong>标准形里的常数项 a44* 怎么用不变量表示</strong>。老师在黑板上把变换后的增广矩阵写全：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mover><mi>A</mi><mo accent="true">̃</mo></mover><mo>′</mo></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>λ</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>λ</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>λ</mi><mn>3</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\tilde A&#39;=\begin{pmatrix}
+\lambda_1&amp;0&amp;0&amp;a_{14}^*\\
+0&amp;\lambda_2&amp;0&amp;a_{24}^*\\
+0&amp;0&amp;\lambda_3&amp;a_{34}^*\\
+a_{14}^*&amp;a_{24}^*&amp;a_{34}^*&amp;a_{44}^*
+\end{pmatrix}.</annotation></semantics></math></p>
+<p>按<strong>第四行</strong>展开算<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><msup><mover><mi>A</mi><mo accent="true">̃</mo></mover><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">I_4=\det\tilde A&#39;</annotation></semantics></math>。第一个元素是 a44* ，代数余子式符号为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mrow><mn>4</mn><mo>+</mo><mn>4</mn></mrow></msup><mo>=</mo><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">(-1)^{4+4}=+1</annotation></semantics></math>，剩下的是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1\lambda_2\lambda_3=I_3</annotation></semantics></math>，所以第一项是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><msub><mi>I</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">a_{44}^*I_3</annotation></semantics></math>；交叉位置上的三个元素各自展开都只剩一个非零的 2×2 行列式，符号全是负的：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><msub><mi>I</mi><mn>3</mn></msub><mo>−</mo><msub><mi>λ</mi><mn>2</mn></msub><msub><mi>λ</mi><mn>3</mn></msub><msubsup><mi>a</mi><mn>14</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>−</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>3</mn></msub><msubsup><mi>a</mi><mn>24</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>−</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">I_4=a_{44}^*I_3-\lambda_2\lambda_3a_{14}^{*2}-\lambda_1\lambda_3a_{24}^{*2}-\lambda_1\lambda_2a_{34}^{*2}.</annotation></semantics></math></p>
+<p>把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><msub><mi>λ</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">I_3=\lambda_1\lambda_2\lambda_3</annotation></semantics></math>提出来：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><msub><mi>I</mi><mn>3</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>14</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>24</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>2</mn></msub></mfrac><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>3</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">I_4=I_3\left(a_{44}^*-\frac{a_{14}^{*2}}{\lambda_1}-\frac{a_{24}^{*2}}{\lambda_2}-\frac{a_{34}^{*2}}{\lambda_3}\right).</annotation></semantics></math></p>
+<p>只要<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，括号里的量就完全由<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>4</mn></msub><annotation encoding="application/x-tex">I_4</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>3</mn></msub><annotation encoding="application/x-tex">I_3</annotation></semantics></math>决定。把它记作 μ ：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>:=</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>14</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>24</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>2</mn></msub></mfrac><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>3</mn></msub></mfrac><mo>=</mo><mfrac><msub><mi>I</mi><mn>4</mn></msub><msub><mi>I</mi><mn>3</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\mu:=a_{44}^*-\frac{a_{14}^{*2}}{\lambda_1}-\frac{a_{24}^{*2}}{\lambda_2}-\frac{a_{34}^{*2}}{\lambda_3}=\frac{I_4}{I_3}.</annotation></semantics></math></p>
+<p>这个式子先放在这里，后面每一条分类判据都要用它。</p>
+<h3 id="有中心型配方加平移">00:17:22—00:23:17 ｜
+有中心型：配方加平移</h3>
+<p><strong>第一种情况：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math></strong>。此时三个特征值全不为零，三项平方都在，可以逐项配平方：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mfrac><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mfrac><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>2</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>z</mi><mo>′</mo></msup><mo>+</mo><mfrac><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>3</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mi>μ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">F=\lambda_1\left(x&#39;+\frac{a_{14}^*}{\lambda_1}\right)^2
++\lambda_2\left(y&#39;+\frac{a_{24}^*}{\lambda_2}\right)^2
++\lambda_3\left(z&#39;+\frac{a_{34}^*}{\lambda_3}\right)^2+\mu .</annotation></semantics></math></p>
+<p>再作平移</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mfrac><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>Y</mi><mo>=</mo><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mfrac><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>2</mn></msub></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>Z</mi><mo>=</mo><msup><mi>z</mi><mo>′</mo></msup><mo>+</mo><mfrac><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>3</mn></msub></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">X=x&#39;+\frac{a_{14}^*}{\lambda_1},\qquad
+Y=y&#39;+\frac{a_{24}^*}{\lambda_2},\qquad
+Z=z&#39;+\frac{a_{34}^*}{\lambda_3},</annotation></semantics></math></p>
+<p>方程就化到最简形式</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><msup><mi>Z</mi><mn>2</mn></msup><mo>+</mo><mi>μ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>μ</mi><mo>=</mo><mfrac><msub><mi>I</mi><mn>4</mn></msub><msub><mi>I</mi><mn>3</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2+\lambda_3Z^2+\mu=0,\qquad \mu=\frac{I_4}{I_3}.</annotation></semantics></math></p>
+<p>到这一步一共做了两次刚体变换（先旋转，再平移），曲面的几何形状一点没变，变的只是坐标系。老师在这里埋了一个伏笔：<strong>这两种“变”是完全不同的两回事</strong>，第五章再正式区分。</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>还保证了一件事：方程组 A𝒙=−𝜶 有唯一解，这个解就是曲面的<strong>中心</strong>。所以这一大类叫<strong>有中心型</strong>（有心二次曲面）；后面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0</annotation></semantics></math>的两类没有唯一中心，统称无中心型。</p>
+<h3 id="按常数项与特征值的符号分出六类">00:23:17—00:26:08 ｜
+按常数项与特征值的符号分出六类</h3>
+<p>现在只剩符号问题：三个特征值<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2,\lambda_3</annotation></semantics></math>以 μ 各自取什么号。逐个数：</p>
+<p><strong>三个特征值同号。</strong> 除以 −μ （ μ≠0 时）得到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><mrow><mi>−</mi><mi>μ</mi><mi>/</mi><msub><mi>λ</mi><mn>1</mn></msub></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><mrow><mi>−</mi><mi>μ</mi><mi>/</mi><msub><mi>λ</mi><mn>2</mn></msub></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><mrow><mi>−</mi><mi>μ</mi><mi>/</mi><msub><mi>λ</mi><mn>3</mn></msub></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{-\mu/\lambda_1}+\dfrac{Y^2}{-\mu/\lambda_2}+\dfrac{Z^2}{-\mu/\lambda_3}=1</annotation></semantics></math>：</p>
+<ul>
+<li>μ 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\lambda_i</annotation></semantics></math>异号：三个分母全正 → <strong>椭球面</strong>；</li>
+<li>μ 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\lambda_i</annotation></semantics></math>同号：三个分母全负 →
+<strong>虚椭球面</strong>（方程无实点，只是形式上的曲面）；</li>
+<li>μ=0 ：方程变成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><msup><mi>Z</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2+\lambda_3Z^2=0</annotation></semantics></math>，只有原点一个实点
+→ <strong>点</strong>（虚二阶锥面）。</li>
+</ul>
+<p><strong>两个同号、一个异号。</strong> 不妨设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn><mo>&gt;</mo><msub><mi>λ</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2&gt;0&gt;\lambda_3</annotation></semantics></math>，把那个“孤立号”的特征值记在心里：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mu=0</annotation></semantics></math>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>3</mn></msub><msup><mi>Z</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2+\lambda_3Z^2=0</annotation></semantics></math>，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}-\dfrac{Z^2}{c^2}=0</annotation></semantics></math>
+→ <strong>二次锥面</strong>；</li>
+<li>μ 与<strong>孤立号</strong>（这里是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>3</mn></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_3&lt;0</annotation></semantics></math>）同号：移项后是两个正项减一个负项，得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}-\dfrac{Z^2}{c^2}=1</annotation></semantics></math>
+→ <strong>单叶双曲面</strong>；</li>
+<li>μ 与<strong>成对的两个</strong>（这里是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2&gt;0</annotation></semantics></math>）同号：得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}-\dfrac{Z^2}{c^2}=-1</annotation></semantics></math>
+→ <strong>双叶双曲面</strong>。</li>
+</ul>
+<p>老师在这里反复强调不要记混：<strong>常数项跟着“孤零零的那一个”走就是单叶，跟着“成对的两个”走就是双叶</strong>。单叶是一张连通的反曲面（中间细、两头开），双叶分成上下两瓣，靠常数项的符号分开。</p>
+<p>这样<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>一共给出<strong>六类</strong>：椭球面、虚椭球面、点、单叶双曲面、双叶双曲面、二次锥面。</p>
+<h2
+id="二抛物面型一个特征值为零002608003752">二、抛物面型：一个特征值为零（00:26:08—00:37:52）</h2>
+<h3 id="只配得动两项">00:26:08—00:29:37 ｜ 只配得动两项</h3>
+<p><strong>第二种情况：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0</annotation></semantics></math>，但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2\neq0</annotation></semantics></math></strong>。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0</annotation></semantics></math>说明至少有一个特征值为零，不妨设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_3=0</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1\lambda_2=I_2\neq0</annotation></semantics></math>，另两个都不为零）。标准形里<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">z&#39;^2</annotation></semantics></math>项消失：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>x</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>y</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><msup><mi>z</mi><mo>′</mo></msup><mo>+</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">F=\lambda_1x&#39;^2+\lambda_2y&#39;^2+2a_{14}^*x&#39;+2a_{24}^*y&#39;+2a_{34}^*z&#39;+a_{44}^* .</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mo>′</mo></msup><annotation encoding="application/x-tex">x&#39;</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mo>′</mo></msup><annotation encoding="application/x-tex">y&#39;</annotation></semantics></math>两项照旧配平方，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>′</mo></msup><annotation encoding="application/x-tex">z&#39;</annotation></semantics></math>只有一次项、没有平方项，<strong>配不起来</strong>——这是这一大类的本质特征。于是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><mi>Z</mi><mo>+</mo><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>14</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>24</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>2</mn></msub></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">F=\lambda_1X^2+\lambda_2Y^2+2a_{34}^*Z+\tilde\mu,
+\qquad
+\tilde\mu=a_{44}^*-\frac{a_{14}^{*2}}{\lambda_1}-\frac{a_{24}^{*2}}{\lambda_2},</annotation></semantics></math></p>
+<p>其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac></mstyle></mrow><annotation encoding="application/x-tex">X=x&#39;+\dfrac{a_{14}^*}{\lambda_1}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>=</mo><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><msub><mi>λ</mi><mn>2</mn></msub></mfrac></mstyle></mrow><annotation encoding="application/x-tex">Y=y&#39;+\dfrac{a_{24}^*}{\lambda_2}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi><mo>=</mo><msup><mi>z</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">Z=z&#39;</annotation></semantics></math>。</p>
+<h3 id="椭圆抛物面与双曲抛物面">00:29:37—00:33:01 ｜
+椭圆抛物面与双曲抛物面</h3>
+<p>剩下的一次项能不能消掉，取决于 a34* 是否为零，而这个量由不变量管着。在标准形下按第四行展开：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mi>−</mi><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>=</mo><mi>−</mi><msub><mi>I</mi><mn>2</mn></msub><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>,</mo></mrow><annotation encoding="application/x-tex">I_4=-\lambda_1\lambda_2a_{34}^{*2}=-I_2a_{34}^{*2},</annotation></semantics></math></p>
+<p>所以</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><mo>=</mo><mi>±</mi><msqrt><mrow><mi>−</mi><mfrac><msub><mi>I</mi><mn>4</mn></msub><msub><mi>I</mi><mn>2</mn></msub></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">a_{34}^{*}=\pm\sqrt{-\frac{I_4}{I_2}} .</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_4\neq0</annotation></semantics></math>等价于 a34*≠0 。这时把 Z 再平移一次，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Z</mi><mo>′</mo></msup><mo>=</mo><mi>Z</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mrow><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">Z&#39;=Z+\dfrac{\tilde\mu}{2a_{34}^*}</annotation></semantics></math>，常数项被并掉：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><msup><mi>Z</mi><mo>′</mo></msup><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2+2a_{34}^*Z&#39;=0 .</annotation></semantics></math></p>
+<p>形状由<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">I_2=\lambda_1\lambda_2</annotation></semantics></math>的符号定：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2&gt;0</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2</annotation></semantics></math>同号）→ <strong>椭圆抛物面</strong>，标准方程<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>Z</mi></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}=2Z</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2&lt;0</annotation></semantics></math>（异号）→
+<strong>双曲抛物面</strong>（马鞍面），标准方程<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>Z</mi></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}-\dfrac{Y^2}{b^2}=2Z</annotation></semantics></math>。</li>
+</ul>
+<p>a34* 的正负不影响结论：换个方向看（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Z</mi><mo>′</mo></msup><mo>↦</mo><mi>−</mi><msup><mi>Z</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">Z&#39;\mapsto-Z&#39;</annotation></semantics></math>）就换过来了。</p>
+<h3 id="柱面一对相交平面与一条直线">00:33:01—00:37:52 ｜
+柱面、一对相交平面与一条直线</h3>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_4=0</annotation></semantics></math>等价于 a34*=0 ，方程里<strong>彻底没有 z</strong>：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>+</mo><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2+\tilde\mu=0 .</annotation></semantics></math></p>
+<p>缺一个坐标，说明它是<strong>柱面</strong>，母线平行于那个方向（这里平行于 z 轴）。剩下的常数项<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>用半不变量给：标准形下<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>的三阶主子式只有一项非零，就是保留<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>,</mo><mover><mi>μ</mi><mo accent="true">̃</mo></mover></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2,\tilde\mu</annotation></semantics></math>的那一个，故</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><mfrac><msub><mi>K</mi><mn>2</mn></msub><msub><mi>I</mi><mn>2</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">K_2=\lambda_1\lambda_2\tilde\mu=I_2\tilde\mu
+\quad\Longrightarrow\quad
+\tilde\mu=\frac{K_2}{I_2}.</annotation></semantics></math></p>
+<p>按<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1\lambda_2</annotation></semantics></math>的符号和<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>的符号分：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2</annotation></semantics></math>
+<strong>同号</strong>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2&gt;0</annotation></semantics></math>）：
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>与它们异号 → <strong>椭圆柱面</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}=1</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>与它们同号 → <strong>虚椭圆柱面</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}=-1</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\tilde\mu=0</annotation></semantics></math>（即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">K_2=0</annotation></semantics></math>）→
+方程只剩<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2=0</annotation></semantics></math>，实点集是<strong>一条直线</strong>（就是 Z 轴）。</li>
+</ul></li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\lambda_1,\lambda_2</annotation></semantics></math>
+<strong>异号</strong>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2&lt;0</annotation></semantics></math>）：
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\tilde\mu\neq0</annotation></semantics></math>
+→ <strong>双曲柱面</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}-\dfrac{Y^2}{b^2}=1</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\tilde\mu=0</annotation></semantics></math>
+→
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mi>Y</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\lambda_2Y^2=0</annotation></semantics></math>分解成两张平面，即<strong>一对相交平面</strong>。</li>
+</ul></li>
+</ul>
+<p>老师在这里点了一句很关键的话：<strong>同一个标准型，常数项一取零，形状就从柱面塌成平面甚至一条直线</strong>。这些退化情形不算“其它曲面”，它们各自是一类，数分类时一个都不能漏。</p>
+<h2
+id="三柱面型与平行平面型十七类总表003752010011">三、柱面型与平行平面型：十七类总表（00:37:52—01:00:11）</h2>
+<h3 id="只剩一个非零特征值">00:37:52—00:44:25 ｜ 只剩一个非零特征值</h3>
+<p><strong>第三种情况：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0</annotation></semantics></math>且<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2=0</annotation></semantics></math>，但<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_1\neq0</annotation></semantics></math></strong>。三个特征值里恰有一个不为零，设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_1\neq0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_2=\lambda_3=0</annotation></semantics></math>。标准形是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>x</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>14</mn><mo>*</mo></msubsup><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><msup><mi>z</mi><mo>′</mo></msup><mo>+</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">F=\lambda_1x&#39;^2+2a_{14}^*x&#39;+2a_{24}^*y&#39;+2a_{34}^*z&#39;+a_{44}^* .</annotation></semantics></math></p>
+<p>只有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mo>′</mo></msup><annotation encoding="application/x-tex">x&#39;</annotation></semantics></math>配得动：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><mi>Y</mi><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><mi>Z</mi><mo>+</mo><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>=</mo><msubsup><mi>a</mi><mn>44</mn><mo>*</mo></msubsup><mo>−</mo><mfrac><msubsup><mi>a</mi><mn>14</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><msub><mi>λ</mi><mn>1</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">F=\lambda_1X^2+2a_{24}^*Y+2a_{34}^*Z+\hat\mu,
+\qquad
+\hat\mu=a_{44}^*-\frac{a_{14}^{*2}}{\lambda_1}.</annotation></semantics></math></p>
+<p>线性部分这次是<strong>两项</strong>都在，所以还要在 Y – Z 平面里再转一次才能对齐。</p>
+<h3 id="抛物柱面与母线的方向">00:44:25—00:54:14 ｜
+抛物柱面与母线的方向</h3>
+<p>把线性部分写成“长度乘方向”：记</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><msubsup><mi>a</mi><mn>24</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>,</mo><mspace width="2.0em"></mspace><mn>2</mn><msubsup><mi>a</mi><mn>24</mn><mo>*</mo></msubsup><mi>Y</mi><mo>+</mo><mn>2</mn><msubsup><mi>a</mi><mn>34</mn><mo>*</mo></msubsup><mi>Z</mi><mo>=</mo><mn>2</mn><msqrt><mi>B</mi></msqrt><mspace width="0.167em"></mspace><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><mi>Y</mi><mo>+</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><mi>Z</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">B=a_{24}^{*2}+a_{34}^{*2},\qquad
+2a_{24}^*Y+2a_{34}^*Z=2\sqrt B\,\bigl(\cos\theta\,Y+\sin\theta\,Z\bigr),</annotation></semantics></math></p>
+<p>然后令<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Y</mi><mo>′</mo></msup><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><mi>Y</mi><mo>+</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><mi>Z</mi></mrow><annotation encoding="application/x-tex">Y&#39;=\cos\theta\,Y+\sin\theta\,Z</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Z</mi><mo>′</mo></msup><mo>=</mo><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><mi>Y</mi><mo>+</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mspace width="0.167em"></mspace><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z&#39;=-\sin\theta\,Y+\cos\theta\,Z</annotation></semantics></math>，即绕 X 轴转一个角 θ 。关键在于：<strong>Y 、 Z 方向本来没有平方项</strong>，这个旋转不会在二次部分里生出新的交叉项，所以可以随便转。转完之后</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mi>B</mi></msqrt><mspace width="0.167em"></mspace><msup><mi>Y</mi><mo>′</mo></msup><mo>+</mo><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">F=\lambda_1X^2+2\sqrt B\,Y&#39;+\hat\mu .</annotation></semantics></math></p>
+<p>B 用不变量表示：标准形下<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>的三阶主子式中只有删去第二行（或第三行）的两个非零，其余为零，于是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mi>−</mi><msub><mi>λ</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>a</mi><mn>24</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>34</mn><mrow><mi>*</mi><mn>2</mn></mrow></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>−</mi><msub><mi>I</mi><mn>1</mn></msub><mi>B</mi><mspace width="1.0em"></mspace><mo>⇒</mo><mspace width="1.0em"></mspace><mi>B</mi><mo>=</mo><mi>−</mi><mfrac><msub><mi>K</mi><mn>2</mn></msub><msub><mi>I</mi><mn>1</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">K_2=-\lambda_1\left(a_{24}^{*2}+a_{34}^{*2}\right)=-I_1B
+\quad\Longrightarrow\quad
+B=-\frac{K_2}{I_1}.</annotation></semantics></math></p>
+<p>因此</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>≠</mo><mn>0</mn><mo>⇔</mo><mi>B</mi><mo>≠</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">K_2\neq0\iff B\neq0 .</annotation></semantics></math></p>
+<p>这时把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>Y</mi><mo>′</mo></msup><annotation encoding="application/x-tex">Y&#39;</annotation></semantics></math>平移掉常数项，得到</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mi>B</mi></msqrt><mspace width="0.167em"></mspace><msup><mi>Y</mi><mo>′</mo></msup><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\lambda_1X^2+2\sqrt B\,Y&#39;=0,</annotation></semantics></math></p>
+<p>这是一条抛物线沿<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>Z</mi><mo>′</mo></msup><annotation encoding="application/x-tex">Z&#39;</annotation></semantics></math>方向平移扫出的<strong>抛物柱面</strong>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\lambda_1</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>B</mi></msqrt><annotation encoding="application/x-tex">\sqrt B</annotation></semantics></math>的符号可以靠 X↦−X 、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Y</mi><mo>′</mo></msup><mo>↦</mo><mi>−</mi><msup><mi>Y</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">Y&#39;\mapsto-Y&#39;</annotation></semantics></math>调成正号，写成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><msup><mi>Y</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">X^2=2pY&#39;</annotation></semantics></math>）。母线平行于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>Z</mi><mo>′</mo></msup><annotation encoding="application/x-tex">Z&#39;</annotation></semantics></math>轴方向，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>Z</mi><mo>′</mo></msup><annotation encoding="application/x-tex">Z&#39;</annotation></semantics></math>落在原来的 y – z 坐标面内（老师口述为“平行于 z 轴”的那个方向）。</p>
+<p>老师补了一句：这一支是三类里<strong>最复杂</strong>的，因为只有它需要动两次旋转——先在 x,y,z 里把二次部分对角化，再在 Y – Z 平面里把线性部分对齐。前两支都是“配平方 + 平移”就完了。</p>
+<h3 id="平行平面族补漏与十七类">00:54:14—01:00:11 ｜
+平行平面族、补漏与十七类</h3>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">K_2=0</annotation></semantics></math>等价于 a24*=a34*=0 ，方程只剩一个自变量：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><msub><mi>I</mi><mn>1</mn></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda_1X^2+\hat\mu=0,\qquad \hat\mu=\frac{K_1}{I_1}.</annotation></semantics></math></p>
+<p>（理由同前：标准形下<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>A</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde A</annotation></semantics></math>的二阶主子式中非零的只有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mover><mi>μ</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">\lambda_1\hat\mu</annotation></semantics></math>这一项，所以<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>1</mn></msub><mo>=</mo><msub><mi>I</mi><mn>1</mn></msub><mover><mi>μ</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">K_1=I_1\hat\mu</annotation></semantics></math>；此时<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">I_1=\lambda_1</annotation></semantics></math>。）</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat\mu</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\lambda_1</annotation></semantics></math>异号 → <strong>一对平行平面</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">X^2=a^2</annotation></semantics></math>；</li>
+<li>同号 → <strong>一对虚平行平面</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><mi>−</mi><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">X^2=-a^2</annotation></semantics></math>（无实点）；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat\mu=0</annotation></semantics></math>
+→ <strong>一对重合平面</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X^2=0</annotation></semantics></math>。</li>
+</ul>
+<p>到这里老师停下来数了一遍，发现只有十六种，追问“少了一种情况是哪里”。补出来的是<strong>虚椭圆柱面</strong>——它在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2&gt;0</annotation></semantics></math>的柱面分支里，属于“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>与两个特征值同号”那一支，一开始被顺手跳过。补上之后正好十七类。老师的原话是：这类漏项最容易发生在“同号
+/ 异号”的分支上，一定要把每个分支的符号组合都过一遍。</p>
+<p>把全部分支汇总：</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>序号</th>
+<th>类型</th>
+<th>标准方程</th>
+<th>判据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>椭球面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}+\dfrac{Z^2}{c^2}=1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，三特征值同号， μ 与它们异号</td>
+</tr>
+<tr>
+<td>2</td>
+<td>虚椭球面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}+\dfrac{Z^2}{c^2}=-1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，三特征值同号， μ 与它们同号</td>
+</tr>
+<tr>
+<td>3</td>
+<td>点</td>
+<td>X=Y=Z=0</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，三特征值同号， μ=0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>单叶双曲面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}-\dfrac{Z^2}{c^2}=1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，两正一负， μ 与孤立号同号</td>
+</tr>
+<tr>
+<td>5</td>
+<td>双叶双曲面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}-\dfrac{Z^2}{c^2}=-1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，两正一负， μ 与成对号同号</td>
+</tr>
+<tr>
+<td>6</td>
+<td>二次锥面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}-\dfrac{Z^2}{c^2}=0</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3\neq0</annotation></semantics></math>，两正一负， μ=0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>椭圆抛物面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>Z</mi></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}=2Z</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>4</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0,\ I_2&gt;0,\ I_4\neq0</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>8</td>
+<td>双曲抛物面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>2</mn><mi>Z</mi></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}-\dfrac{Y^2}{b^2}=2Z</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&lt;</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>4</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=0,\ I_2&lt;0,\ I_4\neq0</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>9</td>
+<td>椭圆柱面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}=1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=0,\ I_2&gt;0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>与特征值异号</td>
+</tr>
+<tr>
+<td>10</td>
+<td>虚椭圆柱面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}+\dfrac{Y^2}{b^2}=-1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=0,\ I_2&gt;0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde\mu</annotation></semantics></math>与特征值同号</td>
+</tr>
+<tr>
+<td>11</td>
+<td>双曲柱面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}-\dfrac{Y^2}{b^2}=1</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=0,\ I_2&lt;0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\tilde\mu\neq0</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>12</td>
+<td>一对相交平面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><msup><mi>a</mi><mn>2</mn></msup></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\dfrac{X^2}{a^2}-\dfrac{Y^2}{b^2}=0</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=0,\ I_2&lt;0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\tilde\mu=0</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>13</td>
+<td>一条直线</td>
+<td>X=Y=0</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_4=0,\ I_2&gt;0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\tilde\mu=0</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>14</td>
+<td>抛物柱面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Y</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>p</mi><mi>X</mi></mrow><annotation encoding="application/x-tex">Y^2=2pX</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>1</mn></msub><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>K</mi><mn>2</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_2=0,\ I_1\neq0,\ K_2\neq0</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>15</td>
+<td>一对平行平面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">X^2=a^2</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>1</mn></msub><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_2=0,\ I_1\neq0,\ K_2=0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat\mu</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\lambda_1</annotation></semantics></math>异号</td>
+</tr>
+<tr>
+<td>16</td>
+<td>一对虚平行平面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><mi>−</mi><msup><mi>a</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">X^2=-a^2</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>1</mn></msub><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_2=0,\ I_1\neq0,\ K_2=0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>μ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat\mu</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\lambda_1</annotation></semantics></math>同号</td>
+</tr>
+<tr>
+<td>17</td>
+<td>一对重合平面</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X^2=0</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>I</mi><mn>1</mn></msub><mo>≠</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=I_2=0,\ I_1\neq0,\ K_2=0</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat\mu=0</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<p>表里的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><msub><mi>I</mi><mn>4</mn></msub><mi>/</mi><msub><mi>I</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\mu=I_4/I_3</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̃</mo></mover><mo>=</mo><msub><mi>K</mi><mn>2</mn></msub><mi>/</mi><msub><mi>I</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\tilde\mu=K_2/I_2</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mo>=</mo><msub><mi>K</mi><mn>1</mn></msub><mi>/</mi><msub><mi>I</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\hat\mu=K_1/I_1</annotation></semantics></math>，都是标准形的常数项。</p>
+<p>几点必须记住的：</p>
+<ul>
+<li><strong>这十七类是欧氏观点下的分类</strong>，只允许正交变换加平移（刚体运动）。如果允许一般的仿射变换，其中的若干类会合并——这是下次课的内容。老师把这句话留在这里，是为了让大家先知道“分类取决于允许什么变换”。</li>
+<li>判据只用不变量时，要注意<strong>整体乘 −1 会同时翻转<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>1</mn></msub><annotation encoding="application/x-tex">I_1</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>3</mn></msub><annotation encoding="application/x-tex">I_3</annotation></semantics></math>与 μ 的符号</strong>，所以直接把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>,</mo><msub><mi>I</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">I_1,I_4</annotation></semantics></math>的符号写成判据容易错位。课堂上始终是“算出特征值 + 算出 μ ”再看符号，最稳当。<code>[补全]</code>这部分不是当堂讲的，是整理者对判据使用的补充说明。</li>
+<li>具体做题时不必背表：算不变量能判类型，直接化标准型也能判，两条路都行。</li>
+</ul>
+<h2
+id="四例题用正交变换化二次曲面为标准型010212011616">四、例题：用正交变换化二次曲面为标准型（01:02:12—01:16:16）</h2>
+<h3 id="题目要求与两条路线">01:02:12—01:07:00 ｜
+题目、要求与两条路线</h3>
+<p>老师把 11-09
+开头的例子拿来做完，题目要求三件事：<strong>化标准型、写出坐标变换、判定类型</strong>。他强调这道题“每个人都要掌握”，因为它是两门课共同的常规大题；但真正考试时未必考，原因是“时间花了不少，得分率不一定高”。</p>
+<p>同时给了两条路线：</p>
+<ol type="1">
+<li><strong>老老实实化标准型</strong>：写矩阵 → 求特征值 → 求特征向量 →
+组正交矩阵 C → 代换 → 配平方 → 得标准方程 →
+判类型。路线的每一步都要写出来，过程分是主要得分点。</li>
+<li><strong>只算不变量</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>,</mo><msub><mi>I</mi><mn>2</mn></msub><mo>,</mo><msub><mi>I</mi><mn>3</mn></msub><mo>,</mo><msub><mi>I</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">I_1,I_2,I_3,I_4</annotation></semantics></math>算完，对照上一节的表直接判类型，坐标变换可以不写。老师的态度是：记不住表就用第一条路，“忘掉了就现场算”，两种都不吃亏。</li>
+</ol>
+<p>他还顺带讲了评分口径：现在的考试<strong>看过程不看答案</strong>。答案是可能算错的，只要方法对、过程对，分照给；反过来只写个答案、中间全空，是不给分的。“以前那种只看最后答案是几的做法，现在不这么做了。”</p>
+<h4 id="例题证明-1010212-化二次曲面为标准型并判定类型">例题/证明
+1（01:02:12）｜ 化二次曲面为标准型并判定类型</h4>
+<p><strong>题目。</strong> 判定二次曲面</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi><mo>:</mo><mspace width="1.0em"></mspace><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mi>y</mi><mo>+</mo><mn>4</mn><mi>y</mi><mi>z</mi><mo>+</mo><mn>4</mn><mi>z</mi><mi>x</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Sigma:\quad x^2+y^2+z^2+4xy+4yz+4zx+2(x+y+z)+3=0</annotation></semantics></math></p>
+<p>的类型，并写出把它化为标准型的坐标变换。（常数项按板书还原 [?]）</p>
+<p><strong>第一步：写出矩阵。</strong> 平方项系数都是 1 ，所以对角元为 1 ；交叉项 4xy,4yz,4zx 对应<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">2a_{ij}=4</annotation></semantics></math>，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">a_{ij}=2</annotation></semantics></math>（ i≠j ）。一次项 2x,2y,2z 对应<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mi mathvariant="bold-italic">𝜶</mi><mi>T</mi></msup><mi mathvariant="bold-italic">𝒙</mi></mrow><annotation encoding="application/x-tex">2\boldsymbol{\alpha}^T\mathbf{x}</annotation></semantics></math>，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝜶</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(1,1,1)^T</annotation></semantics></math>。于是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>A</mi><mo accent="true">̃</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}1&amp;2&amp;2\\2&amp;1&amp;2\\2&amp;2&amp;1\end{pmatrix},
+\qquad
+\tilde A=\begin{pmatrix}
+1&amp;2&amp;2&amp;1\\2&amp;1&amp;2&amp;1\\2&amp;2&amp;1&amp;1\\1&amp;1&amp;1&amp;3
+\end{pmatrix}.</annotation></semantics></math></p>
+<p><strong>第二步：用不变量写特征方程。</strong> 由<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mi>E</mi><mo>−</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>λ</mi><mn>3</mn></msup><mo>−</mo><msub><mi>I</mi><mn>1</mn></msub><msup><mi>λ</mi><mn>2</mn></msup><mo>+</mo><msub><mi>I</mi><mn>2</mn></msub><mi>λ</mi><mo>−</mo><msub><mi>I</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\det(\lambda E-A)=\lambda^3-I_1\lambda^2+I_2\lambda-I_3</annotation></semantics></math>，先算三个不变量：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">tr</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mn>3</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">I_1=\operatorname{tr}A=3,</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mn>3</mn><mo>=</mo><mi>−</mi><mn>9</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">I_2=\begin{vmatrix}1&amp;2\\2&amp;1\end{vmatrix}+\begin{vmatrix}1&amp;2\\2&amp;1\end{vmatrix}+\begin{vmatrix}1&amp;2\\2&amp;1\end{vmatrix}
+=(1-4)\times3=-9,</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mn>5</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">I_3=\det A=5 .</annotation></semantics></math></p>
+<p>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>3</mn></msub><annotation encoding="application/x-tex">I_3</annotation></semantics></math>也可由三个特征值相乘后验证，见下一步。）特征方程是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>λ</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>λ</mi><mn>2</mn></msup><mo>−</mo><mn>9</mn><mi>λ</mi><mo>−</mo><mn>5</mn><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>⇔</mo><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mo>−</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\lambda^3-3\lambda^2-9\lambda-5=0
+\quad\Longleftrightarrow\quad
+(\lambda-5)(\lambda+1)^2=0,</annotation></semantics></math></p>
+<p>所以</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>5</mn><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><mi>−</mi><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\lambda_1=5,\qquad \lambda_2=\lambda_3=-1 .</annotation></semantics></math></p>
+<p><strong>第三步：求单位特征向量。</strong></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">\lambda_1=5</annotation></semantics></math>：解 (5E−A)𝒙=𝟎 ，即</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>z</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mspace width="0.278em"></mspace><mo>⇒</mo><mspace width="0.278em"></mspace><mi>x</mi><mo>=</mo><mi>y</mi><mo>=</mo><mi>z</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}4&amp;-2&amp;-2\\-2&amp;4&amp;-2\\-2&amp;-2&amp;4\end{pmatrix}\begin{pmatrix}x\\y\\z\end{pmatrix}=0
+\;\Longrightarrow\; x=y=z,</annotation></semantics></math></p>
+<p>取<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒄</mi><mn>1</mn></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></mstyle><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\mathbf{c}_1=\dfrac{1}{\sqrt3}(1,1,1)^T</annotation></semantics></math>。</p>
+<p>λ=−1 ：解 (−E−A)𝒙=𝟎 ，即 −2(x+y+z)=0 的三行重复，条件只有 x+y+z=0 。任取一个解<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒄</mi><mn>2</mn></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></mstyle><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\mathbf{c}_2=\dfrac{1}{\sqrt2}(1,-1,0)^T</annotation></semantics></math>；第三个方向由正交性定出（也可取<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒄</mi><mn>1</mn></msub><mo>×</mo><msub><mi mathvariant="bold-italic">𝒄</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\mathbf{c}_1\times\mathbf{c}_2</annotation></semantics></math>）：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">𝒄</mi><mn>3</mn></msub><mo>=</mo><msub><mi mathvariant="bold-italic">𝒄</mi><mn>1</mn></msub><mo>×</mo><msub><mi mathvariant="bold-italic">𝒄</mi><mn>2</mn></msub><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>6</mn></msqrt></mfrac><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">\mathbf{c}_3=\mathbf{c}_1\times\mathbf{c}_2=\frac{1}{\sqrt6}(1,1,-2)^T,</annotation></semantics></math></p>
+<p>它自动落在 x+y+z=0 里，因此也是 λ=−1 的特征向量。验算：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>−</mi><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">A(1,1,-2)^T=(-1,-1,2)^T=-(1,1,-2)^T</annotation></semantics></math>，成立。</p>
+<p><strong>第四步：写出坐标变换。</strong>
+把三个单位特征向量按列排成正交矩阵：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></mstyle></mtd><mtd columnalign="center" style="text-align: center"><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></mstyle></mtd><mtd columnalign="center" style="text-align: center"><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>6</mn></msqrt></mfrac></mstyle></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></mstyle></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></mstyle></mtd><mtd columnalign="center" style="text-align: center"><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>6</mn></msqrt></mfrac></mstyle></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mstyle displaystyle="true"><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></mstyle></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mstyle displaystyle="true"><mfrac><mn>2</mn><msqrt><mn>6</mn></msqrt></mfrac></mstyle></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><mi>C</mi><msup><mi mathvariant="bold-italic">𝒙</mi><mo>′</mo></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">C=\begin{pmatrix}
+\dfrac{1}{\sqrt3}&amp;\dfrac{1}{\sqrt2}&amp;\dfrac{1}{\sqrt6}\\[2mm]
+\dfrac{1}{\sqrt3}&amp;-\dfrac{1}{\sqrt2}&amp;\dfrac{1}{\sqrt6}\\[2mm]
+\dfrac{1}{\sqrt3}&amp;0&amp;-\dfrac{2}{\sqrt6}
+\end{pmatrix},
+\qquad
+\mathbf{x}=C\mathbf{x}&#39; ,</annotation></semantics></math></p>
+<p>即</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><msup><mi>x</mi><mo>′</mo></msup><msqrt><mn>3</mn></msqrt></mfrac><mo>+</mo><mfrac><msup><mi>y</mi><mo>′</mo></msup><msqrt><mn>2</mn></msqrt></mfrac><mo>+</mo><mfrac><msup><mi>z</mi><mo>′</mo></msup><msqrt><mn>6</mn></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>y</mi><mo>=</mo><mfrac><msup><mi>x</mi><mo>′</mo></msup><msqrt><mn>3</mn></msqrt></mfrac><mo>−</mo><mfrac><msup><mi>y</mi><mo>′</mo></msup><msqrt><mn>2</mn></msqrt></mfrac><mo>+</mo><mfrac><msup><mi>z</mi><mo>′</mo></msup><msqrt><mn>6</mn></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>=</mo><mfrac><msup><mi>x</mi><mo>′</mo></msup><msqrt><mn>3</mn></msqrt></mfrac><mo>−</mo><mfrac><mrow><mn>2</mn><msup><mi>z</mi><mo>′</mo></msup></mrow><msqrt><mn>6</mn></msqrt></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">x=\frac{x&#39;}{\sqrt3}+\frac{y&#39;}{\sqrt2}+\frac{z&#39;}{\sqrt6},\quad
+y=\frac{x&#39;}{\sqrt3}-\frac{y&#39;}{\sqrt2}+\frac{z&#39;}{\sqrt6},\quad
+z=\frac{x&#39;}{\sqrt3}-\frac{2z&#39;}{\sqrt6}.</annotation></semantics></math></p>
+<p><strong>第五步：代换。</strong> 二次部分由<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mi>T</mi></msup><mi>A</mi><mi>C</mi><mo>=</mo><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>5</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">C^TAC=\operatorname{diag}(5,-1,-1)</annotation></semantics></math>立得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><msup><mi>x</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>−</mo><msup><mi>y</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>−</mo><msup><mi>z</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">5x&#39;^2-y&#39;^2-z&#39;^2</annotation></semantics></math>。一次项要单独算：把上面三式相加，</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mfrac><mrow><mn>3</mn><msup><mi>x</mi><mo>′</mo></msup></mrow><msqrt><mn>3</mn></msqrt></mfrac><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>2</mn><msqrt><mn>6</mn></msqrt></mfrac><mo>−</mo><mfrac><mn>2</mn><msqrt><mn>6</mn></msqrt></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mi>z</mi><mo>′</mo></msup><mo>=</mo><msqrt><mn>3</mn></msqrt><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>′</mo></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">x+y+z=\frac{3x&#39;}{\sqrt3}+\left(\frac{2}{\sqrt6}-\frac{2}{\sqrt6}\right)z&#39;=\sqrt3\,x&#39;,</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mo>′</mo></msup><annotation encoding="application/x-tex">y&#39;</annotation></semantics></math>与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>z</mi><mo>′</mo></msup><annotation encoding="application/x-tex">z&#39;</annotation></semantics></math>的系数正好抵消（因为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝜶</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(1,1,1)^T</annotation></semantics></math>本身是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">\lambda_1=5</annotation></semantics></math>的特征向量）。于是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mn>5</mn><msup><mi>x</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>−</mo><msup><mi>y</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>−</mo><msup><mi>z</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>3</mn></msqrt><mspace width="0.167em"></mspace><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mn>3</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">F=5x&#39;^2-y&#39;^2-z&#39;^2+2\sqrt3\,x&#39;+3 .</annotation></semantics></math></p>
+<p><strong>第六步：配平方。</strong> 对<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mo>′</mo></msup><annotation encoding="application/x-tex">x&#39;</annotation></semantics></math>配方：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>5</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>−</mo><msup><mi>y</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>−</mo><msup><mi>z</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">5\left(x&#39;+\frac{\sqrt3}{5}\right)^2-\frac{3}{5}-y&#39;^2-z&#39;^2+3=0,</annotation></semantics></math></p>
+<p>即</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>5</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mi>y</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>−</mo><msup><mi>z</mi><mo>′</mo></msup><msup><mi></mi><mn>2</mn></msup><mo>+</mo><mfrac><mn>12</mn><mn>5</mn></mfrac><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">5\left(x&#39;+\frac{\sqrt3}{5}\right)^2-y&#39;^2-z&#39;^2+\frac{12}{5}=0 .</annotation></semantics></math></p>
+<p>令</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>5</mn></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>Y</mi><mo>=</mo><msup><mi>y</mi><mo>′</mo></msup><mo>,</mo><mspace width="2.0em"></mspace><mi>Z</mi><mo>=</mo><msup><mi>z</mi><mo>′</mo></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">X=x&#39;+\frac{\sqrt3}{5},\qquad Y=y&#39;,\qquad Z=z&#39;,</annotation></semantics></math></p>
+<p>得标准方程</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><msup><mi>X</mi><mn>2</mn></msup><mo>−</mo><msup><mi>Y</mi><mn>2</mn></msup><mo>−</mo><msup><mi>Z</mi><mn>2</mn></msup><mo>=</mo><mi>−</mi><mfrac><mn>12</mn><mn>5</mn></mfrac><mspace width="1.0em"></mspace><mo>⇔</mo><mspace width="1.0em"></mspace><mo>−</mo><mfrac><msup><mi>X</mi><mn>2</mn></msup><mrow><mn>12</mn><mi>/</mi><mn>25</mn></mrow></mfrac><mo>+</mo><mfrac><msup><mi>Y</mi><mn>2</mn></msup><mrow><mn>12</mn><mi>/</mi><mn>5</mn></mrow></mfrac><mo>+</mo><mfrac><msup><mi>Z</mi><mn>2</mn></msup><mrow><mn>12</mn><mi>/</mi><mn>5</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">5X^2-Y^2-Z^2=-\frac{12}{5}
+\quad\Longleftrightarrow\quad
+-\frac{X^2}{12/25}+\frac{Y^2}{12/5}+\frac{Z^2}{12/5}=1 .</annotation></semantics></math></p>
+<p><strong>第七步：判定类型。</strong>
+两个正项、一个负项，是<strong>单叶双曲面</strong>。对称轴沿 X 方向，也就是原坐标下的 (1,1,1) 方向。</p>
+<p>中心也能对上：解 A𝒙=−𝜶 。因为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝜶</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(1,1,1)^T</annotation></semantics></math>是特征值 5 的特征向量，立刻有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>=</mo><mi>−</mi><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>5</mn></mfrac></mstyle><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>5</mn></mfrac></mstyle><mo>,</mo><mi>−</mi><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>5</mn></mfrac></mstyle><mo>,</mo><mi>−</mi><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>5</mn></mfrac></mstyle><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbf{x}=-\dfrac{1}{5}(1,1,1)^T=\left(-\dfrac15,-\dfrac15,-\dfrac15\right)</annotation></semantics></math>，与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>′</mo></msup><mo>=</mo><mi>−</mi><mstyle displaystyle="true"><mfrac><msqrt><mn>3</mn></msqrt><mn>5</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">x&#39;=-\dfrac{\sqrt3}{5}</annotation></semantics></math>换算回去的结果一致。</p>
+<p><strong>第八步：用不变量核对。</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><msub><mi>I</mi><mn>4</mn></msub><msub><mi>I</mi><mn>3</mn></msub></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\mu=\dfrac{I_4}{I_3}</annotation></semantics></math>，先按<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mover><mi>A</mi><mo accent="true">̃</mo></mover><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>44</mn></msub><mo>−</mo><msup><mi mathvariant="bold-italic">𝜶</mi><mi>T</mi></msup><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\det\tilde A=\det A\cdot\left(a_{44}-\boldsymbol{\alpha}^TA^{-1}\boldsymbol{\alpha}\right)</annotation></semantics></math>算<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>4</mn></msub><annotation encoding="application/x-tex">I_4</annotation></semantics></math>：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub><mo>=</mo><mn>5</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>12</mn><mo>,</mo><mspace width="2.0em"></mspace><mi>μ</mi><mo>=</mo><mfrac><mn>12</mn><mn>5</mn></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">I_4=5\left(3-\frac{3}{5}\right)=12,\qquad
+\mu=\frac{12}{5},</annotation></semantics></math></p>
+<p>与配平方得到的常数项<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle displaystyle="true"><mfrac><mn>12</mn><mn>5</mn></mfrac></mstyle><annotation encoding="application/x-tex">\dfrac{12}{5}</annotation></semantics></math>完全一致。再走一遍判据：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>3</mn></msub><mo>=</mo><mn>5</mn><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_3=5\neq0</annotation></semantics></math>；特征值 5,−1,−1 是“两正一负”（孤立号是 5 ）；<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>12</mn><mn>5</mn></mfrac></mstyle><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mu=\dfrac{12}{5}&gt;0</annotation></semantics></math>与孤立号同号 → <strong>单叶双曲面</strong>。与第七步结论相同。</p>
+<p><strong>结论。</strong> 该曲面是单叶双曲面，标准方程为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mstyle displaystyle="true"><mfrac><msup><mi>X</mi><mn>2</mn></msup><mrow><mn>12</mn><mi>/</mi><mn>25</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Y</mi><mn>2</mn></msup><mrow><mn>12</mn><mi>/</mi><mn>5</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>Z</mi><mn>2</mn></msup><mrow><mn>12</mn><mi>/</mi><mn>5</mn></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-\dfrac{X^2}{12/25}+\dfrac{Y^2}{12/5}+\dfrac{Z^2}{12/5}=1</annotation></semantics></math>，化标准型的变换是上面的正交矩阵 C 再作平移<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>x</mi><mo>′</mo></msup><mo>+</mo><mstyle displaystyle="true"><mfrac><msqrt><mn>3</mn></msqrt><mn>5</mn></mfrac></mstyle></mrow><annotation encoding="application/x-tex">X=x&#39;+\dfrac{\sqrt3}{5}</annotation></semantics></math>。</p>
+<h3 id="老师的几点交代">01:14:25—01:16:16 ｜ 老师的几点交代</h3>
+<p>这道题之所以“常规但重要”，是因为它把前面全部机械动作串了一遍：写矩阵、算不变量、解特征方程、求特征向量、组正交矩阵、配方、判定。老师提醒的三个易错点：</p>
+<ul>
+<li>交叉项系数是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">2a_{ij}</annotation></semantics></math>，写矩阵时<strong>别忘了除以
+2</strong>；</li>
+<li>特征向量必须<strong>单位化</strong>才能组正交矩阵，且三个向量要两两正交（重特征值那一支尤其要重新正交化）；</li>
+<li>判定时若走不变量路线， μ 要和“孤立号”还是“成对号”同号对上，不能只看<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>4</mn></msub><annotation encoding="application/x-tex">I_4</annotation></semantics></math>的正负。</li>
+</ul>
+<h2
+id="五几何变换与坐标变换011616012504">五、几何变换与坐标变换（01:16:16—01:25:04）</h2>
+<h3 id="课程安排">01:16:16—01:18:10 ｜ 课程安排</h3>
+<p>二次曲面这一块讲完了，老师交代了后面两周的安排：</p>
+<ul>
+<li>下下周（11 月 23 日至 27
+日）安排一次<strong>课堂练习</strong>，两节课连上。这次练习覆盖的内容会稍多一点，二次曲面整块都在范围内。</li>
+<li>另一次课他本人不在，由<strong>助教</strong>讲一个相对独立的小专题：球面几何——球面上的三角形、球面三角形的余弦定理与正弦定理等。这部分跟当前进度相对独立。</li>
+<li>下次课先讲的是<strong>按仿射观点重新看二次曲面的分类</strong>。</li>
+</ul>
+<h3 id="图形不动与坐标系不动">01:18:10—01:21:04 ｜
+图形不动与坐标系不动</h3>
+<p>这是本节概念上最重要的一段。老师用画图的方式把两种“变”摆在一起：</p>
+<p><strong>第一种：坐标系在变，图形不动。</strong>
+平面上随手画一条曲线，在原来那组坐标轴下方程很难看；如果把坐标轴平移一下、旋转一下，同一根曲线在新坐标下的方程就变成了标准的椭球面方程。整个过程里<strong>图形一寸没动</strong>，动的只是描述它的坐标系。前面化标准型的全部操作都属于这一种：旋转矩阵 C 换的是基，配方后那个平移换的是原点。</p>
+<p><strong>第二种：坐标系不动，图形在变。</strong>
+同一个坐标系里放一个小球，让它放大成一个更大的球，这时候<strong>坐标轴一动没动</strong>，变的是图形本身。这称为<strong>几何变换</strong>。</p>
+<p>两种操作写出来的公式长得很像（都是一个矩阵乘一下、加一个平移向量），但含义完全相反。老师反复强调：<strong>“几何变换”和“坐标变换”是两个不同的概念，只是描述方式看上去比较像。</strong>
+后面讲变换群、讲克莱因的埃尔朗根纲领，全靠这个区分打底。</p>
+<h3 id="放大镜blow-up-与庞加莱猜想课堂插话">01:21:04—01:25:04 ｜
+放大镜、blow-up 与庞加莱猜想（课堂插话）</h3>
+<p>老师顺手讲了一段为什么要关心“放大”这种几何变换。</p>
+<p><strong>放大镜的比喻。</strong>
+曲线在某个很尖的地方，靠近看是看不清的——你不知道它到底怎么拐。那就拿放大镜：放大以后发现原来是这样一个形状，其实没那么复杂。如果还不够，可以继续放大。<strong>“数学的思维实验里，放大镜是可以一直往下按的”</strong>，这就是局部研究几何的基本手法。</p>
+<p><strong>庞加莱猜想的证明里就用了这个动作。</strong>
+设想两个球在形变过程中越靠越近，中间连出一根细细的“脖子”（老师用 neck
+这个词，形如一段柱面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>S</mi><mn>2</mn></msup><mo>×</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">S^2\times I</annotation></semantics></math>）。要看清这个脖子在做什么，就得把它<strong>吹大</strong>（blow-up），把越来越小、越来越挤的区域放大成正常大小来研究。看清之后做<strong>手术</strong>：把脖子切断，两边各贴一个球面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>S</mi><mn>2</mn></msup><annotation encoding="application/x-tex">S^2</annotation></semantics></math>补上，剩下的就是两个独立的球。另一种情形是脖子自己缩成一个点（球面上的一个小块缩没了），形变结束时直接变成一个圆球。这一步里“吹开”和“收掉”分别叫
+blow-up 与 blow-down。</p>
+<p>老师说，这段插话的用意只有一个：<strong>放大、收缩这类几何变换，在研究曲面的局部结构时是实打实的工具</strong>，不是玩具；而前面化标准型用的坐标变换，虽然公式相像，做的是完全不同的事。</p>
+<h2
+id="六映射的基本概念012504013421">六、映射的基本概念（01:25:04—01:34:21）</h2>
+<h3 id="映射单射与满射">01:25:04—01:28:48 ｜ 映射、单射与满射</h3>
+<p>从这里开始进入变换的语言准备。老师说得直接：“这些都是平铺直叙罗列一下”，但后面全靠它。</p>
+<p><strong>映射。</strong> 设 M,N 是两个集合（这里只把它们看成点集）。若对 M 中每一点 x ，按某种法则有 N 中<strong>唯一</strong>的点 y 与之对应，就称给出了 M 到 N 的一个<strong>映射</strong>，记</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>:</mo><mi>M</mi><mo>→</mo><mi>N</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>y</mi><mo>=</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\sigma:M\to N,\qquad y=\sigma(x).</annotation></semantics></math></p>
+<p>y 叫 x 的像， x 叫 y 的原像。</p>
+<p><strong>单射。</strong> 若 M 中不同的点对应 N 中不同的点，即</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>⇒</mo><mspace width="0.222em"></mspace><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\sigma(x_1)=\sigma(x_2)\ \Longrightarrow\ x_1=x_2,</annotation></semantics></math></p>
+<p>就称 σ 是<strong>单射</strong>（一一映射的一方面）。老师提示：证明时更常用它的<strong>逆否命题</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>≠</mo><msub><mi>x</mi><mn>2</mn></msub><mo>⇒</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x_1\neq x_2\Rightarrow\sigma(x_1)\neq\sigma(x_2)</annotation></semantics></math>，“用这个来证比较方便”。</p>
+<p><strong>满射。</strong> 若 N 中任一点都有原像，即对任意 y∈N 存在 x∈M 使 σ(x)=y ，就称 σ 是<strong>满射</strong>。等价的说法是： N 中没有一个点“找不到原像”。</p>
+<p>两者合起来称<strong>双射</strong>（一一对应）。</p>
+<h3 id="复合与结合律">01:28:48—01:32:20 ｜ 复合与结合律</h3>
+<p>设 σ:M→N ， τ:N→P ，定义它们的<strong>复合</strong>τ∘σ:M→P 为</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>∘</mo><mi>σ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>τ</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>x</mi><mo>∈</mo><mi>M</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">(\tau\circ\sigma)(x)=\tau\bigl(\sigma(x)\bigr),\qquad x\in M .</annotation></semantics></math></p>
+<p>老师特别指出：复合是<strong>有顺序的</strong>，先做 σ 再做 τ ，写的时候 τ 在左、 σ 在右，与“先右后左”的执行顺序相反，这一点容易写反。</p>
+<p>复合满足<strong>结合律</strong>：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>ρ</mi><mo>∘</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><mo>∘</mo><mi>σ</mi><mo>=</mo><mi>ρ</mi><mo>∘</mo><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>∘</mo><mi>σ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">(\rho\circ\tau)\circ\sigma=\rho\circ(\tau\circ\sigma),</annotation></semantics></math></p>
+<p>因为两边作用在 x 上都是 ρ(τ(σ(x))) 。有了结合律，多个映射的复合才可以不加括号地连写。</p>
+<p>此外每个集合上有<strong>恒等映射</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>M</mi></msub><mo>:</mo><mi>M</mi><mo>→</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">I_M:M\to M</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>M</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">I_M(x)=x</annotation></semantics></math>，它在复合中起“单位元”的作用：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∘</mo><msub><mi>I</mi><mi>M</mi></msub><mo>=</mo><msub><mi>I</mi><mi>M</mi></msub><mo>∘</mo><mi>σ</mi><mo>=</mo><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma\circ I_M=I_M\circ\sigma=\sigma</annotation></semantics></math>。</p>
+<h3 id="逆映射的唯一性与可逆即双射">01:32:20—01:34:21 ｜
+逆映射的唯一性与“可逆即双射”</h3>
+<p><strong>可逆。</strong> 若存在映射 τ:N→M 使</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>∘</mo><mi>σ</mi><mo>=</mo><msub><mi>I</mi><mi>M</mi></msub><mo>,</mo><mspace width="2.0em"></mspace><mi>σ</mi><mo>∘</mo><mi>τ</mi><mo>=</mo><msub><mi>I</mi><mi>N</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\tau\circ\sigma=I_M,\qquad \sigma\circ\tau=I_N,</annotation></semantics></math></p>
+<p>就称 σ<strong>可逆</strong>， τ 称为 σ 的<strong>逆映射</strong>，记<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">\sigma^{-1}</annotation></semantics></math>。</p>
+<p>注意两个恒等映射是<strong>不同的</strong>：一个是 M 上的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>M</mi></msub><annotation encoding="application/x-tex">I_M</annotation></semantics></math>，一个是 N 上的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>N</mi></msub><annotation encoding="application/x-tex">I_N</annotation></semantics></math>，因为两个集合不一样。</p>
+<p><strong>命题（逆映射唯一）。</strong> 若 σ:M→N 可逆，则它的逆映射唯一。</p>
+<p>老师没有当场证，只说“讲义上写了，你们自己去证”，并给了类比：这和线性代数里“可逆矩阵的逆矩阵唯一”是同一件事的证明思路——设<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>τ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\tau_1,\tau_2</annotation></semantics></math>都是逆，则</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>τ</mi><mn>1</mn></msub><mo>∘</mo><msub><mi>I</mi><mi>N</mi></msub><mo>=</mo><msub><mi>τ</mi><mn>1</mn></msub><mo>∘</mo><mo stretchy="false" form="prefix">(</mo><mi>σ</mi><mo>∘</mo><msub><mi>τ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>τ</mi><mn>1</mn></msub><mo>∘</mo><mi>σ</mi><mo stretchy="false" form="postfix">)</mo><mo>∘</mo><msub><mi>τ</mi><mn>2</mn></msub><mo>=</mo><msub><mi>I</mi><mi>M</mi></msub><mo>∘</mo><msub><mi>τ</mi><mn>2</mn></msub><mo>=</mo><msub><mi>τ</mi><mn>2</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\tau_1=\tau_1\circ I_N=\tau_1\circ(\sigma\circ\tau_2)=(\tau_1\circ\sigma)\circ\tau_2=I_M\circ\tau_2=\tau_2 .</annotation></semantics></math></p>
+<p><strong>命题（可逆的充要条件）。</strong>σ:M→N 可逆的充分必要条件是 σ 为<strong>双射</strong>（既单又满）。</p>
+<p>这条同样留作自学。直观上很清楚：满射保证 N 中每个点都有原像（逆映射处处有定义），单射保证原像只有一个（逆映射是“映射”而不是“多值对应”）。</p>
+<h2
+id="七平面上的等距变换与正交变换013421014016">七、平面上的等距变换与正交变换（01:34:21—01:40:16）</h2>
+<h3 id="等距变换保持两点间距离">01:34:21—01:38:54 ｜
+等距变换：保持两点间距离</h3>
+<p>现在把“变换”落到平面上。与映射的区别只在一处：<strong>变换是同一个集合到自身的映射</strong>。所以平面上的一条几何变换是</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>:</mo><mi>π</mi><mo>→</mo><mi>π</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\sigma:\pi\to\pi,</annotation></semantics></math></p>
+<p>定义域和值域是同一个平面；而一般的映射 M→N 允许两个空间不同。</p>
+<p>平面取<strong>欧氏平面</strong>，它上面有距离。若对任意两点 P,Q∈π 都有</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>P</mi><mo stretchy="false" form="postfix">)</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>Q</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>P</mi><mi>Q</mi><mo stretchy="false" form="prefix">|</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\bigl|\sigma(P)\sigma(Q)\bigr|=|PQ|,</annotation></semantics></math></p>
+<p>就称 σ 是平面上的<strong>等距变换</strong>（保距变换）。也就是说，在这种变换下<strong>任意两点间的距离保持不变</strong>。</p>
+<p>老师在这里补了一段关于“度量”的说明，为后面的课程留口子：欧氏平面上的距离是由<strong>标准正交基</strong>给出的——在标准正交基下度量矩阵就是单位矩阵 E ；如果基不是标准正交基，度量矩阵是一个对称正定矩阵；如果这个矩阵还随点而变（每一点处的度量都不一样），那就不再是欧氏几何，而是更一般的几何（黎曼几何）。“你们现在只需要想成欧氏空间，度量处处一样，别的不要想太复杂。”</p>
+<h3 id="正交变换与只有三种的预告">01:38:54—01:40:16 ｜
+正交变换与“只有三种”的预告</h3>
+<p>在等距变换里再挑出一类：若等距变换<strong>有不动点</strong>，即存在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>0</mn></msub><mo>∈</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">X_0\in\pi</annotation></semantics></math>使</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>X</mi><mn>0</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\sigma(X_0)=X_0,</annotation></semantics></math></p>
+<p>就称它为平面上的<strong>正交变换</strong>。所以正交变换的要求比等距变换更高一层：先要保距，还要固定某一点。直观上，保距但可以整体挪动的是平移，固定住一点再保距的只能是绕这点转或关于过这点的直线翻折。</p>
+<p>课的最后老师给了一句预告：<strong>平面上所有的等距变换，分解下来只有三种</strong>——下次课逐一分解（平移、旋转、反射及其复合）。这句话就是本节的结尾，具体分解留到下一次。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

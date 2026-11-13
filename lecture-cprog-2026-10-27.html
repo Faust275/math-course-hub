@@ -322,9 +322,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -336,7 +336,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -597,10 +597,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1245,8 +1245,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1470,7 +1471,7 @@ id="例题证明-1000221-自增自减运算符表达式的值副作用与单目�
 <li>优先级：<code>++</code>、<code>--</code>
 是单目运算符，优先级<strong>高于所有双目运算符</strong>。</li>
 <li>结合性：单目运算符一律<strong>从右往左</strong>结合。例如老师举例“<code>-x++</code>
-等价于 <code>-(x++)</code>，若 <code>x=6</code>，则 <code>-x++</code>
+等价于 <code>-(x++)</code>”，若 <code>x=6</code>，则 <code>-x++</code>
 的值为 <code>-6</code>，之后 <code>x</code> 变成 <code>7</code>。</li>
 </ul>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：凡是表达式都有值；自增自减必须作用于变量；单目运算符右结合，且优先级高于双目。</p>
@@ -1545,7 +1546,7 @@ id="例题证明-1000221-自增自减运算符表达式的值副作用与单目�
 <p><strong class="wb-pill wb-pill-result">结论</strong>：数学上的连写不等式不能直接照搬到
 C；关系表达式结果只能是 0/1。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：把 C
-的关系表达式当成数学连不等式；这是初学者最常犯的错误之一，老师特别提醒“希望同学们都不要犯。</p>
+的关系表达式当成数学连不等式；这是初学者最常犯的错误之一，老师特别提醒“希望同学们都不要犯”。</p>
 </section><section class="wb-seg"><h3 id="逻辑表达式与短路规则"><span class="wb-ts">00:24:44—00:34:10</span> ｜
 逻辑表达式与短路规则</h3>
 <p>本段讲逻辑运算（课件 ch06 第 78—84 页）。逻辑与
@@ -1612,7 +1613,7 @@ ABC</code></pre>
 </ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：<code>&amp;&amp;</code>
 左侧为假、<code>||</code> 左侧为真时，右侧不执行；先结合 ≠ 先执行。</p>
-<p><strong class="wb-pill wb-pill-note">易错点</strong>：初学者常误以为“先结合的先执行，从而猜错输出。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong>：初学者常误以为“先结合的先执行”，从而猜错输出。</p>
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题证明-5005010-短路规则的常见写法应用">例题/证明
 5（00:50:10）｜ 短路规则的常见写法应用<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <p><strong class="wb-pill wb-pill-topic">题目／任务</strong>：把“判断 x 是否为零／不为零、x 与 y
@@ -1651,10 +1652,10 @@ ch06 第 87 页）。</p>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">/* 将a、b、c中的最大值赋值给y */</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> a <span class="op">&gt;</span> b <span class="op">?</span> <span class="op">(</span>a<span class="op">&gt;</span>c<span class="op">?</span>a<span class="op">:</span>c<span class="op">)</span> <span class="op">:</span> <span class="op">(</span>b<span class="op">&gt;</span>c<span class="op">?</span>b<span class="op">:</span>c<span class="op">);</span> <span class="co">/* 嵌套*/</span></span></code></pre></div>
 <p><strong class="wb-pill wb-pill-idea">说明</strong>：<code>a &gt; b ? a : b</code> 即“若 a&gt;b 取
-a，否则取 b，把 a、b 中较大者赋给 y；三数最大则在嵌套一层比较。</p>
+a，否则取 b”，把 a、b 中较大者赋给 y；三数最大则在嵌套一层比较。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：条件表达式本质是表达式而非语句；不要和
 <code>if-else</code>
-混为一谈。老师还提示：嵌套条件表达式的括号不是必须的（条件运算符本身从右往左结合），但可读性上建议加括号，不要钻这种“小花招。</p>
+混为一谈。老师还提示：嵌套条件表达式的括号不是必须的（条件运算符本身从右往左结合），但可读性上建议加括号，不要钻这种“小花招”。</p>
 </section><section class="wb-seg"><h3 id="条件表达式的结合性与嵌套"><span class="wb-ts">01:00:48—01:09:18</span> ｜
 条件表达式的结合性与嵌套</h3>
 <p>本段进一步讲条件运算符的结合性（课件 ch06 第 87—88
@@ -1716,7 +1717,7 @@ ch06 第 92—93 页 [例6-5]。</p>
 <p><strong class="wb-pill wb-pill-idea">思路</strong>（课堂还原）：关键是“单词数量增加的特征”出现在“空格
 + 非空格”这一组合上。<code>word</code>
 标志有两种含义：<code>word == 0</code>
-表示前一个字符是空格（当前处于“无单词/空格状态），<code>word == 1</code>
+表示前一个字符是空格（当前处于“无单词/空格状态”），<code>word == 1</code>
 表示刚进入一个新单词。为处理行首顶格没有前导空格的情况，令初值
 <code>word = 0</code>（等于假设上一次处理的是空格），这样第一个字母也能被正确计数；后续若遇非空格且
 <code>word==0</code>，就说明开始了一个新单词，<code>cnt++</code> 并把
@@ -2052,6 +2053,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -2124,6 +2151,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -2151,11 +2184,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2300,22 +2329,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2716,19 +2732,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1392,9 +1393,9 @@ id="一曲面方程与选取合适坐标系000330000534">一、曲面方程与�
 <p><code>[按图还原]</code>
 本节图形（椭球面、各坐标系、辅助线）依赖黑板原图；讲义中文字化描述只写课上出现的点、轴、线，图上没有的点线一律不编造。</p>
 </blockquote>
-<h2
+</section><h2
 id="二坐标变换与正交矩阵000534002955">二、坐标变换与正交矩阵（00:05:34—00:29:55）</h2>
-</section><section class="wb-seg"><h3 id="同一点在新旧坐标系下的坐标表示"><span class="wb-ts">00:05:34—00:08:05</span> ｜
+<section class="wb-seg"><h3 id="同一点在新旧坐标系下的坐标表示"><span class="wb-ts">00:05:34—00:08:05</span> ｜
 同一点在新旧坐标系下的坐标表示</h3>
 <p>考虑同一个点 M 。在旧坐标系<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>;</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn></msub><mo>,</mo><msub><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">O;\mathbf e_1,\mathbf e_2,\mathbf e_3</annotation></semantics></math>下它的坐标是 (x,y,z) ；在新坐标系<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>O</mi><mo>*</mo></msup><mo>;</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>1</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>2</mn><mo>*</mo></msubsup><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝒆</mi><mn>3</mn><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">O^*;\mathbf e_1^*,\mathbf e_2^*,\mathbf e_3^*</annotation></semantics></math>下它的坐标是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo>,</mo><msup><mi>y</mi><mo>*</mo></msup><mo>,</mo><msup><mi>z</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x^*,y^*,z^*)</annotation></semantics></math>。点的几何位置不变，变的只是坐标系。</p>
 <p>新坐标系的原点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>O</mi><mo>*</mo></msup><annotation encoding="application/x-tex">O^*</annotation></semantics></math>在旧系下的坐标记为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,z_0)</annotation></semantics></math>，即向量</p>
@@ -1468,9 +1469,9 @@ a_{31}&amp;a_{32}&amp;a_{33}
 <p>即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>X</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">Δ</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\Delta X=A\,\Delta X^*</annotation></semantics></math>。</p>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：点的变换带平移<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>0</mn></msub><annotation encoding="application/x-tex">X_0</annotation></semantics></math>，而<strong>向量（坐标增量）的变换不带平移</strong>，直接是正交矩阵作用<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>X</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">Δ</mi><msup><mi>X</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\Delta X=A\,\Delta X^*</annotation></semantics></math>。前者是「点的坐标变换」，后者是「向量的变换（分量变换公式）」。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：向量只与「差」有关，与原点选在哪儿无关；把点公式里的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>0</mn></msub><annotation encoding="application/x-tex">X_0</annotation></semantics></math>错用到向量上是常见错误。</p>
-<h2
+</section><h2
 id="三变换的特例与约化为平面002955004854">三、变换的特例与约化为平面（00:29:55—00:48:54）</h2>
-</section><section class="wb-seg"><h3 id="两种基本特例平移与保原点旋转反射"><span class="wb-ts">00:29:55—00:32:03</span> ｜
+<section class="wb-seg"><h3 id="两种基本特例平移与保原点旋转反射"><span class="wb-ts">00:29:55—00:32:03</span> ｜
 两种基本特例：平移与保原点旋转/反射</h3>
 </div><h4 id="构造-1003012-特例一ai-时退化为平移">构造 1（00:30:12）｜
 特例一： A=I 时退化为平移</h4>
@@ -1527,9 +1528,9 @@ a_{11}a_{12}+a_{21}a_{22}=0.
 <p><strong class="wb-pill wb-pill-result">结论</strong>：平面上的正交矩阵只有这两种形式，分别对应<strong>旋转</strong>（保向）与<strong>反射</strong>（反向）。[补全]
 该分类与行列式 det⁡C=±1 完全对应；此标准结论非逐字板书，仅作自学参照。</p>
 <p><strong class="wb-pill wb-pill-note">易错点</strong>：两类仅差一个符号的选择；判定是旋转还是反射，看行列式是 +1 还是 −1 ，不要混淆。</p>
-<h2
+</section><h2
 id="四平面坐标旋转反射公式及其几何推导应用004854012448">四、平面坐标旋转/反射公式及其几何推导、应用（00:48:54—01:24:48）</h2>
-</section><section class="wb-seg"><h3 id="平面坐标旋转反射公式及其几何推导"><span class="wb-ts">00:48:54—01:02:47</span> ｜
+<section class="wb-seg"><h3 id="平面坐标旋转反射公式及其几何推导"><span class="wb-ts">00:48:54—01:02:47</span> ｜
 平面坐标旋转/反射公式及其几何推导</h3>
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="证明-5005335-平面旋转公式det1的几何推导">证明 5（00:53:35）｜
 平面旋转公式（ det⁡=+1 ）的几何推导<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
@@ -1582,9 +1583,9 @@ y=-\sin\theta\,x^*+\cos\theta\,y^*+y_0.
 - 这类题的两种做法：① 如上用坐标变换，转到坐标面后用「无交叉项 +
 系数相等」判别；②
 也可走「球面与平面的交」的思路。坐标变换写法虽繁琐（矩阵、代入、化简都占地方），但思想非常单纯。</p>
-<h2
+</section><h2
 id="五正交矩阵的欧拉角分解012454014317">五、正交矩阵的欧拉角分解（01:24:54—01:43:17）</h2>
-</section><section class="wb-seg"><h3 id="正交矩阵的欧拉角分解三次保轴旋转"><span class="wb-ts">01:24:54—01:43:17</span> ｜
+<section class="wb-seg"><h3 id="正交矩阵的欧拉角分解三次保轴旋转"><span class="wb-ts">01:24:54—01:43:17</span> ｜
 正交矩阵的欧拉角分解（三次保轴旋转）</h3>
 </div><h4
 id="构造-4012609-用三次保一轴不变的旋转分解一般正交矩阵与欧拉角">构造
@@ -1772,6 +1773,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1844,6 +1871,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1871,11 +1904,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2020,22 +2049,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2436,19 +2452,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

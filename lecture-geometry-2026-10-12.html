@@ -257,9 +257,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -271,7 +271,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -532,10 +532,10 @@ body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; backgro
 body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
 body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
 body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
-body.wb-dark .wb-excard p > strong:first-child,
-body.wb-dark .wb-excard li > strong:first-child,
-html.wb-dark .wb-excard p > strong:first-child,
-html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-excard p > strong.wb-pill,
+body.wb-dark .wb-excard li > strong.wb-pill,
+html.wb-dark .wb-excard p > strong.wb-pill,
+html.wb-dark .wb-excard li > strong.wb-pill { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
 body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
 body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
 body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
@@ -1180,8 +1180,9 @@ html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; 
 }
 
 /* 导航栏 */
-/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
-mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽；但隐藏滚动条，避免出现 ◄────► 横条 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+mjx-container::-webkit-scrollbar{height:0;width:0;display:none}
 math{max-width:100%}
 /* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
 html,body{overflow-x:clip}
@@ -1420,7 +1421,7 @@ id="一平面与直线的几种方程形式000252002119">一、平面与直线�
 <p><strong>点位式（三点式）</strong>：过不共线的三点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>,</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>,</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\vec R_0,\vec R_1,\vec R_2</annotation></semantics></math>，则动点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>R</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec R</annotation></semantics></math>与这三点共面，方程为混合积</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">]</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">(\vec R-\vec R_0)\cdot\big[(\vec R_1-\vec R_0)\times(\vec R_2-\vec R_0)\big]=0.</annotation></semantics></math></div></p>
 <p><strong>参数式</strong>：以平面上两个不共线向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">→</mo></mover><mo>,</mo><mover><mi>v</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\vec u,\vec v</annotation></semantics></math>为方向，方程为</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>s</mi><mover><mi>u</mi><mo accent="true">→</mo></mover><mo>+</mo><mi>t</mi><mover><mi>v</mi><mo accent="true">→</mo></mover><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec R=\vec R_0+s\vec u+t\vec v\qquad(s,t\in\mathbb R).</annotation></semantics></math></div></p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>s</mi><mover><mi>u</mi><mo accent="true">→</mo></mover><mo>+</mo><mi>t</mi><mover><mi>v</mi><mo accent="true">→</mo></mover><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">R</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec R=\vec R_0+s\vec u+t\vec v\qquad(s,t\in\mathbb R).</annotation></semantics></math></div></p>
 <p><strong>一般式（坐标式）</strong>：把上面各式展开，最后都可归结为</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>x</mi><mo>+</mo><mi>B</mi><mi>y</mi><mo>+</mo><mi>C</mi><mi>z</mi><mo>+</mo><mi>D</mi><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">Ax+By+Cz+D=0,</annotation></semantics></math></div></p>
 <p>其中系数 (A,B,C) 恰好就是平面的法向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>N</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec N</annotation></semantics></math>的三个分量，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>C</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mover><mn>0</mn><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">(A,B,C)\neq\vec 0</annotation></semantics></math>。</p>
@@ -1436,7 +1437,7 @@ id="一平面与直线的几种方程形式000252002119">一、平面与直线�
 直线的参数式、对称式与一般式（两平面交线）</h3>
 <p>直线的几种方程与平面完全平行。</p>
 <p><strong>参数式（向量式）</strong>：过定点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><annotation encoding="application/x-tex">\vec R_0</annotation></semantics></math>、沿方向向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>v</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec v</annotation></semantics></math>的直线，方程为</p>
-<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>t</mi><mover><mi>v</mi><mo accent="true">→</mo></mover><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec R=\vec R_0+t\vec v\qquad(t\in\mathbb R).</annotation></semantics></math></div></p>
+<p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>t</mi><mover><mi>v</mi><mo accent="true">→</mo></mover><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>∈</mo><mi mathvariant="double-struck">R</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\vec R=\vec R_0+t\vec v\qquad(t\in\mathbb R).</annotation></semantics></math></div></p>
 <p><strong>坐标式 / 对称式</strong>：把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec R_0=(x_0,y_0,z_0)</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>v</mi><mo accent="true">→</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec v=(X,Y,Z)</annotation></semantics></math>拆开，得到</p>
 <p><div class="wb-math-wrap" data-tex="\frac{x-x_0}{X}=\frac{y-y_0}{Y}=\frac{z-z_0}{Z},"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>X</mi></mfrac><mo>=</mo><mfrac><mrow><mi>y</mi><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow><mi>Y</mi></mfrac><mo>=</mo><mfrac><mrow><mi>z</mi><mo>−</mo><msub><mi>z</mi><mn>0</mn></msub></mrow><mi>Z</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{x-x_0}{X}=\frac{y-y_0}{Y}=\frac{z-z_0}{Z},</annotation></semantics></math></div></div></p>
 <p>这就是对称式方程；它把「过哪个点、沿哪个方向」写得清清楚楚。</p>
@@ -1491,9 +1492,9 @@ A_2x+B_2y+C_2z+D_2=0.
 <p><strong class="wb-pill wb-pill-result">结论</strong>：点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_1</annotation></semantics></math>到直线 L 的距离为
 <div class="wb-math-wrap" data-tex="d(P_1,L)=\frac{\big|\overrightarrow{P_0P_1}\times\vec v\big|}{|\vec v|}=\frac{\big|(\vec R_1-\vec R_0)\times\vec B\big|}{|\vec B|},"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mover><mrow><msub><mi>P</mi><mn>0</mn></msub><msub><mi>P</mi><mn>1</mn></msub></mrow><mo accent="true">→</mo></mover><mo>×</mo><mover><mi>v</mi><mo accent="true">→</mo></mover><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>v</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mover><mi>B</mi><mo accent="true">→</mo></mover><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">d(P_1,L)=\frac{\big|\overrightarrow{P_0P_1}\times\vec v\big|}{|\vec v|}=\frac{\big|(\vec R_1-\vec R_0)\times\vec B\big|}{|\vec B|},</annotation></semantics></math></div></div>其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>B</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec B</annotation></semantics></math>即直线的方向向量。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：老师特意点出，很多同学没真正学懂这部分，连这个基本公式都未必知道——立体几何里求距离的传统做法是「过该点作垂直平面、找垂足、连两点」，而向量法直接叉乘除以方向模长，省去作图。易错点是忘记取叉乘的模、或把分母写成向量本身而非其模长。</p>
-<h2
+</section><h2
 id="二用向量法研究位置关系的总思路002145002433">二、用向量法研究位置关系的总思路（00:21:45—00:24:33）</h2>
-</section><section class="wb-seg"><h3 id="向量法的四步优势"><span class="wb-ts">00:21:45—00:24:33</span> ｜ 向量法的四步优势</h3>
+<section class="wb-seg"><h3 id="向量法的四步优势"><span class="wb-ts">00:21:45—00:24:33</span> ｜ 向量法的四步优势</h3>
 <p>老师总结：本节研究平面、直线的位置关系，核心指导思想是<strong>始终用向量法</strong>，而非一上来就消坐标。具体做法是：先给出几何对象（一条平面或一条直线）由什么决定，再用向量把它表达出来，写出向量之间满足什么关系，最后导出方程——无论是向量式方程还是坐标式方程都能由此推出。</p>
 <p>向量法有四个直接优点，老师要求大家记住：</p>
 <ol type="1">
@@ -1503,9 +1504,9 @@ id="二用向量法研究位置关系的总思路002145002433">二、用向量�
 <li><strong class="wb-pill">方程中法向量明确</strong>：一般式里 (A,B,C) 直接就是法向量，拿来就用。</li>
 </ol>
 <p>这正是后面研究两平面、直线与平面、两直线方程位置关系的主线。</p>
-<h2
+</section><h2
 id="三两平面的位置关系002444003519">三、两平面的位置关系（00:24:44—00:35:19）</h2>
-</section><section class="wb-seg"><h3 id="两平面位置关系的向量式判定"><span class="wb-ts">00:24:44—00:29:40</span> ｜
+<section class="wb-seg"><h3 id="两平面位置关系的向量式判定"><span class="wb-ts">00:24:44—00:29:40</span> ｜
 两平面位置关系的向量式判定</h3>
 <p>设两张平面分别由向量式方程给出：</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mn>1</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><msub><mover><mi>N</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>π</mi><mn>2</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><msub><mover><mi>N</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">\pi_1:\ \vec N_1\cdot(\vec R-\vec R_1)=0,\qquad \pi_2:\ \vec N_2\cdot(\vec R-\vec R_2)=0,</annotation></semantics></math></div></p>
@@ -1557,9 +1558,9 @@ id="三两平面的位置关系002444003519">三、两平面的位置关系（00
 → 平行不重合。</li></ol>
 <p><strong class="wb-pill wb-pill-result">结论</strong>：一般式判定完全等价于向量式判定，只是把「法向量平行」「两点共面」翻译成了「系数成比例」「常数项同比例」。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：老师强调「单写平行」必须区分重合与否；只写「系数成比例」不够，还必须单独检查常数项。</p>
-<h2
+</section><h2
 id="四两平面夹角与二面角003523004840">四、两平面夹角与二面角（00:35:23—00:48:40）</h2>
-</section><section class="wb-seg"><h3 id="两平面的夹角"><span class="wb-ts">00:35:23—00:38:24</span> ｜ 两平面的夹角</h3>
+<section class="wb-seg"><h3 id="两平面的夹角"><span class="wb-ts">00:35:23—00:38:24</span> ｜ 两平面的夹角</h3>
 <p>两平面相交时，它们之间的夹角取为两法向量夹角中的锐角（或直角）。</p>
 <p>[按图还原] 已知：两平面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mn>1</mn></msub><mo>,</mo><msub><mi>π</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\pi_1,\pi_2</annotation></semantics></math>，法向量分别为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>N</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>,</mo><msub><mover><mi>N</mi><mo accent="true">→</mo></mover><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\vec N_1,\vec N_2</annotation></semantics></math>。两法向量形成两个互补的角（和为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>180</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">180^\circ</annotation></semantics></math>）；两平面的夹角定义为其中不大于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>90</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">90^\circ</annotation></semantics></math>的那一个。</p>
 <p><strong class="wb-pill">公式</strong>：设两平面夹角为 θ （<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><msup><mn>90</mn><mo>∘</mo></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\theta\in[0,90^\circ]</annotation></semantics></math>），则</p>
@@ -1596,9 +1597,9 @@ id="四两平面夹角与二面角003523004840">四、两平面夹角与二面�
 <p><strong class="wb-pill wb-pill-result">结论</strong>：离差符号是判定点所属二面角的直接工具；二面角平面角
 = π− 对应内侧法向量夹角。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：老师强调法式方程「有离差、有符号」是这里的关键；普通一般式没有这个符号信息。易错点是把法向量夹角直接当成二面角——二者互补，必须再用 π− 折算，且要注意取的是「指向该二面角内侧」的那对法向。</p>
-<h2
+</section><h2
 id="五例题二面角类型判定与角平分面005434011208">五、例题：二面角类型判定与角平分面（00:54:34—01:12:08）</h2>
-</section><section class="wb-seg"><h3 id="判定点-m1m2-所在的二面角类型"><span class="wb-ts">00:54:34—01:00:56</span> ｜ 判定点 M1、M2
+<section class="wb-seg"><h3 id="判定点-m1m2-所在的二面角类型"><span class="wb-ts">00:54:34—01:00:56</span> ｜ 判定点 M1、M2
 所在的二面角类型</h3>
 <p>[按图还原]
 已知：由两张平面围成一个二面角（以下以老师板书归一化后的方程为准）；另有两个点<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo>,</mo><msub><mi>M</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">M_1,M_2</annotation></semantics></math>。任务：①
@@ -1629,9 +1630,9 @@ id="五例题二面角类型判定与角平分面005434011208">五、例题：�
 <p><strong class="wb-pill wb-pill-result">结论</strong>：锐二面角的角平分面为
 <div class="wb-math-wrap" data-tex="-\frac{x-2y+3z-6}{\sqrt{14}}=\frac{2x-y-z+3}{\sqrt{6}},"><div class="wb-math-bar"><span class="wb-math-lbl">公式</span><button type="button" class="wb-math-copy" title="复制 LaTeX 源码">📋 LaTeX</button><button type="button" class="wb-math-zoom" title="放大查看公式">🔍 放大</button></div><div class="wb-math-scroll"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mfrac><mrow><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>3</mn><mi>z</mi><mo>−</mo><mn>6</mn></mrow><msqrt><mn>14</mn></msqrt></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>+</mo><mn>3</mn></mrow><msqrt><mn>6</mn></msqrt></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">-\frac{x-2y+3z-6}{\sqrt{14}}=\frac{2x-y-z+3}{\sqrt{6}},</annotation></semantics></math></div></div>或等价写成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mstyle displaystyle="true"><mfrac><mrow><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>3</mn><mi>z</mi><mo>−</mo><mn>6</mn></mrow><msqrt><mn>14</mn></msqrt></mfrac></mstyle><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mi>z</mi><mo>+</mo><mn>3</mn></mrow><msqrt><mn>6</mn></msqrt></mfrac></mstyle><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">-\dfrac{x-2y+3z-6}{\sqrt{14}}-\dfrac{2x-y-z+3}{\sqrt{6}}=0</annotation></semantics></math>。</p>
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：老师强调，若不在法式方程前加那个负号，得到的是另一个（钝二面角）的角平分面；「加绝对值」会同时给出两个对角平分面。所以求特定二面角的角平分面，必须先把两张平面的法向量都校正为指向该二面角内侧，再令有向距离相等，不能盲目加绝对值。</p>
-<h2
+</section><h2
 id="六直线与平面的位置关系及夹角011208012426">六、直线与平面的位置关系及夹角（01:12:08—01:24:26）</h2>
-</section><section class="wb-seg"><h3 id="直线与平面的位置关系"><span class="wb-ts">01:12:08—01:20:44</span> ｜
+<section class="wb-seg"><h3 id="直线与平面的位置关系"><span class="wb-ts">01:12:08—01:20:44</span> ｜
 直线与平面的位置关系</h3>
 <p>设直线<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>:</mo><mspace width="0.222em"></mspace><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>0</mn></msub><mo>+</mo><mi>t</mi><mover><mi>v</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">L:\ \vec R=\vec R_0+t\vec v</annotation></semantics></math>，平面<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>:</mo><mspace width="0.222em"></mspace><mover><mi>N</mi><mo accent="true">→</mo></mover><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>−</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mi>P</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\pi:\ \vec N\cdot(\vec R-\vec R_P)=0</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mi>P</mi></msub><annotation encoding="application/x-tex">\vec R_P</annotation></semantics></math>为平面上一点）。</p>
 <p>[按图还原] 已知：一条直线 L （过<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>0</mn></msub><annotation encoding="application/x-tex">P_0</annotation></semantics></math>、方向<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>v</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec v</annotation></semantics></math>）与一张平面 π （法向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>N</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec N</annotation></semantics></math>、面上一点）。任务：判定二者相交、平行还是直线在平面内。作法：把直线参数方程代入平面方程，解参数 t 。</p>
@@ -1671,9 +1672,9 @@ t(\vec N\cdot\vec v)+\vec N\cdot(\vec R_0-\vec R_P)=0.</annotation></semantics><
 <p><strong class="wb-pill wb-pill-note">意义与易错点</strong>：老师点出这里用的是
 <strong>sin</strong>
 而不是 cos ——因为夹角是相对于「平面」而非「法向量」定义的，直线垂直于平面时<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><msup><mn>90</mn><mo>∘</mo></msup></mrow><annotation encoding="application/x-tex">\varphi=90^\circ</annotation></semantics></math>、 sin⁡φ=1 。易错点是套用两平面夹角公式时误用余弦、把法向量夹角直接当结果。</p>
-<h2
+</section><h2
 id="七两直线的位置关系与异面直线距离012434014235">七、两直线的位置关系与异面直线距离（01:24:34—01:42:35）</h2>
-</section><section class="wb-seg"><h3 id="两直线的位置关系共面-异面与相交-平行-重合"><span class="wb-ts">01:24:34—01:33:43</span> ｜
+<section class="wb-seg"><h3 id="两直线的位置关系共面-异面与相交-平行-重合"><span class="wb-ts">01:24:34—01:33:43</span> ｜
 两直线的位置关系（共面 / 异面与相交 / 平行 / 重合）</h3>
 <p>设两条直线</p>
 <p><div class="wb-math-plain"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>+</mo><mi>s</mi><msub><mover><mi>v</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>L</mi><mn>2</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><mover><mi>R</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mover><mi>R</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mo>+</mo><mi>t</mi><msub><mover><mi>v</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">L_1:\ \vec R=\vec R_1+s\vec v_1,\qquad L_2:\ \vec R=\vec R_2+t\vec v_2.</annotation></semantics></math></div></p>
@@ -1889,6 +1890,32 @@ window.MathJax = {
     t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
   }
 
+  /* 剪贴板：Clipboard API 在无权限 / 页面失焦（含 file:// 打开）时会 reject，
+     必须回退到 execCommand 并给出提示，否则表现为「点了没反应」 */
+  function copyToClipboard(text, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : '浏览器拒绝了剪贴板写入，请手动选中复制');
+      } catch (err) {
+        showToast('浏览器拒绝了剪贴板写入，请手动选中复制');
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
   /* ---------- 落地平滑闪烁高亮 ---------- */
   function flashEl(el) {
     if (!el) return;
@@ -1961,6 +1988,12 @@ window.MathJax = {
       e.preventDefault();
       toggleToc();
     }
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('📝 已打开本节批注');
+    }
     if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
       toggleToc(false);
     }
@@ -1988,11 +2021,7 @@ window.MathJax = {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var directUrl = location.href.split('#')[0] + '#' + h.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(directUrl).then(function() {
-              showToast('✓ 已复制直达链接到剪贴板');
-            });
-          }
+          copyToClipboard(directUrl, '✓ 已复制直达链接到剪贴板');
           history.pushState(null, '', '#' + h.id);
           flashEl(h);
         });
@@ -2137,22 +2166,9 @@ window.MathJax = {
     head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
       var code = (codeEl ? codeEl.innerText : pre.innerText);
       var btn = this;
-      var done = function() {
-        btn.innerHTML = '✓ 已复制';
-        showToast('✓ 代码已成功复制到剪贴板');
-        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        done();
-      }
+      copyToClipboard(code, '✓ 代码已成功复制到剪贴板');
+      btn.innerHTML = '✓ 已复制';
+      setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
     });
   });
 
@@ -2553,19 +2569,7 @@ window.MathJax = {
       showToast("未检测到对应 LaTeX 源码");
       return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tex).then(function() {
-        showToast("✓ 已复制 LaTeX 源码到剪贴板");
-      });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = tex;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("✓ 已复制 LaTeX 源码到剪贴板");
-    }
+    copyToClipboard(tex, "✓ 已复制 LaTeX 源码到剪贴板");
   }
 
   document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {

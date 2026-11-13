@@ -322,9 +322,9 @@
        乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
        细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
        打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
-       .wb-excard p > strong:first-child 的优先级覆盖。 */
-    .wb-excard p > strong:first-child,
-    .wb-excard li > strong:first-child {
+       .wb-excard p > strong.wb-pill 的优先级覆盖。 */
+    .wb-excard p > strong.wb-pill,
+    .wb-excard li > strong.wb-pill {
       display: inline-block;
       margin: 14px 0 4px;
       padding: 1px 9px;
@@ -336,7 +336,7 @@
       font-size: 13.5px;
       letter-spacing: .01em;
     }
-    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-excard p:first-of-type > strong.wb-pill { margin-top: 2px; }
     .wb-pill-topic  { --pill-bar: #8fa3b8; }
     .wb-pill-idea   { --pill-bar: #a99ab5; }
     .wb-pill-derive { --pill-bar: #8faaa3; }
@@ -528,7 +528,7 @@ bit）用作符号位</strong>：最高位为 <code>0</code> 表示正数，为
 1（符号位保持不变）。例如 −1 补码是
 <code>1111 1111 1111 1111</code>， −2 补码是 <code>1111 1111 1111 1110</code>。</li>
 </ol>
-<p>老师强调：先把这些当成”变戏法”一样记住，不必追问为什么这样定义（后面学了位运算再解释）。</p>
+<p>老师强调：先把这些当成“变戏法”一样记住，不必追问为什么这样定义（后面学了位运算再解释）。</p>
 <h3 id="补码的特性表示范围与整数溢出">00:09:00—00:16:04 ｜
 补码的特性、表示范围与整数溢出</h3>
 <p>补码的关键特点（以 16 位为例，从上到下递增 1）：</p>
@@ -558,7 +558,7 @@ bit）用作符号位</strong>：最高位为 <code>0</code> 表示正数，为
 bit（因为 N 个 bit 最多只能表示<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>N</mi></msup><annotation encoding="application/x-tex">2^N</annotation></semantics></math>个不同状态）。</li>
 </ul>
 <p>对 C 语言 32 位 <code>int</code>：最大值<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn><mo>≈</mo><mn>21</mn></mrow><annotation encoding="application/x-tex">2^{31}-1\approx 21</annotation></semantics></math>亿 4784 万，最小值<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msup><mn>2</mn><mn>31</mn></msup><mo>≈</mo><mi>−</mi><mn>21</mn></mrow><annotation encoding="application/x-tex">-2^{31}\approx -21</annotation></semantics></math>亿 4784 万。</p>
-<p><strong>溢出</strong>：最大正整数再加 1，会”逢二进一”变成
+<p><strong>溢出</strong>：最大正整数再加 1，会“逢二进一”变成
 <code>1000…0000</code>，即从最大正数变成最小负数——结果完全错了。因此做整数运算时务必防止越界。</p>
 <h3 id="平均数函数与整数溢出面试例题">00:17:04—00:19:18 ｜
 平均数函数与整数溢出（面试例题）</h3>
@@ -626,15 +626,15 @@ bit 用来存正整数的原码，所以补码与原码相同。</p>
 <code>sizeof 4.5</code>、<code>sizeof x</code>；若 <code>x</code> 是
 <code>int</code> 则等价于 <code>sizeof(int)</code>，若是
 <code>float</code> 则等价于 <code>sizeof(float)</code>。</p>
-<p><strong>注意区分两种”把类型括起来”的写法</strong>：</p>
+<p><strong>注意区分两种“把类型括起来”的写法</strong>：</p>
 <ul>
 <li><strong>类型转换运算符</strong>：<code>(类型名)表达式</code>，如
 <code>(int)1.999</code> 得到
-<code>1</code>（把值转成该类型，只转”值，不转变量）。</li>
+<code>1</code>（把值转成该类型，只转“值”，不转变量）。</li>
 <li><strong><code>sizeof</code>
 运算符</strong>：<code>sizeof(类型名)</code> 或
 <code>sizeof 表达式</code>。</li>
-<li>二者都把类型名用括号括起来，但含义完全不同：一个是”转换值的类型，一个是”求占用字节数。</li>
+<li>二者都把类型名用括号括起来，但含义完全不同：一个是“转换值的类型”，一个是“求占用字节数”。</li>
 </ul>
 <h3 id="无符号整数与整数常量的进制表示">00:28:44—00:34:48 ｜
 无符号整数与整数常量的进制表示</h3>
@@ -726,7 +726,7 @@ id="例题证明-2004102-短整数溢出截断short-n-123456789-13035">例题/�
 </ol>
 <p><strong>结论</strong>：从长整型到短整型，规则是<strong>保留低位字节、丢弃高位超出的字节</strong>（即截断）；如果原值较大，截断后可能变负。</p>
 <p><strong>易错点</strong>：以为 <code>short</code>
-会自动”缩小”为你想要的值；忘记截断是按字节、从低位保留。</p>
+会自动“缩小”为你想要的值；忘记截断是按字节、从低位保留。</p>
 <h3 id="有符号整数与无符号整数的赋值内存拷贝">00:52:11—01:06:56 ｜
 有符号整数与无符号整数的赋值（内存拷贝）</h3>
 <p><strong>整数与无符号整数之间运算、赋值要特别小心</strong>。看一个例子（完整代码在课件第
@@ -779,12 +779,12 @@ bit
 时要特别小心</strong>——它们在内存里可能是完全相同的
 bit，但按不同格式解读会得到天差地别的值。</p>
 <blockquote>
-<p>题外话（学习方法提醒，属于有效信息）：大学里没人盯着你学，要主动学、靠作业检验自己是否真掌握；老师借游戏与含糖饮料类比——若只”被游戏消费”或只靠糖获得短暂兴奋，长期无益；若能思考”游戏画面是怎么做出来的，就会变成学习动力。这部分是励志与学习方法提醒，非知识点。</p>
+<p>题外话（学习方法提醒，属于有效信息）：大学里没人盯着你学，要主动学、靠作业检验自己是否真掌握；老师借游戏与含糖饮料类比——若只“被游戏消费”或只靠糖获得短暂兴奋，长期无益；若能思考“游戏画面是怎么做出来的”，就会变成学习动力。这部分是励志与学习方法提醒，非知识点。</p>
 </blockquote>
 <h3 id="浮点数的存储小数二进制与-ieee-754-表示">01:07:15—01:13:39 ｜
 浮点数的存储：小数二进制与 IEEE 754 表示</h3>
-<p><strong>十进制小数转二进制</strong>：整数部分”除以 2
-取余数，小数部分”乘以 2 取整数。</p>
+<p><strong>十进制小数转二进制</strong>：整数部分“除以 2
+取余数”，小数部分“乘以 2 取整数”。</p>
 <p>例：把 6.625 转二进制。</p>
 <ul>
 <li>整数 6 ：除以
@@ -836,7 +836,7 @@ bit，但按不同格式解读会得到天差地别的值。</p>
 <li><code>float y = 1.2e55;</code>
 精度要求不高，但超出取值范围（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>38</mn></msup><annotation encoding="application/x-tex">10^{38}</annotation></semantics></math>），也无法精确表示。</li>
 </ul>
-<p>并非所有实数都能精确表示：<code>float</code> 最多表示<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>32</mn></msup><annotation encoding="application/x-tex">2^{32}</annotation></semantics></math>个浮点数，<code>double</code> 最多<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>64</mn></msup><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math>个——相对连续实数几乎是”九牛一毛，且数值越大误差越大。</p>
+<p>并非所有实数都能精确表示：<code>float</code> 最多表示<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>32</mn></msup><annotation encoding="application/x-tex">2^{32}</annotation></semantics></math>个浮点数，<code>double</code> 最多<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mn>64</mn></msup><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math>个——相对连续实数几乎是“九牛一毛”，且数值越大误差越大。</p>
 <p><strong>实数常量的表示</strong>：</p>
 <ul>
 <li>普通表示：符号 + 整数部分 + 小数点 + 小数部分，如
@@ -856,7 +856,7 @@ bit，但按不同格式解读会得到天差地别的值。</p>
 等。其取值范围是 [−128,127] （<code>0</code>～<code>127</code>
 可作 ASCII 字符，负的部分是负整数）。</p>
 <p><strong>转义字符</strong>：C 语言把反斜杠 <code>\</code>
-定义为转义字符，用来把”正常字符”变成”特殊字符，或把”特殊字符”变成普通字符（课件第
+定义为转义字符，用来把“正常字符”变成“特殊字符”，或把“特殊字符”变成普通字符（课件第
 34 页）：</p>
 <table>
 <thead>
@@ -1152,7 +1152,7 @@ f f f f f f f f</code></pre>
 <code>stdin</code>。</li>
 </ol>
 <p>若 <code>stdin</code> 为空，<code>scanf</code>/<code>getchar</code>
-会停下来<strong>等待用户输入</strong>——这就是程序”卡住等你输入”的原因。</p>
+会停下来<strong>等待用户输入</strong>——这就是程序“卡住等你输入”的原因。</p>
 <h3 id="scanf-的格式字符-d-f-lf-c-n">02:01:15—02:03:57 ｜ scanf
 的格式字符 %d %f %lf %c %n</h3>
 <p><code>scanf</code> 的格式字符（课件第 53 页）：</p>
@@ -1276,7 +1276,7 @@ scanf 返回值练习</h4>
 与上面等价（<code>\n</code> 与空格匹配功能相同）。</p>
 <h4 id="例题证明-18021044-scanf-读取四则运算表达式">例题/证明
 18（02:10:44）｜ scanf 读取四则运算表达式</h4>
-<p><strong>题目／任务</strong>（课件第 62 页）：读入”整数 运算符
+<p><strong>题目／任务</strong>（课件第 62 页）：读入“整数 运算符
 整数”形式的表达式，运算符两边允许任意多空白。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch06.txt 第 62 页）：</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="dt">char</span> ch <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
@@ -1295,7 +1295,7 @@ scanf 返回值练习</h4>
 <h3 id="数据类型转换强制类型转换与自动类型转换">02:11:30—02:22:04 ｜
 数据类型转换：强制类型转换与自动类型转换</h3>
 <p><strong>强制类型转换</strong>（课件第 63～64
-页）：<code>(类型名)表达式</code>。它是<strong>单目运算符，优先级高于一切双目运算符</strong>。它把”值”转换成指定类型，得到新值——<strong>不能把变量本身变成另一种类型</strong>（变量在内存中的大小是固定的）。</p>
+页）：<code>(类型名)表达式</code>。它是<strong>单目运算符，优先级高于一切双目运算符</strong>。它把“值”转换成指定类型，得到新值——<strong>不能把变量本身变成另一种类型</strong>（变量在内存中的大小是固定的）。</p>
 <h4 id="例题证明-19021305-强制类型转换float-x-1.5-的四种输出">例题/证明
 19（02:13:05）｜ 强制类型转换：float x = 1.5 的四种输出</h4>
 <p><strong>题目／任务</strong>（课件第 65 页）：观察以下四条
@@ -1320,11 +1320,11 @@ scanf 返回值练习</h4>
 <li><code>printf("%d", x);</code>：<strong>格式符 <code>%d</code>
 与参数类型 <code>float</code> 不一致</strong>——<code>printf</code>
 不会按 <code>%</code> 做类型转换，而是把 <code>x</code> 的 bit
-直接按整数解释，输出一个”怪怪的”无意义值。<strong>只有当 <code>%</code>
+直接按整数解释，输出一个“怪怪的”无意义值。<strong>只有当 <code>%</code>
 格式与参数类型一致时输出才正确</strong>。</li>
 </ol>
 <p><strong>自动类型转换</strong>（课件第 66～67
-页）：不同类型混合运算时，系统按规则先转成相同类型再运算；无论哪种转换，<strong>转的都是”值的类型，不是变量的类型</strong>。规则要点：</p>
+页）：不同类型混合运算时，系统按规则先转成相同类型再运算；无论哪种转换，<strong>转的都是“值的类型”，不是变量的类型</strong>。规则要点：</p>
 <ul>
 <li>赋值运算：右边类型转成左边类型再赋给左边；右边更长会丢失精度（产生警告）。</li>
 <li>函数调用：实参隐式转成形参类型；返回值隐式转成函数返回类型。</li>
