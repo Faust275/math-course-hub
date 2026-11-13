@@ -1,0 +1,2812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《C 程序设计》2026-11-10 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+<style>
+ol.wb-steps{margin:10px 0 16px;padding-left:28px;line-height:1.85}
+ol.wb-steps>li{margin:8px 0;padding-left:4px}
+ol.wb-steps>li::marker{color:#1d4ed8;font-weight:600}
+math[display="inline"]{margin:0 .08em}
+mjx-container[jax="SVG"]{margin:0 .04em}
+</style>
+<style>
+/* wb_theme_pin 主题兜底：pandoc 默认样式带 color-scheme:light dark + light-dark()，
+   系统深色时会无视 .wb-light，这里把 color-scheme 和画布底色钉死。
+   必须用 !important —— pandoc 那段样式在 head 里排在我们后面。 */
+html{color-scheme:light !important}
+html.wb-dark,html[data-theme="dark"]{color-scheme:dark !important}
+html{background-color:var(--wb-bg,var(--bg,#fff)) !important;
+     color:var(--wb-text,var(--text,#1c1c1a)) !important}
+</style>
+<script>
+/* wb_theme_early：首屏前定色，并把 color-scheme 钉死（pandoc light-dark 的克星） */
+(function(){
+  var KEY='wb_theme';
+  function read(){
+    var t=null;
+    try{var r=window.localStorage;t=r?r.getItem(KEY):null;}catch(e){}
+    if(!t&&window.WB_STORAGE){try{t=window.WB_STORAGE.getItem(KEY);}catch(e){}}
+    if(t!=='dark'&&t!=='light'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    return t;
+  }
+  window.wbTheme=read;
+  window.wbSetTheme=function(t){
+    t=(t==='dark'||t==='light')?t:read();
+    var d=(t==='dark'),e=document.documentElement,b=document.body;
+    e.setAttribute('data-theme',t);
+    e.classList.toggle('wb-dark',d);e.classList.toggle('wb-light',!d);
+    try{e.style.colorScheme=d?'dark':'light';}catch(err){}
+    if(b){b.classList.toggle('wb-dark',d);b.classList.toggle('wb-light',!d);}
+    return t;
+  };
+  window.wbSetTheme(read());
+})();
+</script>
+</head>
+<body>
+<style>
+
+/* 跨模块双向关联胶囊栏 */
+.wb-cross-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--wb-surface2, rgba(37,99,235,0.04));
+  border: 1px solid var(--wb-border, rgba(0,0,0,0.08));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0 16px 0;
+  font-size: 13px;
+}
+.wb-cross-label {
+  font-weight: 700;
+  color: var(--wb-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+.wb-cross-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wb-ref-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.wb-ref-tb {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.wb-ref-tb:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.wb-ref-hw {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.wb-ref-hw:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+.wb-ref-lec {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fef08a;
+}
+.wb-ref-lec:hover {
+  background: #fef9c3;
+  border-color: #fde047;
+}
+html.wb-dark .wb-ref-tb {
+  background: #14532d33;
+  color: #86efac;
+  border-color: #166534;
+}
+html.wb-dark .wb-ref-hw {
+  background: #1e3a8a33;
+  color: #93c5fd;
+  border-color: #1e40af;
+}
+html.wb-dark .wb-ref-lec {
+  background: #713f1233;
+  color: #fde047;
+  border-color: #854d0e;
+}
+
+/* 基础导航条与主题变量 */
+:root {
+  --wb-bg: #ffffff;
+  --wb-surface: #f7f7f5;
+  --wb-surface2: #fbfbf9;
+  --wb-text: #1f2328;
+  --wb-muted: #6b7280;
+  --wb-border: #e3e6ec;
+  --wb-accent: #0f6e56;
+  --wb-accent2: #185fa5;
+  --wb-h-color: #1a3d7c;
+  --wb-h3-bg: #f2f6fc;
+  --wb-h3-color: #24508c;
+  --wb-card-bg: #fbfaf6;
+  --wb-card-head: #f3ecde;
+  --wb-card-border: #ece5d8;
+  --wb-seg-line: #c3d5f0;
+  --wb-ts-bg: #eef2f8;
+  --wb-ts-color: #24508c;
+  --wb-ts-border: #d3deec;
+  --wb-code-bg: #f8f9fa;
+  --wb-code-border: #e9ecef;
+  --wb-pre-bg: #f4f5f7;
+  --wb-pill-bg: #f4f3f0;
+  --wb-pill-text: #5f5a54;
+  --wb-toc-bg: #ffffff;
+  --wb-drawer-bg: #ffffff;
+  --wb-drawer-border: #e3e6ec;
+  --wb-math-bg: #fcfcfb;
+  --wb-math-border: #e6e8ee;
+}
+
+html.wb-dark, body.wb-dark {
+  --wb-bg: #181817;
+  --wb-surface: #222220;
+  --wb-surface2: #282826;
+  --wb-text: #e6e6e3;
+  --wb-muted: #9ca3af;
+  --wb-border: #383834;
+  --wb-accent: #5dcaa5;
+  --wb-accent2: #85b7eb;
+  --wb-h-color: #85b7eb;
+  --wb-h3-bg: #1e2634;
+  --wb-h3-color: #93c5fd;
+  --wb-card-bg: #201f1d;
+  --wb-card-head: #2c2822;
+  --wb-card-border: #3d3a34;
+  --wb-seg-line: #263852;
+  --wb-ts-bg: #1e2634;
+  --wb-ts-color: #93c5fd;
+  --wb-ts-border: #2c394d;
+  --wb-code-bg: #222220;
+  --wb-code-border: #333330;
+  --wb-pre-bg: #141413;
+  --wb-pill-bg: #2b2825;
+  --wb-pill-text: #d1cbc5;
+  --wb-toc-bg: #1e222a;
+  --wb-drawer-bg: #1c1c1a;
+  --wb-drawer-border: #333330;
+  --wb-math-bg: #21211f;
+  --wb-math-border: #353531;
+  background-color: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not(.wb-light) {
+    --wb-bg: #181817;
+    --wb-surface: #222220;
+    --wb-surface2: #282826;
+    --wb-text: #e6e6e3;
+    --wb-muted: #9ca3af;
+    --wb-border: #383834;
+    --wb-accent: #5dcaa5;
+    --wb-accent2: #85b7eb;
+    --wb-h-color: #85b7eb;
+    --wb-h3-bg: #1e2634;
+    --wb-h3-color: #93c5fd;
+    --wb-card-bg: #201f1d;
+    --wb-card-head: #2c2822;
+    --wb-card-border: #3d3a34;
+    --wb-seg-line: #263852;
+    --wb-ts-bg: #1e2634;
+    --wb-ts-color: #93c5fd;
+    --wb-ts-border: #2c394d;
+    --wb-code-bg: #222220;
+    --wb-code-border: #333330;
+    --wb-pre-bg: #141413;
+    --wb-pill-bg: #2b2825;
+    --wb-pill-text: #d1cbc5;
+    --wb-toc-bg: #1e222a;
+    --wb-drawer-bg: #1c1c1a;
+    --wb-drawer-border: #333330;
+  }
+}
+
+body.wb-dark h1, html.wb-dark h1 { color: var(--wb-h-color) !important; border-bottom-color: #2a4365 !important; }
+body.wb-dark h2, html.wb-dark h2 { color: var(--wb-h-color) !important; border-left-color: #2a4365 !important; }
+body.wb-dark h3, html.wb-dark h3 { color: var(--wb-h3-color) !important; background: var(--wb-h3-bg) !important; }
+body.wb-dark h4, html.wb-dark h4 { color: #e29b55 !important; border-bottom-color: #5c3d1e !important; }
+body.wb-dark .wb-excard, html.wb-dark .wb-excard { background: var(--wb-card-bg) !important; border-color: var(--wb-card-border) !important; }
+body.wb-dark .wb-excard > h4, html.wb-dark .wb-excard > h4 { background: var(--wb-card-head) !important; color: #e29b55 !important; }
+body.wb-dark .wb-excard p > strong:first-child,
+body.wb-dark .wb-excard li > strong:first-child,
+html.wb-dark .wb-excard p > strong:first-child,
+html.wb-dark .wb-excard li > strong:first-child { background: var(--wb-pill-bg) !important; color: var(--wb-pill-text) !important; }
+body.wb-dark .wb-ts, html.wb-dark .wb-ts { background: var(--wb-ts-bg) !important; color: var(--wb-ts-color) !important; border-color: var(--wb-ts-border) !important; }
+body.wb-dark .wb-seg, html.wb-dark .wb-seg { border-left-color: var(--wb-seg-line) !important; }
+body.wb-dark .wb-seg::before, html.wb-dark .wb-seg::before { background: #3b82f6 !important; border-color: var(--wb-bg) !important; box-shadow: 0 0 0 1px var(--wb-seg-line) !important; }
+body.wb-dark code, html.wb-dark code { background: #282825 !important; color: #f0f0ed !important; }
+body.wb-dark pre, html.wb-dark pre { background: var(--wb-pre-bg) !important; border-color: #333330 !important; color: #f0f0ed !important; }
+body.wb-dark #TOC, html.wb-dark #TOC { background: var(--wb-toc-bg) !important; border-color: #333d4d !important; }
+body.wb-dark table th, html.wb-dark table th { background: #1e2634 !important; color: #93c5fd !important; border-color: #333d4d !important; }
+body.wb-dark table td, html.wb-dark table td { border-color: #333d4d !important; }
+body.wb-dark tr:nth-child(even) td, html.wb-dark tr:nth-child(even) td { background: #1a1f29 !important; }
+body.wb-dark blockquote, html.wb-dark blockquote { background: #1a222e !important; border-left-color: #3b82f6 !important; color: #c4ccd8 !important; }
+body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark mjx-container { color: var(--wb-text) !important; }
+
+
+/* 数学公式容器增强与横向滚动 */
+.wb-math-wrap {
+  position: relative;
+  margin: 18px 0;
+  border: 1px solid var(--wb-math-border);
+  border-radius: 8px;
+  background: var(--wb-math-bg);
+  padding: 12px 16px 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wb-math-wrap:hover {
+  border-color: var(--wb-accent2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.wb-math-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+  opacity: 0.55;
+  transition: opacity .15s;
+}
+.wb-math-wrap:hover .wb-math-bar { opacity: 1; }
+.wb-math-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-muted);
+  margin-right: auto;
+  letter-spacing: .04em;
+}
+.wb-math-copy, .wb-math-zoom {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: all .15s;
+}
+.wb-math-copy:hover, .wb-math-zoom:hover {
+  background: var(--wb-surface2);
+  border-color: var(--wb-accent2);
+  color: var(--wb-accent2);
+}
+.wb-math-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  text-align: center;
+}
+.wb-math-scroll mjx-container { max-width: 100%; }
+
+/* 层3：拆掉重卡片外壳后的轻量居中公式（命题陈述型，结构平） */
+.wb-math-plain {
+  margin: 14px auto;
+  padding: 10px 14px;
+  max-width: 720px;
+  text-align: center;
+  background: var(--wb-math-bg, #fbfaf6);
+  border: 1px solid var(--wb-math-border, #ece5d8);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+body.wb-dark .wb-math-plain { background: #1f1e1c; border-color: #3a3733; }
+.wb-math-plain mjx-container { max-width: 100%; }
+
+/* 公式高清放大模态浮层 */
+.wb-math-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.62);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-math-modal.wb-open { display: flex; }
+.wb-math-modal-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.28);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-modal-pop .2s ease-out;
+}
+@keyframes wb-modal-pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.wb-math-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+}
+.wb-math-modal-body {
+  padding: 34px 24px;
+  overflow: auto;
+  text-align: center;
+  font-size: 1.4em;
+  background: var(--wb-surface2);
+}
+.wb-math-modal-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 搜索结果关键词正文高亮 */
+.wb-hit-mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px #fde047;
+}
+html.wb-dark .wb-hit-mark, body.wb-dark .wb-hit-mark {
+  background: #854d0e;
+  color: #fef08a;
+  box-shadow: 0 0 0 1px #a16207;
+}
+.wb-res.active {
+  background: var(--wb-surface);
+  border-left: 3px solid var(--wb-accent2);
+  padding-left: 7px;
+}
+
+
+/* 阅读进度条 */
+.wb-read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #185fa5, #0f6e56);
+  z-index: 999;
+  transition: width .1s ease-out;
+  pointer-events: none;
+}
+html.wb-dark .wb-read-progress, body.wb-dark .wb-read-progress {
+  background: linear-gradient(90deg, #85b7eb, #5dcaa5);
+}
+
+/* 划词悬浮菜单 */
+.wb-hl-popover {
+  position: absolute;
+  z-index: 920;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 5px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  user-select: none;
+  animation: wb-pop-in .15s ease-out;
+}
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wb-hl-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,.15);
+  transition: transform .15s;
+  display: inline-block;
+}
+.wb-hl-color-dot:hover { transform: scale(1.22); }
+.wb-dot-yellow { background: #fef08a; }
+.wb-dot-green  { background: #bbf7d0; }
+.wb-dot-red    { background: #fecaca; }
+.wb-dot-purple { background: #e9d5ff; }
+
+.wb-hl-btn {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface);
+  color: var(--wb-text);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-hl-btn:hover { background: var(--wb-surface2); border-color: var(--wb-accent2); color: var(--wb-accent2); }
+.wb-hl-btn.wb-btn-del { color: #dc2626; border-color: #fca5a5; }
+
+/* 用户划词高亮样式 (4 色荧光笔 + 下划线) */
+.wb-user-hl {
+  border-radius: 2px;
+  padding: 1px 1px;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.wb-user-hl:hover { filter: brightness(.93); }
+.wb-user-hl-yellow { background: #fef08a; color: inherit; }
+.wb-user-hl-green  { background: #bbf7d0; color: inherit; }
+.wb-user-hl-red    { background: #fecaca; color: inherit; }
+.wb-user-hl-purple { background: #e9d5ff; color: inherit; }
+.wb-user-hl-underline {
+  background: transparent;
+  text-decoration: underline wavy #185fa5 2px;
+  text-underline-offset: 3px;
+}
+html.wb-dark .wb-user-hl-yellow, body.wb-dark .wb-user-hl-yellow { background: #714207; color: #fef08a; }
+html.wb-dark .wb-user-hl-green,  body.wb-dark .wb-user-hl-green  { background: #134e2a; color: #bbf7d0; }
+html.wb-dark .wb-user-hl-red,    body.wb-dark .wb-user-hl-red    { background: #6b1717; color: #fecaca; }
+html.wb-dark .wb-user-hl-purple, body.wb-dark .wb-user-hl-purple { background: #4a1570; color: #e9d5ff; }
+html.wb-dark .wb-user-hl-underline, body.wb-dark .wb-user-hl-underline { text-decoration-color: #85b7eb; }
+
+.wb-user-hl-has-note::after {
+  content: " 📝";
+  font-size: 10px;
+  vertical-align: super;
+  cursor: pointer;
+}
+body.wb-hl-hidden .wb-user-hl {
+  background: transparent !important;
+  text-decoration: none !important;
+}
+body.wb-hl-hidden .wb-user-hl::after { display: none !important; }
+
+/* 便签便签编辑模态浮层 */
+.wb-note-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.wb-note-modal.wb-open { display: flex; }
+.wb-note-dialog {
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  width: 460px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wb-pop-in .15s ease-out;
+}
+.wb-note-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.wb-note-quote {
+  padding: 10px 16px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-border);
+  font-size: 12.5px;
+  color: var(--wb-muted);
+  max-height: 80px;
+  overflow-y: auto;
+  font-style: italic;
+}
+.wb-note-body {
+  padding: 14px 16px;
+}
+.wb-note-textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.wb-note-textarea:focus { border-color: var(--wb-accent2); }
+.wb-note-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--wb-muted);
+}
+.wb-note-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 大纲抽屉的双 Tab 导航与批注列表 */
+.wb-drawer-nav {
+  display: flex;
+  gap: 4px;
+}
+.wb-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-tab-btn:hover { background: var(--wb-surface); color: var(--wb-text); }
+.wb-tab-btn.on { background: var(--wb-surface2); color: var(--wb-accent2); }
+.wb-notes-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+.wb-note-card {
+  border: 1px solid var(--wb-border);
+  background: var(--wb-surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.wb-note-card:hover {
+  border-color: var(--wb-accent2);
+  transform: translateY(-1px);
+}
+.wb-nc-quote {
+  font-size: 12px;
+  color: var(--wb-text);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  border-left: 3px solid #fde047;
+  padding-left: 8px;
+}
+.wb-nc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wb-h-color);
+  background: var(--wb-surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+.wb-nc-meta {
+  font-size: 11px;
+  color: var(--wb-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.wb-notes-tools {
+  padding: 10px 12px;
+  border-top: 1px solid var(--wb-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* 断点续读右下角浮动提示 */
+.wb-resume-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  border: 1px solid var(--wb-accent);
+  border-left: 4px solid var(--wb-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  z-index: 930;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: wb-pop-in .2s ease-out;
+}
+.wb-resume-btn {
+  background: var(--wb-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+
+/* 例题卡片攻克打卡与切题工具条 */
+.wb-excard > h4 {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-ex-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wb-mastery-btn {
+  border: 1px solid var(--wb-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  line-height: 1.3;
+  transition: all .15s;
+}
+.wb-mastery-btn:hover { border-color: var(--wb-accent); }
+.wb-mastery-btn.wb-st-todo  { background: var(--wb-surface2); color: var(--wb-muted); border-color: var(--wb-border); }
+.wb-mastery-btn.wb-st-doubt { background: #fef9c3; color: #854d0e; border-color: #fde047; font-weight: 600; }
+.wb-mastery-btn.wb-st-done  { background: #dcfce7; color: #15803d; border-color: #86efac; font-weight: 600; }
+html.wb-dark .wb-mastery-btn.wb-st-doubt { background: #713f12; color: #fef08a; border-color: #a16207; }
+html.wb-dark .wb-mastery-btn.wb-st-done  { background: #14532d; color: #bbf7d0; border-color: #16a34a; }
+
+.wb-ex-nav-btns {
+  display: inline-flex;
+  border: 1px solid var(--wb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--wb-bg);
+}
+.wb-step-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-muted);
+  padding: 2px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wb-step-btn:hover { background: var(--wb-surface2); color: var(--wb-text); }
+.wb-step-btn:first-child { border-right: 1px solid var(--wb-border); }
+
+/* 大纲抽屉内的攻克率进度条 */
+.wb-mastery-bar {
+  padding: 10px 14px;
+  background: var(--wb-surface2);
+  border-bottom: 1px solid var(--wb-drawer-border);
+  font-size: 12px;
+}
+.wb-mb-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--wb-muted);
+}
+.wb-mb-text b { color: var(--wb-accent); font-weight: 600; }
+.wb-mb-track {
+  height: 6px;
+  background: var(--wb-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wb-mb-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width .25s ease;
+}
+
+/* 移动端专属底部悬浮控制台 (手机单手握持热区) */
+.wb-mobile-dock {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--wb-bg);
+  border-top: 1px solid var(--wb-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  z-index: 890;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(8px);
+}
+.wb-dock-btn {
+  border: none;
+  background: transparent;
+  color: var(--wb-text);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+.wb-dock-btn:active {
+  background: var(--wb-surface);
+  color: var(--wb-accent2);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 50px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 74px !important;
+  }
+  .wb-mobile-dock {
+    display: flex !important;
+  }
+  .wb-in {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  #wb-selftest-btn, #wb-toc-btn, .wb-font-tools, #wb-theme-btn, .wb-meta, .wb-subj, .wb-tag {
+    display: none !important;
+  }
+  .wb-crumb {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .wb-q {
+    width: 110px !important;
+    font-size: 11.5px !important;
+    padding: 4px 6px !important;
+  }
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 18px !important; margin-top: 26px !important; }
+  h3 { font-size: 15px !important; padding: 6px 10px !important; }
+  .wb-excard {
+    padding: 0 12px 14px !important;
+    margin: 16px 0 !important;
+  }
+  .wb-excard > h4 {
+    margin: 0 -12px 12px !important;
+    padding: 9px 12px !important;
+    font-size: 14px !important;
+  }
+  .wb-ex-head-tools {
+    gap: 4px !important;
+    font-size: 11px !important;
+  }
+  .wb-math-modal-dialog {
+    width: 95vw !important;
+  }
+  .wb-math-modal-body {
+    padding: 20px 8px !important;
+    font-size: 1.15em !important;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  /* 移动端底部高亮悬浮面板 (防系统菜单与手指遮挡) */
+  .wb-hl-popover.wb-hl-mobile, .wb-hl-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 64px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 26px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.22) !important;
+    background: var(--wb-bg) !important;
+    border: 1px solid var(--wb-border) !important;
+    z-index: 1000 !important;
+    gap: 12px !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .wb-hl-color-dot {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .wb-hl-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+  /* 移动端公式溢出横向滑动提示与滚动条优化 */
+  .wb-math-wrap {
+    position: relative;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .wb-math-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  .wb-math-wrap::-webkit-scrollbar-thumb {
+    background: var(--wb-border);
+    border-radius: 2px;
+  }
+}
+
+/* 导航栏 */
+/* 长公式在窄屏下自身横向滚动，避免把整页撑宽 */
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+math{max-width:100%}
+/* 侧边目录抽屉预留在视口外，会把页宽撑大，这里裁掉（clip 不产生滚动容器，不影响 sticky 顶栏） */
+html,body{overflow-x:clip}
+.wb-bar{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--wb-bg);
+ border-bottom:1px solid var(--wb-border);box-shadow:0 2px 8px rgba(0,0,0,.06);
+ font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--wb-text)}
+.wb-in{max-width:1320px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-bar a{color:var(--wb-accent2);text-decoration:none;white-space:nowrap}
+.wb-bar a:hover{text-decoration:underline}
+.wb-bar a.wb-off{color:var(--wb-muted);pointer-events:none;text-decoration:none}
+.wb-crumb{color:var(--wb-muted);font-size:12px;flex:1;min-width:140px;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.wb-crumb b{color:var(--wb-text);font-weight:600}
+.wb-tag{font-size:11px;background:#eef4fb;color:#2f5597;border-radius:4px;padding:2px 7px;margin-left:8px}
+html.wb-dark .wb-tag, body.wb-dark .wb-tag{background:#1e293b;color:#93c5fd}
+.wb-subj{display:flex;gap:2px;margin-left:2px}
+.wb-subj a{color:var(--wb-muted);font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.wb-subj a:hover{color:var(--wb-accent2);background:var(--wb-surface)}
+.wb-subj a.wb-cur{color:#fff;background:#2f5597}
+html.wb-dark .wb-subj a.wb-cur, body.wb-dark .wb-subj a.wb-cur{background:#2563eb}
+.wb-meta{margin-left:6px;color:var(--wb-muted);font-size:11px;white-space:nowrap}
+
+/* 工具按钮 */
+.wb-tool-btn{border:1px solid var(--wb-border);background:var(--wb-surface);color:var(--wb-text);
+ border-radius:6px;padding:4px 9px;font-size:12px;cursor:pointer;white-space:nowrap;line-height:1.2;
+ display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.wb-tool-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-tool-btn.wb-btn-active{background:#e8f0fe;border-color:#185fa5;color:#185fa5;font-weight:600}
+html.wb-dark .wb-tool-btn.wb-btn-active, body.wb-dark .wb-tool-btn.wb-btn-active{background:#1e2e4a;border-color:#85b7eb;color:#85b7eb}
+.wb-font-tools{display:inline-flex;gap:1px}
+.wb-font-tools .wb-tool-btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+.wb-font-tools .wb-tool-btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+
+.wb-q{border:1px solid var(--wb-border);border-radius:6px;padding:5px 9px;font-size:12px;
+ width:170px;outline:none;color:var(--wb-text);background:var(--wb-bg)}
+.wb-q:focus{border-color:var(--wb-accent2)}
+.wb-panel{position:fixed;top:46px;right:max(20px,calc((100vw - 1320px)/2));
+ width:min(520px,calc(100vw - 40px));max-height:70vh;overflow:auto;background:var(--wb-bg);
+ border:1px solid var(--wb-border);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.15);
+ padding:10px;display:none;z-index:910}
+.wb-res{display:block;padding:8px 10px;border-bottom:1px solid var(--wb-border);color:var(--wb-text);
+ font-size:12.5px;text-decoration:none}
+.wb-res:hover{background:var(--wb-surface);text-decoration:none}
+.wb-res small{display:block;color:var(--wb-muted);font-size:11px;margin-top:2px}
+
+/* 大纲抽屉 (Floating TOC Drawer) */
+.wb-toc-drawer{position:fixed;top:48px;right:0;bottom:0;width:340px;max-width:85vw;
+ background:var(--wb-drawer-bg);border-left:1px solid var(--wb-drawer-border);
+ box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:950;display:flex;flex-direction:column;
+ transform:translateX(100%);transition:transform .25s ease-in-out}
+.wb-toc-drawer.wb-open{transform:translateX(0)}
+.wb-toc-head{padding:12px 16px;border-bottom:1px solid var(--wb-drawer-border);
+ display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px}
+.wb-close-btn{border:none;background:transparent;color:var(--wb-muted);font-size:20px;
+ cursor:pointer;padding:0 4px;line-height:1}
+.wb-close-btn:hover{color:var(--wb-text)}
+.wb-toc-body{flex:1;overflow-y:auto;padding:12px 8px}
+.wb-toc-item{padding:5px 8px;margin:2px 0;border-radius:6px;cursor:pointer;font-size:12.5px;
+ color:var(--wb-muted);line-height:1.45;transition:all .15s;border-left:2px solid transparent;word-break:break-word}
+.wb-toc-item:hover{background:var(--wb-surface);color:var(--wb-text)}
+.wb-toc-item.wb-toc-active{color:var(--wb-accent2);background:var(--wb-surface);
+ font-weight:600;border-left-color:var(--wb-accent2)}
+.wb-toc-h2{font-weight:600;color:var(--wb-text);margin-top:8px}
+.wb-toc-h3{padding-left:14px;font-size:12px}
+.wb-toc-h4{padding-left:24px;font-size:11.5px;color:var(--wb-muted)}
+.wb-toc-backdrop{position:fixed;top:48px;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);
+ z-index:940;display:none;opacity:0;transition:opacity .25s}
+.wb-toc-backdrop.wb-open{display:block;opacity:1}
+
+/* 推导折叠控制 (Self-Test Mode) */
+.wb-derive-ctrl{margin:10px 0 6px}
+.wb-derive-btn{border:1px dashed var(--wb-border);background:var(--wb-surface);
+ color:var(--wb-accent2);border-radius:6px;padding:4px 10px;font-size:12px;
+ cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.wb-derive-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-derive-box.wb-hidden{display:none !important}
+
+/* 代码块增强 */
+.wb-code-wrap{margin:18px 0;border:1px solid var(--wb-code-border);border-radius:8px;
+ overflow:hidden;background:var(--wb-code-bg)}
+.wb-code-head{display:flex;align-items:center;justify-content:space-between;
+ padding:6px 12px;background:var(--wb-surface);border-bottom:1px solid var(--wb-code-border);
+ font-size:11.5px;color:var(--wb-muted)}
+.wb-code-lang{font-weight:600;font-family:ui-monospace,Consolas,monospace}
+.wb-code-copy-btn{border:1px solid var(--wb-border);background:var(--wb-bg);
+ color:var(--wb-text);border-radius:4px;padding:2px 8px;font-size:11.5px;cursor:pointer}
+.wb-code-copy-btn:hover{background:var(--wb-surface2);border-color:var(--wb-accent2)}
+.wb-code-wrap pre{margin:0 !important;border:none !important;border-radius:0 !important;
+ padding:12px !important;overflow-x:auto}
+
+/* 锚点复制链接 */
+.wb-anchor{opacity:0;margin-left:6px;font-size:13px;color:var(--wb-accent2);
+ text-decoration:none;cursor:pointer;transition:opacity .15s}
+h2:hover .wb-anchor, h3:hover .wb-anchor, h4:hover .wb-anchor{opacity:.75}
+.wb-anchor:hover{opacity:1 !important}
+
+/* 落地平滑闪烁高亮 */
+@keyframes wb-flash-anim{
+ 0%{background-color:rgba(254,240,138,.85)}
+ 50%{background-color:rgba(254,240,138,.45)}
+ 100%{background-color:transparent}
+}
+.wb-flash-highlight{animation:wb-flash-anim 2.5s ease-out;border-radius:4px}
+
+/* Toast 提示浮条 */
+.wb-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+ background:#1f2328;color:#fff;padding:8px 16px;border-radius:20px;font-size:12.5px;
+ opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+html.wb-dark .wb-toast, body.wb-dark .wb-toast{background:#f3f4f6;color:#111827}
+.wb-toast-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 打印样式优化 */
+@media print{
+ body{padding-top:0 !important;max-width:100% !important;font-size:12pt !important;line-height:1.6 !important;color:#000 !important;background:#fff !important}
+ .wb-bar, .wb-panel, .wb-toc-drawer, .wb-toc-backdrop, .wb-toast, .wb-derive-ctrl, .wb-code-copy-btn, .wb-anchor{display:none !important}
+ .wb-excard, .wb-seg, table, pre, mjx-container, .wb-pill{break-inside:avoid !important;page-break-inside:avoid !important}
+ .wb-excard{border:1px solid #aaa !important;background:#fff !important}
+ .wb-derive-box.wb-hidden{display:block !important}
+ a{text-decoration:none !important;color:#000 !important}
+}
+body{padding-top:54px}
+@media(max-width:768px){.wb-q{width:120px}.wb-crumb{min-width:70px}.wb-meta{display:none}}
+
+</style>
+<div class="wb-bar"><div class="wb-in"><a href="index.html">首页</a><a href="course-cprog.html">← C 程序设计</a><span class="wb-subj"><a href="course-analysis.html">分析</a><a href="course-algebra.html">代数</a><a href="course-geometry.html">几何</a><a href="course-cprog.html" class="wb-cur">C 程</a></span><div class="wb-crumb">C 程序设计 <span>›</span> <b>2026-11-10</b><span class="wb-tag">讲义全文</span></div><span class="wb-meta">1 章 · 11 小节 · 8 例题</span><a href="lecture-cprog-2026-11-03.html">‹ 上一节</a><span class="wb-off">下一节 ›</span><a href="full/cprog-1110.html" target="_blank">纯净版 ↗</a><button class="wb-tool-btn" id="wb-selftest-btn" title="遮挡推导自测模式">🙈 自测模式</button><button class="wb-tool-btn" id="wb-toc-btn" title="查看大纲目录 (Alt+T)">📑 大纲</button><button class="wb-tool-btn" id="wb-notes-btn" title="划选文字呼出荧光笔，点击查看已做批注 (Alt+N)">🖍️ 批注 (<span id="wb-bar-notes-count">0</span>)</button><span class="wb-font-tools"><button class="wb-tool-btn" id="wb-font-dec" title="缩小字号">A-</button><button class="wb-tool-btn" id="wb-font-inc" title="放大字号">A+</button></span><button class="wb-tool-btn" id="wb-theme-btn" title="切换深色模式">🌙 深色</button><input class="wb-q" id="wb-q" placeholder="搜概念 / 时间戳 / 例题 ｜ Ctrl K" autocomplete="off"></div></div><div class="wb-panel" id="wb-panel"></div><div class="wb-toc-drawer" id="wb-toc-drawer"><div class="wb-toc-head"><div class="wb-drawer-nav"><button class="wb-tab-btn on" id="wb-tab-toc">📑 目录大纲</button><button class="wb-tab-btn" id="wb-tab-notes">📝 本节批注 (<span id="wb-notes-num">0</span>)</button></div><button id="wb-toc-close" class="wb-close-btn" title="关闭大纲">×</button></div><div class="wb-toc-body" id="wb-toc-tree"></div><div class="wb-notes-body" id="wb-notes-list" style="display:none"></div><div class="wb-notes-tools" id="wb-notes-tools" style="display:none"><button class="wb-tool-btn" id="wb-btn-export-notes">📤 导出 JSON 备份</button><button class="wb-tool-btn" id="wb-btn-clear-notes" style="color:#ef4444;border-color:#fca5a5">🗑️ 清空批注</button></div></div><div class="wb-toc-backdrop" id="wb-toc-backdrop"></div><div id="wb-toast" class="wb-toast"></div><div id="wb-hl-popover" class="wb-hl-popover"><span class="wb-hl-color-dot wb-dot-yellow" data-color="yellow" title="🟡 核心考点"></span><span class="wb-hl-color-dot wb-dot-green" data-color="green" title="🟢 概念定义"></span><span class="wb-hl-color-dot wb-dot-red" data-color="red" title="🔴 易错反例"></span><span class="wb-hl-color-dot wb-dot-purple" data-color="purple" title="🟣 解题技巧"></span><button class="wb-hl-btn" id="wb-hl-underline" data-color="underline" title="波浪下划线"><u>U</u></button><button class="wb-hl-btn" id="wb-hl-add-note" title="添加便签批注">📝 便签</button><button class="wb-hl-btn wb-btn-del" id="wb-hl-btn-del" style="display:none" title="删除标注">🗑️</button></div><div id="wb-note-modal" class="wb-note-modal"><div class="wb-note-dialog"><div class="wb-note-head"><span>📝 添加/编辑便签</span><button class="wb-close-btn" id="wb-note-close" title="关闭">×</button></div><div class="wb-note-quote" id="wb-note-quote"></div><div class="wb-note-body"><textarea id="wb-note-input" class="wb-note-textarea" placeholder="写下你的疑问、思考或拓展推导..."></textarea></div><div class="wb-note-footer"><button class="wb-btn-text-del" id="wb-note-del-btn" style="display:none">删除便签</button><div style="flex:1"></div><button class="wb-tool-btn" id="wb-note-save-btn">保存便签</button></div></div></div><div id="wb-resume-toast" class="wb-resume-toast"><span>上次读到 <b id="wb-resume-pct">0</b>%</span><button id="wb-resume-jump" class="wb-resume-btn">继续阅读</button><button id="wb-resume-close" class="wb-close-btn" style="color:var(--wb-muted);font-size:16px">×</button></div><div class="wb-math-modal" id="wb-math-modal"><div class="wb-math-modal-dialog"><div class="wb-math-modal-header"><span>🔍 公式高清放大</span><button class="wb-close-btn" id="wb-math-modal-close" title="关闭 (Esc)">×</button></div><div class="wb-math-modal-body" id="wb-math-modal-body"></div><div class="wb-math-modal-footer"><button class="wb-tool-btn" id="wb-math-modal-copy">📋 复制 LaTeX 源码</button></div></div></div><div style="max-width:980px;margin:14px auto 0;padding:10px 16px;background:#fff8e8;border:1px solid #e8d3a0;border-radius:8px;font:13px/1.7 -apple-system,'Microsoft YaHei',sans-serif;color:#7a5410">代码逐字符取自课件（content/cprog/_slides/ 下对应章节），不以字幕为准；课件原文留档在该目录。</div>
+<header id="title-block-header">
+<h1 class="title">《C 程序设计》2026-11-10 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#c-程序设计2026-11-10-课堂详解"
+id="toc-c-程序设计2026-11-10-课堂详解">《C 程序设计》2026-11-10
+课堂详解</a>
+<ul>
+<li><a href="#引子什么是函数与结构化程序设计"
+id="toc-引子什么是函数与结构化程序设计">00:00:07—00:08:42 ｜
+引子：什么是函数与结构化程序设计</a></li>
+<li><a href="#动机例值传递不能改变实参清零函数"
+id="toc-动机例值传递不能改变实参清零函数">00:08:42—00:14:44 ｜
+动机例：值传递不能改变实参（清零函数）</a></li>
+<li><a href="#作用域限制与内存地址为何直接用名字行不通"
+id="toc-作用域限制与内存地址为何直接用名字行不通">00:14:44—00:18:50 ｜
+作用域限制与内存地址：为何「直接用名字」行不通</a></li>
+<li><a href="#指针的本质地址直接访问与间接访问"
+id="toc-指针的本质地址直接访问与间接访问">00:18:50—00:31:31 ｜
+指针的本质：地址、直接访问与间接访问</a></li>
+<li><a href="#指针变量的定义与基类型"
+id="toc-指针变量的定义与基类型">00:31:31—00:42:40 ｜
+指针变量的定义与基类型</a></li>
+<li><a href="#指针的基本运算取地址运算符-与解引用"
+id="toc-指针的基本运算取地址运算符-与解引用">00:42:40—01:06:25 ｜
+指针的基本运算：取地址运算符 &amp; 与解引用 *</a></li>
+<li><a href="#空指针野指针与内存安全"
+id="toc-空指针野指针与内存安全">01:06:25—01:20:45 ｜
+空指针、野指针与内存安全</a></li>
+<li><a href="#指针作函数形参跨函数修改与两数交换"
+id="toc-指针作函数形参跨函数修改与两数交换">01:20:45—01:28:32 ｜
+指针作函数形参：跨函数修改与两数交换</a></li>
+<li><a href="#指针与数组首地址p1-与基类型单位"
+id="toc-指针与数组首地址p1-与基类型单位">01:28:32—01:47:06 ｜
+指针与数组：首地址、P+1 与基类型单位</a></li>
+<li><a href="#数组元素的等价访问与数组名作形参"
+id="toc-数组元素的等价访问与数组名作形参">01:47:06—01:59:31 ｜
+数组元素的等价访问与数组名作形参</a></li>
+<li><a href="#指针算术与综合应用排序二分搜索查找非公共元素"
+id="toc-指针算术与综合应用排序二分搜索查找非公共元素">01:59:31—02:26:46
+｜ 指针算术与综合应用：排序、二分搜索、查找非公共元素</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="c-程序设计2026-11-10-课堂详解">《C 程序设计》2026-11-10
+课堂详解</h1>
+<blockquote>
+<p>授课：刘新国 ｜ 时长：02:28:04 ｜ 逐条字幕：1338 条 ｜ 时间段小节：11
+｜ 例题 / 证明：8</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[?]</code>
+标记转写存疑处；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。</p>
+</blockquote>
+<blockquote>
+<p>**代码逐字符取自课件（content/cprog/_slides/
+下对应章节），不以字幕为准；课件原文留档在该目录。** ##
+一、指针（00:00:07—02:26:46）</p>
+</blockquote>
+<section class="wb-seg"><h3 id="引子什么是函数与结构化程序设计"><span class="wb-ts">00:00:07—00:08:42</span> ｜
+引子：什么是函数与结构化程序设计</h3>
+<p>本节目标：讲清指针的<strong>本质</strong>（指针即地址）、<strong>为什么要用指针</strong>、<strong>怎么用指针</strong>，以及使用指针时的注意事项。老师强调：即使今天听懂了，未来仍可能因为逻辑能力、分析能力不够而用错，所以听完后还要靠自己反复推理练习。</p>
+<p>先用一个熟悉的例子回顾「函数」的概念，为后面理解指针做铺垫。</p>
+<ul>
+<li>以 <code>sqrt</code>（平方根）函数为例：<code>sqrt</code>
+是一段「计算任意一个数平方根」的代码，并且用一个名字
+<code>sqrt</code>（square root
+的缩写）把它<strong>封装</strong>起来。</li>
+<li>所以<strong>函数</strong>的本质是：完成某个特定任务的一段程序（一坨代码），并且有一个名字把它封装起来，便于反复调用。</li>
+<li>函数的作用：<strong>① 代码复用</strong>；<strong>②
+结构化</strong>——把复杂问题分解为小问题，每个小问题（或子问题）用一个函数实现，使程序结构清晰、思路明确。这就是
+C 语言强调的<strong>结构化程序设计思想</strong>。</li>
+<li>老师补充：CPU
+里并没有专门计算平方根的电路，而是用数学方法（加减乘除反复迭代，如牛顿迭代法）调用已有的指令电路算出来。</li>
+</ul>
+<blockquote>
+<p>易错点提醒：函数不是「一段代码」这么简单，关键在于「<strong>有名字封装、可反复利用、使结构清晰</strong>」三点。</p>
+</blockquote>
+</section><section class="wb-seg"><h3 id="动机例值传递不能改变实参清零函数"><span class="wb-ts">00:08:42—00:14:44</span> ｜
+动机例：值传递不能改变实参（清零函数）</h3>
+<div class="wb-excard" id="wb-ex-1" data-ex-idx="1"><h4 id="例题证明-1000903-用函数给变量清零值传递失效">例题/证明
+1（00:09:03）｜ 用函数给变量清零——值传递失效<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-1" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong> 定义一个变量
+<code>y</code>，再用一个专门的函数 <code>clear</code> 把 <code>y</code>
+清零，即在 <code>main</code> 里调用 <code>clear(y)</code> 后，打印
+<code>y</code> 的值，看结果是否为 0。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - <code>main</code> 里定义
+<code>int y = 13;</code>，打印 <code>y</code>。 - 写一个函数
+<code>clear</code>，形参为 <code>int x</code>，函数体内
+<code>x = 0;</code>（把传进来的这个数清零）。 - 在 <code>main</code>
+里调用 <code>clear(y);</code>，再打印 <code>y</code>。 -
+预期很多同学会以为是 0，但正确答案仍是 13。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>（课件无此例，按标准 C 补全
+<code>[补全]</code>，非当堂逐字代码，仅作自学参照）</p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>void clear(int x) { x = 0; }</p>
+<p>int main(void) { int y = 13; clear(y); printf(“y = %d”, y); return 0;
+}</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> - 执行到
+<code>int y = 13;</code>：<code>main</code> 的栈里分配 4 个字节给
+<code>y</code>，初值为 13。 - 执行 <code>clear(y);</code>：C
+语言的函数调用采用<strong>值传递</strong>——把 <code>y</code>
+的值（13）<strong>复制</strong>一份给形参 <code>x</code>。此时
+<code>clear</code> 里有一个<strong>新的、独立的变量</strong>
+<code>x</code>，初值为 13。 - 执行 <code>x = 0;</code>：只是把
+<code>clear</code> 自己的 <code>x</code> 改成 0，<strong><code>y</code>
+完全不受影响</strong>。 - 回到 <code>main</code> 打印：<code>y</code>
+还是 13。</p>
+<p>屏幕输出：</p>
+<p>y = 13</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong> 值传递时，形参 <code>x</code> 是实参
+<code>y</code> 的<strong>副本</strong>。函数内部修改
+<code>x</code>，不会改变外面的 <code>y</code>。这正是 C
+语言函数参数传递的机制：先复制实参的值给形参，二者此后互不相干。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> - 很多同学（包括期中考试约 20% 的人）会误以为
+<code>clear(y)</code> 能把 <code>y</code> 变成
+0。这个概念「顽固」，必须理解本质：形参是副本。 -
+老师强调：不能因为「结果碰巧对了」就以为懂了，要懂<strong>为什么会不变</strong>。</p>
+</section><section class="wb-seg"><h3 id="作用域限制与内存地址为何直接用名字行不通"><span class="wb-ts">00:14:44—00:18:50</span> ｜
+作用域限制与内存地址：为何「直接用名字」行不通</h3>
+<ul>
+<li>既然值传递改不了外面的 <code>y</code>，那能不能在 <code>clear</code>
+函数里<strong>直接写
+<code>y = 0;</code></strong>？不行——编译报错：<code>'y' undeclared</code>（未定义）。</li>
+<li>原因：<strong>变量的作用域（作用范围）</strong>。每个函数内部
+<code>{}</code>
+里定义的变量，只在自己的复合语句内部有效，别的函数不能用。这是为了避免多人协作时变量名互相冲突、逻辑混乱。</li>
+<li>因此，「用名字直接访问另一个函数里的变量」被作用域挡住了。要跨函数访问，必须换一条路——<strong>不用名字，而用地址</strong>。</li>
+</ul>
+<blockquote>
+<p>关键引子：如果不通过名字，而是通过 <code>y</code>
+的「地址」去访问它，就能打破作用域限制。这就引出了指针。</p>
+</blockquote>
+</section><section class="wb-seg"><h3 id="指针的本质地址直接访问与间接访问"><span class="wb-ts">00:18:50—00:31:31</span> ｜
+指针的本质：地址、直接访问与间接访问</h3>
+<ul>
+<li>程序运行时代码和数据都要先放进内存；变量就是内存中的若干字节。例如
+<code>int x;</code> 让操作系统从某地址（如 1000 号）开始分配 4
+个字节，取名 <code>x</code>，里面存放值（如 123 的二进制）。</li>
+<li>内存按字节编号，每个字节一个地址。一个 <code>int</code> 占 4
+字节（1000、1001、1002、1003），它的<strong>地址</strong>取<strong>最低（最小）编号</strong>的那个字节，即
+1000。知道首地址和类型，CPU 就知道要访问哪 4 个字节。</li>
+<li><strong class="wb-pill">直接访问</strong>：用变量名访问，如用 <code>x</code> 访问那
+4 个字节。</li>
+<li><strong class="wb-pill">间接访问</strong>：用「地址」访问。例如再定义一个变量
+<code>p</code>，让它里面存放 <code>x</code> 的地址（1000），则
+<code>p</code> 与 <code>x</code> 关联：<code>p</code> 的值是
+<code>x</code> 的地址。我们说「<strong><code>p</code> 指向
+<code>x</code></strong>」。通过 <code>p</code> 去访问 <code>x</code>
+的值，就是<strong>间接访问</strong>，且不受作用域限制——地址是整个程序运行期间都能访问内存的依据。</li>
+</ul>
+<p>内存示意： 1000 1001 1002 1003 2000 2001 2002 2003
+┌────┬────┬────┬────┐ ┌────┬────┬────┬────┐ │ │ │ │ │ │1000│ │ │ │
+└────┴────┴────┴────┘ └────┴────┴────┴────┘ ▲ x (值=123) ▲ │ p (值=1000,
+指向 x) └──────── 箭头表示「指向 ────┘</p>
+<ul>
+<li>老师总结：<strong>指针即地址</strong>。指针提供了一种不靠变量名、而靠地址去访问变量（内存单元）的方法。</li>
+<li>指针可以是<strong>变量</strong>（指针变量，如
+<code>p</code>），也可以是<strong>常量</strong>（如变量 <code>x</code>
+的地址 1000 一旦由操作系统分配好就不可更改，是指针常量）。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="指针变量的定义与基类型"><span class="wb-ts">00:31:31—00:42:40</span> ｜
+指针变量的定义与基类型</h3>
+<ul>
+<li>指针变量本身存放的是地址，但光有「地址值」不够：还必须说明它<strong>指向的对象是什么类型</strong>，这个类型叫<strong>基类型（base
+type）</strong>。</li>
+<li>定义形式：<code>类型名 *变量名;</code>，其中 <code>*</code>
+是<strong>指针声明符</strong>，表明该变量是指针变量（存放地址）；前面的类型名是该指针<strong>指向的对象的类型</strong>（基类型）。</li>
+</ul>
+<p>c int <em>pi; // pi 是整型指针，指向的对象是 int（4 字节） float
+</em>pf; // pf 是单精度浮点型指针，指向 float（4 字节） char *pc; // pc
+是字符型指针，指向 char（1 字节）</p>
+<ul>
+<li>为什么必须区分基类型？因为
+<code>pi</code>、<code>pf</code>、<code>pc</code>
+里存的都是地址（看起来一样），但 <code>pi</code> 指向 4
+字节、<code>pf</code> 指向 8 字节（double 例子）、<code>pc</code> 指向 1
+字节。CPU 看到首地址后，靠基类型才知道要访问几个字节。</li>
+<li><strong class="wb-pill wb-pill-idea">定义多个指针</strong>时，每个变量前都要单独加
+<code>*</code>。注意：<code>int *p1, *p2;</code> 中
+<code>p1</code>、<code>p2</code> 都是指针；若写成
+<code>int* p1, p2;</code>，<code>p2</code> 仍是普通
+<code>int</code>，不是指针——<code>*</code> 是跟在变量名上的。</li>
+<li>老师建议写 <code>int *p;</code>（星号靠变量名）而不是
+<code>int* p;</code>，以避免上述歧义。</li>
+<li>指针变量本身（存放地址的那个变量）占几个字节？与基类型<strong>无关</strong>，只取决于编译系统/平台（通常
+32 位机 4 字节，64 位机 8
+字节）。老师此处提醒不要搞混：求「指针变量」占几字节 ≠
+求「它指向的对象」占几字节。</li>
+</ul>
+</section><section class="wb-seg"><h3 id="指针的基本运算取地址运算符-与解引用"><span class="wb-ts">00:42:40—01:06:25</span> ｜
+指针的基本运算：取地址运算符 &amp; 与解引用 *</h3>
+<ul>
+<li><strong class="wb-pill">取地址运算符
+<code>&amp;</code></strong>（单目、优先级最高）：放在变量前，得到该变量的地址。例如
+<code>&amp;a</code> 表示取变量 <code>a</code> 的地址。<code>&amp;</code>
+和按位与 <code>&amp;</code>、逻辑与 <code>&amp;&amp;</code>
+在不同场合含义不同，但都是同一个符号。</li>
+</ul>
+<p>c int a = 3; int *p = &amp;a; // 把 a 的地址赋给指针 p，p 指向 a</p>
+<ul>
+<li><strong class="wb-pill">解引用运算符
+<code>*</code></strong>（单目、优先级最高）：放在指针变量前，<code>*p</code>
+表示「<code>p</code> 所指向的那个变量」。英文叫
+dereference（解除引用）。于是 <code>*p</code> 等价于
+<code>a</code>（前提是 <code>p</code> 指向 <code>a</code>）。</li>
+</ul>
+<p>c int a = 3; int <em>p = &amp;a; printf(“%d %d”, a, </em>p); // 都是
+3 <em>p = 10; // 等价于 a = 10 printf(“%d %d”, a, </em>p); // 都是 10 a
+= 5; printf(“%d”, <em>p); // </em>p 跟着变成 5 (*p)++; // 等价于 a++，a
+的值加 1</p>
+<ul>
+<li><code>(*p)++</code> 中的括号不可省：<code>*</code> 和
+<code>++</code> 都是单目运算符、从右向左结合；<code>*p++</code> 会先取
+<code>p</code> 当前指向的值，再把 <code>p</code> 本身加
+1（指向下一个对象），含义不同。</li>
+<li><strong class="wb-pill">指针间赋值</strong>：同类型的指针才能互相赋值（基类型必须一致）。赋值时两个指针指向同一个对象。</li>
+</ul>
+<p>c int a = 3; int <em>p = &amp;a; int </em>q = p; // 合法：同类型，q
+也指向 a</p>
+<ul>
+<li><strong class="wb-pill">不同类型指针不能互相赋值</strong>：例如
+<code>char *pc; pc = &amp;a;</code>（把 <code>int</code> 的地址赋给
+<code>char</code>
+指针）编译会报「指针类型不兼容」的警告，但能勉强通过；若不想看到警告，可强制转换
+<code>(char *)&amp;a</code>。但老师强调：这样 <code>*pc</code> 只访问 1
+个字节，失去了 <code>int</code> 的 4
+字节意义，通常没有用处（除非你就是想逐字节取出）。</li>
+</ul>
+<blockquote>
+<p>易错点：<code>&amp;</code> 是取地址，<code>*</code>
+是解引用；二者优先级都最高，必要时用括号改变结合顺序。</p>
+</blockquote>
+</section><section class="wb-seg"><h3 id="空指针野指针与内存安全"><span class="wb-ts">01:06:25—01:20:45</span> ｜
+空指针、野指针与内存安全</h3>
+</div><div class="wb-excard" id="wb-ex-2" data-ex-idx="2"><h4 id="例题证明-2010408-用指针形参实现跨函数清零">例题/证明
+2（01:04:08）｜ 用指针形参实现跨函数清零<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-2" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong> 回到开头的清零问题：用指针作形参，让
+<code>clear</code> 函数真正把 <code>main</code> 里的 <code>y</code> 改成
+0。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - 形参改为指针 <code>int *x</code>；传进去的是
+<code>y</code> 的地址 <code>&amp;y</code>。 - 在函数里执行
+<code>*x = 0;</code>，即「<code>x</code> 所指向的变量 = 0」，而
+<code>x</code> 指向的就是 <code>main</code> 里的
+<code>y</code>，于是直接改掉了 <code>y</code>。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong> <code>[补全]</code></p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>void clear(int <em>x) { </em>x = 0; }</p>
+<p>int main(void) { int y = 13; clear(&amp;y); printf(“y = %d”, y);
+return 0; }</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> - <code>y</code> 初值 13；调用
+<code>clear(&amp;y)</code> 把 <code>y</code>
+的地址传进去，<code>x</code> 存放 <code>y</code> 的地址，<code>x</code>
+指向 <code>y</code>。 - <code>*x = 0;</code> 把 <code>y</code>
+所在的内存写成 0。 - 打印：<code>y = 0</code>。</p>
+<p>屏幕输出：</p>
+<p>y = 0</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>
+指针作形参，可以实现<strong>跨函数直接访问并修改</strong>主调函数里的变量，打破了「变量名作用域」的限制。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> - 传的是地址 <code>&amp;y</code>，不是
+<code>y</code>；函数内改的是 <code>*x</code>（指向的变量），不是
+<code>x</code> 本身。</p>
+</div><div class="wb-excard" id="wb-ex-3" data-ex-idx="3"><h4 id="例题证明-3010631-未初始化指针导致段错误野指针">例题/证明
+3（01:06:31）｜ 未初始化指针导致段错误（野指针）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-3" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong>
+只定义指针、不指向任何已分配变量，就直接通过它写数据，会发生什么？</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - 定义 <code>int *p;</code>
+但不初始化——<code>p</code>
+的值是<strong>随机的</strong>（自动变量不自动清零，可能是别的程序遗留的垃圾值，也可能在调试环境下恰好为
+0）。 - 执行 <code>*p = 123;</code>：把 123 写入「<code>p</code>
+当前指向的那块内存」。若 <code>p</code> 的值为 0，就是往 0 号单元写——0
+号单元存放着操作系统指令，不允许用户程序破坏，于是触发保护机制。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong> <code>[补全]</code></p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>int main(void) { int <em>p; // 未初始化，p 的值是随机地址 </em>p =
+123; // 危险！往随机/非法地址写入 printf(“%d”, *p); return 0; }</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> - 若 <code>p</code> 恰好为
+0：单步调试可见 <code>p = 0</code>（地址为 0 的单元）。 - 执行
+<code>*p = 123;</code> 后，程序报 <strong>segmentation
+fault（段错误）</strong>，即<strong>非法访问内存单元</strong>，操作系统安全防护机制立即终止程序，非正常退出（return
+value 非 0，老师举例 321225477 这类异常返回值）。</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>
+指针必须指向「操作系统分配给本程序的安全存储单元」才能使用。随意指定一个地址（如
+1000）去写，那个单元可能正被别的程序使用，会破坏他人数据，操作系统同样会终止你——这种指向「未分配给你程序的内存」的指针叫<strong>野指针（wild
+pointer）</strong>。</p>
+<blockquote>
+<p>内存安全类比：教室由教务处统一分配（如东 1B
+308），你不能随便闯进别的班正在上课的教室搞破坏；内存由操作系统统一分配，你只能访问分配给自己的单元。</p>
+</blockquote>
+<p><strong class="wb-pill">空指针（NULL）</strong> -
+为表示「指针尚未指向有效单元」，可把指针初始化为<strong>空指针
+<code>NULL</code></strong>（值为 0）。 -
+使用前最好判断：<code>if (p != NULL) { ... }</code>。注意：<code>p != NULL</code>
+只说明它不是空指针，<strong>不等于</strong>它不是野指针——野指针的值是随机的非零地址，照样危险。
+-
+老师建议：定义指针时一定要给它一个安全的初值（要么指向已定义的变量，要么赋
+<code>NULL</code>），不要让它处于「随机值」状态。</p>
+</section><section class="wb-seg"><h3 id="指针作函数形参跨函数修改与两数交换"><span class="wb-ts">01:20:45—01:28:32</span> ｜
+指针作函数形参：跨函数修改与两数交换</h3>
+</div><div class="wb-excard" id="wb-ex-4" data-ex-idx="4"><h4 id="例题证明-4012113-用指针实现两数交换-swap">例题/证明
+4（01:21:13）｜ 用指针实现两数交换 swap<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-4" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong> 写函数 <code>swap</code>，交换
+<code>main</code> 里两个变量 <code>a</code>、<code>b</code> 的值。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - 若 <code>swap(int x, int y)</code>
+用值传递，交换的只是副本，<code>a</code>、<code>b</code> 不变（与例题 1
+同理）。 -
+改为传地址：<code>swap(int *x, int *y)</code>，形参是指针。函数内通过
+<code>*x</code>、<code>*y</code> 直接访问并交换 <code>main</code> 里的
+<code>a</code>、<code>b</code>。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong> <code>[补全]</code></p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>void swap(int <em>x, int </em>y) { int temp; temp = <em>x; </em>x =
+<em>y; </em>y = temp; }</p>
+<p>int main(void) { int a = 1, b = 2; printf(“a=%d, b=%d”, a, b);
+swap(&amp;a, &amp;b); printf(“a=%d, b=%d”, a, b); return 0; }</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> - 初值
+<code>a=1, b=2</code>，打印第一行。 -
+<code>swap(&amp;a, &amp;b)</code>：<code>x</code> 存 <code>a</code>
+的地址、<code>y</code> 存 <code>b</code> 的地址，<code>x</code> 指向
+<code>a</code>、<code>y</code> 指向 <code>b</code>，故 <code>*x</code>
+就是 <code>a</code>、<code>*y</code> 就是 <code>b</code>。 - 三步交换把
+<code>a</code>、<code>b</code> 的值互换。 - 打印第二行。</p>
+<p>屏幕输出：</p>
+<p>a=1, b=2 a=2, b=1</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>
+指针作形参，可以在被调函数里直接访问并修改主调函数的变量。这里「改变了实参」的本质是：形参
+<code>x</code>、<code>y</code> 本身没变（仍分别存
+<code>a</code>、<code>b</code>
+的地址），变的是「<code>x</code>、<code>y</code> 所指向的变量」即
+<code>a</code>、<code>b</code>。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> - 调用时必须传地址
+<code>&amp;a</code>、<code>&amp;b</code>；若传
+<code>a</code>、<code>b</code>（值传递），<code>swap</code>
+只交换副本，<code>a</code>、<code>b</code> 不变。 - 不要混淆「形参
+<code>x</code> 改变」与「<code>*x</code> 改变」：<code>x</code>
+是形参变量，<code>*x</code> 才是它指向的对象。</p>
+</section><section class="wb-seg"><h3 id="指针与数组首地址p1-与基类型单位"><span class="wb-ts">01:28:32—01:47:06</span> ｜
+指针与数组：首地址、P+1 与基类型单位</h3>
+</div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题证明-5012919-数组在内存中的分布与-p1-的含义">例题/证明
+5（01:29:19）｜ 数组在内存中的分布与 P+1 的含义<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong> 定义
+<code>int a[10];</code>，<code>p = &amp;a[0];</code>（或
+<code>p = a;</code>）。问：<code>p + 1</code> 的值是多少？是 1001 还是
+1004？</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - 数组的 10
+个元素在内存中<strong>连续存放</strong>，每个 <code>int</code> 占 4
+字节。<code>a[0]</code> 在 1000~1003，<code>a[1]</code> 在
+1004~1007，依次类推。 -
+指针加整数，加的是「<strong>一个基类型单位</strong>」，不是「加 1
+个字节」。对 <code>int *p</code>，<code>p+1</code>
+指向同类型的下一个对象，因此 <code>p+1</code> 的值是 1004，而不是
+1001。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong> <code>[补全]</code></p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>int main(void) { int a[10] = {1,2,3,4,5,6,7,8,9,10}; int <em>p = a;
+// p 指向 a[0]，p 的值是 a[0] 的首地址 printf(“p = %p”, (void </em>)p);
+printf(“p+1 = %p”, (void *)(p + 1)); return 0; }</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> - <code>p</code> 指向
+<code>a[0]</code>（首地址，如 1000）；<code>p+1</code> 指向
+<code>a[1]</code>（首地址 1004）。两次打印的地址相差正好 4 字节（一个
+<code>int</code> 的大小）。</p>
+<p>屏幕输出（地址值以实际为准，关键是两者相差 4）：</p>
+<p>p = 0x7ff…（a[0] 的首地址） p+1 = 0x7ff…（比上一行大 4）</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong> 指针 + 整数 =
+指针向前移动「若干个基类型单位」。单位大小由基类型决定：<code>int</code>
+是 4 字节、<code>double</code> 是 8 字节、<code>char</code> 是 1
+字节。这是对「数学里加 1 就是加 1」的颠覆，但在 C 里「加
+1」指的是「移到下一个同类型对象」。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> - <code>p+1</code> 不是字节地址 +1，而是地址
++ <code>sizeof(基类型)</code>。 - 对比：普通变量 <code>x, y, z</code>
+不一定连续存放；但 <code>int a[10]</code> 的 10
+个元素<strong>保证连续</strong>。</p>
+</section><section class="wb-seg"><h3 id="数组元素的等价访问与数组名作形参"><span class="wb-ts">01:47:06—01:59:31</span> ｜
+数组元素的等价访问与数组名作形参</h3>
+<ul>
+<li><strong class="wb-pill">数组名 <code>a</code> 是地址常量</strong>（首地址，即
+<code>&amp;a[0]</code>），一旦分配就不可改，所以 <code>a</code>
+是<strong>指针常量</strong>，<code>p</code> 是指针变量。</li>
+<li>访问第 <code>i</code> 个元素有多种等价写法：</li>
+</ul>
+<p>c a[i] == <em>(a + i) // a 是常量指针 p[i] == </em>(p + i) // p
+是指针变量</p>
+<p>即 <code>a[i]</code> 的本质是：<code>a</code>（首地址）+
+<code>i</code>（偏移量），再解引用取值。把 <code>a</code> 换成
+<code>p</code> 同样成立。 - <strong><code>sizeof</code>
+的陷阱</strong>：<code>sizeof(a)</code> 中 <code>a</code>
+表示「整个数组」，结果是数组总字节数；而 <code>sizeof(a[0])</code>
+是一个元素的字节数。因此元素个数
+<code>n = sizeof(a) / sizeof(a[0])</code>。注意这里 <code>a</code>
+不是「指针占几字节」，而是「整个数组占几字节」。</p>
+</div><div class="wb-excard" id="wb-ex-6" data-ex-idx="6"><h4 id="例题证明-6015115-指针或数组名作形参打印数组">例题/证明
+6（01:51:15）｜ 指针（或数组名）作形参打印数组<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-6" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong>
+编写一个函数专门打印一个整型数组的所有元素，元素间用空格分隔，最后一个元素后换行。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> -
+仅传首地址还不够——函数不知道数组有多少元素，所以必须再传一个实际元素个数
+<code>n</code>。 - 形参可写成 <code>int *p</code>（指针）或
+<code>int p[]</code>（数组名形式，两者等价；方括号里的数字可写可不写，写了也不影响，只是表明「这是数组首地址」）。
+- 循环打印，用条件表达式判断是否为最后一个元素以决定打空格还是换行。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong> <code>[补全]</code></p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>void print_array(int *p, int n) { int i; for (i = 0; i &lt; n; i++)
+printf(“%d%s”, p[i], i == n - 1 ? “” : ” “); }</p>
+<p>int main(void) { int a[10] = {1,2,3,4,5,6,7,8,9,10}; int n =
+sizeof(a) / sizeof(a[0]); print_array(a, n); return 0; }</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> -
+<code>n = sizeof(a)/sizeof(a[0]) = 40/4 = 10</code>。 -
+<code>print_array(a, n)</code> 把首地址 <code>a</code> 传给
+<code>p</code>，循环用 <code>p[i]</code>（即
+<code>*(p+i)</code>）依次访问每个元素。 - 前 9 个元素后打空格，第 10
+个（下标 9）后打换行。</p>
+<p>屏幕输出：</p>
+<p>1 2 3 4 5 6 7 8 9 10</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong> 以指针（或数组名）作形参，配合元素个数
+<code>n</code>，就能在被调函数里直接访问主调函数的整个数组，如同在主调函数里操作一样。这是指针访问内存的重要手段。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> - 数组名作形参时，函数内
+<code>sizeof(形参数组名)</code>
+得到的是<strong>指针</strong>大小，不是整个数组大小；所以元素个数必须从外面传进来。
+- 形参 <code>int p[]</code> 与 <code>int *p</code>
+等价，方括号内的数字被忽略。</p>
+</section><section class="wb-seg"><h3 id="指针算术与综合应用排序二分搜索查找非公共元素"><span class="wb-ts">01:59:31—02:26:46</span>
+｜ 指针算术与综合应用：排序、二分搜索、查找非公共元素</h3>
+<ul>
+<li><strong class="wb-pill">指针加减整数</strong>：<code>p+1</code>
+前进一个单位、<code>p-1</code>
+后退一个单位（数组连续存放时才有意义）。</li>
+<li><strong class="wb-pill">两指针相减
+<code>q - p</code></strong>：同类型指针相减，结果不是整数差，而是「两者之间相隔几个对象」。</li>
+<li><strong class="wb-pill">指针比较大小</strong>：<code>&lt;</code>、<code>&gt;</code>
+表示两个指针谁在前谁在后，常用于循环判断是否越界（如 <code>p</code>
+是否走到末尾）。</li>
+</ul>
+</div><div class="wb-excard" id="wb-ex-7" data-ex-idx="7"><h4 id="例题证明-7020326-指针相减与强制类型转换">例题/证明
+7（02:03:26）｜ 指针相减与强制类型转换<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-7" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong>
+<code>double a[2];</code>，<code>p = a</code>（地址
+3000），<code>q = a + 1</code>（地址 3008，因为 <code>double</code> 占 8
+字节）。求 <code>q - p</code> 和把二者强制转成 <code>int</code>
+后相减的结果，并解释区别。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - <code>q - p</code>：两个
+<code>double *</code> 指针相减，得到「相差几个 <code>double</code>
+对象」= 1。 -
+<code>(int)q - (int)p</code>：先强制转换成整型（取地址的数值），再相减 =
+3008 - 3000 = 8（相差的字节数）。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong> <code>[补全]</code></p>
+<p>c #include &lt;stdio.h&gt;</p>
+<p>int main(void) { double a[2]; double <em>p = a; // 3000 double </em>q
+= a + 1; // 3008 printf(“%d”, q - p); // 指针相减：相差的对象个数 = 1
+printf(“%d”, (int)q - (int)p); // 强制转整型后相减：相差的字节数 = 8
+return 0; }</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong></p>
+<p>屏幕输出：</p>
+<p>1 8</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong>
+同类型指针相减得到「对象个数」，强制转成整型后再相减得到「字节数」。前者是有意义的指针运算，后者只是把地址当整数减。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> -
+两个指针<strong>相加</strong>、<strong>相乘</strong>没有意义（非法）；只有相减（得对象数）和比较（谁前谁后）有意义。</p>
+<p><strong class="wb-pill">排序与搜索（课堂回顾，刘老师已在数组章讲过）</strong> -
+<strong>选择法排序</strong>：从第一个位置起，每次从剩余元素里选最小/最大放到当前位置，外层循环
+<code>N-1</code> 次。 -
+<strong>冒泡法排序</strong>：每一轮相邻元素比较，左比右大就交换，最大的「冒泡」到最后；外层同样
+<code>N-1</code> 轮，内层到
+<code>N-1-i</code>（已排好的不再比）。可用函数
+<code>bubble_sort(int *a, int n)</code>（或
+<code>int a[], int n</code>）封装，传数组首地址与实际个数，函数内即可直接操作主调函数的数组。
+-
+<strong>二分法搜索</strong>：对已排序数组，每次取中点比较，去掉一半区间，效率远高于顺序查找。函数可写成
+<code>binary_search(int *a, int left, int right, int key)</code>，仍以数组首地址作形参。</p>
+</div><div class="wb-excard" id="wb-ex-8" data-ex-idx="8"><h4 id="例题证明-8021521-查找两组数据的非公共元素综合练习">例题/证明
+8（02:15:21）｜ 查找两组数据的非公共元素（综合练习）<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-8" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
+<p><strong class="wb-pill wb-pill-topic">任务陈述</strong> 给定两组数据（各组最多 20
+个元素），找出<strong>不属于两组共有</strong>的元素（即在 A 不在 B，或在
+B 不在 A），且不重复添加到结果中。</p>
+<p><strong class="wb-pill wb-pill-idea">思路</strong> - 定义数组 <code>a</code>、<code>b</code>
+存放两组数据，再定义 <code>c</code> 存放结果（最多 2 倍，故
+<code>2*MAXSIZE</code>）。 - 写一个函数
+<code>inArray(int *a, int n, int x)</code>：遍历数组判断 <code>x</code>
+是否在其中，在返回 1，否则返回 0。 - 遍历 <code>a</code> 的每个元素
+<code>a[i]</code>：若「不在 <code>b</code> 中 <strong>且</strong> 不在
+<code>c</code> 中」，则加入 <code>c</code>（计数器 <code>nc++</code>）。
+- 同样遍历 <code>b</code> 的每个元素：若「不在 <code>a</code> 中
+<strong>且</strong> 不在 <code>c</code> 中」，则加入 <code>c</code>。 -
+用逻辑运算符 <code>!inArray(...)</code> 表达「不在」，比写
+<code>== 0</code> 更专业。</p>
+<p><strong class="wb-pill wb-pill-derive">代码</strong>
+<code>[补全]</code>（数值按老师课堂上给出的两组示例；老师口述组大小略有出入，此处以列出值为准）</p>
+<p>c #include &lt;stdio.h&gt; #define MAXSIZE 20</p>
+<p>int inArray(int *a, int n, int x) { int i; for (i = 0; i &lt; n; i++)
+if (a[i] == x) return 1; return 0; }</p>
+<p>int main(void) { int a[MAXSIZE] = {3, -5, 2, 8, 0, 3, 5, -4, 9, 100};
+int b[MAXSIZE] = {6, 4, 8, 2, 6, -5, 9, 0, 100, 81}; int c[2 * MAXSIZE];
+int na = 10, nb = 10, nc = 0; int i;</p>
+<pre><code>for (i = 0; i &lt; na; i++)
+    if (!inArray(b, nb, a[i]) &amp;&amp; !inArray(c, nc, a[i]))
+        c[nc++] = a[i];
+for (i = 0; i &lt; nb; i++)
+    if (!inArray(a, na, b[i]) &amp;&amp; !inArray(c, nc, b[i]))
+        c[nc++] = b[i];
+
+for (i = 0; i &lt; nc; i++)
+    printf(&quot;%d &quot;, c[i]);
+printf(&quot;\n&quot;);
+return 0;</code></pre>
+<p>}</p>
+<p><strong class="wb-pill wb-pill-result">逐步执行 / 运行结果</strong> - 先看 <code>a</code>：3（不在
+b、不在 c → 加入 c，c={3}）；-5（在 b → 跳过）；2（在 b → 跳过）；8（在
+b → 跳过）；0（在 b → 跳过）；3（已在 c → 不重复）；5（不在 b、不在 c →
+加入，c={3,5}）；-4（不在 b、不在 c → 加入，c={3,5,-4}）；9（在 b →
+跳过）；100（在 b → 跳过）。 - 再看 <code>b</code>：6（不在 a、不在 c →
+加入）；4（不在 a、不在 c → 加入）；8（在 a → 跳过）；2（在 a →
+跳过）；6（已在 c → 不重复）；-5（在 a → 跳过）；9（在 a → 跳过）；0（在
+a → 跳过）；100（在 a → 跳过）；81（不在 a、不在 c → 加入）。 - 最终
+<code>c = {3, 5, -4, 6, 4, 81}</code>。</p>
+<p>屏幕输出（顺序以实际遍历为准）：</p>
+<p>3 5 -4 6 4 81</p>
+<p><strong class="wb-pill wb-pill-result">结论</strong> 把「判断某数是否在数组中」封装成
+<code>inArray</code>
+函数，配合数组名作形参（直接访问主调函数数组），主流程逻辑非常清晰：分别扫描两组，把非公共且不重复的元素收进结果数组。</p>
+<p><strong class="wb-pill wb-pill-note">易错点</strong> - 判断「不在」要用
+<code>!inArray(...)</code>，并同时判断「不在结果数组 <code>c</code>
+中」以防重复。 -
+表征一个「实际」数组需要两个参数：<strong>首地址（数组名）</strong> 和
+<strong>实际元素个数
+<code>n</code></strong>；不要只传数组名而让函数自己猜长度。 - 结果数组
+<code>c</code> 的长度要按「最坏情况（两组无公共元素）」预留，故取
+<code>2*MAXSIZE</code>。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+</section><script>
+window.MathJax = {
+  svg: { fontCache: "local" },
+  startup: {
+    pageReady: function() {
+      if (!window.IntersectionObserver) {
+        return MathJax.startup.defaultPageReady();
+      }
+      // 1. 首屏关键块优先排版：迅速渲染首屏可见的内容
+      var headBlocks = document.querySelectorAll('.wb-seg:nth-child(-n+2), .wb-hw-card:nth-child(-n+2), .wb-tb-intro, .wb-tb-sec:nth-child(-n+2), .wb-math-wrap:nth-child(-n+2)');
+      var headList = Array.prototype.slice.call(headBlocks);
+      if (headList.length > 0) {
+        MathJax.typesetPromise(headList).then(function() {
+          headList.forEach(function(el) { el.dataset.mjDone = "1"; });
+        });
+      }
+      // 2. 视口渐进排版：进入视口前后 600px 时异步按需渲染，消除 CPU 冻结
+      var allBlocks = document.querySelectorAll('.wb-seg, .wb-hw-card, .wb-tb-sec, .wb-math-wrap, .wb-excard');
+      var observer = new IntersectionObserver(function(entries, obs) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (!el.dataset.mjDone) {
+              el.dataset.mjDone = "1";
+              MathJax.typesetPromise([el]);
+              obs.unobserve(el);
+            }
+          }
+        });
+      }, { rootMargin: "600px 0px" });
+
+      allBlocks.forEach(function(el) {
+        if (!el.dataset.mjDone) observer.observe(el);
+      });
+    }
+  }
+};
+</script>
+<script src="vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+<script src="data/core.js"></script>
+<script src="wb-hl.js"></script>
+<script>
+(function(){
+
+  /* ---------- window.WB_STORAGE: 纯前端零外部依赖 IndexedDB + LocalStorage 双模持久化引擎 ---------- */
+  window.WB_STORAGE = window.WB_STORAGE || (function() {
+    var DB_NAME = 'wb_course_notes_db';
+    var DB_VERSION = 1;
+    var STORE_NAME = 'user_annotations';
+    var db = null;
+    var mem = {};
+    var raw = null;
+    try { raw = window.localStorage; } catch(e) { raw = null; }
+
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wb_') === 0) {
+          mem[k] = raw.getItem(k);
+        }
+      }
+    } catch(e) {}
+
+    if (window.indexedDB) {
+      try {
+        var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          var d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) {
+            d.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+        req.onsuccess = function(e) {
+          db = e.target.result;
+          try {
+            var tx = db.transaction(STORE_NAME, 'readonly');
+            var st = tx.objectStore(STORE_NAME);
+            var cursorReq = st.openCursor();
+            cursorReq.onsuccess = function(evt) {
+              var cursor = evt.target.result;
+              if (cursor) {
+                if (cursor.value && cursor.value.key) {
+                  mem[cursor.value.key] = cursor.value.val;
+                }
+                cursor.continue();
+              }
+            };
+          } catch(err) {}
+        };
+      } catch(err) {}
+    }
+
+    return {
+      getItem: function(key) {
+        if (key in mem) return mem[key];
+        try { return raw ? raw.getItem(key) : null; } catch(e) { return null; }
+      },
+      setItem: function(key, val) {
+        var s = String(val);
+        mem[key] = s;
+        try {
+          if (raw) raw.setItem(key, s);
+        } catch(quotaErr) {
+          console.warn('[WB_STORAGE] LocalStorage 已满，正在通过 IndexedDB 持久化存储:', quotaErr);
+        }
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.put({ key: key, val: s, time: Date.now() });
+          } catch(e) {}
+        }
+      },
+      removeItem: function(key) {
+        delete mem[key];
+        try { if (raw) raw.removeItem(key); } catch(e) {}
+        if (db) {
+          try {
+            var tx = db.transaction(STORE_NAME, 'readwrite');
+            var st = tx.objectStore(STORE_NAME);
+            st.delete(key);
+          } catch(e) {}
+        }
+      },
+      exportAllNotes: function() {
+        var out = { export_time: new Date().toISOString(), notes: {} };
+        for (var k in mem) {
+          if (k.indexOf('wb_hl_') === 0 || k.indexOf('wb_note_') === 0 || k.indexOf('wb_scroll_') === 0) {
+            try { out.notes[k] = JSON.parse(mem[k]); } catch(e) { out.notes[k] = mem[k]; }
+          }
+        }
+        return JSON.stringify(out, null, 2);
+      }
+    };
+  })();
+
+  var q = document.getElementById('wb-q'), p = document.getElementById('wb-panel');
+  var S = window.SITE || {docs:[],courses:[],lectures:[]};
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function cname(id){var c=(S.courses||[]).filter(function(x){return x.id===id})[0];return c?c.name:id}
+
+  /* ---------- Toast 提示浮条 ---------- */
+  function showToast(msg) {
+    var t = document.getElementById('wb-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('wb-toast-show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function(){ t.classList.remove('wb-toast-show'); }, 2200);
+  }
+
+  /* ---------- 落地平滑闪烁高亮 ---------- */
+  function flashEl(el) {
+    if (!el) return;
+    el.classList.remove('wb-flash-highlight');
+    void el.offsetWidth;
+    el.classList.add('wb-flash-highlight');
+    setTimeout(function() { el.classList.remove('wb-flash-highlight'); }, 2600);
+  }
+
+  /* ---------- 深色模式同步与切换 ---------- */
+  var curTheme = (window.WB_STORAGE||localStorage).getItem('wb_theme') ||
+    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  function applyTheme(t) {
+    if (window.wbSetTheme) window.wbSetTheme(t);   // 同步 color-scheme，压住 pandoc 的 light-dark()
+    if (t === 'dark') {
+      document.documentElement.classList.add('wb-dark');
+      document.body.classList.add('wb-dark');
+      document.documentElement.classList.remove('wb-light');
+      document.body.classList.remove('wb-light');
+    } else {
+      document.documentElement.classList.remove('wb-dark');
+      document.body.classList.remove('wb-dark');
+      document.documentElement.classList.add('wb-light');
+      document.body.classList.add('wb-light');
+    }
+    (window.WB_STORAGE||localStorage).setItem('wb_theme', t);
+    var btn = document.getElementById('wb-theme-btn');
+    if (btn) btn.innerHTML = (t === 'dark' ? '☀️ 浅色' : '🌙 深色');
+  }
+  applyTheme(curTheme);
+  var themeBtn = document.getElementById('wb-theme-btn');
+  if (themeBtn) themeBtn.addEventListener('click', function() {
+    curTheme = (document.body.classList.contains('wb-dark') ? 'light' : 'dark');
+    applyTheme(curTheme);
+    showToast(curTheme === 'dark' ? '已切换为深色模式' : '已切换为浅色模式');
+  });
+
+  /* ---------- 字号缩放调节 ---------- */
+  var curFontScale = parseInt((window.WB_STORAGE||localStorage).getItem('wb_fontscale') || '0', 10);
+  function applyFontScale(scale) {
+    curFontScale = Math.max(-2, Math.min(4, scale));
+    (window.WB_STORAGE||localStorage).setItem('wb_fontscale', curFontScale);
+    var baseSize = 16 + curFontScale * 1.5;
+    document.body.style.fontSize = baseSize + 'px';
+  }
+  if (curFontScale !== 0) applyFontScale(curFontScale);
+  var fDec = document.getElementById('wb-font-dec'), fInc = document.getElementById('wb-font-inc');
+  if (fDec) fDec.addEventListener('click', function(){ applyFontScale(curFontScale - 1); showToast('字号已调小 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+  if (fInc) fInc.addEventListener('click', function(){ applyFontScale(curFontScale + 1); showToast('字号已调大 (' + Math.round(16 + curFontScale * 1.5) + 'px)'); });
+
+  /* ---------- 浮动大纲抽屉 (Floating TOC) 与 ScrollSpy ---------- */
+  var tocDrawer = document.getElementById('wb-toc-drawer');
+  var tocBackdrop = document.getElementById('wb-toc-backdrop');
+  var tocBtn = document.getElementById('wb-toc-btn');
+  var tocClose = document.getElementById('wb-toc-close');
+  var tocTree = document.getElementById('wb-toc-tree');
+
+  function toggleToc(open) {
+    if (!tocDrawer) return;
+    var isOpen = (open !== undefined) ? open : !tocDrawer.classList.contains('wb-open');
+    tocDrawer.classList.toggle('wb-open', isOpen);
+    if (tocBackdrop) tocBackdrop.classList.toggle('wb-open', isOpen);
+    if (tocBtn) tocBtn.classList.toggle('wb-btn-active', isOpen);
+  }
+  if (tocBtn) tocBtn.addEventListener('click', function(){ toggleToc(); });
+  if (tocClose) tocClose.addEventListener('click', function(){ toggleToc(false); });
+  if (tocBackdrop) tocBackdrop.addEventListener('click', function(){ toggleToc(false); });
+  document.addEventListener('keydown', function(e) {
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 't') {
+      e.preventDefault();
+      toggleToc();
+    }
+    if (e.key === 'Escape' && tocDrawer && tocDrawer.classList.contains('wb-open')) {
+      toggleToc(false);
+    }
+  });
+
+  var tocItems = [];
+  function buildToc() {
+    if (!tocTree) return;
+    tocTree.innerHTML = '';
+    var hs = document.querySelectorAll('h2, h3, h4');
+    var autoIdx = 1;
+    hs.forEach(function(h) {
+      if (h.closest('#TOC') || h.closest('.wb-bar') || h.closest('.wb-toc-drawer')) return;
+      var tag = h.tagName.toLowerCase();
+      if (tag === 'h4' && !h.closest('.wb-excard')) return;
+      if (!h.id) h.id = 'wb-node-' + (autoIdx++);
+
+      /* 添加锚点反向链接按钮 */
+      if (!h.querySelector('.wb-anchor')) {
+        var a = document.createElement('a');
+        a.className = 'wb-anchor';
+        a.href = '#' + h.id;
+        a.title = '复制本节/例题直达链接';
+        a.textContent = ' 🔗';
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          var directUrl = location.href.split('#')[0] + '#' + h.id;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(directUrl).then(function() {
+              showToast('✓ 已复制直达链接到剪贴板');
+            });
+          }
+          history.pushState(null, '', '#' + h.id);
+          flashEl(h);
+        });
+        h.appendChild(a);
+      }
+
+      var div = document.createElement('div');
+      div.className = 'wb-toc-item wb-toc-' + tag;
+      div.textContent = h.innerText.replace(/[\s🔗#]+$/g, '').trim();
+      div.addEventListener('click', function() {
+        var rect = h.getBoundingClientRect();
+        var offsetTop = window.pageYOffset + rect.top - 64;
+        window.scrollTo({top: offsetTop, behavior: 'smooth'});
+        flashEl(h);
+        history.pushState(null, '', '#' + h.id);
+        if (window.innerWidth < 900) toggleToc(false);
+      });
+      tocTree.appendChild(div);
+      tocItems.push({el: h, nav: div});
+    });
+  }
+  buildToc();
+
+  /* ScrollSpy 高亮当前大纲小节 */
+  var spyTimer = null;
+  window.addEventListener('scroll', function() {
+    if (spyTimer || !tocItems.length) return;
+    spyTimer = setTimeout(function() {
+      spyTimer = null;
+      var scrollY = window.pageYOffset + 90;
+      var current = null;
+      for (var i = 0; i < tocItems.length; i++) {
+        if (tocItems[i].el.offsetTop <= scrollY) current = tocItems[i];
+        else break;
+      }
+      tocItems.forEach(function(it){ it.nav.classList.remove('wb-toc-active'); });
+      if (current) {
+        current.nav.classList.add('wb-toc-active');
+      }
+    }, 120);
+  });
+
+  /* ---------- 例题/证明推导 自测模式 (折叠/遮挡推导与答案) ---------- */
+  var excards = document.querySelectorAll('.wb-excard');
+  excards.forEach(function(card) {
+    var derivePill = card.querySelector('.wb-pill-derive');
+    if (!derivePill) {
+      var ps = card.querySelectorAll('p, li');
+      for (var j = 0; j < ps.length; j++) {
+        var txt = ps[j].textContent || '';
+        if (j > 0 && /推导|证明|步骤|操作|代码|演算/.test(txt)) {
+          derivePill = ps[j];
+          break;
+        }
+      }
+    }
+    if (!derivePill) return;
+
+    var topChild = derivePill;
+    while (topChild && topChild.parentElement !== card) {
+      topChild = topChild.parentElement;
+    }
+    if (!topChild || topChild.tagName.toLowerCase() === 'h4') return;
+
+    var deriveWrap = document.createElement('div');
+    deriveWrap.className = 'wb-derive-box';
+
+    var curr = topChild;
+    var toMove = [];
+    while (curr) {
+      toMove.push(curr);
+      curr = curr.nextElementSibling;
+    }
+
+    var ctrl = document.createElement('div');
+    ctrl.className = 'wb-derive-ctrl';
+    ctrl.innerHTML = '<button type="button" class="wb-derive-btn" title="折叠/展开本题推导"><span class="wb-derive-ico">▼</span> <span class="wb-derive-txt">收起推导</span></button>';
+
+    card.insertBefore(ctrl, topChild);
+    card.insertBefore(deriveWrap, topChild);
+    toMove.forEach(function(el){ deriveWrap.appendChild(el); });
+
+    var foldBtn = ctrl.querySelector('.wb-derive-btn');
+    foldBtn.addEventListener('click', function() {
+      var isHidden = deriveWrap.classList.toggle('wb-hidden');
+      this.querySelector('.wb-derive-ico').textContent = isHidden ? '▶' : '▼';
+      this.querySelector('.wb-derive-txt').textContent = isHidden ? '展开推导与答案' : '收起推导';
+    });
+  });
+
+  var selfTestBtn = document.getElementById('wb-selftest-btn');
+  var isSelfTest = (window.WB_STORAGE||localStorage).getItem('wb_selftest') === 'on';
+  function setSelfTest(on) {
+    isSelfTest = on;
+    (window.WB_STORAGE||localStorage).setItem('wb_selftest', on ? 'on' : 'off');
+    if (selfTestBtn) {
+      selfTestBtn.innerHTML = on ? '📖 退出自测' : '🙈 自测模式';
+      selfTestBtn.classList.toggle('wb-btn-active', on);
+    }
+    document.querySelectorAll('.wb-derive-box').forEach(function(box) {
+      var btn = box.previousElementSibling ? box.previousElementSibling.querySelector('.wb-derive-btn') : null;
+      if (on) {
+        box.classList.add('wb-hidden');
+        if (btn) {
+          btn.querySelector('.wb-derive-ico').textContent = '▶';
+          btn.querySelector('.wb-derive-txt').textContent = '展开推导与答案';
+        }
+      } else {
+        box.classList.remove('wb-hidden');
+        if (btn) {
+          btn.querySelector('.wb-derive-ico').textContent = '▼';
+          btn.querySelector('.wb-derive-txt').textContent = '收起推导';
+        }
+      }
+    });
+  }
+  if (selfTestBtn) {
+    selfTestBtn.addEventListener('click', function() {
+      setSelfTest(!isSelfTest);
+      showToast(isSelfTest ? '自测模式已开启：例题推导已折叠，可自主演算后核对' : '已恢复完整讲义阅读模式');
+    });
+    if (isSelfTest) setSelfTest(true);
+  }
+
+  /* ---------- 代码块一键复制 (Copy Code Button) ---------- */
+  document.querySelectorAll('pre').forEach(function(pre) {
+    if (pre.closest('.wb-code-wrap')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'wb-code-wrap';
+    pre.parentNode.insertBefore(wrap, pre);
+
+    var codeEl = pre.querySelector('code');
+    var isC = (pre.className + ' ' + (codeEl ? codeEl.className : '')).indexOf('c') >= 0;
+
+    var head = document.createElement('div');
+    head.className = 'wb-code-head';
+    head.innerHTML = '<span class="wb-code-lang">' + (isC ? 'C 程序代码' : '代码') + '</span><button class="wb-code-copy-btn" type="button" title="复制代码">📋 复制</button>';
+
+    wrap.appendChild(head);
+    wrap.appendChild(pre);
+
+    head.querySelector('.wb-code-copy-btn').addEventListener('click', function() {
+      var code = (codeEl ? codeEl.innerText : pre.innerText);
+      var btn = this;
+      var done = function() {
+        btn.innerHTML = '✓ 已复制';
+        showToast('✓ 代码已成功复制到剪贴板');
+        setTimeout(function(){ btn.innerHTML = '📋 复制'; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+
+  /* ---------- 检索功能与跨节/本节高亮跳转 ---------- */
+  function draw(v){
+    v=(v||'').trim();
+    if(!v){p.style.display='none';p.innerHTML='';return}
+    var low=v.toLowerCase(), r=[];
+    (S.docs||[]).forEach(function(d){
+      var tm = String(d[3]||'').replace(/[—–-]/g,':');
+      if(String(d[4]||'').toLowerCase().indexOf(low)>=0 ||
+         String(d[5]||'').toLowerCase().indexOf(low)>=0 ||
+         tm.toLowerCase().indexOf(low)>=0) r.push(d);
+    });
+    var h='<div style="font-size:11px;color:var(--wb-muted);padding:4px 10px 8px">检索「'+esc(v)+
+      '」· '+r.length+' 条命中 <span style="float:right"><a href="index.html" style="color:var(--wb-accent2)">回首页全站检索 ↗</a></span></div>';
+    if(!r.length) h+='<div style="font-size:12px;color:var(--wb-muted);padding:10px">无命中，试试更短的关键词，或回首页用全站检索（含摘要倒排）。</div>';
+    r.slice(0,14).forEach(function(d){
+      var kind={sec:'小节',ex:'例题',ch:'章',lec:'节',img:'图版',pre:'速览'}[d[0]]||d[0];
+      var targetUrl = 'lecture-'+esc(d[2])+'.html';
+      if(v) targetUrl += '?q=' + encodeURIComponent(v);
+      if(d[6] && d[6].indexOf('#')>=0) targetUrl += '#' + d[6].split('#')[1];
+      h+='<a class="wb-res" href="'+targetUrl+'">'+esc(d[4])+
+         '<small>'+kind+' ｜ '+esc(cname(d[1]))+' '+esc(d[3]||'')+'</small></a>';
+    });
+    p.innerHTML=h; p.style.display='block';
+  }
+  if (q) {
+    q.addEventListener('input',function(e){draw(e.target.value)});
+    q.addEventListener('focus',function(e){if(e.target.value.trim())draw(e.target.value)});
+    document.addEventListener('keydown',function(e){
+      if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();q.focus()}
+      if(e.key==='Escape'){q.value='';p.style.display='none'}
+    });
+    document.addEventListener('click',function(e){
+      if(e.target.closest&&(e.target.closest('.wb-panel')||e.target.closest('.wb-in')))return;
+      p.style.display='none';
+    });
+  }
+
+  
+  /* ---------- 1. 断点续读 (Resume Reading) ---------- */
+  var LID = '' + (location.pathname.match(/lecture-([^.]+)\.html/)||['','default'])[1];
+  var progressBar = document.getElementById('wb-read-progress');
+  var resumeToast = document.getElementById('wb-resume-toast');
+  var resumeJump = document.getElementById('wb-resume-jump');
+  var resumeClose = document.getElementById('wb-resume-close');
+  var resumePct = document.getElementById('wb-resume-pct');
+
+  var scrollTimer = null;
+  window.addEventListener('scroll', function() {
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    var current = window.pageYOffset;
+    var pct = total > 0 ? Math.min(100, Math.max(0, Math.round((current / total) * 100))) : 0;
+    if (progressBar) progressBar.style.width = pct + '%';
+
+    if (scrollTimer) return;
+    scrollTimer = setTimeout(function() {
+      scrollTimer = null;
+      if (current > 150) {
+        (window.WB_STORAGE||localStorage).setItem('wb_scroll_' + LID, String(Math.round(current)));
+        try {
+          var titleEl = document.querySelector('h1') || document.querySelector('.wb-crumb b');
+          var courseEl = document.querySelector('.wb-crumb a') || document.querySelector('.wb-bar a:nth-child(2)');
+          var titleTxt = titleEl ? titleEl.innerText.replace(/讲义全文.*/,'').trim() : LID;
+          var courseTxt = courseEl ? courseEl.innerText.replace('← ','').trim() : '';
+          (window.WB_STORAGE||localStorage).setItem('wb_last_read', JSON.stringify({
+            lid: LID,
+            title: titleTxt,
+            courseName: courseTxt,
+            scrollY: Math.round(current),
+            progress: pct,
+            time: Date.now()
+          }));
+        } catch(e){}
+      }
+    }, 400);
+  });
+
+  // 恢复阅读位置
+  var savedScroll = parseInt((window.WB_STORAGE||localStorage).getItem('wb_scroll_' + LID) || '0', 10);
+  var isResumeParam = location.search.indexOf('resume=1') >= 0;
+  if (isResumeParam && savedScroll > 150) {
+    setTimeout(function() {
+      window.scrollTo({top: savedScroll, behavior: 'smooth'});
+      showToast('✓ 已回到上次阅读位置');
+    }, 350);
+  } else if (savedScroll > 250 && !location.hash && location.search.indexOf('q=') < 0) {
+    var totalH = document.documentElement.scrollHeight - window.innerHeight;
+    var sPct = totalH > 0 ? Math.round((savedScroll / totalH) * 100) : 0;
+    if (resumePct) resumePct.textContent = sPct;
+    if (resumeToast) {
+      resumeToast.style.display = 'flex';
+      var hideResumeTimer = setTimeout(function(){ resumeToast.style.display = 'none'; }, 7000);
+      if (resumeClose) resumeClose.onclick = function(){ clearTimeout(hideResumeTimer); resumeToast.style.display = 'none'; };
+      if (resumeJump) resumeJump.onclick = function(){
+        clearTimeout(hideResumeTimer);
+        resumeToast.style.display = 'none';
+        window.scrollTo({top: savedScroll, behavior: 'smooth'});
+        showToast('✓ 已跳转到上次阅读位置');
+      };
+    }
+  }
+
+
+  // 批注数据统一由 wb-hl.js 维护（划词、落笔、恢复都在那边），这里只转发读取
+  function getStoredHighlights() {
+    return (window.WB_HL && window.WB_HL.getList()) || [];
+  }
+
+  // 大纲抽屉 Tab 切换 (目录大纲 vs 本节批注)
+  var tabToc = document.getElementById('wb-tab-toc');
+  var tabNotes = document.getElementById('wb-tab-notes');
+  var tocBody = document.getElementById('wb-toc-tree');
+  var notesBody = document.getElementById('wb-notes-list');
+  var notesTools = document.getElementById('wb-notes-tools');
+  var notesNum = document.getElementById('wb-notes-num');
+
+  function switchDrawerTab(isNotes) {
+    if (tabToc) tabToc.classList.toggle('on', !isNotes);
+    if (tabNotes) tabNotes.classList.toggle('on', isNotes);
+    if (tocBody) tocBody.style.display = isNotes ? 'none' : 'block';
+    if (notesBody) notesBody.style.display = isNotes ? 'block' : 'none';
+    if (notesTools) notesTools.style.display = isNotes ? 'flex' : 'none';
+    if (isNotes) renderNotesList();
+  }
+  if (tabToc) tabToc.onclick = function(){ switchDrawerTab(false); };
+  if (tabNotes) tabNotes.onclick = function(){ switchDrawerTab(true); };
+
+  var notesBtn = document.getElementById('wb-notes-btn');
+  if (notesBtn) {
+    notesBtn.onclick = function() {
+      toggleToc(true);
+      switchDrawerTab(true);
+      showToast('💡 划选讲义正文文字即可弹出 4 色荧光笔与便签工具');
+    };
+  }
+
+  function updateNotesDrawer() {
+    var list = getStoredHighlights();
+    if (notesNum) notesNum.textContent = String(list.length);
+    var barCount = document.getElementById('wb-bar-notes-count');
+    if (barCount) barCount.textContent = String(list.length);
+    if (notesBody && notesBody.style.display !== 'none') renderNotesList();
+  }
+
+  function renderNotesList() {
+    if (!notesBody) return;
+    var list = getStoredHighlights();
+    if (!list.length) {
+      notesBody.innerHTML = '<div style="font-size:12.5px;color:var(--wb-muted);padding:30px 10px;text-align:center">本节暂无划线与批注。<br><small style="margin-top:6px;display:block">用鼠标划选正文文字，即可呼出 4 色荧光笔与便签工具！</small></div>';
+      return;
+    }
+
+    var colorNames = {yellow:'🟡 核心', green:'🟢 概念', red:'🔴 易错', purple:'🟣 技巧', underline:'<u>U</u> 划线'};
+    var h = '';
+    list.forEach(function(item) {
+      var dateStr = new Date(item.time || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      h += '<div class="wb-note-card" data-aid="' + item.id + '">' +
+           '<div class="wb-nc-quote" style="border-left-color:' + (item.color==='green'?'#22c55e':(item.color==='red'?'#ef4444':(item.color==='purple'?'#a855f7':'#eab308'))) + '">“' + esc(item.text.slice(0, 65)) + (item.text.length>65?'…':'') + '”</div>' +
+           (item.note ? '<div class="wb-nc-text">📝 ' + esc(item.note) + '</div>' : '') +
+           '<div class="wb-nc-meta"><span>' + (colorNames[item.color]||'高亮') + '</span><span>' + dateStr + ' ｜ 直达 ➔</span></div>' +
+           '</div>';
+    });
+    notesBody.innerHTML = h;
+
+    notesBody.querySelectorAll('.wb-note-card').forEach(function(card) {
+      card.onclick = function() {
+        var aid = this.getAttribute('data-aid');
+        var targetEl = document.querySelector('[data-hl-id="' + aid + '"]');
+        if (targetEl) {
+          var rect = targetEl.getBoundingClientRect();
+          var offsetTop = window.pageYOffset + rect.top - 70;
+          window.scrollTo({top: offsetTop, behavior: 'smooth'});
+          flashEl(targetEl);
+          if (window.innerWidth < 900) toggleToc(false);
+        } else {
+          showToast('该标注所在段落暂时无法滚动定位');
+        }
+      };
+    });
+  }
+
+  // 清空本节批注与导出备份
+  var btnClearNotes = document.getElementById('wb-btn-clear-notes');
+  var btnExportNotes = document.getElementById('wb-btn-export-notes');
+  if (btnClearNotes) {
+    btnClearNotes.onclick = function() {
+      if (!confirm('确定要清空本节所有划线高亮与便签吗？此操作无法撤销。')) return;
+      (window.WB_STORAGE||localStorage).removeItem('wb_hl_' + LID);
+      document.querySelectorAll('.wb-user-hl').forEach(function(m) {
+        var parent = m.parentNode;
+        while (m.firstChild) parent.insertBefore(m.firstChild, m);
+        parent.removeChild(m);
+      });
+      updateNotesDrawer();
+      showToast('✓ 本节批注已全部清空');
+    };
+  }
+  if (btnExportNotes) {
+    btnExportNotes.onclick = function() {
+      var list = getStoredHighlights();
+      if (!list.length) { showToast('当前暂无批注可导出'); return; }
+      var jsonStr = JSON.stringify({lecture: LID, exportedAt: new Date().toISOString(), notes: list}, null, 2);
+      var blob = new Blob([jsonStr], {type: 'application/json'});
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '讲义批注_' + LID + '.json';
+      a.click();
+      showToast('✓ 批注已成功导出为 JSON 备份');
+    };
+  }
+
+  // 快捷键支持：按 H 键切换全站高亮可见性 (沉浸裸读 vs 标注复习)
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key.toLowerCase() === 'h' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      var isHidden = document.body.classList.toggle('wb-hl-hidden');
+      showToast(isHidden ? '👁️ 已隐藏划线标注（裸读模式）' : '🎨 已显示划线标注');
+    }
+  });
+
+  
+  /* ---------- 3. 例题穿梭步进导航 (J/K 快捷键 & 上下题) ---------- */
+  function navigateExample(direction) {
+    var cards = Array.from(document.querySelectorAll('.wb-excard'));
+    if (!cards.length) return;
+
+    var scrollY = window.pageYOffset + 120;
+    var curIdx = -1;
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].offsetTop <= scrollY) curIdx = i;
+      else break;
+    }
+
+    var targetIdx = curIdx + direction;
+    if (targetIdx < 0) targetIdx = 0;
+    if (targetIdx >= cards.length) targetIdx = cards.length - 1;
+
+    var targetCard = cards[targetIdx];
+    if (targetCard) {
+      var offsetTop = window.pageYOffset + targetCard.getBoundingClientRect().top - 70;
+      window.scrollTo({top: Math.max(0, offsetTop), behavior: 'smooth'});
+      flashEl(targetCard);
+      var exTitle = targetCard.querySelector('h4') ? targetCard.querySelector('h4').innerText.replace(/[▲▼⚪🟡🟢].*/, '').trim() : '';
+      showToast('第 ' + (targetIdx + 1) + ' / ' + cards.length + ' 题 ｜ ' + exTitle);
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'j' || e.key === 'J') {
+      navigateExample(1);
+    } else if (e.key === 'k' || e.key === 'K') {
+      navigateExample(-1);
+    }
+  });
+
+  document.querySelectorAll('.wb-step-prev').forEach(function(btn) {
+    btn.onclick = function(e){ e.stopPropagation(); navigateExample(-1); };
+  });
+  document.querySelectorAll('.wb-step-next').forEach(function(btn) {
+    btn.onclick = function(e){ e.stopPropagation(); navigateExample(1); };
+  });
+
+  /* ---------- 4. 例题攻克状态打卡 (Mastery Tracker) ---------- */
+  function getMasteryData() {
+    try {
+      return JSON.parse((window.WB_STORAGE||localStorage).getItem('wb_mastery_' + LID) || '{}');
+    } catch(e) { return {}; }
+  }
+  function saveMasteryData(data) {
+    (window.WB_STORAGE||localStorage).setItem('wb_mastery_' + LID, JSON.stringify(data));
+    updateMasteryUI();
+  }
+
+  var MASTERY_STATUS = [
+    { text: '⚪ 待复习', cls: 'wb-st-todo' },
+    { text: '🟡 存疑',   cls: 'wb-st-doubt' },
+    { text: '🟢 已攻克', cls: 'wb-st-done' }
+  ];
+
+  function updateMasteryUI() {
+    var data = getMasteryData();
+    var cards = document.querySelectorAll('.wb-excard');
+    var doneCount = 0;
+
+    cards.forEach(function(card) {
+      var exId = card.id;
+      var st = (data[exId] !== undefined) ? data[exId] : 0;
+      if (st === 2) doneCount++;
+
+      var btn = card.querySelector('.wb-mastery-btn');
+      if (btn) {
+        var cfg = MASTERY_STATUS[st] || MASTERY_STATUS[0];
+        btn.innerHTML = cfg.text;
+        btn.className = 'wb-mastery-btn ' + cfg.cls;
+      }
+    });
+
+    var total = cards.length;
+    var pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+    var ratioEl = document.getElementById('wb-mastery-ratio');
+    var fillEl = document.getElementById('wb-mastery-fill');
+    if (ratioEl) ratioEl.textContent = doneCount + ' / ' + total + ' (' + pct + '%)';
+    if (fillEl) fillEl.style.width = pct + '%';
+  }
+
+  document.querySelectorAll('.wb-mastery-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var exId = this.getAttribute('data-ex-id');
+      if (!exId) return;
+      var data = getMasteryData();
+      var curSt = (data[exId] !== undefined) ? data[exId] : 0;
+      var nextSt = (curSt + 1) % MASTERY_STATUS.length;
+      data[exId] = nextSt;
+      saveMasteryData(data);
+      showToast('✓ 已设为「' + MASTERY_STATUS[nextSt].text.trim() + '」');
+    });
+  });
+  updateMasteryUI();
+
+  /* ---------- 5. 移动端底部控制台事件绑定 ---------- */
+  var dockToc = document.getElementById('wb-dock-toc');
+  var dockSelfTest = document.getElementById('wb-dock-selftest');
+  var dockPrev = document.getElementById('wb-dock-prev');
+  var dockNext = document.getElementById('wb-dock-next');
+  var dockTheme = document.getElementById('wb-dock-theme');
+
+  if (dockToc) dockToc.onclick = function(){ toggleToc(); };
+  if (dockSelfTest && selfTestBtn) dockSelfTest.onclick = function(){ selfTestBtn.click(); };
+  if (dockPrev) dockPrev.onclick = function(){ navigateExample(-1); };
+  if (dockNext) dockNext.onclick = function(){ navigateExample(1); };
+  if (dockTheme && themeBtn) dockTheme.onclick = function(){ themeBtn.click(); };
+
+  /* ---------- 锚点落地平滑高亮 ---------- */
+  function checkHashTarget() {
+    if (location.hash) {
+      try {
+        var sel = decodeURIComponent(location.hash);
+        var target = document.querySelector(sel);
+        if (target) {
+          setTimeout(function() {
+            var rect = target.getBoundingClientRect();
+            var offsetTop = window.pageYOffset + rect.top - 64;
+            window.scrollTo({top: offsetTop, behavior: 'smooth'});
+            flashEl(target);
+          }, 200);
+        }
+      } catch(e){}
+    }
+  }
+
+  /* ---------- 搜索弹层键盘导航 (↑ / ↓ / Enter) ---------- */
+  var activeWbResIdx = -1;
+  function updateActiveWbRes() {
+    var items = Array.from(p.querySelectorAll(".wb-res"));
+    items.forEach(function(it, i){
+      it.classList.toggle("active", i === activeWbResIdx);
+    });
+    if (items[activeWbResIdx]) {
+      items[activeWbResIdx].scrollIntoView({block: "nearest"});
+    }
+  }
+  if (q) {
+    q.addEventListener("keydown", function(e) {
+      if (!p || p.style.display === "none") return;
+      var items = Array.from(p.querySelectorAll(".wb-res"));
+      if (!items.length) return;
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        activeWbResIdx = (activeWbResIdx + 1) % items.length;
+        updateActiveWbRes();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        activeWbResIdx = (activeWbResIdx - 1 + items.length) % items.length;
+        updateActiveWbRes();
+      } else if (e.key === "Enter") {
+        if (activeWbResIdx >= 0 && items[activeWbResIdx]) {
+          e.preventDefault();
+          items[activeWbResIdx].click();
+        }
+      }
+    });
+  }
+
+  /* ---------- 公式交互：一键复制 LaTeX 源码 & 放大镜 ---------- */
+  var mathModal = document.getElementById("wb-math-modal");
+  var mathModalBody = document.getElementById("wb-math-modal-body");
+  var mathModalClose = document.getElementById("wb-math-modal-close");
+  var mathModalCopy = document.getElementById("wb-math-modal-copy");
+  var curModalTex = "";
+
+  function copyTexString(tex) {
+    if (!tex) {
+      showToast("未检测到对应 LaTeX 源码");
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(tex).then(function() {
+        showToast("✓ 已复制 LaTeX 源码到剪贴板");
+      });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = tex;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("✓ 已复制 LaTeX 源码到剪贴板");
+    }
+  }
+
+  document.querySelectorAll(".wb-math-wrap").forEach(function(wrap) {
+    var btnCopy = wrap.querySelector(".wb-math-copy");
+    var btnZoom = wrap.querySelector(".wb-math-zoom");
+    var tex = wrap.getAttribute("data-tex") || "";
+
+    if (btnCopy) {
+      btnCopy.addEventListener("click", function(e) {
+        e.stopPropagation();
+        copyTexString(tex);
+      });
+    }
+
+    function openModal() {
+      if (!mathModal || !mathModalBody) return;
+      var scrollBox = wrap.querySelector(".wb-math-scroll");
+      if (!scrollBox) return;
+      mathModalBody.innerHTML = scrollBox.innerHTML;
+      curModalTex = tex;
+      mathModal.classList.add("wb-open");
+    }
+
+    if (btnZoom) {
+      btnZoom.addEventListener("click", function(e) {
+        e.stopPropagation();
+        openModal();
+      });
+    }
+    wrap.addEventListener("dblclick", function(e) {
+      if (e.target.tagName && e.target.tagName.toLowerCase() === "button") return;
+      openModal();
+    });
+  });
+
+  if (mathModalClose) {
+    mathModalClose.addEventListener("click", function() {
+      mathModal.classList.remove("wb-open");
+    });
+  }
+  if (mathModal) {
+    mathModal.addEventListener("click", function(e) {
+      if (e.target === mathModal) mathModal.classList.remove("wb-open");
+    });
+  }
+  if (mathModalCopy) {
+    mathModalCopy.addEventListener("click", function() {
+      copyTexString(curModalTex);
+    });
+  }
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && mathModal && mathModal.classList.contains("wb-open")) {
+      mathModal.classList.remove("wb-open");
+    }
+  });
+
+  /* ---------- 检索参数落地：正文自动精准聚焦与关键词高亮 (?q=...) ---------- */
+  function checkSearchParamHighlight() {
+    var params = new URLSearchParams(location.search);
+    var kw = (params.get("q") || "").trim();
+    if (!kw || kw.length < 1) return;
+
+    var low = kw.toLowerCase();
+    var walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(node) {
+          var el = node.parentElement;
+          if (!el) return NodeFilter.FILTER_REJECT;
+          var tag = el.tagName.toLowerCase();
+          if (tag === "script" || tag === "style" || tag === "textarea" || tag === "mark") {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (el.closest(".wb-bar") || el.closest("#TOC") || el.closest(".wb-toc-drawer") || el.closest(".wb-math-actions")) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (node.nodeValue.toLowerCase().indexOf(low) >= 0) {
+            return NodeFilter.FILTER_ACCEPT;
+          }
+          return NodeFilter.FILTER_SKIP;
+        }
+      }
+    );
+
+    var firstMatch = null;
+    var toProcess = [];
+    var cur;
+    while ((cur = walker.nextNode()) && toProcess.length < 35) {
+      toProcess.push(cur);
+    }
+
+    toProcess.forEach(function(textNode) {
+      var val = textNode.nodeValue;
+      var lval = val.toLowerCase();
+      var idx = lval.indexOf(low);
+      if (idx < 0) return;
+
+      var span = document.createElement("span");
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) {
+          span.appendChild(document.createTextNode(val.substring(last, idx)));
+        }
+        var mark = document.createElement("mark");
+        mark.className = "wb-hit-mark";
+        mark.textContent = val.substr(idx, kw.length);
+        span.appendChild(mark);
+        if (!firstMatch) firstMatch = mark;
+        last = idx + kw.length;
+        idx = lval.indexOf(low, last);
+      }
+      if (last < val.length) {
+        span.appendChild(document.createTextNode(val.substring(last)));
+      }
+      textNode.parentNode.replaceChild(span, textNode);
+    });
+
+    if (firstMatch) {
+      setTimeout(function() {
+        var rect = firstMatch.getBoundingClientRect();
+        var offsetTop = window.pageYOffset + rect.top - (window.innerHeight * 0.35);
+        window.scrollTo({top: Math.max(0, offsetTop), behavior: "smooth"});
+        flashEl(firstMatch.closest("p, li, h3, h4, .wb-excard") || firstMatch);
+        showToast("✓ 已自动定位并高亮「" + kw + "」");
+      }, 400);
+    }
+  }
+  checkSearchParamHighlight();
+
+  checkHashTarget();
+  window.addEventListener('hashchange', checkHashTarget);
+
+  /* 本脚本整体在 IIFE 里，划词批注引擎 (wb-hl.js) 在圈外，
+     这里把存储键、提示条与抽屉刷新三个钩子挂到 window 上供它回调 */
+  window.LID = LID;
+  window.showToast = showToast;
+  window.updateNotesDrawer = updateNotesDrawer;
+})();
+</script>
+</body>
+</html>
+</div>

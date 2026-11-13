@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>《代数学Ⅰ》2026-11-09 课堂详解</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
+      background: #ffffff;
+      color: #1f2328;
+      /* 思源宋体离线字体栈：优先本机已装的 Source Han Serif / Noto Serif CJK，
+         都没有则回落到系统宋体（SimSun），全程不依赖任何网络字体 CDN。
+         关键：在 CJK 字体之后、SimSun 之前插入 Times New Roman / Georgia 这类
+         西文衬线，让阿拉伯数字与拉丁字母优先从这些西文字体取字形——它们与汉字
+         共享同一条基线，可根除「数字/符号相对汉字下沉」的问题；若本机装了思源宋体，
+         则数字仍由思源宋体的拉丁字形绘制（其本身已按汉字基线设计），同样对齐。 */
+      font-family: "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif",
+                   "Noto Serif CJK SC", "Noto Serif SC", "思源宋体",
+                   "Songti SC", "STSong", "Times New Roman", "Georgia", "SimSun", serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    h1 { font-size: 30px; border-bottom: 2px solid #2f5597; padding-bottom: 12px; color: #1a3d7c; }
+    h2 { font-size: 23px; margin-top: 44px; border-left: 5px solid #2f5597; padding-left: 12px; color: #1a3d7c; }
+    h3 { font-size: 19px; margin-top: 34px; color: #24508c; background: #f2f6fc; padding: 8px 12px; border-radius: 4px; }
+    h4 { font-size: 17px; margin-top: 26px; color: #8a4b0c; border-bottom: 1px dashed #d9c3a5; padding-bottom: 6px; }
+    h5 { font-size: 16px; color: #444; }
+    p { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th, td { border: 1px solid #d6dce5; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #eaf0f9; color: #1a3d7c; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    blockquote { border-left: 4px solid #c9d6ea; background: #f7f9fd; margin: 14px 0; padding: 8px 16px; color: #444; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+    strong { color: #143a75; }
+    hr { border: none; border-top: 1px solid #e3e6ec; margin: 40px 0; }
+    #TOC { background: #f7f9fd; border: 1px solid #dbe3f0; border-radius: 6px; padding: 16px 24px; }
+    #TOC ul { list-style: none; padding-left: 16px; }
+    /* 公式相关（原生 MathML 回退栈 + 本地 MathJax SVG 容器对齐）。
+       math / mjx-container 的数学字体只影响 SVG 内极少量文本回退，公式主体由自带 SVG 字形绘制，
+       不依赖系统字体，离线可用。
+       重要：容器只设 display:inline-block，基线完全交给 SVG 自带的 vertical-align
+       （MathJax 会按数学字体精确计算偏移）。千万不要给容器再加 vertical-align，
+       否则会与 SVG 自身的基线位移叠加，导致整行公式相对汉字下沉。 */
+    math, mjx-container {
+      font-family: "Cambria Math", "STIX Two Math", "STIXGeneral",
+                   "Latin Modern Math", "Asana Math", "DejaVu Math TeX Gyre", serif;
+    }
+    mjx-container { display: inline-block; }
+    .MathJax_SVG, .mjx-svg-container { max-width: 100%; overflow-x: auto; }
+
+    /* 例题 / 证明 卡片化（来自参考版的可借鉴点 B）—— 重做为轻量、清晰、有意义的「步骤卡」。
+       设计目标：不再是把整段内容裹进一团刺眼黄底的「全覆盖」，而是用一条克制的左侧色条 +
+       顶部标题带把「这是一道例题/一个证明」明确框出来；卡内的 命题/题目、思路、逐步推导、
+       结论、老师点出的意义/坑 用统一的小标签(Pill)作为步骤起点，形成清晰可读的隔断。 */
+    .wb-excard {
+      margin: 22px 0;
+      padding: 0 20px 18px;
+      border: 1px solid #ece5d8;
+      border-left: 3px solid #c08a3e;
+      background: #fbfaf6;
+      border-radius: 10px;
+    }
+    /* 卡片标题带：占满卡片宽度、与卡片圆角衔接，作为卡片真正的「隔断」上沿 */
+    .wb-excard > h4 {
+      margin: 0 -20px 14px;
+      padding: 11px 20px;
+      background: #f3ecde;
+      border-radius: 9px 9px 0 0;
+      color: #7a4512;
+      font-size: 16.5px;
+      border-bottom: none;
+    }
+    .wb-excard code { background: #f1ece1; }
+
+    /* 卡内步骤起点标签：把原先漂浮的粗体「命题 / 题目：」等变成统一的步骤 Pill，
+       既保留行内衔接（冒号不换行），又让每一步清晰可辨，解决「隔断错位/无意义」。
+       乙方案配色：五类步骤共用一块接近纸白的中性浅底，只靠左缘 2px 低饱和
+       细色条提供「一点区分度」；未归类的标签回落中性灰条。色条颜色由生成期
+       打在 <strong> 上的 .wb-pill-* 语义 class 决定，用 CSS 变量传递以避开
+       .wb-excard p > strong:first-child 的优先级覆盖。 */
+    .wb-excard p > strong:first-child,
+    .wb-excard li > strong:first-child {
+      display: inline-block;
+      margin: 14px 0 4px;
+      padding: 1px 9px;
+      border-radius: 6px;
+      background: #f4f3f0;
+      color: #5f5a54;
+      border-left: 2px solid var(--pill-bar, #c9c4bc);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .wb-excard p:first-of-type > strong:first-child { margin-top: 2px; }
+    .wb-pill-topic  { --pill-bar: #8fa3b8; }
+    .wb-pill-idea   { --pill-bar: #a99ab5; }
+    .wb-pill-derive { --pill-bar: #8faaa3; }
+    .wb-pill-result { --pill-bar: #9aa889; }
+    .wb-pill-note   { --pill-bar: #bfa18c; }
+
+    /* 时间轴片段：把「顶部蓝条(### 小节标题) + 正文 + 例题卡片」合并成一个板块。
+       左侧轨道把蓝条与例题连成同一条时间轴，例题作为段内子面板紧贴正文，
+       不再被空白/分割线断开；不同小节各成一段、相互分开。 */
+    .wb-seg { position: relative; margin: 30px 0; padding-left: 18px; border-left: 3px solid #c3d5f0; }
+    /* 时间轴节点：每个小节是同一条轴上的一个锚点，蓝条/正文/例题卡都挂在它下面 */
+    .wb-seg::before {
+      content: ""; position: absolute; left: -8px; top: 17px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #2f5597; border: 2px solid #fff; box-shadow: 0 0 0 1px #c3d5f0;
+    }
+    .wb-seg > h3 { margin-top: 0; }
+    .wb-seg .wb-excard { margin: 12px 0 4px; }
+
+    /* 时间戳 chip（来自参考版的可借鉴点 D）：把 ### 标题里的时间段包成小标签 */
+    .wb-ts {
+      display: inline-block;
+      font-family: ui-monospace, Consolas, Menlo, monospace;
+      font-size: 13px;
+      background: #eef2f8;
+      color: #24508c;
+      border: 1px solid #d3deec;
+      border-radius: 5px;
+      padding: 1px 7px;
+      margin-right: 6px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+  </style>
+<style>
+ol.wb-steps{margin:10px 0 16px;padding-left:28px;line-height:1.85}
+ol.wb-steps>li{margin:8px 0;padding-left:4px}
+ol.wb-steps>li::marker{color:#1d4ed8;font-weight:600}
+math[display="inline"]{margin:0 .08em}
+mjx-container[jax="SVG"]{margin:0 .04em}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">《代数学Ⅰ》2026-11-09 课堂详解</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#代数学ⅰ2026-11-09-课堂详解"
+id="toc-代数学ⅰ2026-11-09-课堂详解">《代数学Ⅰ》2026-11-09 课堂详解</a>
+<ul>
+<li><a href="#期中考试安排与复习提醒"
+id="toc-期中考试安排与复习提醒">00:04:05—00:05:23 ｜
+期中考试安排与复习提醒</a></li>
+<li><a href="#回顾初等变换将矩阵化为相抵标准型"
+id="toc-回顾初等变换将矩阵化为相抵标准型">00:05:23—00:14:38 ｜
+回顾：初等变换将矩阵化为相抵标准型</a></li>
+<li><a href="#相抵标准型定理" id="toc-相抵标准型定理">00:14:38—00:33:10
+｜ 相抵标准型定理</a></li>
+<li><a href="#相抵标准型唯一性秩的良定性"
+id="toc-相抵标准型唯一性秩的良定性">00:33:34—01:05:53 ｜
+相抵标准型唯一性：秩的良定性</a></li>
+<li><a href="#矩阵的秩的定义" id="toc-矩阵的秩的定义">01:05:53—01:09:46
+｜ 矩阵的秩的定义</a></li>
+<li><a href="#等值相抵及其等价性"
+id="toc-等值相抵及其等价性">01:09:46—01:23:44 ｜
+等值、相抵及其等价性</a></li>
+<li><a href="#相抵的进一步事实等价于初等变换等价类个数"
+id="toc-相抵的进一步事实等价于初等变换等价类个数">01:23:44—01:29:21 ｜
+相抵的进一步事实：等价于初等变换、等价类个数</a></li>
+<li><a href="#应用一方阵分解为可逆阵与对称阵之积"
+id="toc-应用一方阵分解为可逆阵与对称阵之积">01:29:21—01:45:12 ｜
+应用一：方阵分解为可逆阵与对称阵之积</a></li>
+<li><a href="#应用二可逆方阵的等价刻画"
+id="toc-应用二可逆方阵的等价刻画">01:45:12—01:57:07 ｜
+应用二：可逆方阵的等价刻画</a></li>
+<li><a href="#从计算角度求秩行变换化阶梯形数非零行"
+id="toc-从计算角度求秩行变换化阶梯形数非零行">01:57:07—02:01:59 ｜
+从计算角度求秩：行变换化阶梯形数非零行</a></li>
+<li><a href="#例带参数矩阵的秩"
+id="toc-例带参数矩阵的秩">02:01:59—02:07:40 ｜
+例：带参数矩阵的秩</a></li>
+<li><a href="#补充如何求出使-paq-为标准型的-pq"
+id="toc-补充如何求出使-paq-为标准型的-pq">02:08:11—02:14:07 ｜
+补充：如何求出使 PAQ 为标准型的 P,Q</a></li>
+<li><a href="#行空间列空间与行秩列秩"
+id="toc-行空间列空间与行秩列秩">02:14:46—02:25:12 ｜
+行空间、列空间与行秩、列秩</a></li>
+<li><a href="#秩在转置下不变后续路线与作业含课后问答"
+id="toc-秩在转置下不变后续路线与作业含课后问答">02:25:12—02:31:34 ｜
+秩在转置下不变；后续路线与作业（含课后问答）</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="代数学ⅰ2026-11-09-课堂详解">《代数学Ⅰ》2026-11-09 课堂详解</h1>
+<blockquote>
+<p>授课：刘东文 ｜ 时长：02:34:42 ｜ 逐条字幕：1361 条 ｜ 时间段小节：14
+｜ 例题 / 证明：6</p>
+</blockquote>
+<blockquote>
+<p><code>[补全]</code>
+标记的是整理者按标准学科知识补齐的内容，不是课堂板书；<code>[?]</code>
+标记转写存疑处；<code>[按图还原]</code>
+是把黑板图形文字化的描述。其余为课堂讲授内容的还原。 ##
+一、相抵标准型与矩阵的秩（00:04:05—02:31:34）</p>
+</blockquote>
+<h3 id="期中考试安排与复习提醒">00:04:05—00:05:23 ｜
+期中考试安排与复习提醒</h3>
+<ul>
+<li>本周四（11 月 12 日）进行期中考试，时间
+13:30—15:30（共两小时），请勿迟到，准时到场。</li>
+<li>考试允许携带教材与笔记[?]（若不允许携带则由考场统一提供）；无需自备草稿纸，由考场发放。</li>
+<li>复习过程中若有疑问，可在钉钉上向老师或助教提问。</li>
+<li>老师提醒：本次考试难度不大，但仍需充分准备；提前做完也可交卷离场。</li>
+</ul>
+<h3 id="回顾初等变换将矩阵化为相抵标准型">00:05:23—00:14:38 ｜
+回顾：初等变换将矩阵化为相抵标准型</h3>
+<p>从任意矩阵 A （不预设它是某方程组的系数矩阵）出发，通过初等行变换先把它化成阶梯形：主元（每行最左的非零元）均为 1 ，且主元所在列其上方与下方元素全为 0 。</p>
+<p>随后再做初等列变换，把左上角的 r 个主元列依次处理，使左上角出现 r 阶单位阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>r</mi></msub><annotation encoding="application/x-tex">I_r</annotation></semantics></math>；其余 N−r 列对应原方程组的自由变量，再通过倍加（一列的倍数加到另一列）把右上角 2×(N−r) 的块全部消成 0 。最终得到如下分块对角形式：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}
+I_r &amp; 0 \\
+0 &amp; 0
+\end{pmatrix},</annotation></semantics></math></p>
+<p>其中左上角是 r 阶单位阵，其余三块为零矩阵（其大小由 m,n,r 决定，例如右上角 r×(n−r) 为零块）。</p>
+<p>关键记法： - 一次初等<strong>行</strong>变换 ⇔ 左乘一个初等矩阵； - 一次初等<strong>列</strong>变换 ⇔ 右乘一个初等矩阵； -
+初等矩阵乘法满足结合律，因此先做的行变换（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_1</annotation></semantics></math>）写在最左，后做的写在右边，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>K</mi></msub><mi>⋯</mi><msub><mi>P</mi><mn>1</mn></msub><mi>A</mi><msub><mi>Q</mi><mn>1</mn></msub><mi>⋯</mi><msub><mi>Q</mi><mi>L</mi></msub><mo>=</mo><mtext mathvariant="normal">标准型</mtext></mrow><annotation encoding="application/x-tex">P_K\cdots P_1 A Q_1\cdots Q_L = \text{标准型}</annotation></semantics></math>。</p>
+<p>老师提醒：行变换与列变换的先后顺序可以交换，因为各初等矩阵整体相乘时结合律成立，不影响最终乘积；这反映了”初等行变换之间的顺序可交换”这一事实（可对照初等矩阵乘积验证）。</p>
+<h3 id="相抵标准型定理">00:14:38—00:33:10 ｜ 相抵标准型定理</h3>
+<p><strong>定理（相抵标准型存在性）。</strong> 对任意 m×n 矩阵 A ，存在 m 阶可逆阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msub><mi>P</mi><mi>K</mi></msub><mi>⋯</mi><msub><mi>P</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">P=P_K\cdots P_1</annotation></semantics></math>与 n 阶可逆阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo>=</mo><msub><mi>Q</mi><mn>1</mn></msub><mi>⋯</mi><msub><mi>Q</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">Q=Q_1\cdots Q_L</annotation></semantics></math>（其中每个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo>,</mo><msub><mi>Q</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">P_i,Q_j</annotation></semantics></math>均为初等矩阵，即可逆），使得</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>A</mi><mi>Q</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">P A Q = \begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}.</annotation></semantics></math></p>
+<p>该矩阵称为 A 的<strong>相抵标准型</strong>（也称相对标准型）。</p>
+<p>说明： - 上式中 P 是若干初等行变换矩阵之积， Q 是若干初等列变换矩阵之积，二者都可逆。 - 末尾的等式<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>A</mi><mi>Q</mi><mo>=</mo><mtext mathvariant="normal">标准型</mtext></mrow><annotation encoding="application/x-tex">PAQ=\text{标准型}</annotation></semantics></math>是前一定理的直接推论；反过来，若已有可逆阵使 PAQ 为标准型，则 P,Q 必可拆成初等矩阵之积（见下面证明
+1）。故”经初等变换可化标准型”与”存在可逆阵左乘右乘得标准型”两条等价。</p>
+<h4 id="例题证明-1002244-可逆矩阵必为初等矩阵之积">例题/证明
+1（00:22:44）｜ 可逆矩阵必为初等矩阵之积</h4>
+<p><strong>命题。</strong>
+任意可逆矩阵都可写成有限个初等矩阵的乘积；反之，初等矩阵之积显然可逆。</p>
+<p><strong>思路。</strong> 由相抵标准型定理，对 n 阶可逆阵 A 有初等矩阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>P</mi><mi>K</mi></msub><mo>,</mo><msub><mi>Q</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>Q</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">P_1,\dots,P_K,Q_1,\dots,Q_L</annotation></semantics></math>使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>K</mi></msub><mi>⋯</mi><msub><mi>P</mi><mn>1</mn></msub><mspace width="0.167em"></mspace><mi>A</mi><mspace width="0.167em"></mspace><msub><mi>Q</mi><mn>1</mn></msub><mi>⋯</mi><msub><mi>Q</mi><mi>L</mi></msub><mo>=</mo><msub><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">P_K\cdots P_1\, A\, Q_1\cdots Q_L = \begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}_{n\times n}.</annotation></semantics></math>要证 r=n ，从而 A 可表示为这些初等矩阵逆元的乘积（而初等矩阵的逆仍是初等矩阵）。</p>
+<p><strong>推导（反证）。</strong></p><ol class="wb-steps"><li>假设 r&lt;n 。则标准型<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}</annotation></semantics></math>右下含有零块，是<strong>不可逆</strong>的。</li><li>但等式左端<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>K</mi></msub><mi>⋯</mi><msub><mi>P</mi><mn>1</mn></msub><mspace width="0.167em"></mspace><mi>A</mi><mspace width="0.167em"></mspace><msub><mi>Q</mi><mn>1</mn></msub><mi>⋯</mi><msub><mi>Q</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">P_K\cdots P_1\, A\, Q_1\cdots Q_L</annotation></semantics></math>是有限个可逆矩阵之积（已知 A 可逆，各<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo>,</mo><msub><mi>Q</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">P_i,Q_j</annotation></semantics></math>可逆），故整个乘积必<strong>可逆</strong>，矛盾。</li><li>因此 r=n ，标准型就是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>。</li></ol>
+<p><strong>分块演示（老师补充）。</strong> 若 r&lt;n ，设该标准型为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">C=\begin{pmatrix}I_r&amp;0\\0&amp;0\end{pmatrix}</annotation></semantics></math>，并设存在 B 使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>B</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">CB=I_n</annotation></semantics></math>。将 B 分块为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>W</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">B=\begin{pmatrix}X&amp;Y\\Z&amp;W\end{pmatrix}</annotation></semantics></math>（按前 r 行、后 n−r 行），则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>B</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>W</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>≠</mo><msub><mi>I</mi><mi>n</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">CB=\begin{pmatrix}I_r&amp;0\\0&amp;0\end{pmatrix}\begin{pmatrix}X&amp;Y\\Z&amp;W\end{pmatrix}
+=\begin{pmatrix}X&amp;Y\\0&amp;0\end{pmatrix}\neq I_n,</annotation></semantics></math>因为后 n−r 行全为零，不可能等于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>的后 n−r 行。矛盾，故 r=n 。</p>
+<p><strong>结论。</strong> 既然 A 的标准型是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>，有
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msubsup><mi>P</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>⋯</mi><msubsup><mi>P</mi><mi>K</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mspace width="0.167em"></mspace><msub><mi>I</mi><mi>n</mi></msub><mspace width="0.167em"></mspace><msubsup><mi>Q</mi><mi>L</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>⋯</mi><msubsup><mi>Q</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>,</mo></mrow><annotation encoding="application/x-tex">A = P_1^{-1}\cdots P_K^{-1}\, I_n\, Q_L^{-1}\cdots Q_1^{-1},</annotation></semantics></math>即 A 是可逆阵（初等矩阵）之积。另一方向（初等矩阵之积可逆）是显然的。</p>
+<p><strong>易错点。</strong> 证明的核心是证出 r=n ；“可逆 ⇒ 标准型为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>”
+与 “可逆 ⇔ 初等矩阵之积” 是同一事实的两面。</p>
+<h3 id="相抵标准型唯一性秩的良定性">00:33:34—01:05:53 ｜
+相抵标准型唯一性：秩的良定性</h3>
+<p>上面定义了”把 A 化成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}I_r&amp;0\\0&amp;0\end{pmatrix}</annotation></semantics></math>就称得到了标准型，但该定义是否合理，取决于这个 r 是否由 A 唯一确定——即不依赖于化简时所选的具体初等变换序列。</p>
+<h4 id="例题证明-2003334-相抵标准型中-r-的唯一性秩的定义合理">例题/证明
+2（00:33:34）｜ 相抵标准型中 r 的唯一性（秩的定义合理）</h4>
+<p><strong>命题。</strong> 同一矩阵 A 的相抵标准型中 r 是唯一的。换言之，若
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mi>A</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>P</mi><mn>2</mn></msub><mi>A</mi><msub><mi>Q</mi><mn>2</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>s</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">P_1 A Q_1 = \begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix},\qquad
+P_2 A Q_2 = \begin{pmatrix} I_s &amp; 0 \\ 0 &amp; 0 \end{pmatrix},</annotation></semantics></math>其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">P_1,P_2</annotation></semantics></math>为 m 阶可逆、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>,</mo><msub><mi>Q</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">Q_1,Q_2</annotation></semantics></math>为 n 阶可逆，则必有 r=s 。</p>
+<p><strong>思路。</strong> 反证。不妨设 r&lt;s （否则对称讨论），由两式消去 A 后比较，导出矛盾。</p>
+<p><strong>推导。</strong></p><ol class="wb-steps"><li>由两式得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>2</mn></msub><msubsup><mi>P</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>s</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mi>Q</mi><mn>2</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msub><mi>Q</mi><mn>1</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">P_2 P_1^{-1}\begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}
+= \begin{pmatrix} I_s &amp; 0 \\ 0 &amp; 0 \end{pmatrix} Q_2^{-1} Q_1.</annotation></semantics></math>记<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mi>P</mi><mn>2</mn></msub><msubsup><mi>P</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">U=P_2 P_1^{-1}</annotation></semantics></math>（ m 阶可逆），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msubsup><mi>Q</mi><mn>2</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">V=Q_2^{-1}Q_1</annotation></semantics></math>（ n 阶可逆）。</li><li>将 U 按前 s 行、后 m−s 行分块， V 按前 s 列、后 n−s 列分块：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>W</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>V</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>X</mi><mo>′</mo></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>Y</mi><mo>′</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>Z</mi><mo>′</mo></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>W</mi><mo>′</mo></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">U=\begin{pmatrix} X &amp; Y \\ Z &amp; W \end{pmatrix},\qquad
+V=\begin{pmatrix} X&#39; &amp; Y&#39; \\ Z&#39; &amp; W&#39; \end{pmatrix},</annotation></semantics></math>其中 X 为 s×r ，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>X</mi><mo>′</mo></msup><annotation encoding="application/x-tex">X&#39;</annotation></semantics></math>为 r×s 。则
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>s</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>V</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>X</mi><mo>′</mo></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>Y</mi><mo>′</mo></msup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">U\begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}
+=\begin{pmatrix} X &amp; 0 \\ Z &amp; 0 \end{pmatrix},\qquad
+\begin{pmatrix} I_s &amp; 0 \\ 0 &amp; 0 \end{pmatrix} V
+=\begin{pmatrix} X&#39; &amp; Y&#39; \\ 0 &amp; 0 \end{pmatrix}.</annotation></semantics></math></li><li>两式相等，比较可知 Z=0 （后 m−s 行为零块）。</li><li><strong>向量空间论证（老师指出此法比纯分块更简洁）：</strong>
+比较两端的前 s 列，左端前 s 列恰为 s 个标准基向量<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>e</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">e_1,\dots,e_s</annotation></semantics></math>，它们可由矩阵 X 的列向量线性表出；而 X 只有 r 列，且其后 s−r 列全为零，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>e</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">e_1,\dots,e_s</annotation></semantics></math>可由 X 的前 r 列线性表出。因 r&lt;s ，这意味着 s 个标准基向量线性相关，矛盾。</li></ol>
+<p><strong>结论。</strong> 假设 r&lt;s 不成立；由对称性同理 s&lt;r 亦不成立，故 r=s 。相抵标准型唯一，因而其中的 r 由 A 唯一决定，秩的定义是良定的。</p>
+<p><strong>易错点。</strong>
+该证明主要依赖分块矩阵技巧；后续用向量空间语言可更快得出同一矛盾。此处论证的是”秩唯一，尚未引入秩的其他等价定义。</p>
+<h3 id="矩阵的秩的定义">01:05:53—01:09:46 ｜ 矩阵的秩的定义</h3>
+<p>由于上节已证标准型中的 r 由 A 唯一确定，便可正式定义：</p>
+<p><strong>定义。</strong> 设 A 为 m×n 矩阵，其相抵标准型为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}</annotation></semantics></math>，则称 r 为 A 的<strong>秩</strong>（rank），记作 rank⁡(A) 或 r(A) 。即秩等于标准型中非零单位元的个数。</p>
+<p>基本性质： - r 是非负整数，且 0≤r≤min⁡(m,n) ；
+- r(A)=0⇔A 的标准型全零 ⇔A=0 （零矩阵）。</p>
+<p>老师提醒： r 是代数中最重要、也最容易出题考查的概念之一，它有若干等价定义，本节先采用标准型给出的这一种。</p>
+<h3 id="等值相抵及其等价性">01:09:46—01:23:44 ｜
+等值、相抵及其等价性</h3>
+<p>在同型矩阵空间<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msub><annotation encoding="application/x-tex">M_{m\times n}</annotation></semantics></math>上引入两个关系： - <strong>等值</strong>（记为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mo>∼</mo><mi>r</mi></msub><mi>B</mi></mrow><annotation encoding="application/x-tex">A\sim_r B</annotation></semantics></math>）： rank⁡(A)=rank⁡(B) ；
+- <strong>相抵</strong>（记为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mo>∼</mo><mi>e</mi></msub><mi>B</mi></mrow><annotation encoding="application/x-tex">A\sim_e B</annotation></semantics></math>）：存在可逆阵 P,Q 使 PAQ=B （即 A 经初等变换可化为 B ）。</p>
+<p>老师说：一般讨论标准型时并未涉及”一般的相抵，这里把”同秩”与”相抵”联系起来。</p>
+<h4
+id="例题证明-3011350-等值与相抵同为等价关系且二者一致随堂练习">例题/证明
+3（01:13:50）｜ 等值与相抵同为等价关系且二者一致（随堂练习）</h4>
+<p><strong>命题。</strong> (a) 等值关系与相抵关系都是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msub><annotation encoding="application/x-tex">M_{m\times n}</annotation></semantics></math>上的等价关系（自反、对称、传递）； (b)
+对同型矩阵，“等值”与”相抵”是同一个关系。</p>
+<p><strong>推导。</strong> (a) 等价关系的三条性质： -
+等值：由”秩相等”直接定义，自反、对称、传递显然。 - 相抵：自反用 P=Q=I ；对称——若 PAQ=B ，则<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msup><mi>P</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>B</mi><msup><mi>Q</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">A=P^{-1}BQ^{-1}</annotation></semantics></math>；传递——若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mo>∼</mo><mi>e</mi></msub><mi>B</mi></mrow><annotation encoding="application/x-tex">A\sim_e B</annotation></semantics></math>且<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mo>∼</mo><mi>e</mi></msub><mi>C</mi></mrow><annotation encoding="application/x-tex">B\sim_e C</annotation></semantics></math>，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><mi>B</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mi>B</mi><mo>=</mo><msub><mi>P</mi><mn>2</mn></msub><mi>C</mi><msub><mi>Q</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">A=P_1BQ_1,\ B=P_2CQ_2</annotation></semantics></math>，则<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>C</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Q</mi><mn>2</mn></msub><msub><mi>Q</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A=(P_1P_2)C(Q_2Q_1)</annotation></semantics></math>，仍可逆阵左乘右乘，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mo>∼</mo><mi>e</mi></msub><mi>C</mi></mrow><annotation encoding="application/x-tex">A\sim_e C</annotation></semantics></math>。</p>
+<ol start="2" type="a">
+<li>互推：</li>
+</ol>
+<ul>
+<li>相抵 ⇒ 等值：若 PAQ=B ，则 B 与 A 有相同标准型，故 rank⁡(B)=rank⁡(A) 。</li>
+<li>等值 ⇒ 相抵：设 rank⁡(A)=rank⁡(B)=r ，则存在可逆阵使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mi>A</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>P</mi><mn>2</mn></msub><mi>B</mi><msub><mi>Q</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">P_1AQ_1=\begin{pmatrix}I_r&amp;0\\0&amp;0\end{pmatrix}=P_2BQ_2</annotation></semantics></math>，于是<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>P</mi><mn>2</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msub><mi>P</mi><mn>1</mn></msub><mi>A</mi><msub><mi>Q</mi><mn>1</mn></msub><msubsup><mi>Q</mi><mn>2</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">P_2^{-1}P_1 A Q_1 Q_2^{-1}=B</annotation></semantics></math>，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mo>∼</mo><mi>e</mi></msub><mi>B</mi></mrow><annotation encoding="application/x-tex">A\sim_e B</annotation></semantics></math>。</li>
+</ul>
+<p><strong>结论。</strong>
+在同型矩阵空间上，等值关系与相抵关系完全重合，是同一个等价关系。</p>
+<p><strong>易错点。</strong> 验证等价关系时传递性须把 P,Q 移到等号另一侧并取逆；不要漏掉”同型”这一前提。</p>
+<h3 id="相抵的进一步事实等价于初等变换等价类个数">01:23:44—01:29:21 ｜
+相抵的进一步事实：等价于初等变换、等价类个数</h3>
+<ul>
+<li><strong>事实一：</strong> 相抵等价于”可经一串初等变换（行列并用）从 A 得到 B 。因为本节开头已证可逆阵都是初等矩阵之积，相抵定义中的 P,Q 可拆成初等矩阵，左乘对应行变换、右乘对应列变换。</li>
+<li><strong>事实二：</strong> 在<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msub><annotation encoding="application/x-tex">M_{m\times n}</annotation></semantics></math>上，相抵的等价类由秩完全决定。由于 0≤r≤min⁡(m,n) ，等价类恰有 min⁡(m,n)+1 个，每个类的代表元即为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}I_r&amp;0\\0&amp;0\end{pmatrix}</annotation></semantics></math>（ r=0,1,…,min⁡(m,n) ）。即每个矩阵唯一对应于一个”标杆”标准型。</li>
+</ul>
+<h3 id="应用一方阵分解为可逆阵与对称阵之积">01:29:21—01:45:12 ｜
+应用一：方阵分解为可逆阵与对称阵之积</h3>
+<h4
+id="例题证明-4012937-任意方阵可分解为可逆阵乘对称阵亦可对称阵乘可逆阵">例题/证明
+4（01:29:37）｜
+任意方阵可分解为可逆阵乘对称阵（亦可对称阵乘可逆阵）</h4>
+<p><strong>命题。</strong> 任意 n 阶方阵 A 都可分解为 A=PS ，其中 P 可逆、 S 对称；也可分解为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msup><mi>S</mi><mo>′</mo></msup><msup><mi>P</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">A=S&#39;P&#39;</annotation></semantics></math>，其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>S</mi><mo>′</mo></msup><annotation encoding="application/x-tex">S&#39;</annotation></semantics></math>对称、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>P</mi><mo>′</mo></msup><annotation encoding="application/x-tex">P&#39;</annotation></semantics></math>可逆。</p>
+<p><strong>思路。</strong> 利用相抵标准型，把 A 写成<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">P_1 D Q_1</annotation></semantics></math>（ D 为对称的标准型）；关键观察是：若 S 对称，则对任意矩阵 C ，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>S</mi><msup><mi>C</mi><mi mathvariant="normal">T</mi></msup></mrow><annotation encoding="application/x-tex">CSC^{\mathrm T}</annotation></semantics></math>仍对称。据此把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mn>1</mn></msub><annotation encoding="application/x-tex">Q_1</annotation></semantics></math>的转置”补”到左边去配对。</p>
+<p><strong>推导。</strong></p><ol class="wb-steps"><li>由相抵标准型，存在可逆阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">P_1,Q_1</annotation></semantics></math>使
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>Q</mi><mn>1</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">A = P_1 \begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix} Q_1.</annotation></semantics></math>记<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">D=\begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}</annotation></semantics></math>，显然<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>D</mi><mi mathvariant="normal">T</mi></msup><mo>=</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">D^{\mathrm T}=D</annotation></semantics></math>（对称）。</li><li>注意到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">Q_1^{\mathrm T} D Q_1</annotation></semantics></math>对称，因为
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">T</mi></msup><mo>=</mo><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><msup><mi>D</mi><mi mathvariant="normal">T</mi></msup><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">(Q_1^{\mathrm T} D Q_1)^{\mathrm T}=Q_1^{\mathrm T} D^{\mathrm T} Q_1=Q_1^{\mathrm T} D Q_1.</annotation></semantics></math></li><li>把 A 改写：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><msubsup><mi>Q</mi><mn>1</mn><mrow><mi>−</mi><mi mathvariant="normal">T</mi></mrow></msubsup><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mo stretchy="false" form="postfix">)</mo><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><msubsup><mi>Q</mi><mn>1</mn><mrow><mi>−</mi><mi mathvariant="normal">T</mi></mrow></msubsup><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">A = P_1 D Q_1 = P_1 (Q_1^{-\mathrm T} Q_1^{\mathrm T}) D Q_1
+= (P_1 Q_1^{-\mathrm T})\, (Q_1^{\mathrm T} D Q_1).</annotation></semantics></math>令<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><msubsup><mi>Q</mi><mn>1</mn><mrow><mi>−</mi><mi mathvariant="normal">T</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">P = P_1 Q_1^{-\mathrm T}</annotation></semantics></math>（可逆），<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><msubsup><mi>Q</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">S = Q_1^{\mathrm T} D Q_1</annotation></semantics></math>（对称），则 A=PS 。</li><li>同理，利用<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mi>D</mi><msubsup><mi>P</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup></mrow><annotation encoding="application/x-tex">P_1 D P_1^{\mathrm T}</annotation></semantics></math>对称，可得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><mi>D</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><mi>D</mi><msubsup><mi>P</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msubsup><mi>P</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msub><mi>Q</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>S</mi><mo>′</mo></msup><msup><mi>P</mi><mo>′</mo></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">A = P_1 D Q_1 = (P_1 D P_1^{\mathrm T})\, (P_1^{-1} Q_1) = S&#39; P&#39;,</annotation></semantics></math>其中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>S</mi><mo>′</mo></msup><mo>=</mo><msub><mi>P</mi><mn>1</mn></msub><mi>D</mi><msubsup><mi>P</mi><mn>1</mn><mi mathvariant="normal">T</mi></msubsup></mrow><annotation encoding="application/x-tex">S&#39;=P_1 D P_1^{\mathrm T}</annotation></semantics></math>对称、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mo>′</mo></msup><mo>=</mo><msubsup><mi>P</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">P&#39;=P_1^{-1}Q_1</annotation></semantics></math>可逆。</li></ol>
+<p><strong>结论。</strong> 任意方阵既写成”可逆阵 × 对称阵，也写成”对称阵 × 可逆阵。</p>
+<p><strong>易错点 / 老师点评。</strong>
+此题曾出现在高等代数期中考中，不少同学没想到做法。关键技巧是观察到”对称阵经<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>S</mi><msup><mi>C</mi><mi mathvariant="normal">T</mi></msup></mrow><annotation encoding="application/x-tex">CSC^{\mathrm T}</annotation></semantics></math>仍对称，从而把<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mn>1</mn></msub><annotation encoding="application/x-tex">Q_1</annotation></semantics></math>的转置补到左边完成配对；若不先写出标准型结论再回推，很难直接下手。</p>
+<h3 id="应用二可逆方阵的等价刻画">01:45:12—01:57:07 ｜
+应用二：可逆方阵的等价刻画</h3>
+<h4 id="例题证明-5014520-n-阶方阵可逆的六种等价条件">例题/证明
+5（01:45:20）｜ n 阶方阵可逆的六种等价条件</h4>
+<p><strong>命题。</strong> 设 A 为 n 阶方阵，则下列六条等价：</p>
+<ol type="1">
+<li>A 可逆；</li>
+<li>A<strong>满秩</strong>，即 rank⁡(A)=n （达到可能的最大值）；</li>
+<li>A 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>
+<strong>相抵</strong>（存在可逆 P,Q 使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>A</mi><mi>Q</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">PAQ=I_n</annotation></semantics></math>）；</li>
+<li>A 是有限个初等矩阵的乘积；</li>
+<li>只做初等<strong>行</strong>变换即可把 A 化为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>（即存在初等矩阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>E</mi><mi>K</mi></msub></mrow><annotation encoding="application/x-tex">E_1,\dots,E_K</annotation></semantics></math>使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>K</mi></msub><mi>⋯</mi><msub><mi>E</mi><mn>1</mn></msub><mi>A</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">E_K\cdots E_1 A=I_n</annotation></semantics></math>）；</li>
+<li>只做初等<strong>列</strong>变换即可把 A 化为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>（即存在初等矩阵<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>F</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">F_1,\dots,F_L</annotation></semantics></math>使<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mi>F</mi><mn>1</mn></msub><mi>⋯</mi><msub><mi>F</mi><mi>L</mi></msub><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">A F_1\cdots F_L=I_n</annotation></semantics></math>）。</li>
+</ol>
+<p><strong>推导（互推）。</strong> - <strong>1
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math>
+3：</strong>A 可逆 ⇒ 标准型为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>
+ ⇒ 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>相抵；反之若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>A</mi><mi>Q</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">PAQ=I_n</annotation></semantics></math>，则<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msup><mi>P</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>Q</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">A=P^{-1}Q^{-1}</annotation></semantics></math>可逆（且标准型为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>）。
+- <strong>2
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math>
+3：</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A)=n</annotation></semantics></math>
+ ⇔ 标准型为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>
+ ⇔ 与<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>相抵（由相抵标准型定理）。 - <strong>1
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⇔</mo><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math>
+4：</strong>A 可逆 ⇒ 由证明
+1， A 是初等矩阵之积；反之初等矩阵之积显然可逆。 - <strong>4 ⇔ 5：</strong> 若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mi>E</mi><mn>1</mn></msub><mi>⋯</mi><msub><mi>E</mi><mi>K</mi></msub></mrow><annotation encoding="application/x-tex">A=E_1\cdots E_K</annotation></semantics></math>（初等），则<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>E</mi><mi>K</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>⋯</mi><msubsup><mi>E</mi><mn>1</mn><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>A</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">E_K^{-1}\cdots E_1^{-1}A=I_n</annotation></semantics></math>，而初等矩阵的逆仍初等，故只用行变换可化 A 为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>；反之若<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>K</mi></msub><mi>⋯</mi><msub><mi>E</mi><mn>1</mn></msub><mi>A</mi><mo>=</mo><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">E_K\cdots E_1 A=I_n</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>E</mi><mi>i</mi></msub><annotation encoding="application/x-tex">E_i</annotation></semantics></math>初等、左乘即行变换），则 A=E1−1⋯EK−1 为初等矩阵之积。 - <strong>4 ⇔ 6：</strong> 与上一条完全同理，把”左乘”换成”右乘”（列变换）即可。</p>
+<p><strong>结论。</strong> 六条互相等价，是可逆性的常用判别。注意：一般 m×n 矩阵化标准型可能行列变换都要用；但<strong>可逆方阵</strong>只需行变换、或只需列变换，就能单独化成单位阵。</p>
+<p><strong>易错点。</strong> 第 5、6
+条正是”可逆方阵可仅用一种变换化单位阵”的含义，不要与一般矩阵混淆。</p>
+<h3 id="从计算角度求秩行变换化阶梯形数非零行">01:57:07—02:01:59 ｜
+从计算角度求秩：行变换化阶梯形数非零行</h3>
+<p>若题目要求把 A 用初等变换化标准型并写出 P,Q ，则需逐步记录变换；但若只关心秩 rank⁡(A) 等于多少，计算可大幅简化：</p>
+<ul>
+<li>只需对 A 做初等<strong>行</strong>变换，化为阶梯形（不必要求主元上方也消成零，即不必化到简化阶梯形）；</li>
+<li>阶梯形中<strong>非零行的个数</strong>就是 A 的秩。</li>
+</ul>
+<p>理由：行变换不改变秩，而阶梯形里主元（每行首个非零元）的个数恰等于标准型中<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>r</mi></msub><annotation encoding="application/x-tex">I_r</annotation></semantics></math>的阶数 r 。换言之，
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mtext mathvariant="normal">阶梯形中主元（非零行）的个数</mtext><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A)=\text{阶梯形中主元（非零行）的个数}.</annotation></semantics></math></p>
+<h3 id="例带参数矩阵的秩">02:01:59—02:07:40 ｜ 例：带参数矩阵的秩</h3>
+<h4 id="例题证明-6020159-求带参数矩阵-ak-的秩">例题/证明 6（02:01:59）｜
+求带参数矩阵 A(k) 的秩</h4>
+<p><strong>题目。</strong> 求下列 3×4 矩阵的秩（ k 为参数）：
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>k</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn><mi>k</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>6</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">A(k)=\begin{pmatrix}
+1 &amp; 1 &amp; 2 &amp; 3 \\
+2 &amp; -2 &amp; k &amp; -2k \\
+1 &amp; -1 &amp; 6 &amp; 0
+\end{pmatrix}.</annotation></semantics></math> [矩阵数字依课堂口述整理为
+“1 1 2 3 / 2 -2 / k -2k / 1 -1 6
+0，个别位因语音转写有损，以板书为准，标[?]。]</p>
+<p><strong>思路。</strong>
+只用初等行变换化为阶梯形，统计非零行数；结果会随参数 k 分类。</p>
+<p><strong>操作步骤（按老师口述的行变换）。</strong></p><ol class="wb-steps"><li>以左上角主元 1 为基准，消去其下方元素： -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>2</mn></msub><mo>←</mo><msub><mi>R</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">R_2 \leftarrow R_2-2R_1</annotation></semantics></math>；
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>3</mn></msub><mo>←</mo><msub><mi>R</mi><mn>3</mn></msub><mo>−</mo><msub><mi>R</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">R_3 \leftarrow R_3-R_1</annotation></semantics></math>。</li><li>再做<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>3</mn></msub><mo>←</mo><msub><mi>R</mi><mn>3</mn></msub><mo>+</mo><mn>2</mn><msub><mi>R</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">R_3 \leftarrow R_3+2R_2</annotation></semantics></math>（老师口述步骤[?]，具体中间元素因转写损失，以下按老师最终结论整理）。</li></ol>
+<p><strong>分类结论（老师口述）。</strong> - 当 k=2 时，三行经消元后均非零，得到 3 个主元，故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>3</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A)=3.</annotation></semantics></math>
+- 当 k≠2 时，最后一行全化为零（仅得 2 个非零阶梯行），故
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>2</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A)=2.</annotation></semantics></math></p>
+<p><strong>易错点。</strong>
+求秩只需行变换到阶梯形，数非零行的个数即可，不必继续把主元上方也消成零；参数讨论时要在每一步看清主元是否为零、以及最后一行是否全零。</p>
+<h3 id="补充如何求出使-paq-为标准型的-pq">02:08:11—02:14:07 ｜
+补充：如何求出使 PAQ 为标准型的 P,Q</h3>
+<p>前面只关心秩时只需行变换；若要求出具体的可逆阵 P,Q 使 PAQ 为标准型，可用”同步记录变换”的方法：</p>
+<ul>
+<li>把 A （大小为 m×n ）的<strong>右边</strong>拼成一个 m 阶单位阵，把它的<strong>下边</strong>拼成一个 n 阶单位阵（即构造一个 (m+n)×(n+m) 的分块阵列，使前 m 行、前 n 列为 A ）；</li>
+<li>对 A 做初等<strong>行</strong>变换时，同步对右侧的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>m</mi></msub><annotation encoding="application/x-tex">I_m</annotation></semantics></math>做<strong>同样的行变换</strong>（作用于前 m 行）；</li>
+<li>对 A 做初等<strong>列</strong>变换时，同步对下侧的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>做<strong>同样的列变换</strong>（作用于前 n 列）；</li>
+<li>当 A 被化成相抵标准型时，右侧的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>m</mi></msub><annotation encoding="application/x-tex">I_m</annotation></semantics></math>同时变成了所求的 P ，下侧的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>n</mi></msub><annotation encoding="application/x-tex">I_n</annotation></semantics></math>同时变成了所求的 Q ，满足<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>A</mi><mi>Q</mi><mo>=</mo><mtext mathvariant="normal">标准型</mtext></mrow><annotation encoding="application/x-tex">PAQ=\text{标准型}</annotation></semantics></math>。</li>
+</ul>
+<p>老师说明：课本未专门给出这类练习题，同学们可自行取一矩阵验证 PAQ 确为标准型。</p>
+<h3 id="行空间列空间与行秩列秩">02:14:46—02:25:12 ｜
+行空间、列空间与行秩、列秩</h3>
+<p>回顾向量组知识：一组向量的<strong>秩</strong>等于其极大线性无关组所含向量个数，也等于这组向量张成（span）子空间的维数。</p>
+<p>对 m×n 矩阵 A 有两种自然分块： -
+<strong>按行分块</strong>： A 的行向量为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_1,\dots,\alpha_m</annotation></semantics></math>（每个是 1×n 行向量）； -
+<strong>按列分块</strong>： A 的列向量为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\beta_1,\dots,\beta_n</annotation></semantics></math>（每个是 m×1 列向量）。</p>
+<p>由此定义： - <strong>行空间</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>⊆</mo><msup><mi>K</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">= \operatorname{span}\{\alpha_1,\dots,\alpha_m\}\subseteq K^n</annotation></semantics></math>，其维数（即行向量组的秩）称为 A 的<strong>行秩</strong>； - <strong>列空间</strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>β</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>⊆</mo><msup><mi>K</mi><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">= \operatorname{span}\{\beta_1,\dots,\beta_n\}\subseteq K^m</annotation></semantics></math>，其维数（即列向量组的秩）称为 A 的<strong>列秩</strong>。</p>
+<p>老师说：目前我们已有<strong>三种</strong>秩的定义——相抵标准型给出的 r 、行秩、列秩。后续将证明这三者相等。</p>
+<h3 id="秩在转置下不变后续路线与作业含课后问答">02:25:12—02:31:34 ｜
+秩在转置下不变；后续路线与作业（含课后问答）</h3>
+<p><strong>命题。</strong> 对任意 m×n 矩阵 A ，有<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="normal">T</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A)=\operatorname{rank}(A^{\mathrm T})</annotation></semantics></math>（秩在转置下不变）。</p>
+<p><strong>证明。</strong> 若
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>A</mi><mi>Q</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">P A Q = \begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix},</annotation></semantics></math>两边取转置得
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Q</mi><mi mathvariant="normal">T</mi></msup><msup><mi>A</mi><mi mathvariant="normal">T</mi></msup><msup><mi>P</mi><mi mathvariant="normal">T</mi></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>I</mi><mi>r</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">Q^{\mathrm T} A^{\mathrm T} P^{\mathrm T} = \begin{pmatrix} I_r &amp; 0 \\ 0 &amp; 0 \end{pmatrix}.</annotation></semantics></math>因<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>Q</mi><mi mathvariant="normal">T</mi></msup><mo>,</mo><msup><mi>P</mi><mi mathvariant="normal">T</mi></msup></mrow><annotation encoding="application/x-tex">Q^{\mathrm T},P^{\mathrm T}</annotation></semantics></math>仍可逆，故<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mi mathvariant="normal">T</mi></msup><annotation encoding="application/x-tex">A^{\mathrm T}</annotation></semantics></math>的相抵标准型也是同一个 r 阶标准型，从而<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="normal">T</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>r</mi><mo>=</mo><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A^{\mathrm T})=r=\operatorname{rank}(A)</annotation></semantics></math>。</p>
+<p><strong>后续逻辑（老师预告）。</strong> 证明三种秩相等分两步：先证<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mtext mathvariant="normal">行秩</mtext></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A)=\text{行秩}</annotation></semantics></math>；再证<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">rank</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mi mathvariant="normal">T</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mtext mathvariant="normal">列秩</mtext></mrow><annotation encoding="application/x-tex">\operatorname{rank}(A^{\mathrm T})=\text{列秩}</annotation></semantics></math>，结合”秩在转置下不变”即得
+行秩 = 列秩。下节课把这些”秩”全部对应起来，并会出现大量关于秩的不等式证明题。</p>
+<p><strong>作业。</strong>
+本次作业于下周四（考后）提交；本周四为期中考试，不交作业。</p>
+<p><strong>课后问答（老师补充）。</strong> 有同学问：若 AB=I ，是否必有 BA=I ？老师说明：这是方阵可逆定义中”单边逆元即双边逆元”的结论，目前<strong>尚未证明</strong>（将随行列式
+/ 秩学完后再证），现阶段不要默认使用；可逆的正式定义仍以”存在 B 使 AB=BA=I “为准。</p>
+<script>window.MathJax={svg:{fontCache:"local"}};</script>
+<script src="../vendor/mathjax/mml-svg.js" id="MathJax-script"></script>
+</body>
+</html>

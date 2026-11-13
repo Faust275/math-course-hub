@@ -670,6 +670,20 @@ body.wb-dark math, body.wb-dark mjx-container, html.wb-dark math, html.wb-dark m
 }
 .wb-math-scroll mjx-container { max-width: 100%; }
 
+/* 层3：拆掉重卡片外壳后的轻量居中公式（命题陈述型，结构平） */
+.wb-math-plain {
+  margin: 14px auto;
+  padding: 10px 14px;
+  max-width: 720px;
+  text-align: center;
+  background: var(--wb-math-bg, #fbfaf6);
+  border: 1px solid var(--wb-math-border, #ece5d8);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+body.wb-dark .wb-math-plain { background: #1f1e1c; border-color: #3a3733; }
+.wb-math-plain mjx-container { max-width: 100%; }
+
 /* 公式高清放大模态浮层 */
 .wb-math-modal {
   position: fixed;
@@ -1538,17 +1552,12 @@ id="一循环嵌套收尾搬砖问题多重循环的效率000238000944">一、�
 块砖搬完。</p>
 </section><section class="wb-seg"><h3 id="列方程与穷举法求解思路"><span class="wb-ts">00:03:39—00:05:50</span> ｜
 列方程与穷举法求解思路</h3>
-<p>设男人的个数为
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>、女人的个数为
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>、小孩的个数为
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>，则有不定方程组：</p>
+<p>设男人的个数为 x 、女人的个数为 y 、小孩的个数为 z ，则有不定方程组：</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>45</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>z</mi><mo>=</mo><mn>45</mn></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
 x + y + z = 45 \\
 3x + 2y + \dfrac{1}{2}z = 45
 \end{cases}</annotation></semantics></math></p>
-<p>其中
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math>
-均为正整数。这是<strong>不定方程</strong>（两个方程、三个未知数），理论上解可能很多，无法用中学那种解析法直接求出所有解。</p>
+<p>其中 x,y,z 均为正整数。这是<strong>不定方程</strong>（两个方程、三个未知数），理论上解可能很多，无法用中学那种解析法直接求出所有解。</p>
 <p>工程中大量方程组（尤其是非线性方程组）无法解析求解，只能用<strong>数值求解</strong>：在已知的取值范围里「搜索」解。其中一种基本方法就是<strong>穷举法</strong>——把所有可能都试一遍，凡是满足两个方程的就是一组解。</p>
 </section><section class="wb-seg"><h3 id="三重循环枚举程序"><span class="wb-ts">00:05:50—00:07:08</span> ｜ 三重循环枚举程序</h3>
 <p>总共有 45 个人，因此男人、女人、小孩的个数各自都从 0 到
@@ -1573,12 +1582,8 @@ x + y + z = 45 \\
 <ul>
 <li><strong class="wb-pill wb-pill-topic">题目</strong>：男人、女人、小孩共 45 人搬 45 块砖，男人每人
 3 块、女人每人 2 块、小孩两人 1 块，求所有组合。</li>
-<li><strong class="wb-pill wb-pill-idea">思路</strong>：三重循环枚举
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>45</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x,y,z\in[0,45]</annotation></semantics></math>，用
-<code>if</code> 同时检验
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo>=</mo><mn>45</mn></mrow><annotation encoding="application/x-tex">x+y+z=45</annotation></semantics></math>
-与
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>0.5</mn><mi>z</mi><mo>=</mo><mn>45</mn></mrow><annotation encoding="application/x-tex">3x+2y+0.5z=45</annotation></semantics></math>。</li>
+<li><strong class="wb-pill wb-pill-idea">思路</strong>：三重循环枚举 x,y,z∈[0,45] ，用
+<code>if</code> 同时检验 x+y+z=45 与 3x+2y+0.5z=45 。</li>
 <li><strong class="wb-pill wb-pill-derive">代码</strong>：见上方代码块（来自课件）。</li>
 <li><strong class="wb-pill wb-pill-derive">编译运行</strong>：<code>gcc brick.c -o brick</code>
 后运行，屏幕依次打印出每一组满足方程的
@@ -1594,19 +1599,15 @@ x + y + z = 45 \\
 </ul>
 </section><section class="wb-seg"><h3 id="效率分析与改进二重循环"><span class="wb-ts">00:07:08—00:09:44</span> ｜
 效率分析与改进（二重循环）</h3>
-<p>三重循环总次数为
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46</mn><mo>×</mo><mn>46</mn><mo>×</mo><mn>46</mn><mo>=</mo><msup><mn>46</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">46\times46\times46 = 46^3</annotation></semantics></math>，数量很大。略作分析即可大幅降低计算量：</p>
+<p>三重循环总次数为<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46</mn><mo>×</mo><mn>46</mn><mo>×</mo><mn>46</mn><mo>=</mo><msup><mn>46</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">46\times46\times46 = 46^3</annotation></semantics></math>，数量很大。略作分析即可大幅降低计算量：</p>
 <ul>
 <li>男人每人搬 3 块，45 块砖最多 15 个男人，故 <code>men</code> 只需
 <code>0..15</code>；</li>
 <li>女人每人搬 2 块，最多 22 个女人，故 <code>women</code> 只需
 <code>0..22</code>；</li>
-<li>小孩个数由总数确定：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>45</mn><mo>−</mo><mi>x</mi><mo>−</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">z = 45 - x - y</annotation></semantics></math>，无需再循环。</li>
+<li>小孩个数由总数确定： z=45−x−y ，无需再循环。</li>
 </ul>
-<p>于是三重循环降为二重循环，总次数仅
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>23</mn><mo>=</mo><mn>368</mn></mrow><annotation encoding="application/x-tex">16\times23 = 368</annotation></semantics></math>，约为原来的
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>46</mn><mn>3</mn></msup><mi>/</mi><mn>368</mn><mo>≈</mo><mn>277</mn></mrow><annotation encoding="application/x-tex">46^3 / 368 \approx 277</annotation></semantics></math>
-倍差距，效率提升巨大。</p>
+<p>于是三重循环降为二重循环，总次数仅 16×23=368 ，约为原来的<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>46</mn><mn>3</mn></msup><mi>/</mi><mn>368</mn><mo>≈</mo><mn>277</mn></mrow><annotation encoding="application/x-tex">46^3 / 368 \approx 277</annotation></semantics></math>倍差距，效率提升巨大。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> men <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> men <span class="op">&lt;=</span><span class="dv">15</span><span class="op">;</span> men<span class="op">++</span> <span class="op">)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> women <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> women <span class="op">&lt;=</span><span class="dv">22</span><span class="op">;</span> women<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>child <span class="op">=</span> <span class="dv">45</span> <span class="op">-</span> men <span class="op">-</span> women<span class="op">;</span></span>
@@ -1629,8 +1630,7 @@ id="二函数的概念定义与圆柱体积例程000944003229">二、函数的�
 <p>函数的作用：</p>
 <ul>
 <li>完成特定工作的<strong>相对独立的程序模块</strong>（如
-<code>printf</code> 输出字符串与变量值，<code>factorial</code> 计算
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>!</mi></mrow><annotation encoding="application/x-tex">n!</annotation></semantics></math>）；</li>
+<code>printf</code> 输出字符串与变量值，<code>factorial</code> 计算 n! ）；</li>
 <li>写好后可在多处<strong>反复调用</strong>；</li>
 <li>把复杂程序拆成一个个较简单的函数集合，使程序更清晰、易维护、易模块化。</li>
 </ul>
@@ -1696,16 +1696,14 @@ id="二函数的概念定义与圆柱体积例程000944003229">二、函数的�
 <code>print</code>、<code>cylinder</code>），让人顾名思义；像
 <code>cd</code> 这种名词不好，看不出是求体积还是求表面积。</li>
 <li><strong class="wb-pill">return 语句的两大作用</strong>：① 结束本函数的运行；②
-设置函数的返回值。高中函数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y=f(x)</annotation></semantics></math>
-中，自变量是参数，函数值由 <code>return</code> 设定。</li>
+设置函数的返回值。高中函数 y=f(x) 中，自变量是参数，函数值由 <code>return</code> 设定。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="函数名形式参数表与-void-类型"><span class="wb-ts">00:20:00—00:23:46</span> ｜
 函数名、形式参数表与 void 类型</h3>
 <ul>
 <li><strong class="wb-pill">形式参数表</strong>：规定函数有哪些参数，用逗号隔开，每个参数单独给出「类型
-名字」。参数个数可以是 0 到多个，如 <code>getchar()</code>
-无参数，可写成 <code>()</code> 或 <code>(void)</code>（<code>void</code>
+名字」。参数个数可以是 0 到多个，如 <code>getchar</code>
+无参数，可写成 <code></code> 或 <code>(void)</code>（<code>void</code>
 在此表示「空/无」）。</li>
 <li><strong class="wb-pill">可变参数函数</strong>：普通函数参数个数固定；但有一类函数参数个数不固定，例如
 <code>printf</code>、<code>scanf</code>——我们一上来就学了最难的函数之一。这类「变参函数」本课程<strong>不介绍</strong>，感兴趣可自行学习（很少用）。</li>
@@ -1762,8 +1760,7 @@ id="二函数的概念定义与圆柱体积例程000944003229">二、函数的�
 </div><div class="wb-excard" id="wb-ex-2" data-ex-idx="2"><h4 id="例题证明-1001225-计算圆柱体积函数定义声明与调用">例题/证明
 1（00:12:25）｜ 计算圆柱体积：函数定义、声明与调用<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-2" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ul>
-<li><strong class="wb-pill wb-pill-topic">题目</strong>：输入圆柱半径与高，计算并输出体积
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>r</mi><mn>2</mn></msup><mi>h</mi></mrow><annotation encoding="application/x-tex">V=\pi r^2 h</annotation></semantics></math>。</li>
+<li><strong class="wb-pill wb-pill-topic">题目</strong>：输入圆柱半径与高，计算并输出体积<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>r</mi><mn>2</mn></msup><mi>h</mi></mrow><annotation encoding="application/x-tex">V=\pi r^2 h</annotation></semantics></math>。</li>
 <li><strong class="wb-pill wb-pill-derive">代码</strong>：见上方「计算圆柱体积」主函数与
 <code>cylinder</code> 函数实现（取自课件 ch05.txt）。</li>
 <li><strong class="wb-pill wb-pill-derive">编译运行</strong>：编译运行后，屏幕提示「输入半径和高度：」，例如输入
@@ -1802,7 +1799,7 @@ id="三函数声明调用与值传递机制003229010421">三、函数声明、�
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x<span class="op">*</span>x<span class="op">;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> x<span class="op">;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">3</span><span class="op">,</span> b<span class="op">;</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> f<span class="op">(</span>a<span class="op">);</span></span>
@@ -1909,11 +1906,8 @@ id="四函数应用例程010614012933">四、函数应用例程（01:06:14—01:
 </div><div class="wb-excard" id="wb-ex-5" data-ex-idx="5"><h4 id="例题证明-1010630-五边形面积area-函数与海伦公式">例题/证明
 1（01:06:30）｜ 五边形面积：area 函数与海伦公式<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-5" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ul>
-<li><strong class="wb-pill wb-pill-topic">题目</strong>：输入五边形 7 条边长
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>∼</mo><msub><mi>a</mi><mn>7</mn></msub></mrow><annotation encoding="application/x-tex">a_1\sim a_7</annotation></semantics></math>，计算面积（拆成三个三角形）。</li>
-<li><strong class="wb-pill wb-pill-idea">思路</strong>：用海伦公式
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><msqrt><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">S=\sqrt{p(p-x)(p-y)(p-z)}</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">p=(x+y+z)/2</annotation></semantics></math>
-求三角形面积；五边形面积 =
+<li><strong class="wb-pill wb-pill-topic">题目</strong>：输入五边形 7 条边长<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>∼</mo><msub><mi>a</mi><mn>7</mn></msub></mrow><annotation encoding="application/x-tex">a_1\sim a_7</annotation></semantics></math>，计算面积（拆成三个三角形）。</li>
+<li><strong class="wb-pill wb-pill-idea">思路</strong>：用海伦公式<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><msqrt><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>−</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">S=\sqrt{p(p-x)(p-y)(p-z)}</annotation></semantics></math>， p=(x+y+z)/2 求三角形面积；五边形面积 =
 <code>area(a1,a5,a6) + area(a6,a4,a7) + area(a7,a3,a2)</code>。</li>
 <li><strong class="wb-pill wb-pill-result">运行结果</strong>（课件示例输入）：依次输入
 <code>2.5 2.5 2.5 2.5 2.5 3.6 3.6</code>，输出
@@ -1925,16 +1919,9 @@ id="四函数应用例程010614012933">四、函数应用例程（01:06:14—01:
 </ul>
 </section><section class="wb-seg"><h3 id="例程-5-3完全平方数判断-issquare"><span class="wb-ts">01:08:56—01:13:01</span> ｜ 例程
 5-3：完全平方数判断 IsSquare</h3>
-<p>一个完全平方数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n=m^2</annotation></semantics></math>
-等于从 1
-开始的连续奇数之和：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>5</mn><mo>+</mo><mi>⋯</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">1+3+5+\cdots+(2m-1)</annotation></semantics></math>。因此不断从
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-减去奇数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">1,3,5,\dots</annotation></semantics></math>，若最终减到正好
-0，则
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-是完全平方数。</p>
+<p>一个完全平方数<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n=m^2</annotation></semantics></math>等于从 1
+开始的连续奇数之和： 1+3+5+⋯+(2m−1) 。因此不断从 n 减去奇数 1,3,5,… ，若最终减到正好
+0，则 n 是完全平方数。</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// n = m*m = 1 + 3 + ... + (2m-1)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> IsSquare<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
@@ -1947,17 +1934,14 @@ id="四函数应用例程010614012933">四、函数应用例程（01:06:14—01:
 </div><div class="wb-excard" id="wb-ex-6" data-ex-idx="6"><h4 id="例题证明-2010921-完全平方数判断函数-issquare">例题/证明
 2（01:09:21）｜ 完全平方数判断函数 IsSquare<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-6" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ul>
-<li><strong class="wb-pill wb-pill-topic">题目</strong>：定义 <code>IsSquare(n)</code>，判断
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-是否为完全平方数（是返回 1，否返回 0）。</li>
+<li><strong class="wb-pill wb-pill-topic">题目</strong>：定义 <code>IsSquare(n)</code>，判断 n 是否为完全平方数（是返回 1，否返回 0）。</li>
 <li><strong class="wb-pill wb-pill-idea">思路</strong>：<code>for(i=1; n&gt;0; i=i+2) n = n - i;</code>
 依次减 1、3、5…；循环条件是 <code>n&gt;0</code>（不是
 <code>i&lt;=某值</code>），只要还能减就继续；退出循环时若
 <code>n==0</code> 则是平方数，<code>n&lt;0</code> 则不是。</li>
 <li><strong class="wb-pill wb-pill-result">返回值</strong>：<code>return n==0;</code>
 是关系表达式，结果为逻辑值——C 中逻辑真为 1、逻辑假为 0（C
-的逻辑值就是整数）。例如
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>9</mn></mrow><annotation encoding="application/x-tex">n=9</annotation></semantics></math>：9−1=8,
+的逻辑值就是整数）。例如 n=9 ：9−1=8,
 8−3=5, 5−5=0，退出后 <code>n==0</code> 为真，返回 1。</li>
 <li><strong class="wb-pill wb-pill-note">易错点</strong>：循环条件写成「<code>i&lt;=某上限</code>」是错的——这里循环控制变量（<code>i</code>）与判断对象（<code>n</code>）是两回事；若
 <code>n</code> 不是平方数，某次会减成负数，<code>n&gt;0</code>
@@ -1965,8 +1949,7 @@ id="四函数应用例程010614012933">四、函数应用例程（01:06:14—01:
 </ul>
 </section><section class="wb-seg"><h3 id="例程-5-4最大公约数-gcd辗转相除法与优化"><span class="wb-ts">01:13:01—01:22:52</span> ｜
 例程 5-4：最大公约数 gcd（辗转相除法与优化）</h3>
-<p>给定两正整数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m,n</annotation></semantics></math>，求最大公约数。用<strong>辗转相除法</strong>。</p>
+<p>给定两正整数 m,n ，求最大公约数。用<strong>辗转相除法</strong>。</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> gcd<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> r<span class="op">;</span></span>
@@ -1986,8 +1969,7 @@ id="四函数应用例程010614012933">四、函数应用例程（01:06:14—01:
 <ul>
 <li><strong class="wb-pill wb-pill-topic">题目</strong>：定义 <code>gcd(m,n)</code>
 返回两正整数最大公约数。</li>
-<li><strong class="wb-pill wb-pill-idea">思路（辗转相除法）</strong>：先保证
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≥</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\ge n</annotation></semantics></math>（用逗号表达式
+<li><strong class="wb-pill wb-pill-idea">思路（辗转相除法）</strong>：先保证 m≥n （用逗号表达式
 <code>r=m, m=n, n=r;</code> 一次交换）；<code>r = m % n</code>；当
 <code>r!=0</code> 时，令 <code>m=n, n=r, r=m%n</code>
 继续；<code>r==0</code> 时 <code>n</code> 即为最大公约数。</li>
@@ -2027,7 +2009,7 @@ prime</h3>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span><span class="co">// 非素数</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 是素数</span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> m<span class="op">;</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> m <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> m<span class="op">&lt;=</span><span class="dv">100</span><span class="op">;</span> m <span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
@@ -2048,28 +2030,19 @@ prime</h3>
 <li><strong class="wb-pill wb-pill-topic">题目</strong>：定义 <code>prime(n)</code>
 判断整数是否为素数（是返回 1，否返回 0）；并调用它打印 2–100
 素数表。</li>
-<li><strong class="wb-pill wb-pill-idea">思路</strong>：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&lt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n&lt;2</annotation></semantics></math>
-非素数；否则只需试除到
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌊</mo><msqrt><mi>n</mi></msqrt><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor\sqrt{n}\rfloor</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">int</mtext><mo stretchy="false" form="postfix">)</mo><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">m=(\text{int})\sqrt{n}</annotation></semantics></math>）；<code>for(k=2;k&lt;=m;k++)</code>
+<li><strong class="wb-pill wb-pill-idea">思路</strong>： n&lt;2 非素数；否则只需试除到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌊</mo><msqrt><mi>n</mi></msqrt><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor\sqrt{n}\rfloor</annotation></semantics></math>（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">int</mtext><mo stretchy="false" form="postfix">)</mo><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">m=(\text{int})\sqrt{n}</annotation></semantics></math>）；<code>for(k=2;k&lt;=m;k++)</code>
 中若 <code>n%k==0</code>
 则非素数（<code>return 0</code>）；循环正常结束则返回 1。主函数每打印 10
 个素数换一行。</li>
 <li><strong class="wb-pill wb-pill-note">易错点</strong>：① <code>return 0;</code>
 提前返回，天然实现「找到因子就判定非素数、跳过后续」（<code>return</code>
-与循环中的 <code>continue</code> 一样能简化逻辑）；② 试除上界用
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>n</mi></msqrt><annotation encoding="application/x-tex">\sqrt{n}</annotation></semantics></math>
-而非
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">n/2</annotation></semantics></math>，效率更高；③
+与循环中的 <code>continue</code> 一样能简化逻辑）；② 试除上界用<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>n</mi></msqrt><annotation encoding="application/x-tex">\sqrt{n}</annotation></semantics></math>而非 n/2 ，效率更高；③
 用函数封装后，主函数无需关心「怎么判素数」的内部细节，逻辑干净。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="例程-5-6数字金字塔-pyramidvoid-函数"><span class="wb-ts">01:25:07—01:29:33</span> ｜ 例程
 5-6：数字金字塔 pyramid（void 函数）</h3>
-<p>打印数字金字塔（第
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-行打印
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-个 <code>i</code>）。无需返回值，定义为 <code>void</code>。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<p>打印数字金字塔（第 i 行打印 i 个 <code>i</code>）。无需返回值，定义为 <code>void</code>。</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> n<span class="op">;</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> pyramid<span class="op">(</span><span class="dt">int</span> n<span class="op">);</span></span>
@@ -2093,14 +2066,7 @@ prime</h3>
 </div><div class="wb-excard" id="wb-ex-9" data-ex-idx="9"><h4 id="例题证明-5012518-数字金字塔打印函数-pyramid">例题/证明
 5（01:25:18）｜ 数字金字塔打印函数 pyramid<span class="wb-ex-head-tools"><button type="button" class="wb-mastery-btn" data-ex-id="wb-ex-9" title="点击切换状态：待复习 / 存疑 / 已攻克">⚪ 待掌握</button><span class="wb-ex-nav-btns"><button type="button" class="wb-step-btn wb-step-prev" title="上一题 (K)">▲</button><button type="button" class="wb-step-btn wb-step-next" title="下一题 (J)">▼</button></span></span></h4>
 <ul>
-<li><p><strong class="wb-pill wb-pill-topic">题目</strong>：输入
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>，打印
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-行数字金字塔（第
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-行
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-个 <code>i</code>）。</p></li>
+<li><p><strong class="wb-pill wb-pill-topic">题目</strong>：输入 n ，打印 n 行数字金字塔（第 i 行 i 个 <code>i</code>）。</p></li>
 <li><p><strong class="wb-pill wb-pill-idea">思路</strong>：外层 <code>for(i=1;i&lt;=n;i++)</code>
 主循环；内嵌<strong>两个并列（兄弟）循环</strong>而非嵌套：第一个循环打印前导空格
 <code>n-i</code> 个，第二个循环打印 <code>i</code> 这个数字
@@ -2425,16 +2391,16 @@ id="八变量作用范围源文件布局与外部变量021250021800">八、变�
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isGameOver<span class="op">;</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 定义全局变量</span></span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">extern</span> <span class="dt">double</span> remainValue<span class="op">;</span> <span class="co">// 申明外部变量</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> save<span class="op">();</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> save<span class="op">;</span></span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数申明</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 函数定义和实现</span></span>
 <span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>save<span class="op">();</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>save<span class="op">;</span></span>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
 <span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> save<span class="op">()</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> save<span class="op"></span></span>
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="op">......</span></span>
 <span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
@@ -2453,10 +2419,10 @@ id="八变量作用范围源文件布局与外部变量021250021800">八、变�
 <code>.c</code> 文件定义的</strong>全局变量。<code>extern</code>
 告诉编译器：「这个变量的类型和名字我知道，它在别处定义。」这样本文件就能使用它。</li>
 <li><strong class="wb-pill wb-pill-note">易错点</strong>：<code>extern</code>
-是<strong>声明不是定义</strong>；<code>int save();</code>
+是<strong>声明不是定义</strong>；<code>int save;</code>
 是函数声明（可加 <code>extern</code>，但函数声明加不加
 <code>extern</code> 意义相同，都可省略）；只有带函数体的
-<code>int save(){...}</code> 才是定义。</li>
+<code>int save{...}</code> 才是定义。</li>
 </ul>
 </section><section class="wb-seg"><h3 id="外部变量-extern声明与定义的区别"><span class="wb-ts">02:15:46—02:18:00</span> ｜ 外部变量
 extern：声明与定义的区别</h3>
@@ -2477,12 +2443,12 @@ id="九课后练习判断各位数字是否从小到大排列021800022634">九�
 练习：变量的初值和作用范围（代码走读）</h3>
 <div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x<span class="op">;</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">();</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">;</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> f<span class="op">();</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> f<span class="op">;</span></span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
 <span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
@@ -2491,7 +2457,7 @@ id="九课后练习判断各位数字是否从小到大排列021800022634">九�
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span>a<span class="op">,</span>x<span class="op">);</span></span>
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">()</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op"></span></span>
 <span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
 <span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> x<span class="op">;</span></span>
@@ -2507,7 +2473,7 @@ id="九课后练习判断各位数字是否从小到大排列021800022634">九�
 <li>全局 <code>int x;</code>（初值 0，在静态存储区）。</li>
 <li><code>main</code> 局部 <code>a = 1</code>。</li>
 <li><code>x = a;</code> → 全局 <code>x = 1</code>。</li>
-<li><code>a = f();</code> → 进入 <code>f</code>：其局部
+<li><code>a = f;</code> → 进入 <code>f</code>：其局部
 <code>int x = 4</code>（屏蔽全局），<code>return x</code> 返回
 4；<code>a = 4</code>。<strong>全局 <code>x</code> 不受影响，仍为
 1</strong>（值传递/作用范围屏蔽）。</li>

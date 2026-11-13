@@ -589,21 +589,13 @@ id="一循环结构导入while-语句与-forwhile-互转000432001209">一、循�
 <p>上课前先用”浙大” APP
 做课间点名（雷达点名），老师强调群里签到无效，点名结果以手机为准；点名是课堂管理，不展开。</p>
 <p>正式进入<strong>第四章 循环结构</strong>。先回顾已经学过的
-<code>for</code> 循环——它是<strong>固定次数</strong>的循环：要做
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
-遍一件事，就设一个计数变量（习惯用
-<code>i</code>、<code>k</code>），让它从
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
-走到
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>：</p>
+<code>for</code> 循环——它是<strong>固定次数</strong>的循环：要做 N 遍一件事，就设一个计数变量（习惯用
+<code>i</code>、<code>k</code>），让它从 1 走到 N ：</p>
 <pre><code>for( i = 1; i &lt;= n; i++ )   /* 从 1 到 N，也可以从 0 到 N-1 */
     ... 做第 i 次 ...</code></pre>
 <p>老师特别提醒：看循环次数时，<strong>末尾是小于号还是小于等于号一定要分清</strong>——<code>i &lt;= n</code>
-包含第
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-次，<code>i &lt; n</code> 不包含，差一个就错。也可以写成
-<code>i = 0; i &lt; n</code>（从 0 到
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>），两者等价，关键看头尾是否包含。</p>
+包含第 n 次，<code>i &lt; n</code> 不包含，差一个就错。也可以写成
+<code>i = 0; i &lt; n</code>（从 0 到 n−1 ），两者等价，关键看头尾是否包含。</p>
 <p>但今天要学的 <code>while</code>
 循环<strong>不是按次数控制</strong>的，而是按一个逻辑表达式是否为真来控制。</p>
 <h3 id="while-语句的语法与执行流程">00:06:28—00:07:39 ｜ while
@@ -613,7 +605,7 @@ id="一循环结构导入while-语句与-forwhile-互转000432001209">一、循�
     循环体语句;</code></pre>
 <ul>
 <li>先计算表达式的值；</li>
-<li>如果表达式的值为真（在 C 里即”不为 0”），就执行循环体语句；</li>
+<li>如果表达式的值为真（在 C 里即”不为 0），就执行循环体语句；</li>
 <li>执行完后<strong>再回头</strong>看表达式的值有没有变；如果还不为
 0（仍为真），就继续；</li>
 <li>一旦表达式的值为假（为 0），循环结束。</li>
@@ -668,64 +660,36 @@ id="二例-4-1-用格雷戈里公式求-π误差控制的-while-循环0012220021
 循环）（00:12:22—00:21:49）</h2>
 <h3 id="问题分析与循环体设计">00:12:22—00:15:00 ｜
 问题分析与循环体设计</h3>
-<p>例题要求：用<strong>格雷戈里公式</strong>（莱布尼茨级数）求
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>
-的近似值，精确到”<strong>最后一项的绝对值小于给定的值</strong>”（例如
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>）：</p>
+<p>例题要求：用<strong>格雷戈里公式</strong>（莱布尼茨级数）求 π 的近似值，精确到”<strong>最后一项的绝对值小于给定的值</strong>”（例如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>）：</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>4</mn><mo>×</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>+</mo><mi>⋯</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\pi = 4 \times \left( 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots \right)</annotation></semantics></math></p>
 <p>问题特点：<strong>没有直接给出循环次数</strong>。前面我们算过”前 200
 项”或”前 300
-项”的合，那是固定次数；现在改成”误差控制”——只要最后一项的绝对值小于
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>
-就停。虽然理论上你能先解出
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
-使得
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>&lt;</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\frac{1}{N} &lt; 10^{-4}</annotation></semantics></math>
-再转成固定次数，但<strong>当表达式很复杂、根本求不出
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
-时，就只能用条件控制</strong>。</p>
+项”的合，那是固定次数；现在改成”误差控制”——只要最后一项的绝对值小于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>就停。虽然理论上你能先解出 N 使得<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>&lt;</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\frac{1}{N} &lt; 10^{-4}</annotation></semantics></math>再转成固定次数，但<strong>当表达式很复杂、根本求不出 N 时，就只能用条件控制</strong>。</p>
 <p>老师说这类问题的典型特征：<strong>循环条件复杂、情况动态变化、无法事先确定次数</strong>。比如走迷宫，你不知道要循环多少次才能走出迷宫（高手三步并作两步，普通人要很久）。对这种”循环条件未知”的情况，<strong>通常采用
 <code>while</code> 循环</strong>。</p>
 <p>循环体要反复做什么？——“计算求和里的每一项
-<code>item</code>，把它加到结果 <code>sum</code> 里”。如果
+<code>item</code>，把它加到结果 <code>sum</code> 里。如果
 <code>item &lt; 阈值</code>，就终止；否则继续。</p>
 <h3 id="读取误差阈值与累加逻辑">00:15:00—00:17:01 ｜
 读取误差阈值与累加逻辑</h3>
-<p>先读入一个误差阈值 <code>eps</code>（例如输入
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0001</mn><annotation encoding="application/x-tex">0.0001</annotation></semantics></math>
-表示
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>，或
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.00001</mn><annotation encoding="application/x-tex">0.00001</annotation></semantics></math>
-表示
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>5</mn></mrow></msup><annotation encoding="application/x-tex">10^{-5}</annotation></semantics></math>）。<code>item</code>
-一开始就取第一项
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>。循环条件写成
+<p>先读入一个误差阈值 <code>eps</code>（例如输入 0.0001 表示<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>，或 0.00001 表示<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>5</mn></mrow></msup><annotation encoding="application/x-tex">10^{-5}</annotation></semantics></math>）。<code>item</code>
+一开始就取第一项 1 。循环条件写成
 <code>item &gt;= eps</code>：只要当前项的绝对值还大于等于阈值，就继续累加并准备下一项。</p>
-<p>项的规律：分母是
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">1, 3, 5, 7, \dots</annotation></semantics></math>（每次加
-2）；符号是
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mo>,</mo><mi>−</mi><mo>,</mo><mi>+</mi><mo>,</mo><mi>−</mi></mrow><annotation encoding="application/x-tex">+,-,+,-</annotation></semantics></math>
-交错，用 <code>flag</code> 表示（初值为
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>，每轮变号
-<code>flag = -flag</code>）。第一项 <code>item = 1</code>（即
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">1/1</annotation></semantics></math>）。</p>
+<p>项的规律：分母是 1,3,5,7,… （每次加
+2）；符号是 +,−,+,− 交错，用 <code>flag</code> 表示（初值为 1 ，每轮变号
+<code>flag = -flag</code>）。第一项 <code>item = 1</code>（即 1/1 ）。</p>
 <h3 id="最后一项必须加入求和的易错点">00:17:01—00:20:13 ｜
 “最后一项”必须加入求和的易错点</h3>
-<p>这里有个<strong>关键易错点</strong>（老师反复强调，也是考试常错点）：题目要求”<strong>直到最后一项小于给定值</strong>”，也就是说那一项虽然小于阈值，但<strong>仍然要加进
+<p>这里有个<strong>关键易错点</strong>（老师反复强调，也是考试常错点）：题目要求”<strong>直到最后一项小于给定值</strong>，也就是说那一项虽然小于阈值，但<strong>仍然要加进
 <code>sum</code></strong>。幻灯片上的写法把”是否加入”和”是否停止”分开处理，能保证最后一项被加进去。</p>
-<p>老师原话点出的现象：很多人程序整体都对，就是”最后一项没加进去”，结果有误差。提示：若写成”先算
+<p>老师原话点出的现象：很多人程序整体都对，就是”最后一项没加进去，结果有误差。提示：若写成”先算
 <code>item</code>，若 <code>item &lt; 阈值</code> 就 <code>break</code>
-跳出、不再累加”，那一项就被漏掉了——<strong>逻辑要严密，不能留漏洞</strong>。</p>
+跳出、不再累加，那一项就被漏掉了——<strong>逻辑要严密，不能留漏洞</strong>。</p>
 <p>真正写程序时，按幻灯片的结构更顺：循环里先累加当前
-<code>item</code>，再算下一项、变号；循环结束后，幻灯片还单独补了一句把”刚算出但已小于阈值的那一项”也加上（见代码注释”最后一项”）。</p>
+<code>item</code>，再算下一项、变号；循环结束后，幻灯片还单独补了一句把”刚算出但已小于阈值的那一项”也加上（见代码注释”最后一项）。</p>
 <h4 id="例题证明-1001222-用格雷戈里公式求-π-的近似值">例题/证明
 1（00:12:22）｜ 用格雷戈里公式求 π 的近似值</h4>
-<p><strong>题目／任务</strong>：从键盘读入误差阈值 <code>eps</code>，用
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>4</mn><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>+</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\pi = 4\times(1 - \frac13 + \frac15 - \frac17 + \cdots)</annotation></semantics></math>
-计算
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>，直到”最后一项的绝对值
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>
-<code>eps</code>“为止。</p>
+<p><strong>题目／任务</strong>：从键盘读入误差阈值 <code>eps</code>，用<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>4</mn><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>+</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\pi = 4\times(1 - \frac13 + \frac15 - \frac17 + \cdots)</annotation></semantics></math>计算 π ，直到”最后一项的绝对值 &lt;<code>eps</code>“为止。</p>
 <p><strong>思路</strong>：<code>while( item &gt;= eps )</code>
 控制循环；循环体内累加 <code>flag * item</code>、分母每次加
 2、算下一项、符号变号；循环结束后把”最后（已小于阈值）的那一项”也补进
@@ -754,8 +718,7 @@ id="二例-4-1-用格雷戈里公式求-π误差控制的-while-循环0012220021
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>代码取自课件 ch04(1).txt 第 6 页。</p>
-<p><strong>输入</strong>：例如 <code>0.0001</code>（即
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>）。</p>
+<p><strong>输入</strong>：例如 <code>0.0001</code>（即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>4</mn></mrow></msup><annotation encoding="application/x-tex">10^{-4}</annotation></semantics></math>）。</p>
 <p><strong>输出／运行结果</strong>：屏幕打印 <code>Pi = 3.1414</code>
 一类的值（<code>%.4f</code> 保留 4 位小数）。</p>
 <p><strong>易错点</strong>：</p><ol class="wb-steps"><li><code>item</code>
@@ -764,8 +727,7 @@ id="二例-4-1-用格雷戈里公式求-π误差控制的-while-循环0012220021
 <code>1</code>，否则整数除法会出错）；<code>sum</code>、<code>denom</code>、<code>flag</code>
 也要提前初始化。</li><li><code>scanf</code> 读 <code>double</code> 用
 <code>%lf</code>，取地址 <code>&amp;eps</code>。</li><li>“最后一项”即使小于阈值也要加进去，否则结果有误差。</li><li><code>flag = -flag</code> 实现符号交替；<code>denom = denom + 2</code>
-让分母走
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">1,3,5,\dots</annotation></semantics></math>。</li></ol>
+让分母走 1,3,5,… 。</li></ol>
 <h3 id="用-break-简化程序的预告">00:20:13—00:21:49 ｜ 用 break
 简化程序的预告</h3>
 <p>老师指出幻灯片”补最后一项”那句让同一句累加逻辑出现了两次，不够漂亮。预告：<strong>等讲到
@@ -793,7 +755,7 @@ id="例题证明-2002239-输入一批成绩以负数结束算平均分并统计�
 <p><strong>题目／任务</strong>：不断读入成绩直到出现负数；输出平均成绩与不及格人数。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 11–13 页）：</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> num <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 总人数</span></span>
@@ -825,7 +787,7 @@ id="例题证明-2002239-输入一批成绩以负数结束算平均分并统计�
 <p>代码取自课件 ch04(1).txt 第 11–13 页。</p>
 <p><strong>输入</strong>（每数回车或空格分隔，最后以负数结束）：</p>
 <pre><code>89 76 55 90 -1</code></pre>
-<p><strong>输出／运行结果</strong>：按格式打印平均成绩（保留两位小数）与不及格人数；若没有任何有效成绩（<code>num==0</code>，即一上来就是负数），打印”平均成绩为0”。幻灯片注明
+<p><strong>输出／运行结果</strong>：按格式打印平均成绩（保留两位小数）与不及格人数；若没有任何有效成绩（<code>num==0</code>，即一上来就是负数），打印”平均成绩为0。幻灯片注明
 <code>if( num&gt;0 )</code> 的条件表达式等价于
 <code>num != 0</code>。</p>
 <p><strong>易错点</strong>： -
@@ -855,19 +817,19 @@ id="例题证明-2002239-输入一批成绩以负数结束算平均分并统计�
 <p>老师顺势引出一个类似的字符读取例子：逐个读字符，以换行符
 <code>'\n'</code>
 作为结束标志。讨论的是<strong>表达式求值顺序</strong>——<code>while</code>
-要计算 <code>ch = getchar() != '\n'</code>
+要计算 <code>ch = getchar != '\n'</code>
 这个表达式的值，最外层是比较运算
 <code>!=</code>，里层是一个<strong>赋值表达式</strong>
-<code>ch = getchar()</code>。</p>
+<code>ch = getchar</code>。</p>
 <p>求值顺序：先算右边的
-<code>getchar()</code>（一次函数调用，读入一个字符），把返回值赋给
+<code>getchar</code>（一次函数调用，读入一个字符），把返回值赋给
 <code>ch</code>，然后再判断 <code>ch</code> 是否不等于
 <code>'\n'</code>。一句话就完成了”读字符→存变量→判断结束”三件事，这正是
 C 语言表达式”能做很多事情”的体现。</p>
 <h3 id="表达式求值顺序与赋值括号">00:30:14—00:32:04 ｜
 表达式求值顺序与赋值括号</h3>
-<p>老师强调：为什么要把 <code>ch = getchar()</code> 用括号括起来，写成
-<code>( ch = getchar() ) != '\n'</code>（口语示意，非课件完整程序）？因为<strong>赋值
+<p>老师强调：为什么要把 <code>ch = getchar</code> 用括号括起来，写成
+<code>( ch = getchar ) != '\n'</code>（口语示意，非课件完整程序）？因为<strong>赋值
 <code>=</code> 的优先级低于比较
 <code>!=</code></strong>——若不括起来，编译器会先做
 <code>!=</code>，结果就错了（拿到的是 0 或 1
@@ -882,7 +844,7 @@ C 语言表达式”能做很多事情”的体现。</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    循环体语句</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span><span class="op">(</span> 表达式<span class="op">);</span></span></code></pre></div>
-<p>特点：<strong>先执行循环体，再判断表达式</strong>。因此<strong>循环体至少被执行一次</strong>。老师提示：有的场合循环体”至少要做一次”，用
+<p>特点：<strong>先执行循环体，再判断表达式</strong>。因此<strong>循环体至少被执行一次</strong>。老师提示：有的场合循环体”至少要做一次，用
 <code>do-while</code> 最自然。由此 C
 语言共有三个循环控制语句：<code>for</code>、<code>while</code>、<code>do-while</code>——区别就在”判断时机”：
 - <code>for</code>：先判断（次数已知最合适）； -
@@ -894,7 +856,7 @@ C 语言表达式”能做很多事情”的体现。</p>
 <code>5</code>，输入 <code>-99</code> 输出 <code>2</code>，输入
 <code>0</code> 输出 <code>1</code>。</p>
 <p>思路：不知道整数有几位，但可以”不断除以 10 直到为
-0”，<strong>除的次数就是位数</strong>（<code>99</code> 除 1 次得
+0，<strong>除的次数就是位数</strong>（<code>99</code> 除 1 次得
 9、再除得 0，共 2 次→2 位；<code>122</code> 除 3 次得 0→3
 位）。这种”先做至少一次除法”的场景用 <code>do-while</code> 很合适。</p>
 <h4 id="例题证明-3003326-计算一个整数的位数">例题/证明 3（00:33:26）｜
@@ -902,7 +864,7 @@ C 语言表达式”能做很多事情”的体现。</p>
 <p><strong>题目／任务</strong>：输入整数，统计位数。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 15–16 页）：</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count<span class="op">,</span> number<span class="op">;</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入一个整数: &quot;</span><span class="op">);</span><span class="co">/* 输入提示*/</span></span>
@@ -933,7 +895,7 @@ C 语言表达式”能做很多事情”的体现。</p>
 <p>老师还提到两种”打补丁”思路：在 <code>while</code> 版前加
 <code>if (number == 0) count = 1;</code>，或者直接写一行”取巧”代码（用
 <code>number&gt;=1 + number&gt;=10 + number&gt;=100 + number&gt;=1000</code>
-累加布尔值），但都”很难看”，不如 <code>do-while</code>
+累加布尔值），但都”很难看，不如 <code>do-while</code>
 干净。当整数可能非常大时，可改用 <code>long</code> /
 <code>long long</code> 类型（类型细节后续再讲）。</p>
 <h3 id="例-4-4-逆序输出整数含负数处理">00:43:04—00:49:33 ｜ 例 4-4
@@ -942,13 +904,13 @@ C 语言表达式”能做很多事情”的体现。</p>
 <code>54321</code>；最高位未知，但”先从个位开始输出”是确定的。</p>
 <p>思路：取个位数用 <code>number % 10</code>；输出后
 <code>number = number / 10</code> 去掉个位；只要
-<code>number != 0</code>（还有更高位）就继续——显然”至少输出一次个位”，用
+<code>number != 0</code>（还有更高位）就继续——显然”至少输出一次个位，用
 <code>do-while</code>。</p>
 <h4 id="例题证明-4004304-逆序输出一个整数">例题/证明 4（00:43:04）｜
 逆序输出一个整数</h4>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 18 页）：</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> number<span class="op">;</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入一个整数: &quot;</span><span class="op">);</span></span>
@@ -992,27 +954,23 @@ C 语言表达式”能做很多事情”的体现。</p>
 4-1</h3>
 <p>回到例 4-1。用 <code>break</code>
 的逻辑是：用<strong>无条件循环</strong>（<code>for(;;)</code> 或
-<code>while(1)</code>）反复”计算当前项、累加、若该项绝对值
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>
-阈值就
-<code>break</code>“。变量初始化照旧：<code>item = 1.0</code>、<code>denom = 1</code>、<code>flag = 1</code>、<code>sum = 0</code>。</p>
+<code>while(1)</code>）反复”计算当前项、累加、若该项绝对值 &lt; 阈值就
+<code>break</code>。变量初始化照旧：<code>item = 1.0</code>、<code>denom = 1</code>、<code>flag = 1</code>、<code>sum = 0</code>。</p>
 <p>老师现场按这个思路把程序顺下来：先累加（注意 <code>flag</code>
 在累加<strong>之后</strong>再变号），再算下一项；判断若
-<code>item</code> 绝对值
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>
-阈值就是”最后一项”，<code>break</code>
+<code>item</code> 绝对值 &lt; 阈值就是”最后一项，<code>break</code>
 终止——这样<strong>最后一项自然已经加进
 <code>sum</code></strong>，不用像幻灯片那样再补一句。读入阈值也要先加输入提示，用
 <code>%lf</code> 读 <code>double</code>。</p>
 <p>（该 <code>break</code> 改写版为课堂现场设计，课件 ch04 给出的是第 6
 页的 <code>while</code>
-版本；两者算法等价，改写版不重新附整段源码，逻辑即”累加→判阈值→break”。）</p>
+版本；两者算法等价，改写版不重新附整段源码，逻辑即”累加→判阈值→break。）</p>
 <h3 id="逻辑检查与两种写法对比">00:57:07—01:00:32 ｜
 逻辑检查与两种写法对比</h3>
 <p>写完后第一件事是点”编译”看有无语法错；随后<strong>静态检查逻辑</strong>：算当前项、累加、若小于阈值则停（严格小于、非小于等于）、否则准备下一项（分母加
 2、符号变号）。</p>
 <p>老师对比：幻灯片原版行数没少、任务一样，但”最后一项”要单独补一句、还留了个补丁，不舒服；<code>break</code>
-版思维更顺、不用打补丁、可读性更好。<strong>结论</strong>：程序设计不仅要”会做、做对”，还要”做好”——合理利用
+版思维更顺、不用打补丁、可读性更好。<strong>结论</strong>：程序设计不仅要”会做、做对，还要”做好”——合理利用
 <code>break</code> 能简化逻辑、让思维流畅。随后课间休息并点名。</p>
 <h2 id="六例-4-5-素数判定与循环出口判定010050012526">六、例 4-5
 素数判定与循环出口判定（01:00:50—01:25:26）</h2>
@@ -1024,39 +982,20 @@ C 语言表达式”能做很多事情”的体现。</p>
 4-5。</p>
 <h3 id="素数判定真因子范围sqrt-与类型转换">01:09:05—01:14:45 ｜
 素数判定：真因子范围、sqrt 与类型转换</h3>
-<p>例 4-5：输入一个正整数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>，判定是否为素数。</p>
+<p>例 4-5：输入一个正整数 m ，判定是否为素数。</p>
 <p>素数定义：大于 1，且<strong>不存在真因子</strong>（1
-和自身叫”假因子”，不算）。判定方法：在
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo>,</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2, m-1]</annotation></semantics></math>
-范围找真因子，<strong>一旦找到就必定不是素数</strong>，可立即终止循环——这正是
+和自身叫”假因子，不算）。判定方法：在 [2,m−1] 范围找真因子，<strong>一旦找到就必定不是素数</strong>，可立即终止循环——这正是
 <code>break</code> 的用武之地。</p>
-<p>真因子的<strong>上限可以缩小到
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math></strong>：若
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
-能分解，两个因子中必有一个
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><msqrt><mi>m</mi></msqrt></mrow><annotation encoding="application/x-tex">\le \sqrt{m}</annotation></semantics></math>（要么两个相等都等于
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>，要么一大一小于
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>；不可能两个都
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><msqrt><mi>m</mi></msqrt></mrow><annotation encoding="application/x-tex">&gt;\sqrt{m}</annotation></semantics></math>，否则乘积
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">&gt; m</annotation></semantics></math>）。所以只需测到
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌊</mo><msqrt><mi>m</mi></msqrt><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor\sqrt{m}\rfloor</annotation></semantics></math>。</p>
-<p>求
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>
-要调用<strong>数学库函数</strong> <code>sqrt(m)</code>（头文件
+<p>真因子的<strong>上限可以缩小到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math></strong>：若 m 能分解，两个因子中必有一个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><msqrt><mi>m</mi></msqrt></mrow><annotation encoding="application/x-tex">\le \sqrt{m}</annotation></semantics></math>（要么两个相等都等于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>，要么一大一小于<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>；不可能两个都<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><msqrt><mi>m</mi></msqrt></mrow><annotation encoding="application/x-tex">&gt;\sqrt{m}</annotation></semantics></math>，否则乘积 &gt;m ）。所以只需测到<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌊</mo><msqrt><mi>m</mi></msqrt><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor\sqrt{m}\rfloor</annotation></semantics></math>。</p>
+<p>求<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>m</mi></msqrt><annotation encoding="application/x-tex">\sqrt{m}</annotation></semantics></math>要调用<strong>数学库函数</strong> <code>sqrt(m)</code>（头文件
 <code>math.h</code>），其返回值是
 <code>double</code>。但我们只要整数部分，所以用<strong>类型转换运算符</strong>
 <code>(int)</code> 取整：<code>(int)sqrt(m)</code>
-会丢掉小数部分、取浮点数的整数部分（如
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>5</mn></msqrt><mo>≈</mo><mn>2.236</mn></mrow><annotation encoding="application/x-tex">\sqrt{5}\approx 2.236</annotation></semantics></math>
-取整得 2）。</p>
+会丢掉小数部分、取浮点数的整数部分（如<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>5</mn></msqrt><mo>≈</mo><mn>2.236</mn></mrow><annotation encoding="application/x-tex">\sqrt{5}\approx 2.236</annotation></semantics></math>取整得 2）。</p>
 <h3 id="用-break-提前退出循环">01:14:45—01:18:46 ｜ 用 break
 提前退出循环</h3>
 <p>循环写成 <code>for (i = 2; i &lt;= max; i++)</code>，若
-<code>m % i == 0</code>（即
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-整除
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>）就
+<code>m % i == 0</code>（即 i 整除 m ）就
 <code>break</code>——找到了真因子，不必再试。老师用面试作比：多个面试官依次面，中间一个不通过就无需见下一个，直接淘汰。</p>
 <p>循环结束后如何判定素数？关键看 <strong><code>i</code> 的值</strong>：
 - 若循环是<strong>正常结束</strong>（跑完
@@ -1067,8 +1006,7 @@ C 语言表达式”能做很多事情”的体现。</p>
 为真，把 <code>isPrime</code> 置 0（不是素数）。</p>
 <h4 id="例题证明-5010905-输入正整数-m判定是否为素数">例题/证明
 5（01:09:05）｜ 输入正整数 m，判定是否为素数</h4>
-<p><strong>题目／任务</strong>：读入正整数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>，判断其是否为素数。</p>
+<p><strong>题目／任务</strong>：读入正整数 m ，判断其是否为素数。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 24–25 页）：</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
@@ -1132,38 +1070,29 @@ C 语言表达式”能做很多事情”的体现。</p>
 猜数游戏：随机数与循环（01:25:41—01:38:09）</h2>
 <h3 id="随机数产生srand-rand-time">01:25:41—01:30:15 ｜
 随机数产生（srand / rand / time）</h3>
-<p>例 4-6：计算机产生一个
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1, 100]</annotation></semantics></math>
-间的随机整数，你猜，每次反馈”猜对 / 太大 / 太小”，共 7 次机会。</p>
+<p>例 4-6：计算机产生一个 [1,100] 间的随机整数，你猜，每次反馈”猜对 / 太大 / 太小，共 7 次机会。</p>
 <p>产生随机数：调用<strong>标准库函数</strong>（头文件
 <code>stdlib.h</code>）： - <code>time(0)</code>：返回从 <strong>1970 年
 1 月 1 日 00:00:00</strong> 到当前时刻的秒数（大整数类型
 <code>time_t</code>），作随机种子； -
 <code>srand(seed)</code>：设置随机种子（相同种子产生相同序列）； -
-<code>rand()</code>：返回一个
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mtext mathvariant="normal">RAND_MAX</mtext><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, \text{RAND\_MAX}]</annotation></semantics></math>
-间的随机数。</p>
-<p>老师提醒：变量未初始化时是”垃圾值”，<strong>垃圾 ≠
+<code>rand</code>：返回一个<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mtext mathvariant="normal">RAND_MAX</mtext><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, \text{RAND\_MAX}]</annotation></semantics></math>间的随机数。</p>
+<p>老师提醒：变量未初始化时是”垃圾值，<strong>垃圾 ≠
 随机</strong>；真正的随机很复杂，标准库给的是<strong>伪随机</strong>（由确定性的种子函数产生，看起来随机）。把当前时间作种子即可得到每次不同的序列。</p>
-<p>要得到
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1,100]</annotation></semantics></math>：<code>rand() % 100</code>
-得
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>99</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,99]</annotation></semantics></math>，再加
-1 即得
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1,100]</annotation></semantics></math>。这里要用到取模运算——再次说明”数学要好、要会换算”。</p>
+<p>要得到 [1,100] ：<code>rand % 100</code>
+得 [0,99] ，再加
+1 即得 [1,100] 。这里要用到取模运算——再次说明”数学要好、要会换算。</p>
 <h3 id="用-forwhile-控制-7-次猜测与-break">01:30:15—01:36:03 ｜ 用
 for/while 控制 7 次猜测与 break</h3>
 <p>用循环控制 7 次猜测：最合适的是
 <code>for (count = 0; count &lt; 7; count++)</code>（次数已知）。每轮：读入
 <code>guess</code>、<code>count</code> 加 1、若
 <code>guess == number</code> 则
-<code>break</code>（猜中跳出）、否则输出”太大/太小”。老师现场运行演示：输入
+<code>break</code>（猜中跳出）、否则输出”太大/太小。老师现场运行演示：输入
 <code>50</code>（太大）、<code>25</code>（太大）、<code>22</code>（太小）……二分逼近，多次后猜中。</p>
 <h4 id="例题证明-6012541-猜数游戏">例题/证明 6（01:25:41）｜
 猜数游戏</h4>
-<p><strong>题目／任务</strong>：产生
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>100</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[1,100]</annotation></semantics></math>
-随机数，用户最多猜 7 次，反馈结果。</p>
+<p><strong>题目／任务</strong>：产生 [1,100] 随机数，用户最多猜 7 次，反馈结果。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 73–76 页）：</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span><span class="pp"> </span><span class="co">/* 函数：srand, rand */</span></span>
@@ -1173,7 +1102,7 @@ for/while 控制 7 次猜测与 break</h3>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> count<span class="op">,</span> number <span class="op">,</span> guess<span class="op">;</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>srand<span class="op">(</span> time<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">);</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>number <span class="op">=</span> rand<span class="op">()</span> <span class="op">%</span> <span class="dv">100</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 随机数*/</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>number <span class="op">=</span> rand<span class="op"></span> <span class="op">%</span> <span class="dv">100</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// 随机数*/</span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span><span class="op">(</span> count <span class="op">&lt;</span><span class="dv">7</span> <span class="op">)</span> <span class="op">{</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;输入你猜的整数：&quot;</span><span class="op">);</span></span>
@@ -1192,19 +1121,19 @@ for/while 控制 7 次猜测与 break</h3>
 <span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>代码取自课件 ch04(1).txt 第 73–76 页。</p>
 <p><strong>运行示例</strong>：<code>srand(time(0))</code> 设种子 →
-<code>rand()%100+1</code> 得答案（如 15）→ 用户输入猜测，程序反馈直到 7
+<code>rand%100+1</code> 得答案（如 15）→ 用户输入猜测，程序反馈直到 7
 次内猜中或耗尽。</p>
 <p><strong>循环出口判定</strong>：循环结束有两种情况——<code>count &lt; 7</code>
 时 <code>break</code> 出来（猜中），或 <code>count</code> 走到 7
 常规结束（没猜中）。所以结尾用 <code>if (count &lt; 7)</code>
-区分”猜中祝贺”与”7 次未猜出遗憾”。</p>
+区分”猜中祝贺”与”7 次未猜出遗憾。</p>
 <h3 id="循环出口判定与-count-自增位置">01:36:03—01:38:09 ｜
 循环出口判定与 count 自增位置</h3>
 <p>老师对比：<code>for</code> 比 <code>while</code>
 更合适（次数已知）。关于 <code>count++</code>
 的位置：放在读入之后、判断之前都行；若第一次就猜中，<code>count</code>
 为 0 时 <code>break</code> 跳出，结尾 <code>count &lt; 7</code> 仍成立 ⇒
-正确判定为”猜中”。<code>for</code> 的 <code>count++</code> 写在表达式 3
+正确判定为”猜中。<code>for</code> 的 <code>count++</code> 写在表达式 3
 也完全等效。最后补充 <code>time</code> 的准确含义（1970-01-01
 起秒数）。</p>
 <h2 id="八continue-语句与程序阅读练习013809015503">八、continue
@@ -1220,7 +1149,7 @@ for/while 控制 7 次猜测与 break</h3>
 <code>continue</code>，下面的语句永远执行不到。</p>
 <p><code>continue</code> <strong>不是必要语句</strong>，它可等价改写成
 <code>if-else</code>：把”满足条件就 <code>continue</code>（跳过语句段
-2）“改成”不满足条件才执行语句段 2”。但用 <code>continue</code>
+2）“改成”不满足条件才执行语句段 2。但用 <code>continue</code>
 的好处是<strong>避免代码右移、减少嵌套层次</strong>——当语句段 2
 本身很复杂时，多个 <code>continue</code> 能让结构更扁平、更易读。</p>
 <p>对 <code>for</code> 循环要特别注意：<code>continue</code>
@@ -1248,7 +1177,7 @@ for/while 控制 7 次猜测与 break</h3>
 <h4 id="例题证明-7014452-分析-do-while-continue-程序的输出">例题/证明
 7（01:44:52）｜ 分析 do-while + continue 程序的输出</h4>
 <p><strong>题目／任务</strong>：写出上述程序的输出结果。</p>
-<p><strong>思路/逐步跟踪</strong>（老师在草稿纸上逐轮推演，强调”读程序要用纸笔一步一步写，别只在脑子里转”）：</p>
+<p><strong>思路/逐步跟踪</strong>（老师在草稿纸上逐轮推演，强调”读程序要用纸笔一步一步写，别只在脑子里转）：</p>
 <ul>
 <li>初始 <code>n = 0</code>；<code>do</code> 先执行：打印
 <code>0</code>（<code>%3d</code> 占 3 位），<code>f(0)</code> 返回
@@ -1283,16 +1212,8 @@ id="九例百位小于个位的水仙花数continue-化简015503020404">九、�
 化简）（01:55:03—02:04:04）</h2>
 <h3 id="分析与-continue-化简">01:55:03—01:59:16 ｜ 分析与 continue
 化简</h3>
-<p>寻找”百位小于个位的水仙花数”：一个三位数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mi>z</mi></mrow><annotation encoding="application/x-tex">xyz</annotation></semantics></math>
-满足
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mi>z</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>y</mi><mn>3</mn></msup><mo>+</mo><msup><mi>z</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">xyz = x^3 + y^3 + z^3</annotation></semantics></math>
-且百位
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo></mrow><annotation encoding="application/x-tex">x &lt;</annotation></semantics></math>
-个位
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>。</p>
-<p>遍历范围
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>100</mn><mo>,</mo><mn>999</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[100, 999]</annotation></semantics></math>（<code>for (m=100; m&lt;=999; m++)</code>）。老师策略：先判断简单、便宜的条件。取百位
+<p>寻找”百位小于个位的水仙花数”：一个三位数 xyz 满足<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mi>z</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>y</mi><mn>3</mn></msup><mo>+</mo><msup><mi>z</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">xyz = x^3 + y^3 + z^3</annotation></semantics></math>且百位 x&lt; 个位 z 。</p>
+<p>遍历范围 [100,999] （<code>for (m=100; m&lt;=999; m++)</code>）。老师策略：先判断简单、便宜的条件。取百位
 <code>x = m/100</code>，个位 <code>z = m%10</code>；若
 <code>x &gt;= z</code> 直接 <code>continue</code>
 放弃（连复杂的水仙花判定都不用做）。再取十位
@@ -1301,13 +1222,9 @@ id="九例百位小于个位的水仙花数continue-化简015503020404">九、�
 <code>continue</code>。都满足才 <code>printf</code> 输出。</p>
 <h4 id="例题证明-8015503-寻找百位小于个位的水仙花数">例题/证明
 8（01:55:03）｜ 寻找百位小于个位的水仙花数</h4>
-<p><strong>题目／任务</strong>：在三位数中找出满足
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>y</mi><mn>3</mn></msup><mo>+</mo><msup><mi>z</mi><mn>3</mn></msup><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">x^3+y^3+z^3=m</annotation></semantics></math>
-且
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x&lt;z</annotation></semantics></math>
-的数。</p>
+<p><strong>题目／任务</strong>：在三位数中找出满足<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>y</mi><mn>3</mn></msup><mo>+</mo><msup><mi>z</mi><mn>3</mn></msup><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">x^3+y^3+z^3=m</annotation></semantics></math>且 x&lt;z 的数。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 38 页）：</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op"></span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> m<span class="op">,</span> x<span class="op">,</span> y<span class="op">,</span> z<span class="op">;</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span><span class="op">(</span> m <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> m <span class="op">&lt;=</span> <span class="dv">999</span><span class="op">;</span> m<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
@@ -1336,7 +1253,7 @@ id="九例百位小于个位的水仙花数continue-化简015503020404">九、�
 <code>printf</code> 那一句不够——需要在 <code>continue</code>
 之后、输出处加工：引入计数器
 <code>count</code>，<code>if (count &gt; 0)</code>
-才先输出一个空格（即”从第二个数开始，前面补一个空格”），输出完再
+才先输出一个空格（即”从第二个数开始，前面补一个空格），输出完再
 <code>count++</code>。这样第一个数前无空格、数之间恰有一个空格、末尾无空格。</p>
 <p>若不用 <code>continue</code> 改写，就得嵌套 <code>if</code>（先
 <code>if (x&lt;z)</code> 再 <code>if (是水仙花数)</code>
@@ -1355,8 +1272,7 @@ id="九例百位小于个位的水仙花数continue-化简015503020404">九、�
 各层次数之积</strong>，所以写嵌套循环务必注意效率。</p>
 <h3 id="例-4-7-计算-12100含初始化位置函数替代">02:08:31—02:11:00 ｜ 例
 4-7 计算 1!+2!+…+100!（含初始化位置、函数替代）</h3>
-<p>例 4-7：求
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>!</mi><mo>+</mo><mn>2</mn><mi>!</mi><mo>+</mo><mi>⋯</mi><mo>+</mo><mn>100</mn><mi>!</mi></mrow><annotation encoding="application/x-tex">1! + 2! + \cdots + 100!</annotation></semantics></math>。</p>
+<p>例 4-7：求 1!+2!+⋯+100! 。</p>
 <h4 id="例题证明-9020831-计算-12100">例题/证明 9（02:08:31）｜ 计算
 1!+2!+…+100!</h4>
 <p><strong>题目／任务</strong>：用二重循环累加前 100 项的阶乘和。</p>
@@ -1381,7 +1297,7 @@ id="九例百位小于个位的水仙花数continue-化简015503020404">九、�
 <code>fact = 1;</code> <strong>必须放在内层 <code>for</code>
 之前、且在外层每轮都重置</strong>。若误放到外层 <code>for</code>
 之外，求第 2 个阶乘时会”在第 1
-个阶乘基础上接着乘”，导致结果连锁错误——“失之毫厘，谬以千里”。</p>
+个阶乘基础上接着乘，导致结果连锁错误——“失之毫厘，谬以千里。</p>
 <p><strong>函数替代</strong>：把内层阶乘换成函数调用，逻辑更清晰（逐字符取自课件
 ch04(1).txt 第 50 页）：</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
@@ -1403,9 +1319,7 @@ ch04(1).txt 第 50 页）：</p>
 <p><code>%e</code> 用科学计数法输出浮点数。</p>
 <p><strong>复杂度</strong>：上述二重循环
 <code>for(i=1..n) for(j=1..i)</code> 的总次数 =
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mi>⋯</mi><mo>+</mo><mi>n</mi><mo>=</mo><mfrac><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">1+2+\cdots+n = \frac{n(n+1)}{2}</annotation></semantics></math>，即
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math>
-量级。</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mi>⋯</mi><mo>+</mo><mi>n</mi><mo>=</mo><mfrac><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">1+2+\cdots+n = \frac{n(n+1)}{2}</annotation></semantics></math>，即<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math>量级。</p>
 <h2
 id="十一循环结构的选择与条件设计例-4-8-最高分021100021600">十一、循环结构的选择与条件设计、例
 4-8 最高分（02:11:00—02:16:00）</h2>
@@ -1418,11 +1332,11 @@ id="十一循环结构的选择与条件设计例-4-8-最高分021100021600">十
 <code>break</code> / <code>continue</code> / <code>if</code>
 配合实现复杂流程控制。实际程序中，每次循环体执行的语句、涉及的变量值都可能不同（靠
 <code>if</code> 走不同分支、<code>continue</code>
-跳过等），不要误以为”循环体每次做的事完全一样”。</p>
+跳过等），不要误以为”循环体每次做的事完全一样。</p>
 <h3 id="例-4-8-最高分问题forwhiledo-while-三种写法">02:11:57—02:16:00 ｜
 例 4-8 最高分问题（for/while/do-while 三种写法）</h3>
 <p>例
-4-8：输入一批成绩，找最高分。先读一个成绩当”当前最高分”，再不断读下一个，比当前最高分大就更新。结束方式有两种：已知人数，或用负数作结束标志。</p>
+4-8：输入一批成绩，找最高分。先读一个成绩当”当前最高分，再不断读下一个，比当前最高分大就更新。结束方式有两种：已知人数，或用负数作结束标志。</p>
 <h4 id="例题证明-10021157-找出最高分">例题/证明 10（02:11:57）｜
 找出最高分</h4>
 <p><strong>题目／任务</strong>：输入若干成绩，输出其中的最高分。</p>
@@ -1490,10 +1404,7 @@ id="十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">
 4-9 斐波那契、例 4-10 区间素数、例 4-11 搬砖（02:16:00—02:29:33）</h2>
 <h3 id="例-4-9-斐波那契数列">02:16:00—02:21:21 ｜ 例 4-9
 斐波那契数列</h3>
-<p>例 4-9：输入
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>46</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n\ (1\le n\le 46)</annotation></semantics></math>，输出斐波那契数列前
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-项（1, 1, 2, 3, 5, 8, 13, …），每行 5 个。</p>
+<p>例 4-9：输入 n(1≤n≤46) ，输出斐波那契数列前 n 项（1, 1, 2, 3, 5, 8, 13, …），每行 5 个。</p>
 <p>思路：前两项为 1；从第 3 项起每项等于前两项之和。用
 <code>x1</code>、<code>x2</code> 表示当前项的前两项，<code>x</code>
 表示当前项。循环 <code>i = 1..n</code>：若 <code>i==1</code> 或
@@ -1501,9 +1412,7 @@ id="十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">
 <code>x = x1 + x2</code>；输出后维护递推：<code>x1 = x2; x2 = x</code>（为下一项做准备）。</p>
 <h4 id="例题证明-11021600-输出斐波那契数列前-n-项">例题/证明
 11（02:16:00）｜ 输出斐波那契数列前 n 项</h4>
-<p><strong>题目／任务</strong>：输出斐波那契数列前
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-项，每行 5 个。</p>
+<p><strong>题目／任务</strong>：输出斐波那契数列前 n 项，每行 5 个。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 62、64
 页）：</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
@@ -1539,21 +1448,13 @@ id="十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">
 项起超出 <code>int</code> 范围）。</p>
 <h3 id="例-4-10-区间-mn-内素数isprime-函数continue">02:21:21—02:27:55 ｜
 例 4-10 区间 [m,n] 内素数（isprime 函数、continue）</h3>
-<p>例 4-10：输入整数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mi>n</mi><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>≤</mo><mi>m</mi><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>500</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">m, n\ (1\le m\le n\le 500)</annotation></semantics></math>，输出区间
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[m,n]</annotation></semantics></math>
-内的全部素数，每行 10 个。</p>
-<p>思路：遍历
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mi>m</mi><mi>.</mi><mi>.</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">k = m..n</annotation></semantics></math>，若
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
-是素数就输出。用 <code>continue</code>
-化简——“不是素数就跳过，剩下的是素数，直接输出”。把”是否为素数”抽成函数
+<p>例 4-10：输入整数 m,n(1≤m≤n≤500) ，输出区间 [m,n] 内的全部素数，每行 10 个。</p>
+<p>思路：遍历 k=m..n ，若 k 是素数就输出。用 <code>continue</code>
+化简——“不是素数就跳过，剩下的是素数，直接输出。把”是否为素数”抽成函数
 <code>isprime(k)</code>，返回 1 表示素数、0 表示非素数。</p>
 <h4 id="例题证明-12022121-求区间-mn-内的全部素数">例题/证明
 12（02:21:21）｜ 求区间 [m,n] 内的全部素数</h4>
-<p><strong>题目／任务</strong>：输出
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[m,n]</annotation></semantics></math>
-内所有素数，每行 10 个。</p>
+<p><strong>题目／任务</strong>：输出 [m,n] 内所有素数，每行 10 个。</p>
 <p><strong>代码</strong>（逐字符取自课件 ch04(1).txt 第 67–68 页）：</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isprime<span class="op">(</span><span class="dt">int</span> m<span class="op">);</span> <span class="co">// 申明素数判定函数</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
@@ -1587,7 +1488,7 @@ id="十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">
 <p><strong>要点 / 易错点</strong>： - <code>isprime</code> 用
 <code>return 0</code> / <code>return 1</code>
 <strong>提前结束函数</strong>——这和在循环里 <code>continue</code>
-类似，是”提前返回结果”。找到因子立即
+类似，是”提前返回结果。找到因子立即
 <code>return 0</code>，循环自然结束；跑完都没因子则
 <code>return 1</code>。 - 主循环里 <code>printf("%5d", k)</code> 占 5
 宽；<code>count%10==0</code> 控制每行 10 个换行。 - 老师对比教材第 89
@@ -1633,14 +1534,9 @@ id="十二例-4-9-斐波那契例-4-10-区间素数例-4-11-搬砖021600022933">
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>men<span class="op">,</span> women<span class="op">,</span> child<span class="op">);</span></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>代码取自课件 ch04(1).txt 第 70、72 页。</p>
-<p><strong>要点</strong>： - 枚举版是<strong>三重循环</strong>，总次数
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46</mn><mo>×</mo><mn>46</mn><mo>×</mo><mn>46</mn><mo>≈</mo><mn>4.6</mn></mrow><annotation encoding="application/x-tex">46\times46\times46 \approx 4.6</annotation></semantics></math>
-万次，被老师称为”笨办法”。 - 改进版利用约束：男人最多
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>45</mn><mi>/</mi><mn>3</mn><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">45/3=15</annotation></semantics></math>、女人最多
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>45</mn><mi>/</mi><mn>2</mn><mo>=</mo><mn>22</mn></mrow><annotation encoding="application/x-tex">45/2=22</annotation></semantics></math>，小孩由
+<p><strong>要点</strong>： - 枚举版是<strong>三重循环</strong>，总次数 46×46×46≈4.6 万次，被老师称为”笨办法。 - 改进版利用约束：男人最多 45/3=15 、女人最多 45/2=22 ，小孩由
 <code>child = 45 - men - women</code>
-直接算出，降为<strong>二重循环</strong>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>23</mn></mrow><annotation encoding="application/x-tex">16\times23</annotation></semantics></math>，计算量远小于原版。
+直接算出，降为<strong>二重循环</strong>16×23 ，计算量远小于原版。
 -
 老师叮嘱：<strong>谨慎使用多重循环</strong>，先搭好框架、再填细节，能减层就减层。</p>
 <p>课堂到此结束（实际略有拖堂）；点名后续等课堂管理内容略去。</p>
